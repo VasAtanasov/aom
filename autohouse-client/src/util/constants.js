@@ -1,0 +1,1 @@
+export const TABLET_VIEW = '991.98px'; 
