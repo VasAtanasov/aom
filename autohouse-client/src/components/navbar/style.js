@@ -1,4 +1,4 @@
-import { TABLET_VIEW } from '../../util/constants';
+import { LG_VIEW } from '../../util/constants';
 import styled, { css } from 'styled-components';
 
 export const Brand = styled.span`
@@ -10,7 +10,7 @@ export const Brand = styled.span`
     text-transform: uppercase;
     font-weight: 800;
 
-    @media (max-width: ${TABLET_VIEW}) {
+    @media (max-width: ${LG_VIEW}) {
         color: #fff;
     }
 
@@ -57,7 +57,7 @@ export const Menu = styled.ul`
     overflow: hidden;
     background-color: #fff;
 
-    @media (min-width: ${TABLET_VIEW}) {
+    @media (min-width: ${LG_VIEW}) {
         clear: none;
         float: right;
         max-height: none;
@@ -66,13 +66,12 @@ export const Menu = styled.ul`
 
 export const ToggleButton = styled.label`
     cursor: pointer;
-    display: inline-block;
     float: right;
     padding: 28px 20px;
     position: relative;
     user-select: none;
 
-    @media (min-width: ${TABLET_VIEW}) {
+    @media (min-width: ${LG_VIEW}) {
         display: none;
     }
 `;
@@ -116,7 +115,7 @@ export const Navbar = styled.header`
     width: 100%;
     z-index: 3;
 
-    @media (max-width: ${TABLET_VIEW}) {
+    @media (max-width: ${LG_VIEW}) {
         background: #000000 !important;
     }
 
@@ -163,6 +162,8 @@ export const Navbar = styled.header`
 `;
 
 export const StyledLink = styled.li`
+
+
     a {
         display: block;
         padding: 20px 20px;
@@ -172,7 +173,8 @@ export const StyledLink = styled.li`
     }
 
     a.active {
-        color: #f7b71d;
+        color: #fff;
+        background-color: #f7b71d;
     }
 
     a:hover {
@@ -180,7 +182,7 @@ export const StyledLink = styled.li`
         background-color: #f4f4f4;
     }
 
-    @media (min-width: ${TABLET_VIEW}) {
+    @media (min-width: ${LG_VIEW}) {
         float: left;
     }
 `;

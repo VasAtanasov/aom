@@ -1,8 +1,13 @@
 import React from 'react';
+import styled from 'styled-components';
+
+const StyledFooter = styled.footer`
+    height: 200vh;
+`;
 
 const Footer = () => {
     return (
-        <footer>This is footer</footer>
+        <StyledFooter>This is footer</StyledFooter>
     )
 }
 
