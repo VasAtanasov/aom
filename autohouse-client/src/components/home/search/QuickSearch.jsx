@@ -228,7 +228,7 @@ const QuickSearch = () => {
                             <SearchButtonContainer span={24}>
                                 <Button type="primary" block>
                                     Search
-                                        </Button>
+                                </Button>
                             </SearchButtonContainer>
                         </SearchForm>
                     </Container>

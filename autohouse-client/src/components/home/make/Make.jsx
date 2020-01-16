@@ -2,11 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const MakeComponent = (props) => {
-
-    // const [caption, setCaption] = useState(props.caption);
-    // const [icon, setIcon] = useState(props.caption.toLowerCase());
-    // const [searchCriteria, setSearchCriteria] = useState(props.caption);
-
+    
     return (
         <div className={props.className}>
             <img src={props.imgSrc} alt="make icon" />
@@ -24,9 +20,10 @@ const Make = styled(MakeComponent)`
     justify-content: space-around;
     border: 1px solid transparent;
     box-shadow: none;
-    transition: box-shadow 0.4s;
+    transition: 0.3s;
 
     &:hover {
+        background-color: white;
         -webkit-box-shadow: 0px 0px 15px rgba(85, 90, 96, 0.25);
         -moz-box-shadow: 0px 0px 15px rgba(85, 90, 96, 0.25);
         box-shadow: 0px 0px 15px rgba(85, 90, 96, 0.25);

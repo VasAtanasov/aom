@@ -18,3 +18,8 @@ export const HERO_MAIN_HEIGHT = '500px';
 export const HERO_MAIN_RESPONSIVE = '500px';
 
 export const DEFAULT_COLOR = '#f7b71d';
+
+export const HOME_SECTION_CONTAINER_SIZE = {
+    maxWidth: "908px",
+    margin: '0 auto'
+}
