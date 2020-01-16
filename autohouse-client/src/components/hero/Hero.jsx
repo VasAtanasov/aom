@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Parallax } from 'react-parallax';
 
 import {
     HERO_MAIN_HEIGHT,
@@ -16,29 +15,31 @@ const Overlay = styled.div`
     right: 0;
     bottom: 0;
     content: '';
-    opacity: .6;
+    opacity: .5;
     background: #000000;
-    height: ${HERO_MAIN_HEIGHT};
+    min-height: ${HERO_MAIN_HEIGHT};
 
     @media (max-width: ${LG_VIEW}) {
-        height: ${HERO_MAIN_RESPONSIVE};
+        min-height: ${HERO_MAIN_RESPONSIVE};
     }
 `;
 
 const Wrapper = styled.div`
     width: 100%;
-    height: ${HERO_MAIN_HEIGHT};
-    position: inherit;
+    min-height: ${HERO_MAIN_HEIGHT};
+    position: relative;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top center;
+    background-image: ${({ url }) => `url(${url})`};
+
 
     p {
         font-size: 32px;
     }
 
     @media (max-width: ${LG_VIEW}) {
-        height: ${HERO_MAIN_RESPONSIVE};
+        min-height: ${HERO_MAIN_RESPONSIVE};
 
         p {
             font-size: 20px;
@@ -51,23 +52,15 @@ const Wrapper = styled.div`
         }
     }
 `;
-    
+
 
 const HeroWrap = ({ backgroundImage, children }) => {
 
     return (
-        <Parallax
-            blur={1}
-            bgImage={backgroundImage}
-            bgImageAlt="hero"
-            strength={300}
-        >
-            <Wrapper >
-                <Overlay />
-                {children}
-            </Wrapper>
-        </Parallax>
-
+        <Wrapper url={backgroundImage} >
+            <Overlay />
+            {children}
+        </Wrapper>
     );
 }
 

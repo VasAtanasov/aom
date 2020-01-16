@@ -12,5 +12,9 @@ export const SM_MAX_WIDTH = '540px';
 
 export const MAX_WIDTH = '100%';
 
-export const HERO_MAIN_HEIGHT = '850px';
-export const HERO_MAIN_RESPONSIVE = '850px';
+// export const HERO_MAIN_HEIGHT = '850px';
+export const HERO_MAIN_HEIGHT = '500px';
+// export const HERO_MAIN_RESPONSIVE = '850px';
+export const HERO_MAIN_RESPONSIVE = '500px';
+
+export const DEFAULT_COLOR = '#f7b71d';

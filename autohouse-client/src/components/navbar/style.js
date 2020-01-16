@@ -108,6 +108,7 @@ export const ToggleCheckbox = styled.input`
         top: 0;
     }
 `;
+
 export const Navbar = styled.header`
     background-color: #fff;
     box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
@@ -139,6 +140,10 @@ export const Navbar = styled.header`
         }`
     }
 
+    & a {
+        color: #000;
+    }
+
     & ul {
         margin: 0;
         padding: 0;
@@ -162,7 +167,6 @@ export const Navbar = styled.header`
 `;
 
 export const StyledLink = styled.li`
-
 
     a {
         display: block;

@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components/macro';
 
+const defaultColorHover = 'rgba(247, 183, 29, 0.3)';
+
 export default createGlobalStyle`
 
     *,
@@ -72,6 +74,14 @@ export default createGlobalStyle`
     .h1, .h2, .h3, .h4, .h5 {
         line-height: 1.5;
         font-weight: 400;
+    }
+    
+    & .ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled) {
+        background-color: ${defaultColorHover} !important;
+    }
+
+    & .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
+        background-color: ${defaultColorHover} !important;
     }
 
 `;
