@@ -9,7 +9,7 @@ import {
     NavIcon,
     StyledLink
 } from './style';
-import links from '../../util/links';
+import { routes } from '../../components/app/App';
 
 const ToggleIcon = () => {
     return (
@@ -63,9 +63,9 @@ const Navigation = () => {
 
     }, [scrolled, awake, sleep]);
 
-    const navLinks = links.map((link, index) => (
+    const navLinks = routes.map((link, index) => (
         <StyledLink key={`${link.name}_${index}`}>
-            <NavLink to={link.to} >
+            <NavLink to={link.path} >
                 {link.name}
             </NavLink>
         </StyledLink>

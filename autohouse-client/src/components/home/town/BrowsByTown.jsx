@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'antd';
-import HomeSectionContainer from '../HomeSectionContainer';
-import SectionTitle from '../SectionTitle';
-import { HOME_SECTION_CONTAINER_SIZE } from '../../../util/constants'
+import { Col } from 'antd';
 import TownCard from './TownCard';
 
 const TownCardContainer = styled(Col)`
@@ -38,6 +35,7 @@ const TownCardContainer = styled(Col)`
                         letter-spacing: 0.2px;
                         font-size: 14px;
                         color: white;
+                        transition: 0.3s;
 
                         :hover {
                             background-color: rgba(0, 0, 0, 0.1);
@@ -79,26 +77,19 @@ const BrowsByTown = () => {
     };
     const extensionJpg = ".jpg";
 
-    return (
-        <HomeSectionContainer>
-            <SectionTitle title="Browse by town" />
-            <Row type="flex" style={HOME_SECTION_CONTAINER_SIZE}>
-                {Object.keys(towns).map((town, idx) => (
-                    <TownCardContainer
-                        key={town + idx}
-                        span={12}
-                        md={8}
-                        lg={6}
-                    >
-                        <TownCard
-                            townName={town}
-                            imageSrc={`${pathToImages}${mapName(town)}${extensionJpg}`}
-                        />
-                    </TownCardContainer>
-                ))}
-            </Row>
-        </HomeSectionContainer>
-    )
+    return Object.keys(towns).map((town, idx) => (
+        <TownCardContainer
+            key={town + idx}
+            span={12}
+            md={8}
+            lg={6}
+        >
+            <TownCard
+                townName={town}
+                imageSrc={`${pathToImages}${mapName(town)}${extensionJpg}`}
+            />
+        </TownCardContainer>
+    ))
 }
 
 export default BrowsByTown;

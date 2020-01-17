@@ -25,26 +25,3 @@ export default [
     { id: 24, src: '../resources/images/makes/volkswagen' },
     { id: 25, src: '../resources/images/makes/volvo' },
 ];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

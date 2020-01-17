@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Row, Col, } from 'antd';
+import { Col } from 'antd';
+import Make from './Make';
+import { DEFAULT_COLOR } from '../../../util/constants';
 
-import Make from './Make'
-import SectionTitle from '../SectionTitle'
-import { DEFAULT_COLOR, HOME_SECTION_CONTAINER_SIZE } from '../../../util/constants'
-import HomeSectionContainer from '../HomeSectionContainer'
-
-const BrowseByMakeContainer = styled(HomeSectionContainer)`
+const BrowseByMakeContainer = styled.div`
 
     & label.toggle {
         cursor: pointer;
         color: ${DEFAULT_COLOR};
         display: inline-block;
         letter-spacing: 1.1;
-        font-weight: 500;
+        font-weight: 500;   
         font-size: 15px;
         margin-top: 2rem;
     }
@@ -118,30 +115,25 @@ const BrowseByMake = () => {
 
     return (
         <BrowseByMakeContainer>
-            <SectionTitle title="Most popular car makes" />
-            <Row type="flex" style={HOME_SECTION_CONTAINER_SIZE}>
-                <input type="checkbox" className="toggle" id="makes-toggle" />
-                <MakesContainer span={24} className="toggled">
-                    {makes.map((make, idx) => {
-                        if (idx < 6) {
-                            return (
-                                <Make key={idx} imgSrc={`${pathToImages}${make}${extensionPng}`} />
-                            )
-                        } else {
-                            return (
-                                <Make key={idx} imgSrc={`${pathToImages}${make}${extensionPng}`} className="hidable" />
-                            )
-                        }
-                    })}
-                </MakesContainer>
-            </Row>
-            <Row>
-                <ToggleButton span={24}>
-                    <label htmlFor="makes-toggle" className="toggle" onClick={() => setToggle(!toggle)}>
-                        {toggle ? "View less makes" : "View more makes"}
-                    </label>
-                </ToggleButton>
-            </Row>
+            <input type="checkbox" className="toggle" id="makes-toggle" />
+            <MakesContainer span={24} className="toggled">
+                {makes.map((make, idx) => {
+                    if (idx < 6) {
+                        return (
+                            <Make key={idx} imgSrc={`${pathToImages}${make}${extensionPng}`} />
+                        )
+                    } else {
+                        return (
+                            <Make key={idx} imgSrc={`${pathToImages}${make}${extensionPng}`} className="hidable" />
+                        )
+                    }
+                })}
+            </MakesContainer>
+            <ToggleButton span={24}>
+                <label htmlFor="makes-toggle" className="toggle" onClick={() => setToggle(!toggle)}>
+                    {toggle ? "View less makes" : "View more makes"}
+                </label>
+            </ToggleButton>
         </BrowseByMakeContainer>
     )
 }

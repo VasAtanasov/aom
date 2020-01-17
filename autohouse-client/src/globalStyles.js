@@ -24,6 +24,7 @@ export default createGlobalStyle`
     
     body {
         line-height: 1;
+        background-color: #f7f7f7 !important;
     }
 
     ol, ul {

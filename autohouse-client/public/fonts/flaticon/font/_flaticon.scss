@@ -1,0 +1,162 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 06/12/2019 10:01
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff2") format("woff2"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-car:before { content: "\f100"; }
+.flaticon-road:before { content: "\f101"; }
+.flaticon-maps-and-flags:before { content: "\f102"; }
+.flaticon-fuel:before { content: "\f103"; }
+.flaticon-sedan-car-model:before { content: "\f104"; }
+.flaticon-sedan-car-front:before { content: "\f105"; }
+.flaticon-car-steering-wheel:before { content: "\f106"; }
+.flaticon-shifter:before { content: "\f107"; }
+.flaticon-settings-gears:before { content: "\f108"; }
+.flaticon-car-key:before { content: "\f109"; }
+.flaticon-car-key-1:before { content: "\f10a"; }
+.flaticon-engine:before { content: "\f10b"; }
+.flaticon-pistons:before { content: "\f10c"; }
+.flaticon-factory:before { content: "\f10d"; }
+.flaticon-calendar-with-spring-binder-and-date-blocks:before { content: "\f10e"; }
+.flaticon-history-clock-button:before { content: "\f10f"; }
+.flaticon-speedometer:before { content: "\f110"; }
+.flaticon-gas-station:before { content: "\f111"; }
+.flaticon-fuel-1:before { content: "\f112"; }
+.flaticon-coin:before { content: "\f113"; }
+.flaticon-tag:before { content: "\f114"; }
+.flaticon-paint-board-and-brush:before { content: "\f115"; }
+.flaticon-contrast-control:before { content: "\f116"; }
+.flaticon-contrast:before { content: "\f117"; }
+.flaticon-information:before { content: "\f118"; }
+.flaticon-star-1:before { content: "\f119"; }
+.flaticon-star-2:before { content: "\f11a"; }
+.flaticon-check-box-empty:before { content: "\f11b"; }
+.flaticon-car-parts:before { content: "\f11c"; }
+.flaticon-check-square:before { content: "\f11d"; }
+.flaticon-growth:before { content: "\f11e"; }
+.flaticon-evolution-1:before { content: "\f11f"; }
+.flaticon-photo-camera:before { content: "\f120"; }
+.flaticon-searching-car:before { content: "\f121"; }
+.flaticon-arrow-point-to-right:before { content: "\f122"; }
+.flaticon-keyboard-right-arrow-button:before { content: "\f123"; }
+.flaticon-down-chevron:before { content: "\f124"; }
+.flaticon-add-plus-button:before { content: "\f125"; }
+.flaticon-minus-line:before { content: "\f126"; }
+.flaticon-cross:before { content: "\f127"; }
+.flaticon-close-button:before { content: "\f128"; }
+.flaticon-coupe-car:before { content: "\f129"; }
+.flaticon-convertible:before { content: "\f12a"; }
+.flaticon-add-1:before { content: "\f12b"; }
+.flaticon-car-seat:before { content: "\f12c"; }
+.flaticon-car-door:before { content: "\f12d"; }
+.flaticon-smoke:before { content: "\f12e"; }
+.flaticon-car-accident:before { content: "\f12f"; }
+.flaticon-automobile-salesman:before { content: "\f130"; }
+.flaticon-turbo-engine:before { content: "\f131"; }
+.flaticon-camera:before { content: "\f132"; }
+.flaticon-camera-1:before { content: "\f133"; }
+.flaticon-left-arrow:before { content: "\f134"; }
+.flaticon-layers:before { content: "\f135"; }
+.flaticon-settings:before { content: "\f136"; }
+.flaticon-setting:before { content: "\f137"; }
+.flaticon-layers-1:before { content: "\f138"; }
+.flaticon-telephone:before { content: "\f139"; }
+.flaticon-email:before { content: "\f13a"; }
+.flaticon-smartphone:before { content: "\f13b"; }
+.flaticon-gmail:before { content: "\f13c"; }
+    
+    $font-Flaticon-car: "\f100";
+    $font-Flaticon-road: "\f101";
+    $font-Flaticon-maps-and-flags: "\f102";
+    $font-Flaticon-fuel: "\f103";
+    $font-Flaticon-sedan-car-model: "\f104";
+    $font-Flaticon-sedan-car-front: "\f105";
+    $font-Flaticon-car-steering-wheel: "\f106";
+    $font-Flaticon-shifter: "\f107";
+    $font-Flaticon-settings-gears: "\f108";
+    $font-Flaticon-car-key: "\f109";
+    $font-Flaticon-car-key-1: "\f10a";
+    $font-Flaticon-engine: "\f10b";
+    $font-Flaticon-pistons: "\f10c";
+    $font-Flaticon-factory: "\f10d";
+    $font-Flaticon-calendar-with-spring-binder-and-date-blocks: "\f10e";
+    $font-Flaticon-history-clock-button: "\f10f";
+    $font-Flaticon-speedometer: "\f110";
+    $font-Flaticon-gas-station: "\f111";
+    $font-Flaticon-fuel-1: "\f112";
+    $font-Flaticon-coin: "\f113";
+    $font-Flaticon-tag: "\f114";
+    $font-Flaticon-paint-board-and-brush: "\f115";
+    $font-Flaticon-contrast-control: "\f116";
+    $font-Flaticon-contrast: "\f117";
+    $font-Flaticon-information: "\f118";
+    $font-Flaticon-star-1: "\f119";
+    $font-Flaticon-star-2: "\f11a";
+    $font-Flaticon-check-box-empty: "\f11b";
+    $font-Flaticon-car-parts: "\f11c";
+    $font-Flaticon-check-square: "\f11d";
+    $font-Flaticon-growth: "\f11e";
+    $font-Flaticon-evolution-1: "\f11f";
+    $font-Flaticon-photo-camera: "\f120";
+    $font-Flaticon-searching-car: "\f121";
+    $font-Flaticon-arrow-point-to-right: "\f122";
+    $font-Flaticon-keyboard-right-arrow-button: "\f123";
+    $font-Flaticon-down-chevron: "\f124";
+    $font-Flaticon-add-plus-button: "\f125";
+    $font-Flaticon-minus-line: "\f126";
+    $font-Flaticon-cross: "\f127";
+    $font-Flaticon-close-button: "\f128";
+    $font-Flaticon-coupe-car: "\f129";
+    $font-Flaticon-convertible: "\f12a";
+    $font-Flaticon-add-1: "\f12b";
+    $font-Flaticon-car-seat: "\f12c";
+    $font-Flaticon-car-door: "\f12d";
+    $font-Flaticon-smoke: "\f12e";
+    $font-Flaticon-car-accident: "\f12f";
+    $font-Flaticon-automobile-salesman: "\f130";
+    $font-Flaticon-turbo-engine: "\f131";
+    $font-Flaticon-camera: "\f132";
+    $font-Flaticon-camera-1: "\f133";
+    $font-Flaticon-left-arrow: "\f134";
+    $font-Flaticon-layers: "\f135";
+    $font-Flaticon-settings: "\f136";
+    $font-Flaticon-setting: "\f137";
+    $font-Flaticon-layers-1: "\f138";
+    $font-Flaticon-telephone: "\f139";
+    $font-Flaticon-email: "\f13a";
+    $font-Flaticon-smartphone: "\f13b";
+    $font-Flaticon-gmail: "\f13c";

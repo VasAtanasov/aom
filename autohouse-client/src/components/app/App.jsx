@@ -4,9 +4,26 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from '../home/Home'
 import './App.css';
 import Layout from '../../hoc/Layout'
-import About from '../about/About';
 import Contacts from '../contacts/Contacts';
+import Advanced from '../search/Advanced';
 
+export const routes = [
+    {
+        path: "/home",
+        component: Home,
+        name: "Home"
+    },
+    {
+        path: "/findoffer",
+        component: Advanced,
+        name: "Find Offer"
+    },
+    {
+        path: "/contacts",
+        component: Contacts,
+        name: "Contacts"
+    }
+];
 
 const App = () => {
 
@@ -14,9 +31,9 @@ const App = () => {
         <Layout>
             <Switch>
                 <Redirect exact from="/" to="/home" />
-                <Route path={["/home", "/"]} exact component={Home} />
-                <Route path="/about" exact component={About} />
-                <Route path="/contacts" exact component={Contacts} />
+                {routes.map((routObj, idx) => (
+                    <Route exact key={idx} path={routObj.path} component={routObj.component} />
+                ))}
             </Switch>
         </Layout>
     );

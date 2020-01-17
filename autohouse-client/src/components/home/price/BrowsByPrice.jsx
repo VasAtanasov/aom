@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'antd';
-import HomeSectionContainer from '../HomeSectionContainer';
-import SectionTitle from '../SectionTitle';
-import { HOME_SECTION_CONTAINER_SIZE, DEFAULT_COLOR } from '../../../util/constants'
+import { Col } from 'antd';
+import { DEFAULT_COLOR } from '../../../util/constants'
 import PriceCard from './PriceCard'
 
 const PriceTagContainer = styled(Col)`
@@ -15,6 +13,7 @@ const PriceTagContainer = styled(Col)`
         & .ant-card-head .ant-card-head-wrapper .ant-card-head-title  {
             text-align: center;
             cursor: pointer;
+            transition: 0.2s;
             
             :hover {
                 color: ${DEFAULT_COLOR}
@@ -29,6 +28,7 @@ const PriceTagContainer = styled(Col)`
                 cursor: pointer;
                 margin-bottom: 7px;
                 text-align: center;
+                transition: 0.2s;
 
                 :hover {
                     color: ${DEFAULT_COLOR}
@@ -55,28 +55,21 @@ const BrowsByPrice = () => {
     ];
     const extensionJpg = ".jpg";
 
-    return (
-        <HomeSectionContainer>
-            <SectionTitle title="Price ranges" />
-            <Row type="flex" style={HOME_SECTION_CONTAINER_SIZE}>
-                {prices.map((tag, idx) => (
-                    <PriceTagContainer
-                        key={tag.id}
-                        xs={24}
-                        sm={12}
-                        md={8}
-                        lg={6}
-                    >
-                        <PriceCard
-                            price={tag.price}
-                            id={tag.id}
-                            imageSrc={`${pathToImages}${imgPrefix}${tag.id}${extensionJpg}`}
-                        />
-                    </PriceTagContainer>
-                ))}
-            </Row>
-        </HomeSectionContainer>
-    )
+    return prices.map((tag, idx) => (
+        <PriceTagContainer
+            key={tag.id}
+            xs={24}
+            sm={12}
+            md={8}
+            lg={6}
+        >
+            <PriceCard
+                price={tag.price}
+                id={tag.id}
+                imageSrc={`${pathToImages}${imgPrefix}${tag.id}${extensionJpg}`}
+            />
+        </PriceTagContainer>
+    ));
 }
 
 export default BrowsByPrice;

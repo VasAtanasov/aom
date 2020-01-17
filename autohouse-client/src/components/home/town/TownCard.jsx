@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Row, Col, Card } from 'antd';
-
-const { Meta } = Card;
+import React from 'react';
+import { Card } from 'antd';
 
 const TownCard = (props) => {
     const townName = props.townName;

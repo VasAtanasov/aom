@@ -1,15 +1,18 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-// import { Select, Row, Col, Typography, Radio, Button } from 'antd';
-// import { Container } from '../../util/commonWrappers';
-
+import { Tabs } from 'antd';
 import HeroWrap from '../hero/Hero';
 import BrowseByMake from './make/BrowseByMake';
-import bgImage from '../../resources/images/bg_6.jpg';
 import QuickSearch from './search/QuickSearch';
 import BrowseByBody from './body/BrowseByBody';
 import BrowsByPrice from './price/BrowsByPrice';
 import BrowsByTown from './town/BrowsByTown';
+import BrowsByMostPopular from './popular/BrowsByMostPopular';
+import BrowsByContainer from './BrowsByContainer';
+import { DEFAULT_COLOR } from '../../util/constants';
+
+const { TabPane } = Tabs;
+const bgImage = '/images/bg_6.jpg';
 
 const HomeSection = styled.section`
     border-bottom: 1px solid #e2e2e2;
@@ -19,8 +22,41 @@ const HomeSectionWhite = styled(HomeSection)`
     background-color: white;
 `;
 
-const HomeSectionGrey = styled(HomeSection)`
-     background-color: #f7f7f7;
+const TabsContainer = styled(Tabs)`
+
+    & .ant-tabs-bar {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-bottom: 0px;
+
+        & .ant-tabs-nav-container {
+
+            & .ant-tabs-nav-wrap {
+
+                & .ant-tabs-nav-scroll {
+                    display: flex;
+                    justify-content: center;
+
+                    & .ant-tabs-nav {
+
+                         & .ant-tabs-tab {
+                            :hover {
+                                color: ${DEFAULT_COLOR};
+                            }
+                        }
+                        
+                        & .ant-tabs-tab.ant-tabs-tab-active {
+                            color: ${DEFAULT_COLOR};
+                        }
+
+                        & .ant-tabs-ink-bar {
+                            background-color: ${DEFAULT_COLOR};
+                        }
+                    }
+                }
+            }
+        }
+    }
 `;
 
 const Home = () => {
@@ -31,17 +67,32 @@ const Home = () => {
                 <QuickSearch />
             </HeroWrap>
             <HomeSectionWhite>
-                <BrowseByBody />
+                <BrowsByContainer title="Browse by most popular">
+                    <TabsContainer defaultActiveKey="1">
+                        <TabPane tab="Body type" key="1">
+                            <BrowseByBody />
+                        </TabPane>
+                        <TabPane tab="Model" key="2">
+                            <BrowsByMostPopular />
+                        </TabPane>
+                    </TabsContainer>
+                </BrowsByContainer>
             </HomeSectionWhite>
-            <HomeSectionGrey>
-                <BrowsByPrice />
-            </HomeSectionGrey>
+            <HomeSection>
+                <BrowsByContainer title="Price ranges">
+                    <BrowsByPrice />
+                </BrowsByContainer>
+            </HomeSection>
             <HomeSectionWhite>
-                <BrowseByMake />
+                <BrowsByContainer title="Most popular car makes">
+                    <BrowseByMake />
+                </BrowsByContainer>
             </HomeSectionWhite>
-            <HomeSectionGrey>
-                <BrowsByTown />
-            </HomeSectionGrey>
+            <HomeSection>
+                <BrowsByContainer title="Browse by town">
+                    <BrowsByTown />
+                </BrowsByContainer>
+            </HomeSection>
         </Fragment>
     )
 }

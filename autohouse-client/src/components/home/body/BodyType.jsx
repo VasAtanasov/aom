@@ -70,8 +70,8 @@ const BodyTypeCard = styled(BodyTypeCardComponent)`
 
     :hover span.caption {
         color: ${DEFAULT_COLOR};
-        letter-spacing: 3px;
-        font-weight: 800;
+        /* letter-spacing: 3px;
+        font-weight: 800; */
     }
 `;
 
