@@ -1,0 +1,3193 @@
+{
+    "initialState": {
+        "aiSearch": {
+            "showAiSearch": false,
+            "aiSearchText": "",
+            "isSuggestion": false
+        },
+        "filterChanges": 0,
+        "filters": {
+            "sorting": "PriceAscending",
+            "vehicleType": "car",
+            "vat": null,
+            "numberOfAxles": null,
+            "xborder": null,
+            "paintWorks": [],
+            "makeModelModellineVersions": [],
+            "bodyTypes": [],
+            "fuelTypes": [],
+            "gears": [],
+            "usageState": [
+                "N",
+                "U"
+            ],
+            "upholsteries": [],
+            "onlineSinceId": null,
+            "firstRegistrationYear": {
+                "from": null,
+                "to": null
+            },
+            "price": {
+                "from": null,
+                "to": null
+            },
+            "financeRate": {
+                "from": null,
+                "to": null
+            },
+            "priceOrFinanceRateSelection": "price",
+            "mileage": {
+                "from": null,
+                "to": null
+            },
+            "seats": {
+                "from": null,
+                "to": null
+            },
+            "beds": {
+                "from": null,
+                "to": null
+            },
+            "emissionClass": null,
+            "emissionSticker": null,
+            "previousOwner": null,
+            "power": {
+                "type": "kw",
+                "from": null,
+                "to": null
+            },
+            "country": "",
+            "area": {
+                "lastSuggestion": null,
+                "lat": null,
+                "lon": null
+            },
+            "zipRadius": null,
+            "priceEvaluation": [],
+            "offerTypes": [
+                "N",
+                "J",
+                "U",
+                "O",
+                "D",
+                "S"
+            ],
+            "doors": "All",
+            "seller": null,
+            "equipments": [],
+            "bodyColors": [],
+            "interiorColors": [],
+            "seals": [],
+            "currentPage": null,
+            "dealerId": null,
+            "otTransactable": null,
+            "otOneSideContract": null,
+            "grossWeight": {
+                "from": null,
+                "to": null
+            },
+            "newDriverSuitable": null,
+            "consumption": {
+                "from": null,
+                "to": null
+            }
+        },
+        "areaSuggestions": {
+            "searchedTerm": null,
+            "suggestionsForTerm": []
+        },
+        "taxonomy": {
+            "allMakes": [
+                {
+                    "id": "9",
+                    "label": "Audi",
+                    "top": true
+                },
+                {
+                    "id": "13",
+                    "label": "BMW",
+                    "top": true
+                },
+                {
+                    "id": "29",
+                    "label": "Ford",
+                    "top": true
+                },
+                {
+                    "id": "47",
+                    "label": "Mercedes-Benz",
+                    "top": true
+                },
+                {
+                    "id": "54",
+                    "label": "Opel",
+                    "top": true
+                },
+                {
+                    "id": "74",
+                    "label": "Volkswagen",
+                    "top": true
+                },
+                {
+                    "id": "60",
+                    "label": "Renault",
+                    "top": true
+                },
+                {
+                    "id": "51539",
+                    "label": "9ff",
+                    "top": false
+                },
+                {
+                    "id": "16396",
+                    "label": "Abarth",
+                    "top": false
+                },
+                {
+                    "id": "14979",
+                    "label": "AC",
+                    "top": false
+                },
+                {
+                    "id": "16429",
+                    "label": "ACM",
+                    "top": false
+                },
+                {
+                    "id": "16356",
+                    "label": "Acura",
+                    "top": false
+                },
+                {
+                    "id": "16352",
+                    "label": "Aixam",
+                    "top": false
+                },
+                {
+                    "id": "6",
+                    "label": "Alfa Romeo",
+                    "top": false
+                },
+                {
+                    "id": "14",
+                    "label": "Alpina",
+                    "top": false
+                },
+                {
+                    "id": "51796",
+                    "label": "Alpine",
+                    "top": false
+                },
+                {
+                    "id": "51545",
+                    "label": "Amphicar",
+                    "top": false
+                },
+                {
+                    "id": "16419",
+                    "label": "Ariel Motor",
+                    "top": false
+                },
+                {
+                    "id": "16427",
+                    "label": "Artega",
+                    "top": false
+                },
+                {
+                    "id": "16431",
+                    "label": "Aspid",
+                    "top": false
+                },
+                {
+                    "id": "8",
+                    "label": "Aston Martin",
+                    "top": false
+                },
+                {
+                    "id": "15643",
+                    "label": "Austin",
+                    "top": false
+                },
+                {
+                    "id": "15644",
+                    "label": "Autobianchi",
+                    "top": false
+                },
+                {
+                    "id": "16437",
+                    "label": "Auverland",
+                    "top": false
+                },
+                {
+                    "id": "51774",
+                    "label": "Baic",
+                    "top": false
+                },
+                {
+                    "id": "16400",
+                    "label": "Bedford",
+                    "top": false
+                },
+                {
+                    "id": "16416",
+                    "label": "Bellier",
+                    "top": false
+                },
+                {
+                    "id": "11",
+                    "label": "Bentley",
+                    "top": false
+                },
+                {
+                    "id": "16418",
+                    "label": "Bolloré",
+                    "top": false
+                },
+                {
+                    "id": "16424",
+                    "label": "Borgward",
+                    "top": false
+                },
+                {
+                    "id": "16367",
+                    "label": "Brilliance",
+                    "top": false
+                },
+                {
+                    "id": "15",
+                    "label": "Bugatti",
+                    "top": false
+                },
+                {
+                    "id": "16",
+                    "label": "Buick",
+                    "top": false
+                },
+                {
+                    "id": "16379",
+                    "label": "BYD",
+                    "top": false
+                },
+                {
+                    "id": "17",
+                    "label": "Cadillac",
+                    "top": false
+                },
+                {
+                    "id": "15672",
+                    "label": "Caravans-Wohnm",
+                    "top": false
+                },
+                {
+                    "id": "16407",
+                    "label": "Casalini",
+                    "top": false
+                },
+                {
+                    "id": "16335",
+                    "label": "Caterham",
+                    "top": false
+                },
+                {
+                    "id": "16401",
+                    "label": "Changhe",
+                    "top": false
+                },
+                {
+                    "id": "16357",
+                    "label": "Chatenet",
+                    "top": false
+                },
+                {
+                    "id": "16384",
+                    "label": "Chery",
+                    "top": false
+                },
+                {
+                    "id": "19",
+                    "label": "Chevrolet",
+                    "top": false
+                },
+                {
+                    "id": "20",
+                    "label": "Chrysler",
+                    "top": false
+                },
+                {
+                    "id": "21",
+                    "label": "Citroen",
+                    "top": false
+                },
+                {
+                    "id": "16411",
+                    "label": "CityEL",
+                    "top": false
+                },
+                {
+                    "id": "16406",
+                    "label": "CMC",
+                    "top": false
+                },
+                {
+                    "id": "16380",
+                    "label": "Corvette",
+                    "top": false
+                },
+                {
+                    "id": "51802",
+                    "label": "Cupra",
+                    "top": false
+                },
+                {
+                    "id": "16360",
+                    "label": "Dacia",
+                    "top": false
+                },
+                {
+                    "id": "22",
+                    "label": "Daewoo",
+                    "top": false
+                },
+                {
+                    "id": "16333",
+                    "label": "DAF",
+                    "top": false
+                },
+                {
+                    "id": "23",
+                    "label": "Daihatsu",
+                    "top": false
+                },
+                {
+                    "id": "16397",
+                    "label": "Daimler",
+                    "top": false
+                },
+                {
+                    "id": "16434",
+                    "label": "Dangel",
+                    "top": false
+                },
+                {
+                    "id": "16423",
+                    "label": "De la Chapelle",
+                    "top": false
+                },
+                {
+                    "id": "51779",
+                    "label": "De Tomaso",
+                    "top": false
+                },
+                {
+                    "id": "16391",
+                    "label": "Derways",
+                    "top": false
+                },
+                {
+                    "id": "51773",
+                    "label": "DFSK",
+                    "top": false
+                },
+                {
+                    "id": "2152",
+                    "label": "Dodge",
+                    "top": false
+                },
+                {
+                    "id": "16339",
+                    "label": "Donkervoort",
+                    "top": false
+                },
+                {
+                    "id": "16383",
+                    "label": "DR Motor",
+                    "top": false
+                },
+                {
+                    "id": "16415",
+                    "label": "DS Automobiles",
+                    "top": false
+                },
+                {
+                    "id": "51552",
+                    "label": "Dutton",
+                    "top": false
+                },
+                {
+                    "id": "51794",
+                    "label": "e.GO",
+                    "top": false
+                },
+                {
+                    "id": "16436",
+                    "label": "Estrima",
+                    "top": false
+                },
+                {
+                    "id": "27",
+                    "label": "Ferrari",
+                    "top": false
+                },
+                {
+                    "id": "28",
+                    "label": "Fiat",
+                    "top": false
+                },
+                {
+                    "id": "51543",
+                    "label": "FISKER",
+                    "top": false
+                },
+                {
+                    "id": "51542",
+                    "label": "Gac Gonow",
+                    "top": false
+                },
+                {
+                    "id": "16337",
+                    "label": "Galloper",
+                    "top": false
+                },
+                {
+                    "id": "16386",
+                    "label": "GAZ",
+                    "top": false
+                },
+                {
+                    "id": "16392",
+                    "label": "Geely",
+                    "top": false
+                },
+                {
+                    "id": "16403",
+                    "label": "GEM",
+                    "top": false
+                },
+                {
+                    "id": "51540",
+                    "label": "GEMBALLA",
+                    "top": false
+                },
+                {
+                    "id": "51791",
+                    "label": "Gillet",
+                    "top": false
+                },
+                {
+                    "id": "16421",
+                    "label": "Giotti Victoria",
+                    "top": false
+                },
+                {
+                    "id": "2153",
+                    "label": "GMC",
+                    "top": false
+                },
+                {
+                    "id": "51813",
+                    "label": "Goupil",
+                    "top": false
+                },
+                {
+                    "id": "16382",
+                    "label": "Great Wall",
+                    "top": false
+                },
+                {
+                    "id": "16409",
+                    "label": "Grecav",
+                    "top": false
+                },
+                {
+                    "id": "51512",
+                    "label": "Haima",
+                    "top": false
+                },
+                {
+                    "id": "51534",
+                    "label": "Hamann",
+                    "top": false
+                },
+                {
+                    "id": "51816",
+                    "label": "Haval",
+                    "top": false
+                },
+                {
+                    "id": "31",
+                    "label": "Honda",
+                    "top": false
+                },
+                {
+                    "id": "15674",
+                    "label": "HUMMER",
+                    "top": false
+                },
+                {
+                    "id": "51767",
+                    "label": "Hurtan",
+                    "top": false
+                },
+                {
+                    "id": "33",
+                    "label": "Hyundai",
+                    "top": false
+                },
+                {
+                    "id": "16355",
+                    "label": "Infiniti",
+                    "top": false
+                },
+                {
+                    "id": "15629",
+                    "label": "Innocenti",
+                    "top": false
+                },
+                {
+                    "id": "16402",
+                    "label": "Iso Rivolta",
+                    "top": false
+                },
+                {
+                    "id": "35",
+                    "label": "Isuzu",
+                    "top": false
+                },
+                {
+                    "id": "14882",
+                    "label": "Iveco",
+                    "top": false
+                },
+                {
+                    "id": "16387",
+                    "label": "IZH",
+                    "top": false
+                },
+                {
+                    "id": "37",
+                    "label": "Jaguar",
+                    "top": false
+                },
+                {
+                    "id": "38",
+                    "label": "Jeep",
+                    "top": false
+                },
+                {
+                    "id": "16417",
+                    "label": "Karabag",
+                    "top": false
+                },
+                {
+                    "id": "39",
+                    "label": "Kia",
+                    "top": false
+                },
+                {
+                    "id": "51781",
+                    "label": "Koenigsegg",
+                    "top": false
+                },
+                {
+                    "id": "50060",
+                    "label": "KTM",
+                    "top": false
+                },
+                {
+                    "id": "40",
+                    "label": "Lada",
+                    "top": false
+                },
+                {
+                    "id": "41",
+                    "label": "Lamborghini",
+                    "top": false
+                },
+                {
+                    "id": "42",
+                    "label": "Lancia",
+                    "top": false
+                },
+                {
+                    "id": "15641",
+                    "label": "Land Rover",
+                    "top": false
+                },
+                {
+                    "id": "16426",
+                    "label": "LDV",
+                    "top": false
+                },
+                {
+                    "id": "43",
+                    "label": "Lexus",
+                    "top": false
+                },
+                {
+                    "id": "16393",
+                    "label": "Lifan",
+                    "top": false
+                },
+                {
+                    "id": "16353",
+                    "label": "Ligier",
+                    "top": false
+                },
+                {
+                    "id": "14890",
+                    "label": "Lincoln",
+                    "top": false
+                },
+                {
+                    "id": "44",
+                    "label": "Lotus",
+                    "top": false
+                },
+                {
+                    "id": "16359",
+                    "label": "Mahindra",
+                    "top": false
+                },
+                {
+                    "id": "51780",
+                    "label": "MAN",
+                    "top": false
+                },
+                {
+                    "id": "16435",
+                    "label": "Mansory",
+                    "top": false
+                },
+                {
+                    "id": "16410",
+                    "label": "Martin Motors",
+                    "top": false
+                },
+                {
+                    "id": "45",
+                    "label": "Maserati",
+                    "top": false
+                },
+                {
+                    "id": "51803",
+                    "label": "Maxus",
+                    "top": false
+                },
+                {
+                    "id": "16348",
+                    "label": "Maybach",
+                    "top": false
+                },
+                {
+                    "id": "46",
+                    "label": "Mazda",
+                    "top": false
+                },
+                {
+                    "id": "51519",
+                    "label": "McLaren",
+                    "top": false
+                },
+                {
+                    "id": "16399",
+                    "label": "Melex",
+                    "top": false
+                },
+                {
+                    "id": "48",
+                    "label": "MG",
+                    "top": false
+                },
+                {
+                    "id": "16361",
+                    "label": "Microcar",
+                    "top": false
+                },
+                {
+                    "id": "51766",
+                    "label": "Minauto",
+                    "top": false
+                },
+                {
+                    "id": "16338",
+                    "label": "MINI",
+                    "top": false
+                },
+                {
+                    "id": "50",
+                    "label": "Mitsubishi",
+                    "top": false
+                },
+                {
+                    "id": "51782",
+                    "label": "Mitsuoka",
+                    "top": false
+                },
+                {
+                    "id": "51",
+                    "label": "Morgan",
+                    "top": false
+                },
+                {
+                    "id": "16388",
+                    "label": "Moskvich",
+                    "top": false
+                },
+                {
+                    "id": "51554",
+                    "label": "MP Lafer",
+                    "top": false
+                },
+                {
+                    "id": "51788",
+                    "label": "MPM Motors",
+                    "top": false
+                },
+                {
+                    "id": "52",
+                    "label": "Nissan",
+                    "top": false
+                },
+                {
+                    "id": "53",
+                    "label": "Oldsmobile",
+                    "top": false
+                },
+                {
+                    "id": "15670",
+                    "label": "Oldtimer",
+                    "top": false
+                },
+                {
+                    "id": "16341",
+                    "label": "Pagani",
+                    "top": false
+                },
+                {
+                    "id": "51553",
+                    "label": "Panther Westwinds",
+                    "top": false
+                },
+                {
+                    "id": "55",
+                    "label": "Peugeot",
+                    "top": false
+                },
+                {
+                    "id": "50083",
+                    "label": "PGO",
+                    "top": false
+                },
+                {
+                    "id": "16350",
+                    "label": "Piaggio",
+                    "top": false
+                },
+                {
+                    "id": "51770",
+                    "label": "Plymouth",
+                    "top": false
+                },
+                {
+                    "id": "51817",
+                    "label": "Polestar",
+                    "top": false
+                },
+                {
+                    "id": "56",
+                    "label": "Pontiac",
+                    "top": false
+                },
+                {
+                    "id": "57",
+                    "label": "Porsche",
+                    "top": false
+                },
+                {
+                    "id": "15636",
+                    "label": "Proton",
+                    "top": false
+                },
+                {
+                    "id": "51768",
+                    "label": "Puch",
+                    "top": false
+                },
+                {
+                    "id": "16412",
+                    "label": "Qoros",
+                    "top": false
+                },
+                {
+                    "id": "16425",
+                    "label": "Qvale",
+                    "top": false
+                },
+                {
+                    "id": "51793",
+                    "label": "RAM",
+                    "top": false
+                },
+                {
+                    "id": "51812",
+                    "label": "Regis",
+                    "top": false
+                },
+                {
+                    "id": "16398",
+                    "label": "Reliant",
+                    "top": false
+                },
+                {
+                    "id": "61",
+                    "label": "Rolls-Royce",
+                    "top": false
+                },
+                {
+                    "id": "62",
+                    "label": "Rover",
+                    "top": false
+                },
+                {
+                    "id": "51536",
+                    "label": "Ruf",
+                    "top": false
+                },
+                {
+                    "id": "63",
+                    "label": "Saab",
+                    "top": false
+                },
+                {
+                    "id": "16369",
+                    "label": "Santana",
+                    "top": false
+                },
+                {
+                    "id": "16405",
+                    "label": "Savel",
+                    "top": false
+                },
+                {
+                    "id": "64",
+                    "label": "SEAT",
+                    "top": false
+                },
+                {
+                    "id": "51800",
+                    "label": "Shuanghuan",
+                    "top": false
+                },
+                {
+                    "id": "65",
+                    "label": "Skoda",
+                    "top": false
+                },
+                {
+                    "id": "15525",
+                    "label": "smart",
+                    "top": false
+                },
+                {
+                    "id": "51538",
+                    "label": "SpeedArt",
+                    "top": false
+                },
+                {
+                    "id": "16377",
+                    "label": "Spyker",
+                    "top": false
+                },
+                {
+                    "id": "66",
+                    "label": "SsangYong",
+                    "top": false
+                },
+                {
+                    "id": "51795",
+                    "label": "StreetScooter",
+                    "top": false
+                },
+                {
+                    "id": "67",
+                    "label": "Subaru",
+                    "top": false
+                },
+                {
+                    "id": "68",
+                    "label": "Suzuki",
+                    "top": false
+                },
+                {
+                    "id": "16395",
+                    "label": "TagAZ",
+                    "top": false
+                },
+                {
+                    "id": "51551",
+                    "label": "Talbot",
+                    "top": false
+                },
+                {
+                    "id": "16404",
+                    "label": "Tasso",
+                    "top": false
+                },
+                {
+                    "id": "16327",
+                    "label": "Tata",
+                    "top": false
+                },
+                {
+                    "id": "51557",
+                    "label": "Tazzari EV",
+                    "top": false
+                },
+                {
+                    "id": "51535",
+                    "label": "TECHART",
+                    "top": false
+                },
+                {
+                    "id": "51520",
+                    "label": "Tesla",
+                    "top": false
+                },
+                {
+                    "id": "16420",
+                    "label": "Town Life",
+                    "top": false
+                },
+                {
+                    "id": "70",
+                    "label": "Toyota",
+                    "top": false
+                },
+                {
+                    "id": "15633",
+                    "label": "Trabant",
+                    "top": false
+                },
+                {
+                    "id": "16326",
+                    "label": "Trailer-Anhänger",
+                    "top": false
+                },
+                {
+                    "id": "2120",
+                    "label": "Triumph",
+                    "top": false
+                },
+                {
+                    "id": "16253",
+                    "label": "Trucks-Lkw",
+                    "top": false
+                },
+                {
+                    "id": "71",
+                    "label": "TVR",
+                    "top": false
+                },
+                {
+                    "id": "16389",
+                    "label": "UAZ",
+                    "top": false
+                },
+                {
+                    "id": "51809",
+                    "label": "Vanderhall",
+                    "top": false
+                },
+                {
+                    "id": "16385",
+                    "label": "VAZ",
+                    "top": false
+                },
+                {
+                    "id": "16422",
+                    "label": "VEM",
+                    "top": false
+                },
+                {
+                    "id": "73",
+                    "label": "Volvo",
+                    "top": false
+                },
+                {
+                    "id": "51776",
+                    "label": "Wallys",
+                    "top": false
+                },
+                {
+                    "id": "16336",
+                    "label": "Wartburg",
+                    "top": false
+                },
+                {
+                    "id": "51513",
+                    "label": "Westfield",
+                    "top": false
+                },
+                {
+                    "id": "16351",
+                    "label": "Wiesmann",
+                    "top": false
+                },
+                {
+                    "id": "16408",
+                    "label": "Zastava",
+                    "top": false
+                },
+                {
+                    "id": "16394",
+                    "label": "ZAZ",
+                    "top": false
+                },
+                {
+                    "id": "51798",
+                    "label": "Zhidou",
+                    "top": false
+                },
+                {
+                    "id": "51807",
+                    "label": "Zotye",
+                    "top": false
+                },
+                {
+                    "id": "16328",
+                    "label": "друг",
+                    "top": false
+                }
+            ],
+            "allBodyTypeIds": [
+                {
+                    "id": "1",
+                    "name": "Хечбек"
+                },
+                {
+                    "id": "2",
+                    "name": "Кабрио"
+                },
+                {
+                    "id": "3",
+                    "name": "Купе"
+                },
+                {
+                    "id": "4",
+                    "name": "Джип/Пикап"
+                },
+                {
+                    "id": "6",
+                    "name": "лимузина"
+                },
+                {
+                    "id": "5",
+                    "name": "Комби/Ван"
+                },
+                {
+                    "id": "13",
+                    "name": "Пикап"
+                },
+                {
+                    "id": "12",
+                    "name": "Миниван"
+                },
+                {
+                    "id": "7",
+                    "name": "други"
+                }
+            ],
+            "priceSteps": [
+                {
+                    "id": 50,
+                    "name": "€50"
+                },
+                {
+                    "id": 100,
+                    "name": "€100"
+                },
+                {
+                    "id": 300,
+                    "name": "€300"
+                },
+                {
+                    "id": 500,
+                    "name": "€500"
+                },
+                {
+                    "id": 1000,
+                    "name": "€1.000"
+                },
+                {
+                    "id": 1500,
+                    "name": "€1.500"
+                },
+                {
+                    "id": 2000,
+                    "name": "€2.000"
+                },
+                {
+                    "id": 2500,
+                    "name": "€2.500"
+                },
+                {
+                    "id": 3000,
+                    "name": "€3.000"
+                },
+                {
+                    "id": 3500,
+                    "name": "€3.500"
+                },
+                {
+                    "id": 4000,
+                    "name": "€4.000"
+                },
+                {
+                    "id": 4500,
+                    "name": "€4.500"
+                },
+                {
+                    "id": 5000,
+                    "name": "€5.000"
+                },
+                {
+                    "id": 6000,
+                    "name": "€6.000"
+                },
+                {
+                    "id": 7000,
+                    "name": "€7.000"
+                },
+                {
+                    "id": 8000,
+                    "name": "€8.000"
+                },
+                {
+                    "id": 9000,
+                    "name": "€9.000"
+                },
+                {
+                    "id": 10000,
+                    "name": "€10.000"
+                },
+                {
+                    "id": 12500,
+                    "name": "€12.500"
+                },
+                {
+                    "id": 15000,
+                    "name": "€15.000"
+                },
+                {
+                    "id": 17500,
+                    "name": "€17.500"
+                },
+                {
+                    "id": 20000,
+                    "name": "€20.000"
+                },
+                {
+                    "id": 25000,
+                    "name": "€25.000"
+                },
+                {
+                    "id": 30000,
+                    "name": "€30.000"
+                },
+                {
+                    "id": 35000,
+                    "name": "€35.000"
+                },
+                {
+                    "id": 40000,
+                    "name": "€40.000"
+                },
+                {
+                    "id": 45000,
+                    "name": "€45.000"
+                },
+                {
+                    "id": 50000,
+                    "name": "€50.000"
+                },
+                {
+                    "id": 75000,
+                    "name": "€75.000"
+                },
+                {
+                    "id": 100000,
+                    "name": "€100.000"
+                }
+            ]
+        }
+    },
+    "language": "bg",
+    "locale": "bg-BG",
+    "isUserLoggedIn": false,
+    "translations": {
+        "location": {
+            "countries": {
+                "luxembourg": "Люксембург",
+                "germany": "Германия",
+                "belgium": "Белгия",
+                "all": "Европа",
+                "italy": "Италия",
+                "netherlands": "Нидерландия",
+                "spain": "Испания",
+                "france": "Франция",
+                "austria": "Австрия"
+            }
+        },
+        "email": {
+            "notification": {
+                "linkSummary": "Известяване",
+                "success": {
+                    "title": "Успешно създадохте заявка за търсене.",
+                    "message": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашата заявка."
+                },
+                "email": {
+                    "validation": "Моля, въведете валиден e-mail адрес",
+                    "address": "Ваш e-mail адрес"
+                },
+                "duplicated": {
+                    "message": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашето търсене.",
+                    "title": "Успешно се абонирахте за това търсене."
+                },
+                "dont": {
+                    "miss": {
+                        "bold": "Не искате да изпуснете нито една интересна оферта?",
+                        "_value": "Тогава просто се абонирайте за заявката за търсене."
+                    }
+                },
+                "error": {
+                    "message": "Извиняваме се за неудобството.",
+                    "title": "За съжаление възникна грешка."
+                },
+                "link": "Нови оферти по e-mail",
+                "dataPrivacyConsent": {
+                    "nl": "Ik verklaar hierbij akkoord te gaan met de <a href=\"http://about.autoscout24.com/nl-nl/au-company/au-company/privacy-agreement.aspx\">Privacyverklaring</a> van AutoScout24.",
+                    "de": "Ich stimme der <a href=\"http://about.autoscout24.com/de-de/au-company/au-company/privacy-agreement.aspx\">Datenschutzeinwilligung</a> von AutoScout24 zu."
+                },
+                "legalText": "NOTUSED",
+                "limit": {
+                    "exceeded": {
+                        "message": "Можете да запазите до 50 заявки за търсене!"
+                    }
+                }
+            }
+        },
+        "sortKey": {
+            "select": {
+                "standard": "Сортиране по: стандарт",
+                "mileage": {
+                    "descending": "Пробег намаляваща стойност",
+                    "ascending": "Пробег нарастваща стойност"
+                },
+                "price": {
+                    "descending": "Намаляваща цена",
+                    "ascending": "Нарастваща цена"
+                },
+                "label": "Сортиране",
+                "new_standard": "Стандарт",
+                "year": {
+                    "ascending": "Първа регистрация нарастваща стойност",
+                    "descending": "Първа регистрация намаляваща стойност"
+                },
+                "age": {
+                    "descending": "Първо най-новите оферти"
+                },
+                "finance": {
+                    "rate": {
+                        "ascending": "Rate ascending",
+                        "descending": "Rate descending"
+                    }
+                },
+                "make": {
+                    "descending": "Марка/модел намаляваща стойност",
+                    "ascending": "Марка/модел нарастваща стойност"
+                },
+                "power": {
+                    "descending": "Мощност намаляваща стойност",
+                    "ascending": "Мощност нарастваща стойност"
+                },
+                "distance": "според разстоянието"
+            }
+        },
+        "page": {
+            "list": {
+                "legalnotice": {
+                    "dealerprice": "*** Цена на търговеца",
+                    "envkv": "* Допълнителна информация за официалния разход на гориво и официалните специфични емисии на CO2 от новите леки автомобили може да получите от \"Ръководство за разхода на гориво, емисии на CO2 и разхода на енергия за новите леки автомобили\", което се предлага безплатно във всеки търговски обект за продажба и от Deutsche Automobil Treuhand GmbH на www.dat.de.",
+                    "vat": "**Подлежащ на отчитане ДДС"
+                },
+                "transporter": {
+                    "title": "Оферти за транспортьор употреба в AutoScout24",
+                    "metaDescription": "Тук ще намерите актуални оферти за употребявани транспортьор на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа."
+                },
+                "empty": {
+                    "result": "За съжаление Вашето търсене не даде резултати. Моля, променете критериите на търсене.",
+                    "filter": {
+                        "tags": {
+                            "title": "По-малкото често е повече. Опитайте отново с по-малко или с променени критерии за търсене."
+                        }
+                    },
+                    "header": "Упс!",
+                    "title": "За съжаление няма резултати по Вашето търсене.",
+                    "search": {
+                        "subscriptions": {
+                            "title": "Не искате да правите компромиси? Тогава запазете Вашето търсене. Ние ще Ви информираме веднага, щом намерим подходящи предложения!"
+                        }
+                    }
+                },
+                "car": {
+                    "metaDescription": {
+                        "makeModelFuelType": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
+                        "_value": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeModelBodyColor": "Намерете предложения за {0} {1} в {2} употребявани автомобили в АутоСкаут 24 - най-големият търговец на автомобили в Европа.",
+                        "makeModelFirstRegistration": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
+                        "makeModelCity": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "fuelType": "Тук ще намерите употребявани модели {0} на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "bodyType": "Тук ще намерите актуални оферти за {0} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeModel": "{0} {1} употребявани автомобили исках? Тук ще намерите актуалните оферти на {0} {1} в AutoScout24, най-големия европейски онлайн автомобилен пазар.",
+                        "makeModelGearing": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
+                        "makeFuelType": "Тук ще намерите актуални {0} като {1} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeModelVersion": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
+                        "make": "Тук ще намерите актуални оферти за {0} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeBodyType": "Тук ще намерите актуални {0} като {1} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeModelOffer": "Намерете предложения за {0} {1} $OTYPE употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
+                        "makeCity": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeModelBodyType": "Намерете предложения за {0} {1} {2} нови и употребявани модели в АутоСкаут 24 - най-големият търговец на автомобили в Европа."
+                    },
+                    "title": {
+                        "makeModelFuelType": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24",
+                        "_value": "Оферти за автомобили втора употреба в AutoScout24",
+                        "makeModelBodyColor": "Употребявани {0} {1} в {2} за продажба - АутоСкаут 24",
+                        "makeModelFirstRegistration": "Употребявани {0} {1} от {2} за продажба - АутоСкаут 24",
+                        "makeModelCity": "Оферти за автомобили втора употреба в AutoScout24",
+                        "fuelType": "Употребявани модели {0} в AutoScout24",
+                        "bodyType": "Оферти за употребявани {0} в AutoScout24",
+                        "makeModel": "Търсите употребявано {0} {1}?",
+                        "makeModelGearing": "Употребявани {0} {1} с {2} за продажба - АутоСкаут 24",
+                        "makeFuelType": "Употребявани {0} като {1} оферти в AutoScout24",
+                        "makeModelVersion": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24",
+                        "make": "Оферти за употребявани {0} в AutoScout24",
+                        "makeBodyType": "Употребявани {0} като {1} оферти в AutoScout24",
+                        "makeModelOffer": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24",
+                        "makeCity": "Оферти за автомобили втора употреба в AutoScout24",
+                        "makeModelBodyType": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24"
+                    }
+                },
+                "recommendation": {
+                    "message": "Тези автомобили може би ще Ви допаднат."
+                },
+                "global": {
+                    "client": {
+                        "error": "Търсената от Вас страница за съжаление вече не съществува.",
+                        "bad": {
+                            "request": "Обработването на търсената от Вас страница беше неуспешно."
+                        }
+                    },
+                    "server": {
+                        "error": "Търсената от Вас страница в момента не е достъпна."
+                    }
+                },
+                "error": {
+                    "title": "Оферти в AutoScout24"
+                },
+                "trailer": {
+                    "title": "Оферти за ремарке употреба в AutoScout24",
+                    "metaDescription": "Тук ще намерите актуални оферти за употребявани ремарке на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа."
+                },
+                "not": {
+                    "found": {
+                        "error": "За съжаление търсената от Вас страница вече не съществува."
+                    }
+                },
+                "caravan": {
+                    "metaDescription": "Тук ще намерите актуални оферти за употребявани каравани и кемпери на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                    "title": "Оферти за каравани и кемпери употреба в AutoScout24"
+                },
+                "bike": {
+                    "metaDescription": {
+                        "_value": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "fuelType": "Тук ще намерите актуални употребявани {0} модели мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "bodyType": "Тук ще намерите актуални оферти за {0} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeModel": "Here are the latest {0} {1} motorcycle deals at AutoScout24, Europe's largest online car market.",
+                        "makeFuelType": "Тук ще намерите актуални {0} като {1} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "make": "Тук ще намерите актуални оферти за {0} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "makeBodyType": "Тук ще намерите актуални {0} като {1} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа."
+                    },
+                    "title": {
+                        "_value": "Оферти за автомобили втора употреба в AutoScout24",
+                        "fuelType": "Употребявани модели {0} в AutoScout24",
+                        "bodyType": "Оферти за употребявани {0} в AutoScout24",
+                        "makeModel": "Buy {0} {1} used - AutoScout24",
+                        "makeFuelType": "Употребявани {0} като {1} оферти на AutoScout24.",
+                        "make": "Оферти за употребявани {0} в AutoScout24",
+                        "makeBodyType": "Употребявани {0} като {1} оферти в AutoScout24"
+                    }
+                }
+            },
+            "seo": {
+                "metaDescription": "Намерете предложения за {0} {1} {2} употребявани автомобили в AutoScout24 най-големият търговец на автомобили в Европа.",
+                "title": "Употребявани {0} {1} {2} за продажба - AutoScout24",
+                "city": "in {0}"
+            },
+            "topLink": "Нагоре"
+        },
+        "searchSubscription": {
+            "saveSearchButtonShort": "Запази",
+            "anonymousSubscriptionShowFormButtonShort": "Известяване",
+            "saveSearchButton": "Запазване на търсенето",
+            "anonymousSubscriptionShowFormButton": "Нови оферти по e-mail",
+            "saveSearch": {
+                "notification": {
+                    "message": {
+                        "70": "Можете да запазите до 50 заявки за търсене!",
+                        "83": "Можете да го отворите по всяко време чрез менюто 'Моят профил: <a href={0}>Моите търсения</a>'.",
+                        "91": "Ако все още нямате профил при нас, можете лесно да се регистрирате с Вашия e-mail адрес и със съответна парола.",
+                        "92": "Можете да го отворите по всяко време чрез менюто 'Моят профил: <a href={0}>Моите търсения</a>'.",
+                        "93": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашето търсене.",
+                        "94": "Вашата заявка за търсене беше изтрита.",
+                        "95": "Извиняваме се за неудобството.",
+                        "96": "Моля, опитайте по-късно отново.",
+                        "97": "Вашата заявка за търсене беше изтрита."
+                    },
+                    "title": {
+                        "70": "",
+                        "83": "Вашето търсене беше запазено.",
+                        "91": "Влезте в профила си, за да запазите търсенето.",
+                        "92": "Вашето търсене беше запазено.",
+                        "93": "Успешно се абонирахте за това търсене.",
+                        "94": "Успешно се отписахте от това търсене.",
+                        "95": "За съжаление възникна грешка.",
+                        "96": "Изтриването на Вашата заявка за търсене беше неуспешно.",
+                        "97": "Вече сте се отписали от това търсене."
+                    }
+                }
+            },
+            "anonymousSubscription": {
+                "doiSendOutConfirmationMessage": "Please check your inbox if your e-mail has not been confirmed yet",
+                "errorMessage": "Извиняваме се за неудобството.",
+                "errorTitle": "За съжаление възникна грешка.",
+                "successMessage": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашата заявка.",
+                "limitExceededErrorMessage": "Можете да запазите до 50 заявки за търсене!",
+                "duplicatedMessage": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашето търсене.",
+                "successTitle": "Успешно създадохте заявка за търсене.",
+                "doiSendOutConfirmationTitle": "E-Mail address confirmed?"
+            },
+            "anonymousSubscriptionForm": {
+                "subtitle": "Тогава просто се абонирайте за заявката за търсене.",
+                "emailAddress": "Ваш e-mail адрес",
+                "subscribeButton": "Абонамент",
+                "title": "Не искате да изпуснете нито една интересна оферта?",
+                "dataPrivacyConsentCheckbox": "Съгласен съм личните ми данни да се обработват от AutoScout24, както е посочено в <a target=\"_blank\" href=\"https://www.autoscout24.bg/company/privacy-agreement/\">Декларацията за съгласие</a>. Мога да оттегля съгласието си във всеки един момент с бъдещо действие."
+            }
+        },
+        "interior": {
+            "upholstery": {
+                "velour": "Велур",
+                "cloth": "Плат",
+                "fullLeather": "Кожа изцяло",
+                "partialLeather": "Кожа частично",
+                "material": {
+                    "label": "Материал"
+                },
+                "other": "Други",
+                "alcantara": "Алкантара"
+            }
+        },
+        "saleMaskFragment": {
+            "ctaMarketplace": "В следващите няколко месеца",
+            "filters": {
+                "firstRegistration": "Първа регистрация"
+            },
+            "ctaButton": "Създайте реклама",
+            "ctaCopy": "Кога планирате продажбите на автомобили?",
+            "ctaDirectsale": "Колкото е възможно по-бързо"
+        },
+        "refinefilters": {
+            "button": {
+                "close": "Close"
+            }
+        },
+        "color": {
+            "gold": "Златист",
+            "violet": "Виолетов",
+            "blue": "Син",
+            "beige": "Бежов",
+            "grey": "Сив",
+            "silver": "Сребрист",
+            "orange": "Оранжев",
+            "green": "Зелен",
+            "black": "Черен",
+            "bronze": "Бронзов",
+            "yellow": "Жълт",
+            "brown": "Кафяв",
+            "white": "Бял",
+            "other": "Друг",
+            "red": "Червен"
+        },
+        "others": "Други",
+        "filter": {
+            "summary": {
+                "heading": {
+                    "title": {
+                        "makeModelFuelType": "за {0} {1}",
+                        "makeModelEngineType": "за {0} {1}",
+                        "makeModelBodyColor": "за {0} в {1}",
+                        "makeModelCity": "за Вашето търсене",
+                        "makeModelRegistrationYear": "за {0} от {1}",
+                        "makeModel": "за {0}",
+                        "defaultVehicleIndicator": "за Вашето търсене",
+                        "oneSidedContract": "verfügbar für den Online-Kauf",
+                        "makeModelOfferType": "за {0} {1}",
+                        "vehicleIndicator": "за {0}",
+                        "transactable": "online verfügbare Fahrzeuge",
+                        "makeModelTransmission": "за {0} {1}",
+                        "makeModelBodyType": "за {0} {1}",
+                        "numberOfFilters": "плюс {0} филтри"
+                    },
+                    "_value": "Вашето търсене"
+                },
+                "show": {
+                    "accident": {
+                        "also": "Показвай автомобили, претърпели инцидент",
+                        "only": "Покажи само автомобили, претърпели инцидент"
+                    }
+                },
+                "empty": "Няма избрани филтри",
+                "less": "Покажи по-малко критерии",
+                "dealer": {
+                    "page": "Наличност на търговеца"
+                },
+                "vehicle": {
+                    "emissionClass": "Екологична категория:",
+                    "emissionLabel": "Екологичен стикер Евро:"
+                },
+                "doors": "Врати",
+                "dont": {
+                    "show": {
+                        "accident": "Не показвай автомобили, претърпели инцидент"
+                    }
+                },
+                "seals": {
+                    "generic": {
+                        "other": "Други сертификации на производителя",
+                        "_value": "Сертификация на производителя"
+                    }
+                },
+                "crossborder": "Трансгранично",
+                "more": "Покажи повече критерии",
+                "seats": "Седящи места",
+                "beds": "beds"
+            },
+            "smartLabel": {
+                "topModels": "Топ модели",
+                "topMakes": "Топ марки"
+            }
+        },
+        "select": {
+            "all": "Всички",
+            "label": "Моля, изберете"
+        },
+        "around": "около",
+        "button": {
+            "search": {
+                "bikes": "мотоциклети",
+                "vehicle": "превозно средство",
+                "cars": "автомобили",
+                "subscribe": "Абонамент",
+                "vehicles": "превозни средства",
+                "car": "автомобил",
+                "bike": "мотоциклет"
+            },
+            "refineSummary": "Филтрирай",
+            "refine": "Детайлно търсене",
+            "save": {
+                "search": {
+                    "subscription": "Запазване на търсенето",
+                    "subscriptionSummary": "Запази"
+                }
+            }
+        },
+        "general": {
+            "notification": {
+                "client": {
+                    "message": "За съжаление изпълнението на Вашата заявка беше неуспешно. Проверете Вашата връзка с интернет и опитайте отново."
+                },
+                "server": {
+                    "message": "За съжаление възникна грешка. Моля, актуализирайте страницата или опитайте отново по-късно."
+                },
+                "noResults": {
+                    "message": "Забележка: последният поставен филтър няма да даде резултати от търсенето."
+                }
+            }
+        },
+        "newfilters": {
+            "button": {
+                "refine": "Към алтернативния изглед на филтрите"
+            },
+            "mostUsed": {
+                "details": "Базисни данни и локация"
+            },
+            "offerDetails": {
+                "details": "Детайли по офертата"
+            },
+            "heading": "Филтрирай по"
+        },
+        "otFreeRegCampaign": {
+            "description": "Nur für kurze Zeit: Jetzt mit kostenloser Lieferung und Fahrzeuganmeldung.",
+            "title": "Aktionswochen beim Online-Kauf!"
+        },
+        "breadcrumb": {
+            "back": "Назад"
+        },
+        "filters": {
+            "locationAndSeller": {
+                "details": "Локация, продавач"
+            },
+            "location": {
+                "areaSearch": {
+                    "example": {
+                        "fr": "например Paris или 75001",
+                        "it": "например Roma или 00184",
+                        "nl": "например Amsterdam или 1012 CZ",
+                        "de": "например Berlin или 10243",
+                        "at": "например Wien или 1010",
+                        "default": "Град/ПК",
+                        "es": "например Madrid или 28013",
+                        "be": "например Bruxelles или 1000",
+                        "lu": "например Luxembourg или L-2314",
+                        "com": "Select a country"
+                    },
+                    "error": "Неизвестен град или пощенски код",
+                    "_value": "Град/пощенски код"
+                },
+                "countries": {
+                    "tooltip": "За Германия и Австрия използвайте практичното търсене в радиус. Моля, задайте имената на населените места на немски.",
+                    "_value": "Страна"
+                },
+                "radius": "Радиус (километри)",
+                "crossborder": "Трансгранично"
+            },
+            "model": {
+                "autocomplete": {
+                    "empty": "Неизвестен модел",
+                    "placeholder": "Всички"
+                }
+            },
+            "ot": {
+                "info_button": {
+                    "section2": "Dazu einfach den Filter \"Online kaufen\" setzen, Ihr Wunschauto auswählen und \"zum Online-Kauf\" klicken.",
+                    "heading": "AutoScout24 OneClick. Wunschauto online kaufen.",
+                    "section1": "Sie möchten nicht lange auf Ihr Traumauto warten? Dann greifen Sie gleich zu. Bestellen Sie Ihr neues Auto ganz einfach online & verbindlich. Rund um die Uhr. Und mit 14 Tagen Widerrufsrecht!",
+                    "section3": "So einfach wie Klamotten shoppen!"
+                },
+                "filter_tag": "Online kaufen",
+                "label": "Online kaufen"
+            },
+            "vehicle": {
+                "conditions": "Vehicle Condition",
+                "envSticker": {
+                    "tooltip": "Environmental stamp for circulation in Germany"
+                },
+                "seals": {
+                    "otherSeals": {
+                        "description": "Технически проверени превозни средства с гаранция от други производители",
+                        "label": "Други сертификации на производителя"
+                    },
+                    "genericSeal": {
+                        "description": "Технически проверени превозни средства с гаранция",
+                        "_value": "Сертификация на производителя"
+                    }
+                },
+                "car": {
+                    "details": "Подробности за автомобила"
+                },
+                "previousOwners": "Предишни собственици",
+                "condition": "Състояние",
+                "nonSmokingVehicle": "Автомол за непушачи",
+                "fullService": "Поддържан според сервизната книжка.",
+                "environmentalSticker": "Стикер фини частици (поне):",
+                "environment": "Екосъобразност",
+                "details": {
+                    "numberOfAxles": "Axle configuration",
+                    "vat": "Подлежащ на отчитане ДДС",
+                    "_value": "Подробности за превозното средство",
+                    "mileage": "Пробег",
+                    "price": "Цена (€)",
+                    "fuel": {
+                        "type": "Гориво"
+                    },
+                    "newDriverSuitable": "For new drivers",
+                    "gear": "Скоростна кутия",
+                    "finance": {
+                        "rate": "Finance Rate"
+                    },
+                    "priceEvaluation": {
+                        "topPrice": "Топ оферта",
+                        "tryAgainSoon": "Опитайте след няколко минути да заредите страницата отново.",
+                        "expensivePrice": "Скъпо",
+                        "greyLabel": "No Information",
+                        "somewhatExpensivePrice": "Сравнително скъпо",
+                        "link": "Какво е това?",
+                        "title": "AutoScout24 оценка на цената",
+                        "goodPrice": "Добра оферта",
+                        "noPriceInformationAvailable": "Няма налична информация за оценката на цената",
+                        "fairPrice": "Справедлива оферта"
+                    },
+                    "first": {
+                        "registration": "Първа регистрация"
+                    },
+                    "power": "Мощност"
+                },
+                "emissionClass": "Екологична категория (поне):",
+                "hadAccident": "Автомобил, претърпял инцидент",
+                "type": {
+                    "body": {
+                        "type": "Вид каросерия"
+                    },
+                    "_value": "Вид превозно средство",
+                    "doors": "Брой врати",
+                    "seats": "Брой седящи места",
+                    "bike": {
+                        "type": "Тип"
+                    },
+                    "beds": "Nr. of Beds"
+                },
+                "generalInspectionEmission": {
+                    "_value": "Нов технически преглед/проверка на отработените газове",
+                    "tooltip": "Превозни средства с нов технически преглед/проверка на отработените газове"
+                },
+                "bike": {
+                    "details": "Подробности за мотоциклета"
+                },
+                "particulateFilter": "Партикел филтър"
+            },
+            "interior": {
+                "color": "Цвят на тапицерията",
+                "details": "Тапицерия",
+                "upholstery": "Материя"
+            },
+            "makeModel": {
+                "extended": {
+                    "versionExample": "e.g. Bully"
+                },
+                "model": "Модел",
+                "car": {
+                    "versionExample": "напр. Plus, GTI и т.н."
+                },
+                "edit": "Промяна",
+                "version": "Вариант",
+                "details": "Марка, модел, модификация",
+                "make": "Марка",
+                "bike": {
+                    "versionExample": "напр. special, super и т.н.",
+                    "details": "Марка, модел, тип"
+                },
+                "add": "Добавяне на други марки"
+            },
+            "range": {
+                "to": "до",
+                "from": "от",
+                "starting": {
+                    "from": "от"
+                },
+                "upto": "до макс."
+            },
+            "priceEvaluation": {
+                "categories": {
+                    "fair": {
+                        "price": {
+                            "text": "Справедлива оферта"
+                        }
+                    },
+                    "somewhatExpensive": {
+                        "price": {
+                            "text": "Сравнително скъп"
+                        }
+                    },
+                    "good": {
+                        "price": {
+                            "text": "Добра оферта"
+                        }
+                    },
+                    "expensive": {
+                        "price": {
+                            "text": "Скъп"
+                        }
+                    },
+                    "na": {
+                        "price": {
+                            "text": "Няма данни"
+                        }
+                    },
+                    "top": {
+                        "price": {
+                            "text": "Топ оферта"
+                        }
+                    }
+                }
+            },
+            "make": {
+                "autocomplete": {
+                    "empty": "Неизвестна марка",
+                    "all": "Всички марки",
+                    "others": "Други марки",
+                    "placeholder": "Всички",
+                    "top": "Топ марки"
+                }
+            },
+            "reset": "Ново търсене",
+            "firstreg": {
+                "autocomplete": {
+                    "empty": "Невалиден период"
+                }
+            },
+            "seller": {
+                "onlineSince": "Онлайн от",
+                "warranty": "Гаранция",
+                "customerType": "Продавач"
+            },
+            "equipments": {
+                "comfort": "Комфорт и удобство",
+                "sport": "Спорт",
+                "entertainment": "Забавления и медии",
+                "details": "Оборудване",
+                "accessories": "Аксесоари",
+                "safety": "Сигурност и безопасност"
+            },
+            "exterior": {
+                "rims": "Джанти",
+                "body": {
+                    "color": "Цвят"
+                },
+                "paintwork": "Вид лакиране",
+                "details": "Лак, джанти"
+            },
+            "search": {
+                "criteria": "Критерии на търсенето"
+            }
+        },
+        "ai": {
+            "search": {
+                "switch": "Zur Standardsuche",
+                "placeholder": {
+                    "0": "Passat Jahreswagen mit Anhängerkupplung",
+                    "1": "VW Polo zwischen 2010 und 2015",
+                    "2": "Kleinwagen unter 10.000€ ab 2015",
+                    "3": "Tiguan mit Standheizung in Hamburg",
+                    "4": "Ford Focus mit Schiebedach bis 20000 Euro",
+                    "5": "Audi A4 geschaltet mit Allrad, Xenon und Navi",
+                    "6": "Porsche 911 Turbo in München"
+                },
+                "home": {
+                    "new": "Neu",
+                    "back": "Smarte Textsuche"
+                },
+                "moto": {
+                    "mobile": {
+                        "placeholder": {
+                            "0": "Piaggio Zip 50 unter 5000 km",
+                            "1": "BMW C1 mit Katalysator",
+                            "2": "Supersport in silber oder schwarz",
+                            "3": "KTM blau 6000€",
+                            "4": "Adventure München mit Garantie",
+                            "5": "Harley-Davidson ab 2016 Berlin",
+                            "6": "Roter Tourer 1960-1980"
+                        }
+                    },
+                    "placeholder": {
+                        "0": "BMW Adventure neu mit Katalysator",
+                        "1": "Piaggio Zip 50 zwischen 2010 und 2015",
+                        "2": "Roller unter 2.000€ ab 2015",
+                        "3": "Triumph mit Katalysator in Hamburg",
+                        "4": "Honda mit Katalysator bis 3500 Euro",
+                        "5": "KTM blau 6000€",
+                        "6": "Harley-Davidson ab 2016 Berlin"
+                    }
+                },
+                "mobile": {
+                    "placeholder": {
+                        "0": "VW Golf unter 5000 km",
+                        "1": "Ford Focus neu mit Schiebedach",
+                        "2": "Limousine in silber oder schwarz",
+                        "3": "Opel Corsa rot 6000€",
+                        "4": "A4 München mit Garantie",
+                        "5": "Tesla ab 2016 Berlin",
+                        "6": "Rotes Coupe 1960-1980"
+                    }
+                },
+                "input": {
+                    "placeholder": "Geben Sie Ihre Wunschkriterien ein",
+                    "button": "Suchen",
+                    "suggestions": "Vorschläge",
+                    "lastSearches": "Ihre letzten Suchen"
+                }
+            }
+        },
+        "vehicleDetails": {
+            "usageState": {
+                "NewUsedAccident": "Покажи също",
+                "Accident": "Покажи само",
+                "NewUsed": "Не показвай"
+            },
+            "fuelType": {
+                "electric": "Електро",
+                "gasoline": "Бензин",
+                "_value": "Гориво",
+                "twostroke": "Двутактов",
+                "electricGasoline": "Електро/бензин",
+                "hydrogene": "Водород",
+                "others": "Others",
+                "gas": "Газ",
+                "diesel": "Дизел",
+                "ethanol": "Етанол",
+                "lpg": "Втечнен Пропан -бутан LPG",
+                "cng": "Компресиран природен газ CNG  /метан/",
+                "electricDiesel": "Електро/дизел"
+            },
+            "bodyType": {
+                "sedan": "Лимузина",
+                "transporter": "Бус",
+                "_value": "Тип каросерия",
+                "coupe": "Купе",
+                "van": "Ван/минибус",
+                "convertible": "Кабрио",
+                "bike": {
+                    "chopper": "Чопър/круизер",
+                    "touringenduro": "Ендуро турист",
+                    "tourer": "Турист",
+                    "supermoto": "Супермото",
+                    "moped": "Мотопед/електрически мотопед",
+                    "trial": "Кросов мотор",
+                    "classic": "Ретро",
+                    "scooter": "Скутер",
+                    "trike": "Триколесен",
+                    "supersport": "Пистов",
+                    "others": "Други",
+                    "streetfighter": "Стрийтфайтър",
+                    "quad": "АТВ",
+                    "naked": "Класически",
+                    "minibike": "Минимотор",
+                    "cross": "Мотокрос",
+                    "rally": "Рали",
+                    "racing": "Състезателен",
+                    "enduro": "Ендуро",
+                    "sidecar": "Мотоциклет с кош",
+                    "sporttouring": "Спортен турист"
+                },
+                "offroad": "SUV/джип",
+                "other": "Други",
+                "stationwagon": "Комби",
+                "compact": "Компактен"
+            },
+            "gearingType": {
+                "automatic": "Автоматик",
+                "semiautomatic": "Полуавтоматик",
+                "manual": "Мануален"
+            },
+            "articleOfferType": {
+                "Demonstration": "Демонстрационно превозно средство",
+                "Used": "Употребяван",
+                "AntiqueClassic": "Ретро",
+                "Preregistered": "Временна регистрация",
+                "New": "Нов",
+                "EmployeeCar": "Автомобил, произведен преди по-малко от година"
+            },
+            "power": {
+                "hp": "к.с.",
+                "kw": "kW"
+            },
+            "sentence": {
+                "articleOfferType": {
+                    "Demonstration": "",
+                    "Used": "",
+                    "AntiqueClassic": "",
+                    "Preregistered": "",
+                    "New": "",
+                    "EmployeeCar": ""
+                },
+                "gearingType": {
+                    "manual": "",
+                    "semiautomatic": "",
+                    "automatic": ""
+                }
+            }
+        },
+        "header": {
+            "sticky": {
+                "results": "Резултати от търсенето",
+                "result": "Резултат от търсенето"
+            },
+            "results": "Резултати",
+            "result": "Резултат"
+        },
+        "equipment": {
+            "bedtype": {
+                "placeholder": "All",
+                "title": "Types of beds"
+            },
+            "car": {
+                "hideRemainingFilters": "По-малко критерии за оборудване",
+                "showRemainingFilters": "Повече критерии за оборудване"
+            }
+        },
+        "detail": {
+            "search": "Подробно търсене"
+        },
+        "personalization": {
+            "overlay": {
+                "text": "Durch die Angabe Ihrer persönlichen Daten können wir Ihnen in Zukunft individualisierte Finanzierungs- und Versicherungsraten anzeigen. Dieses Feature ist noch in Bearbeitung.",
+                "button": {
+                    "yes": "Ja, würde ich nutzen!",
+                    "no": "Nein danke!"
+                },
+                "feedback": "Bitte geben Sie uns Feedback, ob dieses Feature für Sie interessant wäre:",
+                "headline": "Bald verfügbar!"
+            },
+            "button": {
+                "highlight": "Neu!",
+                "text": "Finanzierungsrate personalisieren"
+            }
+        },
+        "pagination": {
+            "next": "Напред",
+            "previous": "Назад"
+        },
+        "seller": {
+            "customerType": {
+                "private": "Частно",
+                "dealer": "Търговец"
+            },
+            "onlineSince": {
+                "weeks": "седмици",
+                "day": "ден",
+                "days": "дни",
+                "week": "седмица"
+            }
+        },
+        "and": "и",
+        "exterior": {
+            "paintwork": {
+                "metallic": "Металик"
+            },
+            "rims": {
+                "alloyWheels": "Алуминиеви джанти"
+            }
+        },
+        "searchMaskFragment": {
+            "filters": {
+                "location": {
+                    "radius": "Радиус"
+                },
+                "model": "Модел",
+                "price": {
+                    "to": "Цена до (€)"
+                },
+                "crossborder": "Трансгранично",
+                "financeRate": {
+                    "to": "Rate to (€)"
+                },
+                "firstRegistration": {
+                    "from": "Първа регистрация след"
+                },
+                "bodytype": "Вид каросерия",
+                "make": "Марка",
+                "offer": {
+                    "new": "Нов",
+                    "used": "Използван",
+                    "preregistered": "Временна регистрация"
+                }
+            },
+            "error": {
+                "header": "Съжаляваме. Това не биваше да се случва.",
+                "button": "Назад към страницата с резултатите.",
+                "copyright": "© Copyright 2017 AutoScout24 GmbH. Всички права запазени."
+            },
+            "refineSearch": "Други опции за търсене",
+            "count": {
+                "results": "{0} резултати",
+                "notAvailable": "Покажи резултатите",
+                "resultTmpl": "$count резултати",
+                "resultsTmpl": "$count резултати"
+            }
+        }
+    },
+    "logging": {
+        "provider": "remote"
+    },
+    "allNumberOfAxles": [],
+    "allFuelTypeIds": [
+        {
+            "id": "B",
+            "name": "бензин"
+        },
+        {
+            "id": "D",
+            "name": "дизел"
+        },
+        {
+            "id": "M",
+            "name": "етанол"
+        },
+        {
+            "id": "E",
+            "name": "електричество"
+        },
+        {
+            "id": "H",
+            "name": "водород"
+        },
+        {
+            "id": "L",
+            "name": "автогаз"
+        },
+        {
+            "id": "C",
+            "name": "CNG - Метан"
+        },
+        {
+            "id": "2",
+            "name": "Eл/Бензин"
+        },
+        {
+            "id": "O",
+            "name": "Други"
+        },
+        {
+            "id": "3",
+            "name": "Eл/Дизел"
+        }
+    ],
+    "allGearIds": [
+        {
+            "id": "M",
+            "name": "ръчна кутия"
+        },
+        {
+            "id": "A",
+            "name": "автоматик"
+        },
+        {
+            "id": "S",
+            "name": "Полуавтоматик"
+        }
+    ],
+    "allAccidentOptions": {
+        "newUsed": [
+            "N",
+            "U"
+        ],
+        "accidentNewUsed": [
+            "A",
+            "N",
+            "U"
+        ],
+        "accident": [
+            "A"
+        ]
+    },
+    "allOnlineSinceIds": [
+        {
+            "id": "1",
+            "name": "1 Ден"
+        },
+        {
+            "id": "2",
+            "name": "2 Дни"
+        },
+        {
+            "id": "3",
+            "name": "3 Дни"
+        },
+        {
+            "id": "4",
+            "name": "4 Дни"
+        },
+        {
+            "id": "5",
+            "name": "5 Дни"
+        },
+        {
+            "id": "6",
+            "name": "6 Дни"
+        },
+        {
+            "id": "7",
+            "name": "1 Седмица"
+        },
+        {
+            "id": "14",
+            "name": "2 Седмици"
+        }
+    ],
+    "allUpholsteryIds": [
+        {
+            "id": "AL",
+            "name": "Алкантара"
+        },
+        {
+            "id": "CL",
+            "name": "Материал"
+        },
+        {
+            "id": "FL",
+            "name": "Пална кожа"
+        },
+        {
+            "id": "PL",
+            "name": "Частична кожа"
+        },
+        {
+            "id": "VL",
+            "name": "Велур"
+        },
+        {
+            "id": "OT",
+            "name": "други"
+        }
+    ],
+    "allEmissionClassValues": [
+        {
+            "id": 1,
+            "name": "Eвро 1"
+        },
+        {
+            "id": 2,
+            "name": "Eвро 2"
+        },
+        {
+            "id": 3,
+            "name": "Eвро 3"
+        },
+        {
+            "id": 4,
+            "name": "Eвро 4"
+        },
+        {
+            "id": 5,
+            "name": "Eвро 5"
+        },
+        {
+            "id": 6,
+            "name": "Eвро 6"
+        },
+        {
+            "id": 7,
+            "name": "Eвро 6c"
+        },
+        {
+            "id": 9,
+            "name": "Eвро 6d-TEMP"
+        },
+        {
+            "id": 8,
+            "name": "Eвро 6d"
+        }
+    ],
+    "allEmissionStickerValues": [
+        {
+            "id": 2,
+            "name": "мин. 2 (Червен)"
+        },
+        {
+            "id": 3,
+            "name": "мин. 3 (Жълт)"
+        },
+        {
+            "id": 4,
+            "name": "мин. 4 (Зелен)"
+        }
+    ],
+    "grossWeight": {
+        "range": [],
+        "label": "Weight Gross"
+    },
+    "firstRegistrationRange": {
+        "from": 1900,
+        "to": 2020
+    },
+    "financeRateSteps": [
+        {
+            "id": 50,
+            "name": "€50"
+        },
+        {
+            "id": 100,
+            "name": "€100"
+        },
+        {
+            "id": 200,
+            "name": "€200"
+        },
+        {
+            "id": 300,
+            "name": "€300"
+        },
+        {
+            "id": 400,
+            "name": "€400"
+        },
+        {
+            "id": 500,
+            "name": "€500"
+        },
+        {
+            "id": 600,
+            "name": "€600"
+        },
+        {
+            "id": 700,
+            "name": "€700"
+        }
+    ],
+    "seatsRange": {
+        "from": 1,
+        "to": 12
+    },
+    "bedsRange": {
+        "from": 1,
+        "to": 7
+    },
+    "countries": [
+        {
+            "key": "eu",
+            "value": "",
+            "label": "Европа"
+        },
+        {
+            "key": "at",
+            "value": "A",
+            "label": "Австрия"
+        },
+        {
+            "key": "be",
+            "value": "B",
+            "label": "Белгия"
+        },
+        {
+            "key": "de",
+            "value": "D",
+            "label": "Германия"
+        },
+        {
+            "key": "es",
+            "value": "E",
+            "label": "Испания"
+        },
+        {
+            "key": "fr",
+            "value": "F",
+            "label": "Франция"
+        },
+        {
+            "key": "it",
+            "value": "I",
+            "label": "Италия"
+        },
+        {
+            "key": "lu",
+            "value": "L",
+            "label": "Люксембург"
+        },
+        {
+            "key": "nl",
+            "value": "NL",
+            "label": "Холандия"
+        }
+    ],
+    "zipRadiusStepsConfig": {
+        "defaultRadius": 200,
+        "steps": [
+            {
+                "value": 10,
+                "display": "10 km"
+            },
+            {
+                "value": 20,
+                "display": "20 km"
+            },
+            {
+                "value": 50,
+                "display": "50 km"
+            },
+            {
+                "value": 100,
+                "display": "100 km"
+            },
+            {
+                "value": 150,
+                "display": "150 km"
+            },
+            {
+                "value": 200,
+                "display": "200 km"
+            },
+            {
+                "value": 250,
+                "display": "250 km"
+            },
+            {
+                "value": 300,
+                "display": "300 km"
+            },
+            {
+                "value": 400,
+                "display": "400 km"
+            }
+        ]
+    },
+    "countryForTld": "",
+    "isLanguageVersionCountry": false,
+    "initialTotalCount": 2286880,
+    "endpoints": {
+        "models": {
+            "url": "https://search-filters-provider.a.autoscout24.com/graphql",
+            "user": "revolistion",
+            "pass": "23695c1bd68c543e26f58a00d62e97ce"
+        },
+        "totalCount": {
+            "url": "https://classified-search.a.autoscout24.com/classified-search/totalcount",
+            "user": "classified-list-js",
+            "pass": "edf3f3f9309ee126f8ae7e0344ae592b"
+        },
+        "geoSuggestions": {
+            "url": "https://geocode.a.autoscout24.com/autocomplete/{:language}/{:search}",
+            "user": "classified-list-js",
+            "pass": "884656f65765dc240f30caf8393974a6"
+        },
+        "geoResolution": {
+            "url": "https://geocode.a.autoscout24.com/resolution/{:language}/{:id}",
+            "user": "classified-list-js",
+            "pass": "884656f65765dc240f30caf8393974a6"
+        },
+        "normalSearch": {
+            "url": "/rezultati",
+            "user": null,
+            "pass": null
+        },
+        "refineSearch": {
+            "url": "/korekcijatursene",
+            "user": null,
+            "pass": null
+        },
+        "listings": {
+            "url": "/classified-list/react-listelements/bg?&toguru=ignite-v2-detailpage-redirect%3Dfalse%7Cgecloud-ops-financing-example-fragment%3Dfalse%7Cs24-media-ab-test-3%3Dfalse%7Conline-transaction-free-campaign%3Dfalse%7Cfed-ads-test%3Dfalse%7Conline-transaction-info%3Dfalse%7Cfed-ads-spain%3Dfalse%7Conline-transaction-nl-price-test-ab%3Dfalse%7Ccxp-retention-watchlist-sort%3Dfalse%7Cgecloud-recommender-shadow%3Dfalse%7Cfed-sbr-nl-test%3Dfalse%7Ccldt-make-model-category-links%3Dtrue%7Ccxp-rebranding%3Dfalse%7Cgecloud-ops-financing-example%3Dfalse%7Cgecloud-ops-optimizely%3Dtrue%7Cs24-media-osa-rollout%3Dtrue%7Ctransaction-fragment-render%3Dfalse%7Cbrand-variation-google-blue%3Dfalse%7Ccxp-dekra-watchlist-panel%3Dtrue%7Cdealer-info-homepage%3Dtrue%7Ccxp-tuev-watchlist-panel%3Dfalse%7Conline-transaction-buynow-button-checkout%3Dfalse%7Ckondor-refresh-cache%3Dtrue%7Cfed-belgium-axa-test%3Dfalse%7Cfed-belgium-axa-show%3Dfalse%7Cfed-dropdown-design%3Dfalse%7Cfed-tuv-reports-section%3Dfalse%7Cbrand-variation-coral%3Dfalse%7Conline-transaction-buynow-button%3Dfalse%7Cfed-car-check-section%3Dfalse%7Ckondor-ops-price-authority-consumer-web%3Dfalse%7Cdmm-online-transaction-listing-label%3Dfalse%7Cgecloud-ops-lazyload-summary-images%3Dtrue%7Cfed-netherlands-sbr-and-new-stage-links%3Dfalse%7Cfed-show-slice-on-top%3Dfalse%7Cfed-car-check-trapdoor%3Dfalse%7Cs24-media-ab-test-1%3Dfalse%7Cgecloud-ops-fed-params-for-raw-mail-templates%3Dtrue%7Cbrand-variation-jeans-blue%3Dfalse%7Ccxp-retention-ops-fuse-signup%3Dfalse%7Ccxp-recaptcha-v3%3Dfalse%7Cbrand-variation-yellow%3Dfalse%7Ckondor-test%3Dfalse%7Cdealer-info-migration%3Dfalse%7Cs24-media-ab-test-2%3Dfalse%7Cgecloud-ops-event-publisher%3Dtrue%7Cs24-media-osa-rollout-ab-test%3Dfalse%7Ccxp-new-list-item%3Dtrue%7Cfed-ops-italy-agos-stage%3Dfalse%7Cs24-media-billboard-listpage-test%3Dfalse%7Cgecloud-ops-list-rate-overlay%3Dfalse%7Cgecloud-lead-form-experiment%3Dtrue%7Cfed-sbr-nl-show%3Dfalse%7Cgecloud-ops-fed-afterlead-integration%3Dtrue%7Cgecloud-ignite-no-parkdeck-on-lead%3Dfalse%7Cgecloud-ops-gallery-edf-ad%3Dfalse%7Conline-transaction-nl-price-test%3Dfalse%7Cgecloud-classified-detail-without-media%3Dtrue%7Cgecloud-ops-seals%3Dtrue%7Cfed-ops-italy-agos-slice%3Dfalse&isSeoListPage=false",
+            "user": null,
+            "pass": null
+        },
+        "searchSubscriptionAnonymous": {
+            "url": "/search-subscriptions/api/subscriptions/subscribe",
+            "user": null,
+            "pass": null
+        },
+        "searchSubscriptionSaveSearch": {
+            "url": "/search-subscriptions/api/save-subscription",
+            "user": null,
+            "pass": null
+        },
+        "searchSubscriptionLastSearch": {
+            "url": "/search-subscriptions/api/last-search",
+            "user": null,
+            "pass": null
+        },
+        "priceEvaluationExplanation": {
+            "url": "/priceevaluation/price-label-explanation-fragment?culture=bg-BG&toguru=kondor-refresh-cache=true|kondor-ops-price-authority-consumer-web=false|kondor-expensive-price-category=false|kondor-test=false|kondor-explanation-v2=false&PageSpeed=off&ModPagespeed=off",
+            "user": null,
+            "pass": null
+        },
+        "aiSearch": {
+            "url": "/classified-list/ai-search/search/%7B:searchText%7D?articleType=%7B%3AarticleType%7D&countryCode=bg",
+            "user": null,
+            "pass": null
+        },
+        "aiSearchConfig": {
+            "url": "/classified-list/react-filters/ai-search/config/?culture=bg-BG",
+            "user": null,
+            "pass": null
+        },
+        "aiSearchSuggestion": {
+            "url": "/classified-list/ai-search/autocomplete/%7B:searchTerm%7D?articleType=%7B%3AarticleType%7D",
+            "user": null,
+            "pass": null
+        }
+    },
+    "listPageUrl": "/rezultati",
+    "refineSearchUrl": "/korekcijatursene",
+    "savedSearchesUrl": "/account/searches",
+    "localStorage": {
+        "key": "as24HomeFilters",
+        "version": 62
+    },
+    "mileageSteps": [
+        {
+            "id": 2500,
+            "name": "2 500"
+        },
+        {
+            "id": 5000,
+            "name": "5 000"
+        },
+        {
+            "id": 10000,
+            "name": "10 000"
+        },
+        {
+            "id": 20000,
+            "name": "20 000"
+        },
+        {
+            "id": 30000,
+            "name": "30 000"
+        },
+        {
+            "id": 40000,
+            "name": "40 000"
+        },
+        {
+            "id": 50000,
+            "name": "50 000"
+        },
+        {
+            "id": 60000,
+            "name": "60 000"
+        },
+        {
+            "id": 70000,
+            "name": "70 000"
+        },
+        {
+            "id": 80000,
+            "name": "80 000"
+        },
+        {
+            "id": 90000,
+            "name": "90 000"
+        },
+        {
+            "id": 100000,
+            "name": "100 000"
+        },
+        {
+            "id": 125000,
+            "name": "125 000"
+        },
+        {
+            "id": 150000,
+            "name": "150 000"
+        },
+        {
+            "id": 175000,
+            "name": "175 000"
+        },
+        {
+            "id": 200000,
+            "name": "200 000"
+        }
+    ],
+    "tld": "BG",
+    "isAggregatedOfferTypes": true,
+    "toggles": {
+        "crossBorderList": false,
+        "priceEvaluationFilters": false,
+        "financeRateFilter": false,
+        "stickyListPageButtonExperiment": true,
+        "financeRateFilterHome": false,
+        "opsToggleHideSubscribeFragment": false,
+        "aiSearchbox": false,
+        "aiSearchAutocomplete": true,
+        "oscFilter": true,
+        "oscFilterInfoButton": false,
+        "showSubscriptionFunnelTab": false,
+        "smartMakeModelFilters": false,
+        "consumptionFilter": true,
+        "onlineTransactionCustomListpage": false,
+        "listpageBottomLinks": true,
+        "montecarloFinanceRateHighlighting": false,
+        "hideSubscriptionWhenOneClick": false,
+        "isRebrandingVariation": false
+    },
+    "showOscFilter": false,
+    "allPriceEvaluationCategories": [],
+    "allOfferTypes": [
+        {
+            "key": {
+                "id": "N",
+                "name": "нови"
+            },
+            "values": [
+                "N",
+                "S"
+            ]
+        },
+        {
+            "key": {
+                "id": "U",
+                "name": "употребявани"
+            },
+            "values": [
+                "U",
+                "D",
+                "J",
+                "O"
+            ]
+        }
+    ],
+    "equipments": [
+        {
+            "id": "1",
+            "name": "ABS"
+        },
+        {
+            "id": "2",
+            "name": "Въздушна възглавница"
+        },
+        {
+            "id": "3",
+            "name": "Аirbag дясна седалка"
+        },
+        {
+            "id": "4",
+            "name": "Шибедах"
+        },
+        {
+            "id": "10",
+            "name": "Радио"
+        },
+        {
+            "id": "11",
+            "name": "4х4"
+        },
+        {
+            "id": "13",
+            "name": "Ел. стъкла"
+        },
+        {
+            "id": "15",
+            "name": "Лети джанти"
+        },
+        {
+            "id": "17",
+            "name": "Централно заключване"
+        },
+        {
+            "id": "18",
+            "name": "Аларма"
+        },
+        {
+            "id": "23",
+            "name": "Навигация"
+        },
+        {
+            "id": "26",
+            "name": "Имобилайзер"
+        },
+        {
+            "id": "32",
+            "name": "Страничен Аirbag"
+        },
+        {
+            "id": "34",
+            "name": "Отопление на седалките"
+        },
+        {
+            "id": "36",
+            "name": "Пригоден за инвалиди"
+        },
+        {
+            "id": "38",
+            "name": "Темпомат"
+        },
+        {
+            "id": "39",
+            "name": "Ксенонови фарове"
+        },
+        {
+            "id": "41",
+            "name": "Бордови компютър"
+        },
+        {
+            "id": "42",
+            "name": "ESP"
+        },
+        {
+            "id": "19",
+            "name": "Фарове за мъгла"
+        },
+        {
+            "id": "20",
+            "name": "Теглич"
+        },
+        {
+            "id": "5",
+            "name": "Климатик"
+        },
+        {
+            "id": "27",
+            "name": "Покривна греда"
+        },
+        {
+            "id": "12",
+            "name": "Серво управление"
+        },
+        {
+            "id": "30",
+            "name": "Климатроник"
+        },
+        {
+            "id": "31",
+            "name": "Тракшън-контрол"
+        },
+        {
+            "id": "16",
+            "name": "Ел. седалки"
+        },
+        {
+            "id": "43",
+            "name": "MP3 плеър"
+        },
+        {
+            "id": "50",
+            "name": "Панорамен покрив"
+        },
+        {
+            "id": "52",
+            "name": "стационарно парно"
+        },
+        {
+            "id": "112",
+            "name": "Спортен пакет"
+        },
+        {
+            "id": "113",
+            "name": "Старт/Стоп система"
+        },
+        {
+            "id": "114",
+            "name": "Мултифункционален волан"
+        },
+        {
+            "id": "115",
+            "name": "Дневни светлини"
+        },
+        {
+            "id": "116",
+            "name": "Спортно окачване"
+        },
+        {
+            "id": "117",
+            "name": "Спортни седалки"
+        },
+        {
+            "id": "118",
+            "name": "Светлини за завиване"
+        },
+        {
+            "id": "119",
+            "name": "Багажник за ски"
+        },
+        {
+            "id": "133",
+            "name": "Темпомат с функция за aвтоматичен контрол на дистанцията"
+        },
+        {
+            "id": "134",
+            "name": "Подлакътник"
+        },
+        {
+            "id": "135",
+            "name": "Подгряване на предното стъкло"
+        },
+        {
+            "id": "136",
+            "name": "Подгряване на волана"
+        },
+        {
+            "id": "137",
+            "name": "Асистент за изкачване при наклон"
+        },
+        {
+            "id": "138",
+            "name": "Радио с цифрови честоти"
+        },
+        {
+            "id": "139",
+            "name": "Електрическо отваряне на багажника"
+        },
+        {
+            "id": "140",
+            "name": "LED фарове"
+        },
+        {
+            "id": "141",
+            "name": "Дневни светлини"
+        },
+        {
+            "id": "142",
+            "name": "Кожен волан"
+        },
+        {
+            "id": "143",
+            "name": "Ортопедични седалки"
+        },
+        {
+            "id": "144",
+            "name": "Въздушно окачване"
+        },
+        {
+            "id": "145",
+            "name": "Масажиращи седалки"
+        },
+        {
+            "id": "146",
+            "name": "Система за разпознаване на умората"
+        },
+        {
+            "id": "147",
+            "name": "Система за нощно виждане"
+        },
+        {
+            "id": "148",
+            "name": "EBS; Система за аварийно спиране"
+        },
+        {
+            "id": "149",
+            "name": "Аварийна система за пътна помощ"
+        },
+        {
+            "id": "150",
+            "name": "Система за контрол на налягането в гумите"
+        },
+        {
+            "id": "151",
+            "name": "разположени зад волана"
+        },
+        {
+            "id": "152",
+            "name": "Плъзгаща врата"
+        },
+        {
+            "id": "153",
+            "name": "Безключово отключване"
+        },
+        {
+            "id": "154",
+            "name": "Вентилирани седалки"
+        },
+        {
+            "id": "155",
+            "name": "Звукова система"
+        },
+        {
+            "id": "156",
+            "name": "Гласови команди"
+        },
+        {
+            "id": "157",
+            "name": "Система за предупреждение при неволно напускане на пътната лента"
+        },
+        {
+            "id": "158",
+            "name": "Функция за предупреждение за обекти в страничните мъртви ъгли"
+        },
+        {
+            "id": "159",
+            "name": "Тъчскрийн"
+        },
+        {
+            "id": "160",
+            "name": "Телевизор"
+        },
+        {
+            "id": "161",
+            "name": "USB"
+        },
+        {
+            "id": "162",
+            "name": "Разпознаване на пътни знаци"
+        },
+        {
+            "id": "121",
+            "name": "Електрически странични огледала"
+        },
+        {
+            "id": "122",
+            "name": "Блутут/Bluetooth"
+        },
+        {
+            "id": "123",
+            "name": "Head-Up дисплей"
+        },
+        {
+            "id": "124",
+            "name": "Устройство свободни ръце"
+        },
+        {
+            "id": "125",
+            "name": "Изофикс система"
+        },
+        {
+            "id": "126",
+            "name": "Светлинен сензор"
+        },
+        {
+            "id": "127",
+            "name": "Сензор за дъжд"
+        },
+        {
+            "id": "128",
+            "name": "Предни сензори за паркиране"
+        },
+        {
+            "id": "129",
+            "name": "Задни сензори за паркиране"
+        },
+        {
+            "id": "130",
+            "name": "Камера в помощ на паркирането"
+        },
+        {
+            "id": "131",
+            "name": "Автоматична система за паркиране"
+        },
+        {
+            "id": "132",
+            "name": "Компактдиск/CD"
+        }
+    ],
+    "conditionEquipments": [
+        {
+            "id": "37",
+            "name": "Гаранция"
+        },
+        {
+            "id": "49",
+            "name": "Обслужване по сервизна книжка"
+        },
+        {
+            "id": "53",
+            "name": "Партикел филтър"
+        },
+        {
+            "id": "110",
+            "name": "без превозно средство за пушене"
+        }
+    ],
+    "allBodyColorIds": [
+        {
+            "id": 1,
+            "name": "бежов",
+            "cssClassName": "beige"
+        },
+        {
+            "id": 2,
+            "name": "син",
+            "cssClassName": "blue"
+        },
+        {
+            "id": 3,
+            "name": "кафяв",
+            "cssClassName": "brown"
+        },
+        {
+            "id": 4,
+            "name": "бронзов",
+            "cssClassName": "bronze"
+        },
+        {
+            "id": 5,
+            "name": "жълт",
+            "cssClassName": "yellow"
+        },
+        {
+            "id": 6,
+            "name": "сив",
+            "cssClassName": "grey"
+        },
+        {
+            "id": 7,
+            "name": "зелен",
+            "cssClassName": "green"
+        },
+        {
+            "id": 10,
+            "name": "червен",
+            "cssClassName": "red"
+        },
+        {
+            "id": 11,
+            "name": "черен",
+            "cssClassName": "black"
+        },
+        {
+            "id": 12,
+            "name": "сребрист",
+            "cssClassName": "silver"
+        },
+        {
+            "id": 13,
+            "name": "виолетов",
+            "cssClassName": "violet"
+        },
+        {
+            "id": 14,
+            "name": "бял",
+            "cssClassName": "white"
+        },
+        {
+            "id": 15,
+            "name": "оранжев",
+            "cssClassName": "orange"
+        },
+        {
+            "id": 16,
+            "name": "Златен",
+            "cssClassName": "gold"
+        }
+    ],
+    "allInteriorColorIds": [
+        {
+            "id": 1,
+            "name": "бежов",
+            "cssClassName": "beige"
+        },
+        {
+            "id": 2,
+            "name": "черен",
+            "cssClassName": "black"
+        },
+        {
+            "id": 3,
+            "name": "Cив",
+            "cssClassName": "grey"
+        },
+        {
+            "id": 4,
+            "name": "кафяв",
+            "cssClassName": "brown"
+        },
+        {
+            "id": 5,
+            "name": "други",
+            "cssClassName": "other"
+        }
+    ],
+    "allSeals": [],
+    "allSortingOptions": [],
+    "allSellerTypes": [
+        {
+            "id": "P",
+            "name": "Частно"
+        },
+        {
+            "id": "D",
+            "name": "Търговец"
+        }
+    ],
+    "allPowerTypes": [
+        {
+            "id": "hp",
+            "name": "к.с."
+        },
+        {
+            "id": "kw",
+            "name": "kW"
+        }
+    ],
+    "allPaintWorks": [
+        {
+            "id": "M",
+            "name": "Металик"
+        }
+    ],
+    "allPreviousOwnersIds": [
+        {
+            "id": 1,
+            "name": "от първа ръка"
+        },
+        {
+            "id": 2,
+            "name": "до 2"
+        },
+        {
+            "id": 3,
+            "name": "до 3"
+        },
+        {
+            "id": 4,
+            "name": "от 3"
+        }
+    ],
+    "allBedTypeIds": {
+        "bedTypes": [
+            {
+                "id": 206,
+                "name": "Легло"
+            },
+            {
+                "id": 207,
+                "name": "Подемно легло"
+            },
+            {
+                "id": 208,
+                "name": "Етажно легло"
+            }
+        ],
+        "label": "Types of bed"
+    },
+    "consumption": {
+        "consumptionIds": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+        ],
+        "label": "Kraftstoffverbrauch (komb.)"
+    },
+    "metrics": {
+        "enabled": true,
+        "endpoint": "https://js-error-logger.infinity.eu-west-1.s24cloud.net/metrics/timeseries",
+        "prefix": "classified-list",
+        "tags": [
+            "route:home-search-mask"
+        ]
+    },
+    "behavior": {
+        "urlHistory": false,
+        "exactlyOneFilterGroupActive": false,
+        "searchSubscription": {
+            "anonymousSubscriptionEnabled": false,
+            "loggedInSaveSearchEnabled": false,
+            "showDoiInformationMessageEnabled": false
+        },
+        "searchSubscriptionNotification": {
+            "enabled": false,
+            "level": "Information"
+        },
+        "trackSelectedPriceAndRate": true,
+        "updateTotalCountAfterLoadingPersistedState": true
+    },
+    "isSSR": false,
+    "pageSize": null,
+    "seo": {
+        "enabled": false,
+        "path": "/lst/"
+    },
+    "recommender": {
+        "visitorId": null,
+        "itemId": null
+    },
+    "initialRoute": "home-search-mask",
+    "visitorId": "6023f0fa-c6b2-493c-8394-c1dee42f7230"
+}

@@ -1,65 +1,17 @@
 import React from 'react';
 import styled from "styled-components";
 import { Container } from '../../util/commonWrappers';
-import { Row, Col, Typography, Button, Collapse } from 'antd';
+import { Row, Col, Typography, Collapse } from 'antd';
 import { DEFAULT_COLOR } from '../../util/constants';
+import CheckboxCriteria from './CheckboxCriteria'
+import configObj from '../../configObj';
+import Button from '../common/Button';
 
 const { Title } = Typography;
 const { Panel } = Collapse;
 
 const CarSearchContainer = styled.div`
     padding-top: 80px;
-`;
-
-const ButtonWrapper = styled(Col)`
-
-    & .ant-btn {
-        width: 100%;
-        height: 40px;
-        font-weight: bold;
-        text-transform: uppercase;
-        border: 1px solid ${DEFAULT_COLOR};
-        transition: all 0.2s;
-
-        :active {
-            color: ${DEFAULT_COLOR};
-        }
-
-        :focus {
-            border-color: ${DEFAULT_COLOR};
-        }
-
-        span {
-            color: ${DEFAULT_COLOR};
-        }
-
-        :hover {
-            background-color: ${DEFAULT_COLOR};
-            border-color: ${DEFAULT_COLOR};
-
-            span {
-                color: white;
-            }
-        }
-
-          
-        &.search-button {
-            height: 48px;
-            background-color: ${DEFAULT_COLOR};
-
-            span {
-                color: white;
-            }
-
-            :hover {
-                background-color: white;
-
-                span {
-                    color: ${DEFAULT_COLOR};
-                }
-            }
-        }
-    }
 `;
 
 const AdvancedSearch = styled.div`
@@ -113,50 +65,42 @@ const HeaderSection = () => (
             <Title level={2}>Advanced search</Title>
         </Col>
         <Col span={24} lg={6}>
-            <ButtonWrapper>
-                <Button className="ghost">Reset all filters</Button>
-            </ButtonWrapper>
+            <Button text={"Reset all filters"} />
         </Col>
     </Row>
 );
 
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
-
 const MainSection = () => {
+    const metadata = configObj.metadata;
 
     const searchSections = [
-        { title: "Make & model", isActive: true },
-        { title: "Fuel type", isActive: true },
-        { title: "Transmission", isActive: true },
-        { title: "Mileage", isActive: true },
-        { title: "First registration", isActive: true },
-        { title: "Engine size", isActive: true },
-        { title: "Power", isActive: false },
-        { title: "Body type", isActive: false },
-        { title: "Price", isActive: false },
-        { title: "Equipment", isActive: false },
-        { title: "Colour", isActive: false },
-        { title: "Origin country", isActive: false },
-        { title: "Seller", isActive: false },
-        { title: "Damage", isActive: false },
-        { title: "Emission standard", isActive: false },
-        { title: "CO2 emission", isActive: false },
+        // { title: "Make & model", isActive: true, key: "", type: CheckboxCriteria, },
+        { title: "Fuel type", isActive: true, key: "fuelTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
+        { title: "Transmission", isActive: true, key: "transmissionTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
+        // { title: "Mileage", isActive: true, key: "", type: CheckboxCriteria, },
+        // { title: "First registration", isActive: true, key: "", type: CheckboxCriteria, },
+        // { title: "Engine size", isActive: true, key: "", type: CheckboxCriteria, },
+        // { title: "Power", isActive: false, key: "", type: CheckboxCriteria, },
+        { title: "Body type", isActive: false, key: "bodyTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
+        // { title: "Price", isActive: false, key: "", type: CheckboxCriteria, },
+        { title: "Equipment", isActive: false, key: "equipments", type: "searchCriteriaNamesForCheckboxCriteria", },
+        { title: "Colour", isActive: false, key: "bodyColors", type: "searchCriteriaNamesForCheckboxCriteria", },
+        { title: "Origin country", isActive: false, key: "originCountries", type: "searchCriteriaNamesForCheckboxCriteria", },
+        { title: "Damage", isActive: false, key: "damageTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
+        // { title: "Emission standard", isActive: false, key: "effluentStandards", type: CheckboxCriteria, },
+        // { title: "CO2 emission", isActive: false, key: "", type: CheckboxCriteria, },
     ];
 
     return (
         <Row className="search-options" type="flex" justify="space-between" align="middle">
             {searchSections.map((section, idx) => (
-                <Col span={24}>
+                <Col key={section.title + idx} span={24}>
                     <Collapse
                         key={section.title + idx}
                         defaultActiveKey={section.isActive ? 1 : 0}
                     >
                         <Panel header={section.title} key="1">
-                            {text}
+                            <CheckboxCriteria criteria={metadata[section.key]} />
                         </Panel>
                     </Collapse>
                 </Col>
@@ -167,12 +111,11 @@ const MainSection = () => {
 
 const FooterSection = () => {
 
-
     return (
         <Row className="footer" type="flex" justify="end" align="middle">
-            <ButtonWrapper span={24} md={12} lg={6}>
-                <Button className="search-button">Show 2311 vehicles</Button>
-            </ButtonWrapper>
+            <Col span={24} md={12} lg={6}>
+                <Button className="search-button" text={"Show 2311 vehicles"} />
+            </Col>
         </Row>
     )
 }

@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components/macro';
+import { DEFAULT_COLOR } from './util/constants';
 
 const defaultColorHover = 'rgba(247, 183, 29, 0.3)';
 
@@ -83,6 +84,10 @@ export default createGlobalStyle`
 
     & .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
         background-color: ${defaultColorHover} !important;
+    }
+
+    html {
+        --antd-wave-shadow-color: ${DEFAULT_COLOR} !important;
     }
 
 `;
