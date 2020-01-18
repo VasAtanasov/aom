@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import styled from "styled-components";
 import { DEFAULT_COLOR } from '../../util/constants';
 import { Select } from 'antd';
@@ -22,9 +22,6 @@ const SelectWrapper = styled.div`
     }
 `;
 
-function onChange(value) {
-    console.log(`selected ${value}`);
-}
 
 function onBlur() {
     console.log('blur');
@@ -38,26 +35,31 @@ function onSearch(val) {
     console.log('search:', val);
 }
 
-const StyledSelect = ({ name, options }) => (
-    <SelectWrapper>
-        <Select
-            showSearch
-            style={{ width: "100%" }}
-            placeholder={name}
-            optionFilterProp="children"
-            onChange={onChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            onSearch={onSearch}
-            filterOption={(input, option) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-        >
-            {options.map(({ id, name }, idx) => (
-                <Option key={name + idx} value={id}>{name}</Option>
-            ))}
-        </Select>
-    </SelectWrapper>
-)
+const StyledSelect = (props) => {
+
+    const { name, options } = props;
+
+    return (
+        <SelectWrapper>
+            <Select
+                showSearch
+                style={{ width: "100%" }}
+                placeholder={name}
+                optionFilterProp="children"
+                onChange={props.handleChange}
+                onFocus={onFocus}
+                onBlur={onBlur}
+                onSearch={onSearch}
+                filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+            >
+                {options.map(({ id, name }, idx) => (
+                    <Option key={name + idx} value={id}>{name}</Option>
+                ))}
+            </Select>
+        </SelectWrapper>
+    )
+}
 
 export default StyledSelect;

@@ -89,7 +89,6 @@ const MainSection = () => {
         { title: "Origin country", isActive: false, key: "originCountries" },
         { title: "Damage", isActive: false, key: "damageTypes" },
         { title: "Emission standard", isActive: false, key: "effluentStandards" },
-        { title: "CO2 emission", isActive: false, key: "co2" },
     ];
 
     return (

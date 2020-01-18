@@ -28,7 +28,7 @@ const TownCardContainer = styled(Col)`
                     & .city-card-title {
                         margin: 0;
                         min-width: 100%px;
-                        height: 90px;
+                        height: 140px;
                         background-color: rgba(0, 0, 0, 0.6);
                         text-align: center;
                         line-height: 72px;
