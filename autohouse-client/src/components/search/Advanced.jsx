@@ -4,8 +4,9 @@ import { Container } from '../../util/commonWrappers';
 import { Row, Col, Typography, Collapse } from 'antd';
 import { DEFAULT_COLOR } from '../../util/constants';
 import CheckboxCriteria from './CheckboxCriteria'
+import RangeCriteria from './RangeCriteria'
 import configObj from '../../configObj';
-import Button from '../common/Button';
+import StyledButton from '../common/StyledButton';
 
 const { Title } = Typography;
 const { Panel } = Collapse;
@@ -56,7 +57,6 @@ const AdvancedSearch = styled.div`
         background-color: rgba(247, 247, 247, 0.8);
         padding: 20px 0;
     }
-
 `;
 
 const HeaderSection = () => (
@@ -65,30 +65,31 @@ const HeaderSection = () => (
             <Title level={2}>Advanced search</Title>
         </Col>
         <Col span={24} lg={6}>
-            <Button text={"Reset all filters"} />
+            <StyledButton text={"Reset all filters"} />
         </Col>
     </Row>
 );
 
 const MainSection = () => {
     const metadata = configObj.metadata;
+    const searchCriteriaNamesForCheckboxCriteria = metadata.searchCriteriaNamesForCheckboxCriteria;
+    const makeModel = { title: "Make & model", isActive: true, key: "" };
 
     const searchSections = [
-        // { title: "Make & model", isActive: true, key: "", type: CheckboxCriteria, },
-        { title: "Fuel type", isActive: true, key: "fuelTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
-        { title: "Transmission", isActive: true, key: "transmissionTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
-        // { title: "Mileage", isActive: true, key: "", type: CheckboxCriteria, },
-        // { title: "First registration", isActive: true, key: "", type: CheckboxCriteria, },
-        // { title: "Engine size", isActive: true, key: "", type: CheckboxCriteria, },
-        // { title: "Power", isActive: false, key: "", type: CheckboxCriteria, },
-        { title: "Body type", isActive: false, key: "bodyTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
-        // { title: "Price", isActive: false, key: "", type: CheckboxCriteria, },
-        { title: "Equipment", isActive: false, key: "equipments", type: "searchCriteriaNamesForCheckboxCriteria", },
-        { title: "Colour", isActive: false, key: "bodyColors", type: "searchCriteriaNamesForCheckboxCriteria", },
-        { title: "Origin country", isActive: false, key: "originCountries", type: "searchCriteriaNamesForCheckboxCriteria", },
-        { title: "Damage", isActive: false, key: "damageTypes", type: "searchCriteriaNamesForCheckboxCriteria", },
-        // { title: "Emission standard", isActive: false, key: "effluentStandards", type: CheckboxCriteria, },
-        // { title: "CO2 emission", isActive: false, key: "", type: CheckboxCriteria, },
+        { title: "Fuel type", isActive: true, key: "fuelTypes" },
+        { title: "Transmission", isActive: true, key: "transmissionTypes" },
+        { title: "Mileage", isActive: true, key: "mileages" },
+        { title: "First registration", isActive: true, key: "registrationYears" },
+        { title: "Engine size", isActive: true, key: "engineSizes" },
+        { title: "Power", isActive: false, key: "horsePowers" },
+        { title: "Body type", isActive: false, key: "bodyTypes" },
+        { title: "Price", isActive: false, key: "prices" },
+        { title: "Equipment", isActive: false, key: "equipments" },
+        { title: "Colour", isActive: false, key: "bodyColors" },
+        { title: "Origin country", isActive: false, key: "originCountries" },
+        { title: "Damage", isActive: false, key: "damageTypes" },
+        { title: "Emission standard", isActive: false, key: "effluentStandards" },
+        { title: "CO2 emission", isActive: false, key: "co2" },
     ];
 
     return (
@@ -100,7 +101,9 @@ const MainSection = () => {
                         defaultActiveKey={section.isActive ? 1 : 0}
                     >
                         <Panel header={section.title} key="1">
-                            <CheckboxCriteria criteria={metadata[section.key]} />
+                            {searchCriteriaNamesForCheckboxCriteria.includes(section.key)
+                                ? <CheckboxCriteria criteria={metadata[section.key]} />
+                                : <RangeCriteria criteria={metadata[section.key]} />}
                         </Panel>
                     </Collapse>
                 </Col>
@@ -114,7 +117,7 @@ const FooterSection = () => {
     return (
         <Row className="footer" type="flex" justify="end" align="middle">
             <Col span={24} md={12} lg={6}>
-                <Button className="search-button" text={"Show 2311 vehicles"} />
+                <StyledButton className="search-button" text={"Show 2311 vehicles"} />
             </Col>
         </Row>
     )

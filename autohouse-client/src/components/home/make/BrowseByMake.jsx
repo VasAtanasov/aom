@@ -69,9 +69,10 @@ const ToggleButton = styled(Col)`
         border-radius: 4px;
     }
 
-    &  label:hover,
-    &  label:focus {
-        background-color: rgba(247, 183, 29, 0.7);
+    & label:hover,
+    & label:focus {
+        background-color: white;
+        color: ${DEFAULT_COLOR} !important;
         border-color: rgba(247, 183, 29, 1);
     }
 

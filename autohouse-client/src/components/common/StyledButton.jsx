@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import { DEFAULT_COLOR } from '../../util/constants';
+import { Button } from 'antd';
 
 const ButtonWrapper = styled.div`
 
@@ -53,10 +54,10 @@ const ButtonWrapper = styled.div`
     }
 `;
 
-const Button = ({ text, className }) => (
+const StyledButton = ({ text, className }) => (
     <ButtonWrapper>
         <Button className={className}>{text}</Button>
     </ButtonWrapper>
-)
+);
 
-export default Button;
+export default StyledButton;

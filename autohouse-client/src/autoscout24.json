@@ -1055,215 +1055,187 @@
                 },
                 {
                     "id": "16328",
-                    "label": "друг",
+                    "label": "Others",
                     "top": false
                 }
             ],
             "allBodyTypeIds": [
                 {
                     "id": "1",
-                    "name": "Хечбек"
+                    "name": "Compact"
                 },
                 {
                     "id": "2",
-                    "name": "Кабрио"
+                    "name": "Convertible"
                 },
                 {
                     "id": "3",
-                    "name": "Купе"
+                    "name": "Coupe"
                 },
                 {
                     "id": "4",
-                    "name": "Джип/Пикап"
+                    "name": "Off-Road/Pick-up"
                 },
                 {
                     "id": "6",
-                    "name": "лимузина"
+                    "name": "Sedans"
                 },
                 {
                     "id": "5",
-                    "name": "Комби/Ван"
+                    "name": "Station wagon"
                 },
                 {
                     "id": "13",
-                    "name": "Пикап"
+                    "name": "Transporter"
                 },
                 {
                     "id": "12",
-                    "name": "Миниван"
+                    "name": "Van"
                 },
                 {
                     "id": "7",
-                    "name": "други"
+                    "name": "Other"
                 }
             ],
             "priceSteps": [
-                {
-                    "id": 50,
-                    "name": "€50"
-                },
-                {
-                    "id": 100,
-                    "name": "€100"
-                },
-                {
-                    "id": 300,
-                    "name": "€300"
-                },
                 {
                     "id": 500,
                     "name": "€500"
                 },
                 {
                     "id": 1000,
-                    "name": "€1.000"
+                    "name": "€1,000"
                 },
                 {
                     "id": 1500,
-                    "name": "€1.500"
+                    "name": "€1,500"
                 },
                 {
                     "id": 2000,
-                    "name": "€2.000"
+                    "name": "€2,000"
                 },
                 {
                     "id": 2500,
-                    "name": "€2.500"
+                    "name": "€2,500"
                 },
                 {
                     "id": 3000,
-                    "name": "€3.000"
-                },
-                {
-                    "id": 3500,
-                    "name": "€3.500"
+                    "name": "€3,000"
                 },
                 {
                     "id": 4000,
-                    "name": "€4.000"
-                },
-                {
-                    "id": 4500,
-                    "name": "€4.500"
+                    "name": "€4,000"
                 },
                 {
                     "id": 5000,
-                    "name": "€5.000"
+                    "name": "€5,000"
                 },
                 {
                     "id": 6000,
-                    "name": "€6.000"
+                    "name": "€6,000"
                 },
                 {
                     "id": 7000,
-                    "name": "€7.000"
+                    "name": "€7,000"
                 },
                 {
                     "id": 8000,
-                    "name": "€8.000"
+                    "name": "€8,000"
                 },
                 {
                     "id": 9000,
-                    "name": "€9.000"
+                    "name": "€9,000"
                 },
                 {
                     "id": 10000,
-                    "name": "€10.000"
+                    "name": "€10,000"
                 },
                 {
                     "id": 12500,
-                    "name": "€12.500"
+                    "name": "€12,500"
                 },
                 {
                     "id": 15000,
-                    "name": "€15.000"
+                    "name": "€15,000"
                 },
                 {
                     "id": 17500,
-                    "name": "€17.500"
+                    "name": "€17,500"
                 },
                 {
                     "id": 20000,
-                    "name": "€20.000"
+                    "name": "€20,000"
                 },
                 {
                     "id": 25000,
-                    "name": "€25.000"
+                    "name": "€25,000"
                 },
                 {
                     "id": 30000,
-                    "name": "€30.000"
-                },
-                {
-                    "id": 35000,
-                    "name": "€35.000"
+                    "name": "€30,000"
                 },
                 {
                     "id": 40000,
-                    "name": "€40.000"
-                },
-                {
-                    "id": 45000,
-                    "name": "€45.000"
+                    "name": "€40,000"
                 },
                 {
                     "id": 50000,
-                    "name": "€50.000"
+                    "name": "€50,000"
                 },
                 {
                     "id": 75000,
-                    "name": "€75.000"
+                    "name": "€75,000"
                 },
                 {
                     "id": 100000,
-                    "name": "€100.000"
+                    "name": "€100,000"
                 }
             ]
         }
     },
-    "language": "bg",
-    "locale": "bg-BG",
+    "language": "en",
+    "locale": "en-GB",
     "isUserLoggedIn": false,
     "translations": {
         "location": {
             "countries": {
-                "luxembourg": "Люксембург",
-                "germany": "Германия",
-                "belgium": "Белгия",
-                "all": "Европа",
-                "italy": "Италия",
-                "netherlands": "Нидерландия",
-                "spain": "Испания",
-                "france": "Франция",
-                "austria": "Австрия"
+                "luxembourg": "Luxembourg",
+                "germany": "Germany",
+                "belgium": "Belgium",
+                "all": "Europe",
+                "italy": "Italy",
+                "netherlands": "Netherlands",
+                "spain": "Spain",
+                "france": "France",
+                "austria": "Austria"
             }
         },
         "email": {
             "notification": {
-                "linkSummary": "Известяване",
+                "linkSummary": "Notification",
                 "success": {
-                    "title": "Успешно създадохте заявка за търсене.",
-                    "message": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашата заявка."
+                    "title": "You have successfully created a search subscription.",
+                    "message": "Matching to your search you will now receive the latest offers by email."
                 },
                 "email": {
-                    "validation": "Моля, въведете валиден e-mail адрес",
-                    "address": "Ваш e-mail адрес"
+                    "validation": "Please enter a valid email address.",
+                    "address": "Your email address"
                 },
                 "duplicated": {
-                    "message": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашето търсене.",
-                    "title": "Успешно се абонирахте за това търсене."
+                    "message": "Matching to your search you will now receive the latest offers by email.",
+                    "title": "You have successfully subscribed this search."
                 },
                 "dont": {
                     "miss": {
-                        "bold": "Не искате да изпуснете нито една интересна оферта?",
-                        "_value": "Тогава просто се абонирайте за заявката за търсене."
+                        "bold": "Don't want to miss any interesting offers?",
+                        "_value": "Then just subscribe to our search subscription."
                     }
                 },
                 "error": {
-                    "message": "Извиняваме се за неудобството.",
-                    "title": "За съжаление възникна грешка."
+                    "message": "We apologize for the inconvenience.",
+                    "title": "An error has occurred."
                 },
-                "link": "Нови оферти по e-mail",
+                "link": "New email notifications",
                 "dataPrivacyConsent": {
                     "nl": "Ik verklaar hierbij akkoord te gaan met de <a href=\"http://about.autoscout24.com/nl-nl/au-company/au-company/privacy-agreement.aspx\">Privacyverklaring</a> van AutoScout24.",
                     "de": "Ich stimme der <a href=\"http://about.autoscout24.com/de-de/au-company/au-company/privacy-agreement.aspx\">Datenschutzeinwilligung</a> von AutoScout24 zu."
@@ -1271,30 +1243,30 @@
                 "legalText": "NOTUSED",
                 "limit": {
                     "exceeded": {
-                        "message": "Можете да запазите до 50 заявки за търсене!"
+                        "message": "You can save up to 50 searches!"
                     }
                 }
             }
         },
         "sortKey": {
             "select": {
-                "standard": "Сортиране по: стандарт",
+                "standard": "Sorted by: Standard",
                 "mileage": {
-                    "descending": "Пробег намаляваща стойност",
-                    "ascending": "Пробег нарастваща стойност"
+                    "descending": "Mileage descending",
+                    "ascending": "Mileage ascending"
                 },
                 "price": {
-                    "descending": "Намаляваща цена",
-                    "ascending": "Нарастваща цена"
+                    "descending": "Price descending",
+                    "ascending": "Price ascending"
                 },
-                "label": "Сортиране",
-                "new_standard": "Стандарт",
+                "label": "Sort",
+                "new_standard": "Beste Ergebnisse",
                 "year": {
-                    "ascending": "Първа регистрация нарастваща стойност",
-                    "descending": "Първа регистрация намаляваща стойност"
+                    "ascending": "First registration ascending",
+                    "descending": "First registration descending"
                 },
                 "age": {
-                    "descending": "Първо най-новите оферти"
+                    "descending": "Latest offers first"
                 },
                 "finance": {
                     "rate": {
@@ -1303,208 +1275,208 @@
                     }
                 },
                 "make": {
-                    "descending": "Марка/модел намаляваща стойност",
-                    "ascending": "Марка/модел нарастваща стойност"
+                    "descending": "Make/Model descending",
+                    "ascending": "Make/Model ascending"
                 },
                 "power": {
-                    "descending": "Мощност намаляваща стойност",
-                    "ascending": "Мощност нарастваща стойност"
+                    "descending": "Power descending",
+                    "ascending": "Power ascending"
                 },
-                "distance": "според разстоянието"
+                "distance": "By distance"
             }
         },
         "page": {
             "list": {
                 "legalnotice": {
-                    "dealerprice": "*** Цена на търговеца",
-                    "envkv": "* Допълнителна информация за официалния разход на гориво и официалните специфични емисии на CO2 от новите леки автомобили може да получите от \"Ръководство за разхода на гориво, емисии на CO2 и разхода на енергия за новите леки автомобили\", което се предлага безплатно във всеки търговски обект за продажба и от Deutsche Automobil Treuhand GmbH на www.dat.de.",
-                    "vat": "**Подлежащ на отчитане ДДС"
+                    "dealerprice": "Dealer price",
+                    "envkv": "Weitere Informationen zum offiziellen Kraftstoffverbrauch und den offiziellen spezifischen CO2-Emissionen neuer Personenkraftwagen können dem \"Leitfaden über den Kraftstoffverbrauch, die CO2-Emissionen und den Stromverbrauch neuer Personenkraftwagen\" entnommen werden, der an allen Verkaufsstellen und bei der Deutschen Automobil Treuhand GmbH unter www.dat.de unentgeltlich erhältlich ist.",
+                    "vat": "VAT deductible"
                 },
                 "transporter": {
-                    "title": "Оферти за транспортьор употреба в AutoScout24",
-                    "metaDescription": "Тук ще намерите актуални оферти за употребявани транспортьор на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа."
+                    "title": "Used transporters for sale - AutoScout24",
+                    "metaDescription": "Find new and used transporter offers on AutoScout24 - Europe's biggest online automotive marketplace."
                 },
                 "empty": {
-                    "result": "За съжаление Вашето търсене не даде резултати. Моля, променете критериите на търсене.",
+                    "result": "Sorry, there were no results found for your search. Please update your search criteria.",
                     "filter": {
                         "tags": {
-                            "title": "По-малкото често е повече. Опитайте отново с по-малко или с променени критерии за търсене."
+                            "title": "Sometimes less is more: try it again with less or different filters. "
                         }
                     },
-                    "header": "Упс!",
-                    "title": "За съжаление няма резултати по Вашето търсене.",
+                    "header": "Oh snap!",
+                    "title": "Unfortunately we couldn’t find any search results.",
                     "search": {
                         "subscriptions": {
-                            "title": "Не искате да правите компромиси? Тогава запазете Вашето търсене. Ние ще Ви информираме веднага, щом намерим подходящи предложения!"
+                            "title": "This is exactly what you want/ looking for? Save this search - we’ll be in touch as soon as we get your perfect match."
                         }
                     }
                 },
                 "car": {
                     "metaDescription": {
-                        "makeModelFuelType": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
-                        "_value": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "makeModelBodyColor": "Намерете предложения за {0} {1} в {2} употребявани автомобили в АутоСкаут 24 - най-големият търговец на автомобили в Европа.",
-                        "makeModelFirstRegistration": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
-                        "makeModelCity": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "fuelType": "Тук ще намерите употребявани модели {0} на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "bodyType": "Тук ще намерите актуални оферти за {0} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "makeModel": "{0} {1} употребявани автомобили исках? Тук ще намерите актуалните оферти на {0} {1} в AutoScout24, най-големия европейски онлайн автомобилен пазар.",
-                        "makeModelGearing": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
-                        "makeFuelType": "Тук ще намерите актуални {0} като {1} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "makeModelVersion": "Намерете предложения за {0} {1} {2} употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
-                        "make": "Тук ще намерите актуални оферти за {0} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "makeBodyType": "Тук ще намерите актуални {0} като {1} употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "makeModelOffer": "Намерете предложения за {0} {1} $OTYPE употребявани автомобили в АутоСкаут най-големият търговец на автомобили в Европа.",
-                        "makeCity": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "makeModelBodyType": "Намерете предложения за {0} {1} {2} нови и употребявани модели в АутоСкаут 24 - най-големият търговец на автомобили в Европа."
+                        "makeModelFuelType": "Find new and used {0} {1} {2} offers on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "_value": "Find new and used cars offers on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "makeModelBodyColor": "Find {2} {0} {1} offers for sale on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "makeModelFirstRegistration": "Find {0} {1} from {2} offers for sale on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "makeModelCity": "Find new and used {0} {1} offers in {2} on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "fuelType": "Here's where you'll find used {0} models at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "bodyType": "Here's where you'll find current {0} used car listings at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "makeModel": "Find new and used {0} {1} offers on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "makeModelGearing": "Find {0} {1} {2} offers for sale on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "makeFuelType": "Here's where you'll find used {0} and {1} car listings at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "makeModelVersion": "Find {0} {1} {2} offers for sale on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "make": "Here's where you'll find current {0} used car listings at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "makeBodyType": "Here's where you'll find current {0} in {1} used car listings at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "makeModelOffer": "Find {0} {1} {2} offers for sale on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "makeCity": "Find new and used {0} offers in {1} on AutoScout24 - Europe's biggest online automotive marketplace.",
+                        "makeModelBodyType": "Find new and used {0} {1} {2} offers on AutoScout24 - Europe's biggest online automotive marketplace."
                     },
                     "title": {
-                        "makeModelFuelType": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24",
-                        "_value": "Оферти за автомобили втора употреба в AutoScout24",
-                        "makeModelBodyColor": "Употребявани {0} {1} в {2} за продажба - АутоСкаут 24",
-                        "makeModelFirstRegistration": "Употребявани {0} {1} от {2} за продажба - АутоСкаут 24",
-                        "makeModelCity": "Оферти за автомобили втора употреба в AutoScout24",
-                        "fuelType": "Употребявани модели {0} в AutoScout24",
-                        "bodyType": "Оферти за употребявани {0} в AutoScout24",
-                        "makeModel": "Търсите употребявано {0} {1}?",
-                        "makeModelGearing": "Употребявани {0} {1} с {2} за продажба - АутоСкаут 24",
-                        "makeFuelType": "Употребявани {0} като {1} оферти в AutoScout24",
-                        "makeModelVersion": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24",
-                        "make": "Оферти за употребявани {0} в AutoScout24",
-                        "makeBodyType": "Употребявани {0} като {1} оферти в AutoScout24",
-                        "makeModelOffer": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24",
-                        "makeCity": "Оферти за автомобили втора употреба в AutoScout24",
-                        "makeModelBodyType": "Употребявани {0} {1} {2} за продажба - АутоСкаут 24"
+                        "makeModelFuelType": "Used {0} {1} {2} for sale - AutoScout24",
+                        "_value": "Used cars for sale - AutoScout24",
+                        "makeModelBodyColor": "Find {2} {0} {1} for sale - AutoScout24",
+                        "makeModelFirstRegistration": "Find {0} {1} from {2} for sale - AutoScout24",
+                        "makeModelCity": "Find used {0} {1} in {2} - AutoScout24",
+                        "fuelType": "Used {0} models at AutoScout24",
+                        "bodyType": "Used {0} listings at AutoScout24",
+                        "makeModel": "Used {0} {1} for sale - AutoScout24",
+                        "makeModelGearing": "Find {0} {1} {2} for sale - AutoScout24",
+                        "makeFuelType": "Used {0} listings and {1} models at AutoScout24",
+                        "makeModelVersion": "Find {0} {1} {2} for sale - AutoScout24",
+                        "make": "Used {0} listings at AutoScout24",
+                        "makeBodyType": "Used {0} and {1} listings at AutoScout24",
+                        "makeModelOffer": "Find {0} {1} {2} for sale - AutoScout24",
+                        "makeCity": "Find used {0} in {1} - AutoScout24",
+                        "makeModelBodyType": "Used {0} {1} {2} for sale - AutoScout24"
                     }
                 },
                 "recommendation": {
-                    "message": "Тези автомобили може би ще Ви допаднат."
+                    "message": "Maybe you’re interested in some of these vehicles. "
                 },
                 "global": {
                     "client": {
-                        "error": "Търсената от Вас страница за съжаление вече не съществува.",
+                        "error": "The client made a bad request: {0}",
                         "bad": {
-                            "request": "Обработването на търсената от Вас страница беше неуспешно."
+                            "request": "This request could not be handled."
                         }
                     },
                     "server": {
-                        "error": "Търсената от Вас страница в момента не е достъпна."
+                        "error": "This page is not available for the moment."
                     }
                 },
                 "error": {
-                    "title": "Оферти в AutoScout24"
+                    "title": "Listings at AutoScout24"
                 },
                 "trailer": {
-                    "title": "Оферти за ремарке употреба в AutoScout24",
-                    "metaDescription": "Тук ще намерите актуални оферти за употребявани ремарке на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа."
+                    "title": "Used trailers for sale - AutoScout24",
+                    "metaDescription": "Find new and used trailer offers on AutoScout24 - Europe's biggest online automotive marketplace."
                 },
                 "not": {
                     "found": {
-                        "error": "За съжаление търсената от Вас страница вече не съществува."
+                        "error": "This page cannot be found."
                     }
                 },
                 "caravan": {
-                    "metaDescription": "Тук ще намерите актуални оферти за употребявани каравани и кемпери на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                    "title": "Оферти за каравани и кемпери употреба в AutoScout24"
+                    "metaDescription": "Find new and used caravan & motorhome offers on AutoScout24 - Europe's biggest online automotive marketplace.",
+                    "title": "Used caravans and motorhomes for sale - AutoScout24"
                 },
                 "bike": {
                     "metaDescription": {
-                        "_value": "Тук ще намерите актуални оферти за употребявани автомобили на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "fuelType": "Тук ще намерите актуални употребявани {0} модели мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "bodyType": "Тук ще намерите актуални оферти за {0} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
+                        "_value": "Here you will find current motorcycle offers at AutoScout24, Europe's largest online car market.",
+                        "fuelType": "Here's where you'll find used {0} motorcycles at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "bodyType": "Here's where you'll find current {0} motorcycle listings at AutoScout24, Europe's biggest online automotive marketplace.",
                         "makeModel": "Here are the latest {0} {1} motorcycle deals at AutoScout24, Europe's largest online car market.",
-                        "makeFuelType": "Тук ще намерите актуални {0} като {1} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "make": "Тук ще намерите актуални оферти за {0} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа.",
-                        "makeBodyType": "Тук ще намерите актуални {0} като {1} мотоциклети на AutoScout24, най-големия онлайн-портал за покупко-продажба на автомобили в Европа."
+                        "makeFuelType": "Here's where you'll find used {0} and {1} motorcycles at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "make": "Here's where you'll find used {0} motorcycles at AutoScout24, Europe's biggest online automotive marketplace.",
+                        "makeBodyType": "Here's where you'll find current {0} motorcycles in {1} at AutoScout24, Europe's biggest online automotive marketplace."
                     },
                     "title": {
-                        "_value": "Оферти за автомобили втора употреба в AutoScout24",
-                        "fuelType": "Употребявани модели {0} в AutoScout24",
-                        "bodyType": "Оферти за употребявани {0} в AutoScout24",
+                        "_value": "Motorcycle offers at AutoScout24",
+                        "fuelType": "Used {0} models at AutoScout24",
+                        "bodyType": "Used {0} listings at AutoScout24",
                         "makeModel": "Buy {0} {1} used - AutoScout24",
-                        "makeFuelType": "Употребявани {0} като {1} оферти на AutoScout24.",
-                        "make": "Оферти за употребявани {0} в AutoScout24",
-                        "makeBodyType": "Употребявани {0} като {1} оферти в AutoScout24"
+                        "makeFuelType": "Used {0} listings and {1} models at AutoScout24",
+                        "make": "Used {0} listings at AutoScout24",
+                        "makeBodyType": "Used {0} in {1} listings at AutoScout24"
                     }
                 }
             },
             "seo": {
-                "metaDescription": "Намерете предложения за {0} {1} {2} употребявани автомобили в AutoScout24 най-големият търговец на автомобили в Европа.",
-                "title": "Употребявани {0} {1} {2} за продажба - AutoScout24",
+                "metaDescription": "Find used and new {0} {1} offers {2} at AutoScout24, Europe's biggest car marketplace.",
+                "title": "Used {0} {1} offers {2} - AutoScout24",
                 "city": "in {0}"
             },
-            "topLink": "Нагоре"
+            "topLink": "To the top"
         },
         "searchSubscription": {
-            "saveSearchButtonShort": "Запази",
-            "anonymousSubscriptionShowFormButtonShort": "Известяване",
-            "saveSearchButton": "Запазване на търсенето",
-            "anonymousSubscriptionShowFormButton": "Нови оферти по e-mail",
+            "saveSearchButtonShort": "Save",
+            "anonymousSubscriptionShowFormButtonShort": "Notification",
+            "saveSearchButton": "Save search",
+            "anonymousSubscriptionShowFormButton": "New email notifications",
             "saveSearch": {
                 "notification": {
                     "message": {
-                        "70": "Можете да запазите до 50 заявки за търсене!",
-                        "83": "Можете да го отворите по всяко време чрез менюто 'Моят профил: <a href={0}>Моите търсения</a>'.",
-                        "91": "Ако все още нямате профил при нас, можете лесно да се регистрирате с Вашия e-mail адрес и със съответна парола.",
-                        "92": "Можете да го отворите по всяко време чрез менюто 'Моят профил: <a href={0}>Моите търсения</a>'.",
-                        "93": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашето търсене.",
-                        "94": "Вашата заявка за търсене беше изтрита.",
-                        "95": "Извиняваме се за неудобството.",
-                        "96": "Моля, опитайте по-късно отново.",
-                        "97": "Вашата заявка за търсене беше изтрита."
+                        "70": "You can save up to 50 searches!",
+                        "83": "Via menu 'My Account: <a href=\"{0}\">My Searches</a>' you may access all your saved searches.",
+                        "91": "If you have an account with us, you can easily sign up with your email address and password.",
+                        "92": "Via menu 'My Account: <a href=\"{0}\">My Searches</a>' you may access all your saved searches.",
+                        "93": "Matching to your search you will now receive the latest offers by email.",
+                        "94": "Your search subscription has been deleted.",
+                        "95": "We apologize for the inconvenience.",
+                        "96": "Please try again later.",
+                        "97": "Your search subscription has been deleted."
                     },
                     "title": {
                         "70": "",
-                        "83": "Вашето търсене беше запазено.",
-                        "91": "Влезте в профила си, за да запазите търсенето.",
-                        "92": "Вашето търсене беше запазено.",
-                        "93": "Успешно се абонирахте за това търсене.",
-                        "94": "Успешно се отписахте от това търсене.",
-                        "95": "За съжаление възникна грешка.",
-                        "96": "Изтриването на Вашата заявка за търсене беше неуспешно.",
-                        "97": "Вече сте се отписали от това търсене."
+                        "83": "Your search has been saved successfully.",
+                        "91": "To save your search, sign in please.",
+                        "92": "Your search has been saved successfully.",
+                        "93": "You have successfully subscribed this search.",
+                        "94": "You have successfully unsubscribed from this search.",
+                        "95": "An error has occurred.",
+                        "96": "Your search subscription could not be deleted.",
+                        "97": "You have already successfully unsubscribed from this search."
                     }
                 }
             },
             "anonymousSubscription": {
                 "doiSendOutConfirmationMessage": "Please check your inbox if your e-mail has not been confirmed yet",
-                "errorMessage": "Извиняваме се за неудобството.",
-                "errorTitle": "За съжаление възникна грешка.",
-                "successMessage": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашата заявка.",
-                "limitExceededErrorMessage": "Можете да запазите до 50 заявки за търсене!",
-                "duplicatedMessage": "Сега ще получавате на електронната си поща най-новите оферти, отговарящи на Вашето търсене.",
-                "successTitle": "Успешно създадохте заявка за търсене.",
+                "errorMessage": "We apologize for the inconvenience.",
+                "errorTitle": "An error has occurred.",
+                "successMessage": "Matching to your search you will now receive the latest offers by email.",
+                "limitExceededErrorMessage": "You can save up to 50 searches!",
+                "duplicatedMessage": "Matching to your search you will now receive the latest offers by email.",
+                "successTitle": "You have successfully created a search subscription.",
                 "doiSendOutConfirmationTitle": "E-Mail address confirmed?"
             },
             "anonymousSubscriptionForm": {
-                "subtitle": "Тогава просто се абонирайте за заявката за търсене.",
-                "emailAddress": "Ваш e-mail адрес",
-                "subscribeButton": "Абонамент",
-                "title": "Не искате да изпуснете нито една интересна оферта?",
-                "dataPrivacyConsentCheckbox": "Съгласен съм личните ми данни да се обработват от AutoScout24, както е посочено в <a target=\"_blank\" href=\"https://www.autoscout24.bg/company/privacy-agreement/\">Декларацията за съгласие</a>. Мога да оттегля съгласието си във всеки един момент с бъдещо действие."
+                "subtitle": "Then just subscribe to our search subscription.",
+                "emailAddress": "Your email address",
+                "subscribeButton": "Subscribe",
+                "title": "Don't want to miss any interesting offers?",
+                "dataPrivacyConsentCheckbox": "Ich stimme der Verarbeitung meiner Daten, wie in der <a target=\"_blank\" href=\"http://about.autoscout24.com/de-de/au-company/au-company-privacy/privacy-agreement\">Einwilligungserklärung</a> von AutoScout24 beschrieben, zu. Ich kann diese Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen."
             }
         },
         "interior": {
             "upholstery": {
-                "velour": "Велур",
-                "cloth": "Плат",
-                "fullLeather": "Кожа изцяло",
-                "partialLeather": "Кожа частично",
+                "velour": "Velour",
+                "cloth": "Cloth",
+                "fullLeather": "Full Leather",
+                "partialLeather": "Partial Leather",
                 "material": {
-                    "label": "Материал"
+                    "label": "Material"
                 },
-                "other": "Други",
-                "alcantara": "Алкантара"
+                "other": "Other",
+                "alcantara": "Alcantara"
             }
         },
         "saleMaskFragment": {
-            "ctaMarketplace": "В следващите няколко месеца",
+            "ctaMarketplace": "In den nächsten Monaten",
             "filters": {
-                "firstRegistration": "Първа регистрация"
+                "firstRegistration": "First Registration"
             },
-            "ctaButton": "Създайте реклама",
-            "ctaCopy": "Кога планирате продажбите на автомобили?",
-            "ctaDirectsale": "Колкото е възможно по-бързо"
+            "ctaButton": "Inserat erstellen",
+            "ctaCopy": "Wann planen Sie Ihren Autoverkauf?",
+            "ctaDirectsale": "So schnell wie möglich"
         },
         "refinefilters": {
             "button": {
@@ -1512,169 +1484,169 @@
             }
         },
         "color": {
-            "gold": "Златист",
-            "violet": "Виолетов",
-            "blue": "Син",
-            "beige": "Бежов",
-            "grey": "Сив",
-            "silver": "Сребрист",
-            "orange": "Оранжев",
-            "green": "Зелен",
-            "black": "Черен",
-            "bronze": "Бронзов",
-            "yellow": "Жълт",
-            "brown": "Кафяв",
-            "white": "Бял",
-            "other": "Друг",
-            "red": "Червен"
+            "gold": "Gold",
+            "violet": "Violet",
+            "blue": "Blue",
+            "beige": "Beige",
+            "grey": "Grey",
+            "silver": "Silver",
+            "orange": "Orange",
+            "green": "Green",
+            "black": "Black",
+            "bronze": "Bronze",
+            "yellow": "Yellow",
+            "brown": "Brown",
+            "white": "White",
+            "other": "Other",
+            "red": "Red"
         },
-        "others": "Други",
+        "others": "Others",
         "filter": {
             "summary": {
                 "heading": {
                     "title": {
-                        "makeModelFuelType": "за {0} {1}",
-                        "makeModelEngineType": "за {0} {1}",
-                        "makeModelBodyColor": "за {0} в {1}",
-                        "makeModelCity": "за Вашето търсене",
-                        "makeModelRegistrationYear": "за {0} от {1}",
-                        "makeModel": "за {0}",
-                        "defaultVehicleIndicator": "за Вашето търсене",
+                        "makeModelFuelType": "for {0} {1}",
+                        "makeModelEngineType": "for {0} {1}",
+                        "makeModelBodyColor": "for {1} in {0}",
+                        "makeModelCity": "for {0} in {1}",
+                        "makeModelRegistrationYear": "for {0} from {1}",
+                        "makeModel": "for {0}",
+                        "defaultVehicleIndicator": "for your search",
                         "oneSidedContract": "verfügbar für den Online-Kauf",
-                        "makeModelOfferType": "за {0} {1}",
-                        "vehicleIndicator": "за {0}",
+                        "makeModelOfferType": "for {0} {1}",
+                        "vehicleIndicator": "for {0}",
                         "transactable": "online verfügbare Fahrzeuge",
-                        "makeModelTransmission": "за {0} {1}",
-                        "makeModelBodyType": "за {0} {1}",
-                        "numberOfFilters": "плюс {0} филтри"
+                        "makeModelTransmission": "for {0} {1}",
+                        "makeModelBodyType": "for {0} {1}",
+                        "numberOfFilters": "+ {0} filters"
                     },
-                    "_value": "Вашето търсене"
+                    "_value": "My search"
                 },
                 "show": {
                     "accident": {
-                        "also": "Показвай автомобили, претърпели инцидент",
-                        "only": "Покажи само автомобили, претърпели инцидент"
+                        "also": "Show cars with accidents",
+                        "only": "Only show cars with accidents"
                     }
                 },
-                "empty": "Няма избрани филтри",
-                "less": "Покажи по-малко критерии",
+                "empty": "No filters selected",
+                "less": "Show fewer",
                 "dealer": {
-                    "page": "Наличност на търговеца"
+                    "page": "Dealer stock"
                 },
                 "vehicle": {
-                    "emissionClass": "Екологична категория:",
-                    "emissionLabel": "Екологичен стикер Евро:"
+                    "emissionClass": "Euro Emission Class: Euro",
+                    "emissionLabel": "Euro Emission Label:"
                 },
-                "doors": "Врати",
+                "doors": "doors",
                 "dont": {
                     "show": {
-                        "accident": "Не показвай автомобили, претърпели инцидент"
+                        "accident": "Don't show cars with accidents"
                     }
                 },
                 "seals": {
                     "generic": {
-                        "other": "Други сертификации на производителя",
-                        "_value": "Сертификация на производителя"
+                        "other": "Other certified pre-owned cars",
+                        "_value": "Certified Pre-Owned Cars"
                     }
                 },
-                "crossborder": "Трансгранично",
-                "more": "Покажи повече критерии",
-                "seats": "Седящи места",
+                "crossborder": "Cross-border",
+                "more": "Show more",
+                "seats": "seats",
                 "beds": "beds"
             },
             "smartLabel": {
-                "topModels": "Топ модели",
-                "topMakes": "Топ марки"
+                "topModels": "Top models",
+                "topMakes": "Top makes"
             }
         },
         "select": {
-            "all": "Всички",
-            "label": "Моля, изберете"
+            "all": "All",
+            "label": "Please choose"
         },
-        "around": "около",
+        "around": "{0} km around {1}",
         "button": {
             "search": {
-                "bikes": "мотоциклети",
-                "vehicle": "превозно средство",
-                "cars": "автомобили",
-                "subscribe": "Абонамент",
-                "vehicles": "превозни средства",
-                "car": "автомобил",
-                "bike": "мотоциклет"
+                "bikes": "bikes",
+                "vehicle": "vehicle",
+                "cars": "cars",
+                "subscribe": "Subscribe",
+                "vehicles": "vehicles",
+                "car": "car",
+                "bike": "bike"
             },
-            "refineSummary": "Филтрирай",
-            "refine": "Детайлно търсене",
+            "refineSummary": "Filter",
+            "refine": "Refine search",
             "save": {
                 "search": {
-                    "subscription": "Запазване на търсенето",
-                    "subscriptionSummary": "Запази"
+                    "subscription": "Save search",
+                    "subscriptionSummary": "Save"
                 }
             }
         },
         "general": {
             "notification": {
                 "client": {
-                    "message": "За съжаление изпълнението на Вашата заявка беше неуспешно. Проверете Вашата връзка с интернет и опитайте отново."
+                    "message": "Unfortunately, your search could not be conducted correctly. Please check your connection and try again."
                 },
                 "server": {
-                    "message": "За съжаление възникна грешка. Моля, актуализирайте страницата или опитайте отново по-късно."
+                    "message": "Sorry, something went wrong. Please refresh this page or try again later."
                 },
                 "noResults": {
-                    "message": "Забележка: последният поставен филтър няма да даде резултати от търсенето."
+                    "message": "Note: Unfortunately, the last set filter will not deliver any results."
                 }
             }
         },
         "newfilters": {
             "button": {
-                "refine": "Към алтернативния изглед на филтрите"
+                "refine": "Alternative filter view"
             },
             "mostUsed": {
-                "details": "Базисни данни и локация"
+                "details": "Basic specifications & Location"
             },
             "offerDetails": {
-                "details": "Детайли по офертата"
+                "details": "Offer details"
             },
-            "heading": "Филтрирай по"
+            "heading": "Filter by"
         },
         "otFreeRegCampaign": {
             "description": "Nur für kurze Zeit: Jetzt mit kostenloser Lieferung und Fahrzeuganmeldung.",
             "title": "Aktionswochen beim Online-Kauf!"
         },
         "breadcrumb": {
-            "back": "Назад"
+            "back": "Back"
         },
         "filters": {
             "locationAndSeller": {
-                "details": "Локация, продавач"
+                "details": "Location, Seller"
             },
             "location": {
                 "areaSearch": {
                     "example": {
-                        "fr": "например Paris или 75001",
-                        "it": "например Roma или 00184",
-                        "nl": "например Amsterdam или 1012 CZ",
-                        "de": "например Berlin или 10243",
-                        "at": "например Wien или 1010",
-                        "default": "Град/ПК",
-                        "es": "например Madrid или 28013",
-                        "be": "например Bruxelles или 1000",
-                        "lu": "например Luxembourg или L-2314",
+                        "fr": "e.g. Paris or 75001",
+                        "it": "e.g. Roma or 00184",
+                        "nl": "e.g. Amsterdam or 1012 CZ",
+                        "de": "e.g. Berlin or 10243",
+                        "at": "e.g. Wien or 1010",
+                        "default": "City/ZIP",
+                        "es": "e.g. Madrid or 28013",
+                        "be": "e.g. Bruxelles or 1000",
+                        "lu": "e.g. Luxembourg or L-2314",
                         "com": "Select a country"
                     },
-                    "error": "Неизвестен град или пощенски код",
-                    "_value": "Град/пощенски код"
+                    "error": "Unknown city or zip code",
+                    "_value": "City/zip code"
                 },
                 "countries": {
-                    "tooltip": "За Германия и Австрия използвайте практичното търсене в радиус. Моля, задайте имената на населените места на немски.",
-                    "_value": "Страна"
+                    "tooltip": "Find vehicles near you. Please enter place or ZIP code in the language of the vehicle location.",
+                    "_value": "Countries"
                 },
-                "radius": "Радиус (километри)",
-                "crossborder": "Трансгранично"
+                "radius": "Radius (km)",
+                "crossborder": "Cross-border"
             },
             "model": {
                 "autocomplete": {
-                    "empty": "Неизвестен модел",
-                    "placeholder": "Всички"
+                    "empty": "Unknown model",
+                    "placeholder": "All"
                 }
             },
             "ot": {
@@ -1694,180 +1666,180 @@
                 },
                 "seals": {
                     "otherSeals": {
-                        "description": "Технически проверени превозни средства с гаранция от други производители",
-                        "label": "Други сертификации на производителя"
+                        "description": "Cars with technical check and guarantee",
+                        "label": "Other Certified Pre-Owned Cars"
                     },
                     "genericSeal": {
-                        "description": "Технически проверени превозни средства с гаранция",
-                        "_value": "Сертификация на производителя"
+                        "description": "Cars with technical check and guarantee",
+                        "_value": "Certified Pre-Owned Cars"
                     }
                 },
                 "car": {
-                    "details": "Подробности за автомобила"
+                    "details": "Basic specifications"
                 },
-                "previousOwners": "Предишни собственици",
-                "condition": "Състояние",
-                "nonSmokingVehicle": "Автомол за непушачи",
-                "fullService": "Поддържан според сервизната книжка.",
-                "environmentalSticker": "Стикер фини частици (поне):",
-                "environment": "Екосъобразност",
+                "previousOwners": "Previous Owners",
+                "condition": "Condition",
+                "nonSmokingVehicle": "Non-smoking Vehicle",
+                "fullService": "Full Service",
+                "environmentalSticker": "Emission Label (at least)",
+                "environment": "Environment",
                 "details": {
                     "numberOfAxles": "Axle configuration",
-                    "vat": "Подлежащ на отчитане ДДС",
-                    "_value": "Подробности за превозното средство",
-                    "mileage": "Пробег",
-                    "price": "Цена (€)",
+                    "vat": "VAT deductible",
+                    "_value": "Basic specifications",
+                    "mileage": "Mileage",
+                    "price": "Price",
                     "fuel": {
-                        "type": "Гориво"
+                        "type": "Fuel type"
                     },
                     "newDriverSuitable": "For new drivers",
-                    "gear": "Скоростна кутия",
+                    "gear": "Gear",
                     "finance": {
                         "rate": "Finance Rate"
                     },
                     "priceEvaluation": {
-                        "topPrice": "Топ оферта",
-                        "tryAgainSoon": "Опитайте след няколко минути да заредите страницата отново.",
-                        "expensivePrice": "Скъпо",
+                        "topPrice": "TOP PRICE",
+                        "tryAgainSoon": "Try to reload the page in some minutes again.",
+                        "expensivePrice": "EXPENSIVE PRICE",
                         "greyLabel": "No Information",
-                        "somewhatExpensivePrice": "Сравнително скъпо",
-                        "link": "Какво е това?",
-                        "title": "AutoScout24 оценка на цената",
-                        "goodPrice": "Добра оферта",
-                        "noPriceInformationAvailable": "Няма налична информация за оценката на цената",
-                        "fairPrice": "Справедлива оферта"
+                        "somewhatExpensivePrice": "SOMEWHAT EXPENSIVE PRICE",
+                        "link": "What is this?",
+                        "title": "AutoScout24 Price Estimation",
+                        "goodPrice": "GOOD PRICE",
+                        "noPriceInformationAvailable": "No price information available.",
+                        "fairPrice": "FAIR PRICE"
                     },
                     "first": {
-                        "registration": "Първа регистрация"
+                        "registration": "First registration"
                     },
-                    "power": "Мощност"
+                    "power": "Power"
                 },
-                "emissionClass": "Екологична категория (поне):",
-                "hadAccident": "Автомобил, претърпял инцидент",
+                "emissionClass": "Euro Emission Class (at least)",
+                "hadAccident": "Had Accident",
                 "type": {
                     "body": {
-                        "type": "Вид каросерия"
+                        "type": "Body type"
                     },
-                    "_value": "Вид превозно средство",
-                    "doors": "Брой врати",
-                    "seats": "Брой седящи места",
+                    "_value": "Body type",
+                    "doors": "Nr. of Doors",
+                    "seats": "Nr. of Seats",
                     "bike": {
-                        "type": "Тип"
+                        "type": "Type"
                     },
                     "beds": "Nr. of Beds"
                 },
                 "generalInspectionEmission": {
-                    "_value": "Нов технически преглед/проверка на отработените газове",
-                    "tooltip": "Превозни средства с нов технически преглед/проверка на отработените газове"
+                    "_value": "General Inspection",
+                    "tooltip": "Vehicles with general inspection and emission check."
                 },
                 "bike": {
-                    "details": "Подробности за мотоциклета"
+                    "details": "Basic specifications"
                 },
-                "particulateFilter": "Партикел филтър"
+                "particulateFilter": "Particulate filter"
             },
             "interior": {
-                "color": "Цвят на тапицерията",
-                "details": "Тапицерия",
-                "upholstery": "Материя"
+                "color": "Interior Color",
+                "details": "Interior",
+                "upholstery": "Upholstery"
             },
             "makeModel": {
                 "extended": {
                     "versionExample": "e.g. Bully"
                 },
-                "model": "Модел",
+                "model": "Model",
                 "car": {
-                    "versionExample": "напр. Plus, GTI и т.н."
+                    "versionExample": "e.g. Plus, GTI, etc."
                 },
-                "edit": "Промяна",
-                "version": "Вариант",
-                "details": "Марка, модел, модификация",
-                "make": "Марка",
+                "edit": "Edit",
+                "version": "Variant",
+                "details": "Make, Model, Version",
+                "make": "Make",
                 "bike": {
-                    "versionExample": "напр. special, super и т.н.",
-                    "details": "Марка, модел, тип"
+                    "versionExample": "e.g. special, super, etc.",
+                    "details": "Make, Model, Type"
                 },
-                "add": "Добавяне на други марки"
+                "add": "Add more Makes/Models"
             },
             "range": {
-                "to": "до",
-                "from": "от",
+                "to": "to",
+                "from": "from",
                 "starting": {
-                    "from": "от"
+                    "from": "from"
                 },
-                "upto": "до макс."
+                "upto": "up to"
             },
             "priceEvaluation": {
                 "categories": {
                     "fair": {
                         "price": {
-                            "text": "Справедлива оферта"
+                            "text": "Fair Price"
                         }
                     },
                     "somewhatExpensive": {
                         "price": {
-                            "text": "Сравнително скъп"
+                            "text": "Somewhat Expensive"
                         }
                     },
                     "good": {
                         "price": {
-                            "text": "Добра оферта"
+                            "text": "Good Price"
                         }
                     },
                     "expensive": {
                         "price": {
-                            "text": "Скъп"
+                            "text": "Expensive"
                         }
                     },
                     "na": {
                         "price": {
-                            "text": "Няма данни"
+                            "text": "No Information"
                         }
                     },
                     "top": {
                         "price": {
-                            "text": "Топ оферта"
+                            "text": "Top Price"
                         }
                     }
                 }
             },
             "make": {
                 "autocomplete": {
-                    "empty": "Неизвестна марка",
-                    "all": "Всички марки",
-                    "others": "Други марки",
-                    "placeholder": "Всички",
-                    "top": "Топ марки"
+                    "empty": "Unknown make",
+                    "all": "All makes",
+                    "others": "Other makes",
+                    "placeholder": "All",
+                    "top": "Top makes"
                 }
             },
-            "reset": "Ново търсене",
+            "reset": "Remove all filters",
             "firstreg": {
                 "autocomplete": {
-                    "empty": "Невалиден период"
+                    "empty": "Invalid range"
                 }
             },
             "seller": {
-                "onlineSince": "Онлайн от",
-                "warranty": "Гаранция",
-                "customerType": "Продавач"
+                "onlineSince": "Online since",
+                "warranty": "Warranty",
+                "customerType": "Seller"
             },
             "equipments": {
-                "comfort": "Комфорт и удобство",
-                "sport": "Спорт",
-                "entertainment": "Забавления и медии",
-                "details": "Оборудване",
-                "accessories": "Аксесоари",
-                "safety": "Сигурност и безопасност"
+                "comfort": "Comfort & Convenience",
+                "sport": "Sports",
+                "entertainment": "Entertainment & Media",
+                "details": "Equipment",
+                "accessories": "Accessories",
+                "safety": "Safety & Security"
             },
             "exterior": {
-                "rims": "Джанти",
+                "rims": "Rims",
                 "body": {
-                    "color": "Цвят"
+                    "color": "Body Color"
                 },
-                "paintwork": "Вид лакиране",
-                "details": "Лак, джанти"
+                "paintwork": "Paintwork",
+                "details": "Exterior"
             },
             "search": {
-                "criteria": "Критерии на търсенето"
+                "criteria": "Search Criteria"
             }
         },
         "ai": {
@@ -1929,75 +1901,75 @@
         },
         "vehicleDetails": {
             "usageState": {
-                "NewUsedAccident": "Покажи също",
-                "Accident": "Покажи само",
-                "NewUsed": "Не показвай"
+                "NewUsedAccident": "Show also",
+                "Accident": "Show only",
+                "NewUsed": "Don't show"
             },
             "fuelType": {
-                "electric": "Електро",
-                "gasoline": "Бензин",
-                "_value": "Гориво",
-                "twostroke": "Двутактов",
-                "electricGasoline": "Електро/бензин",
-                "hydrogene": "Водород",
+                "electric": "Electric",
+                "gasoline": "Gasoline",
+                "_value": "Fuel",
+                "twostroke": "Two Stroke Gasoline",
+                "electricGasoline": "Electric/Gasoline",
+                "hydrogene": "Hydrogene",
                 "others": "Others",
-                "gas": "Газ",
-                "diesel": "Дизел",
-                "ethanol": "Етанол",
-                "lpg": "Втечнен Пропан -бутан LPG",
-                "cng": "Компресиран природен газ CNG  /метан/",
-                "electricDiesel": "Електро/дизел"
+                "gas": "Gas",
+                "diesel": "Diesel",
+                "ethanol": "Ethanol",
+                "lpg": "Liquified petroleum gas (LPG)",
+                "cng": "Compressed natural gas (CNG)",
+                "electricDiesel": "Electric/Diesel"
             },
             "bodyType": {
-                "sedan": "Лимузина",
-                "transporter": "Бус",
-                "_value": "Тип каросерия",
-                "coupe": "Купе",
-                "van": "Ван/минибус",
-                "convertible": "Кабрио",
+                "sedan": "Sedans",
+                "transporter": "Transporter",
+                "_value": "Body",
+                "coupe": "Coupe",
+                "van": "Van",
+                "convertible": "Convertible",
                 "bike": {
-                    "chopper": "Чопър/круизер",
-                    "touringenduro": "Ендуро турист",
-                    "tourer": "Турист",
-                    "supermoto": "Супермото",
-                    "moped": "Мотопед/електрически мотопед",
-                    "trial": "Кросов мотор",
-                    "classic": "Ретро",
-                    "scooter": "Скутер",
-                    "trike": "Триколесен",
-                    "supersport": "Пистов",
-                    "others": "Други",
-                    "streetfighter": "Стрийтфайтър",
-                    "quad": "АТВ",
-                    "naked": "Класически",
-                    "minibike": "Минимотор",
-                    "cross": "Мотокрос",
-                    "rally": "Рали",
-                    "racing": "Състезателен",
-                    "enduro": "Ендуро",
-                    "sidecar": "Мотоциклет с кош",
-                    "sporttouring": "Спортен турист"
+                    "chopper": "Chopper",
+                    "touringenduro": "Touring Enduro",
+                    "tourer": "Tourer",
+                    "supermoto": "Supermoto",
+                    "moped": "Moped",
+                    "trial": "Trials Bike",
+                    "classic": "Classic",
+                    "scooter": "Scooter",
+                    "trike": "Three Wheeler",
+                    "supersport": "Supersport",
+                    "others": "Others",
+                    "streetfighter": "Streetfighter",
+                    "quad": "Quad",
+                    "naked": "Naked Bike",
+                    "minibike": "Minibike",
+                    "cross": "Motocross",
+                    "rally": "Rally",
+                    "racing": "Racing",
+                    "enduro": "Enduro Bike",
+                    "sidecar": "Sidecar",
+                    "sporttouring": "Sport Touring"
                 },
-                "offroad": "SUV/джип",
-                "other": "Други",
-                "stationwagon": "Комби",
-                "compact": "Компактен"
+                "offroad": "SUV/Off-Road",
+                "other": "Other",
+                "stationwagon": "Station wagon",
+                "compact": "Compact"
             },
             "gearingType": {
-                "automatic": "Автоматик",
-                "semiautomatic": "Полуавтоматик",
-                "manual": "Мануален"
+                "automatic": "Automatic",
+                "semiautomatic": "Semi-automatic",
+                "manual": "Manual"
             },
             "articleOfferType": {
-                "Demonstration": "Демонстрационно превозно средство",
-                "Used": "Употребяван",
-                "AntiqueClassic": "Ретро",
-                "Preregistered": "Временна регистрация",
-                "New": "Нов",
-                "EmployeeCar": "Автомобил, произведен преди по-малко от година"
+                "Demonstration": "Demonstration",
+                "Used": "Used",
+                "AntiqueClassic": "Antique / Classic",
+                "Preregistered": "Pre-registered",
+                "New": "New",
+                "EmployeeCar": "Employee's Car"
             },
             "power": {
-                "hp": "к.с.",
+                "hp": "hp",
                 "kw": "kW"
             },
             "sentence": {
@@ -2018,11 +1990,11 @@
         },
         "header": {
             "sticky": {
-                "results": "Резултати от търсенето",
-                "result": "Резултат от търсенето"
+                "results": "Search results",
+                "result": "Search result"
             },
-            "results": "Резултати",
-            "result": "Резултат"
+            "results": "Offers",
+            "result": "Offers"
         },
         "equipment": {
             "bedtype": {
@@ -2030,12 +2002,12 @@
                 "title": "Types of beds"
             },
             "car": {
-                "hideRemainingFilters": "По-малко критерии за оборудване",
-                "showRemainingFilters": "Повече критерии за оборудване"
+                "hideRemainingFilters": "Show less equipment",
+                "showRemainingFilters": "Show more equipment"
             }
         },
         "detail": {
-            "search": "Подробно търсене"
+            "search": "Detail Search"
         },
         "personalization": {
             "overlay": {
@@ -2053,65 +2025,65 @@
             }
         },
         "pagination": {
-            "next": "Напред",
-            "previous": "Назад"
+            "next": "Next",
+            "previous": "Previous"
         },
         "seller": {
             "customerType": {
-                "private": "Частно",
-                "dealer": "Търговец"
+                "private": "Private",
+                "dealer": "Dealer"
             },
             "onlineSince": {
-                "weeks": "седмици",
-                "day": "ден",
-                "days": "дни",
-                "week": "седмица"
+                "weeks": "weeks",
+                "day": "day",
+                "days": "days",
+                "week": "week"
             }
         },
-        "and": "и",
+        "and": "and",
         "exterior": {
             "paintwork": {
-                "metallic": "Металик"
+                "metallic": "Metallic"
             },
             "rims": {
-                "alloyWheels": "Алуминиеви джанти"
+                "alloyWheels": "Alloy Wheels"
             }
         },
         "searchMaskFragment": {
             "filters": {
                 "location": {
-                    "radius": "Радиус"
+                    "radius": "Radius"
                 },
-                "model": "Модел",
+                "model": "Model",
                 "price": {
-                    "to": "Цена до (€)"
+                    "to": "Price to (€)"
                 },
-                "crossborder": "Трансгранично",
+                "crossborder": "Cross-border",
                 "financeRate": {
                     "to": "Rate to (€)"
                 },
                 "firstRegistration": {
-                    "from": "Първа регистрация след"
+                    "from": "First Registration"
                 },
-                "bodytype": "Вид каросерия",
-                "make": "Марка",
+                "bodytype": "Body type",
+                "make": "Make",
                 "offer": {
-                    "new": "Нов",
-                    "used": "Използван",
-                    "preregistered": "Временна регистрация"
+                    "new": "New",
+                    "used": "Used",
+                    "preregistered": "Preregistered"
                 }
             },
             "error": {
-                "header": "Съжаляваме. Това не биваше да се случва.",
-                "button": "Назад към страницата с резултатите.",
-                "copyright": "© Copyright 2017 AutoScout24 GmbH. Всички права запазени."
+                "header": "Sorry. That should not have happened.",
+                "button": "Go to our list page",
+                "copyright": "© Copyright 2017 AutoScout24 GmbH. All Rights reserved."
             },
-            "refineSearch": "Други опции за търсене",
+            "refineSearch": "Refine Search",
             "count": {
-                "results": "{0} резултати",
-                "notAvailable": "Покажи резултатите",
-                "resultTmpl": "$count резултати",
-                "resultsTmpl": "$count резултати"
+                "results": "{0} results",
+                "notAvailable": "Show Results",
+                "resultTmpl": "$count results",
+                "resultsTmpl": "$count results"
             }
         }
     },
@@ -2122,57 +2094,57 @@
     "allFuelTypeIds": [
         {
             "id": "B",
-            "name": "бензин"
+            "name": "Gasoline"
         },
         {
             "id": "D",
-            "name": "дизел"
+            "name": "Diesel"
         },
         {
             "id": "M",
-            "name": "етанол"
+            "name": "Ethanol"
         },
         {
             "id": "E",
-            "name": "електричество"
+            "name": "Electric"
         },
         {
             "id": "H",
-            "name": "водород"
+            "name": "Hydrogen"
         },
         {
             "id": "L",
-            "name": "автогаз"
+            "name": "LPG"
         },
         {
             "id": "C",
-            "name": "CNG - Метан"
+            "name": "CNG"
         },
         {
             "id": "2",
-            "name": "Eл/Бензин"
+            "name": "Electric/Gasoline"
         },
         {
             "id": "O",
-            "name": "Други"
+            "name": "Others"
         },
         {
             "id": "3",
-            "name": "Eл/Дизел"
+            "name": "Electric/Diesel"
         }
     ],
     "allGearIds": [
         {
             "id": "M",
-            "name": "ръчна кутия"
+            "name": "Manual"
         },
         {
             "id": "A",
-            "name": "автоматик"
+            "name": "Automatic"
         },
         {
             "id": "S",
-            "name": "Полуавтоматик"
+            "name": "Semi-automatic"
         }
     ],
     "allAccidentOptions": {
@@ -2192,113 +2164,113 @@
     "allOnlineSinceIds": [
         {
             "id": "1",
-            "name": "1 Ден"
+            "name": "1 day"
         },
         {
             "id": "2",
-            "name": "2 Дни"
+            "name": "2 days"
         },
         {
             "id": "3",
-            "name": "3 Дни"
+            "name": "3 days"
         },
         {
             "id": "4",
-            "name": "4 Дни"
+            "name": "4 days"
         },
         {
             "id": "5",
-            "name": "5 Дни"
+            "name": "5 days"
         },
         {
             "id": "6",
-            "name": "6 Дни"
+            "name": "6 days"
         },
         {
             "id": "7",
-            "name": "1 Седмица"
+            "name": "1 week"
         },
         {
             "id": "14",
-            "name": "2 Седмици"
+            "name": "2 weeks"
         }
     ],
     "allUpholsteryIds": [
         {
             "id": "AL",
-            "name": "Алкантара"
+            "name": "alcantara"
         },
         {
             "id": "CL",
-            "name": "Материал"
+            "name": "Cloth"
         },
         {
             "id": "FL",
-            "name": "Пална кожа"
+            "name": "Full leather"
         },
         {
             "id": "PL",
-            "name": "Частична кожа"
+            "name": "Part leather"
         },
         {
             "id": "VL",
-            "name": "Велур"
+            "name": "Velour"
         },
         {
             "id": "OT",
-            "name": "други"
+            "name": "Other"
         }
     ],
     "allEmissionClassValues": [
         {
             "id": 1,
-            "name": "Eвро 1"
+            "name": "Euro 1"
         },
         {
             "id": 2,
-            "name": "Eвро 2"
+            "name": "Euro 2"
         },
         {
             "id": 3,
-            "name": "Eвро 3"
+            "name": "Euro 3"
         },
         {
             "id": 4,
-            "name": "Eвро 4"
+            "name": "Euro 4"
         },
         {
             "id": 5,
-            "name": "Eвро 5"
+            "name": "Euro 5"
         },
         {
             "id": 6,
-            "name": "Eвро 6"
+            "name": "Euro 6"
         },
         {
             "id": 7,
-            "name": "Eвро 6c"
+            "name": "Euro 6c"
         },
         {
             "id": 9,
-            "name": "Eвро 6d-TEMP"
+            "name": "Euro 6d-TEMP"
         },
         {
             "id": 8,
-            "name": "Eвро 6d"
+            "name": "Euro 6d"
         }
     ],
     "allEmissionStickerValues": [
         {
             "id": 2,
-            "name": "мин. 2 (Червен)"
+            "name": "min. 2 (Red)"
         },
         {
             "id": 3,
-            "name": "мин. 3 (Жълт)"
+            "name": "min. 3 (Yellow)"
         },
         {
             "id": 4,
-            "name": "мин. 4 (Зелен)"
+            "name": "min. 4 (Green)"
         }
     ],
     "grossWeight": {
@@ -2355,47 +2327,47 @@
         {
             "key": "eu",
             "value": "",
-            "label": "Европа"
+            "label": "Europe"
         },
         {
             "key": "at",
             "value": "A",
-            "label": "Австрия"
+            "label": "Austria"
         },
         {
             "key": "be",
             "value": "B",
-            "label": "Белгия"
+            "label": "Belgium"
         },
         {
             "key": "de",
             "value": "D",
-            "label": "Германия"
+            "label": "Germany"
         },
         {
             "key": "es",
             "value": "E",
-            "label": "Испания"
+            "label": "Spain"
         },
         {
             "key": "fr",
             "value": "F",
-            "label": "Франция"
+            "label": "France"
         },
         {
             "key": "it",
             "value": "I",
-            "label": "Италия"
+            "label": "Italy"
         },
         {
             "key": "lu",
             "value": "L",
-            "label": "Люксембург"
+            "label": "Luxemburg"
         },
         {
             "key": "nl",
             "value": "NL",
-            "label": "Холандия"
+            "label": "Netherlands"
         }
     ],
     "zipRadiusStepsConfig": {
@@ -2440,8 +2412,8 @@
         ]
     },
     "countryForTld": "",
-    "isLanguageVersionCountry": false,
-    "initialTotalCount": 2286880,
+    "isLanguageVersionCountry": true,
+    "initialTotalCount": 2290235,
     "endpoints": {
         "models": {
             "url": "https://search-filters-provider.a.autoscout24.com/graphql",
@@ -2464,17 +2436,17 @@
             "pass": "884656f65765dc240f30caf8393974a6"
         },
         "normalSearch": {
-            "url": "/rezultati",
+            "url": "/results",
             "user": null,
             "pass": null
         },
         "refineSearch": {
-            "url": "/korekcijatursene",
+            "url": "/refinesearch",
             "user": null,
             "pass": null
         },
         "listings": {
-            "url": "/classified-list/react-listelements/bg?&toguru=ignite-v2-detailpage-redirect%3Dfalse%7Cgecloud-ops-financing-example-fragment%3Dfalse%7Cs24-media-ab-test-3%3Dfalse%7Conline-transaction-free-campaign%3Dfalse%7Cfed-ads-test%3Dfalse%7Conline-transaction-info%3Dfalse%7Cfed-ads-spain%3Dfalse%7Conline-transaction-nl-price-test-ab%3Dfalse%7Ccxp-retention-watchlist-sort%3Dfalse%7Cgecloud-recommender-shadow%3Dfalse%7Cfed-sbr-nl-test%3Dfalse%7Ccldt-make-model-category-links%3Dtrue%7Ccxp-rebranding%3Dfalse%7Cgecloud-ops-financing-example%3Dfalse%7Cgecloud-ops-optimizely%3Dtrue%7Cs24-media-osa-rollout%3Dtrue%7Ctransaction-fragment-render%3Dfalse%7Cbrand-variation-google-blue%3Dfalse%7Ccxp-dekra-watchlist-panel%3Dtrue%7Cdealer-info-homepage%3Dtrue%7Ccxp-tuev-watchlist-panel%3Dfalse%7Conline-transaction-buynow-button-checkout%3Dfalse%7Ckondor-refresh-cache%3Dtrue%7Cfed-belgium-axa-test%3Dfalse%7Cfed-belgium-axa-show%3Dfalse%7Cfed-dropdown-design%3Dfalse%7Cfed-tuv-reports-section%3Dfalse%7Cbrand-variation-coral%3Dfalse%7Conline-transaction-buynow-button%3Dfalse%7Cfed-car-check-section%3Dfalse%7Ckondor-ops-price-authority-consumer-web%3Dfalse%7Cdmm-online-transaction-listing-label%3Dfalse%7Cgecloud-ops-lazyload-summary-images%3Dtrue%7Cfed-netherlands-sbr-and-new-stage-links%3Dfalse%7Cfed-show-slice-on-top%3Dfalse%7Cfed-car-check-trapdoor%3Dfalse%7Cs24-media-ab-test-1%3Dfalse%7Cgecloud-ops-fed-params-for-raw-mail-templates%3Dtrue%7Cbrand-variation-jeans-blue%3Dfalse%7Ccxp-retention-ops-fuse-signup%3Dfalse%7Ccxp-recaptcha-v3%3Dfalse%7Cbrand-variation-yellow%3Dfalse%7Ckondor-test%3Dfalse%7Cdealer-info-migration%3Dfalse%7Cs24-media-ab-test-2%3Dfalse%7Cgecloud-ops-event-publisher%3Dtrue%7Cs24-media-osa-rollout-ab-test%3Dfalse%7Ccxp-new-list-item%3Dtrue%7Cfed-ops-italy-agos-stage%3Dfalse%7Cs24-media-billboard-listpage-test%3Dfalse%7Cgecloud-ops-list-rate-overlay%3Dfalse%7Cgecloud-lead-form-experiment%3Dtrue%7Cfed-sbr-nl-show%3Dfalse%7Cgecloud-ops-fed-afterlead-integration%3Dtrue%7Cgecloud-ignite-no-parkdeck-on-lead%3Dfalse%7Cgecloud-ops-gallery-edf-ad%3Dfalse%7Conline-transaction-nl-price-test%3Dfalse%7Cgecloud-classified-detail-without-media%3Dtrue%7Cgecloud-ops-seals%3Dtrue%7Cfed-ops-italy-agos-slice%3Dfalse&isSeoListPage=false",
+            "url": "/classified-list/react-listelements/en?&toguru=ignite-v2-detailpage-redirect%3Dfalse%7Cgecloud-ops-financing-example-fragment%3Dfalse%7Cs24-media-ab-test-3%3Dfalse%7Conline-transaction-free-campaign%3Dfalse%7Cfed-ads-test%3Dfalse%7Conline-transaction-info%3Dfalse%7Cfed-ads-spain%3Dfalse%7Conline-transaction-nl-price-test-ab%3Dfalse%7Ccxp-retention-watchlist-sort%3Dfalse%7Cgecloud-recommender-shadow%3Dfalse%7Cfed-sbr-nl-test%3Dfalse%7Ccldt-make-model-category-links%3Dtrue%7Ccxp-rebranding%3Dfalse%7Cgecloud-ops-financing-example%3Dfalse%7Cgecloud-ops-optimizely%3Dtrue%7Cs24-media-osa-rollout%3Dtrue%7Ctransaction-fragment-render%3Dfalse%7Cbrand-variation-google-blue%3Dfalse%7Ccxp-dekra-watchlist-panel%3Dtrue%7Cdealer-info-homepage%3Dtrue%7Ccxp-tuev-watchlist-panel%3Dfalse%7Conline-transaction-buynow-button-checkout%3Dfalse%7Ckondor-refresh-cache%3Dtrue%7Cfed-belgium-axa-test%3Dfalse%7Cfed-belgium-axa-show%3Dfalse%7Cfed-dropdown-design%3Dfalse%7Cfed-tuv-reports-section%3Dfalse%7Cbrand-variation-coral%3Dfalse%7Conline-transaction-buynow-button%3Dfalse%7Cfed-car-check-section%3Dfalse%7Ckondor-ops-price-authority-consumer-web%3Dfalse%7Cdmm-online-transaction-listing-label%3Dfalse%7Cgecloud-ops-lazyload-summary-images%3Dtrue%7Cfed-netherlands-sbr-and-new-stage-links%3Dfalse%7Cfed-show-slice-on-top%3Dfalse%7Cfed-car-check-trapdoor%3Dfalse%7Cs24-media-ab-test-1%3Dfalse%7Cgecloud-ops-fed-params-for-raw-mail-templates%3Dtrue%7Cbrand-variation-jeans-blue%3Dfalse%7Ccxp-retention-ops-fuse-signup%3Dfalse%7Ccxp-recaptcha-v3%3Dfalse%7Cbrand-variation-yellow%3Dfalse%7Ckondor-test%3Dfalse%7Cdealer-info-migration%3Dfalse%7Cs24-media-ab-test-2%3Dfalse%7Cgecloud-ops-event-publisher%3Dtrue%7Cs24-media-osa-rollout-ab-test%3Dfalse%7Ccxp-new-list-item%3Dtrue%7Cfed-ops-italy-agos-stage%3Dfalse%7Cs24-media-billboard-listpage-test%3Dfalse%7Cgecloud-ops-list-rate-overlay%3Dfalse%7Cgecloud-lead-form-experiment%3Dtrue%7Cfed-sbr-nl-show%3Dfalse%7Cgecloud-ops-fed-afterlead-integration%3Dtrue%7Cgecloud-ignite-no-parkdeck-on-lead%3Dfalse%7Cgecloud-ops-gallery-edf-ad%3Dfalse%7Conline-transaction-nl-price-test%3Dfalse%7Cgecloud-classified-detail-without-media%3Dtrue%7Cgecloud-ops-seals%3Dtrue%7Cfed-ops-italy-agos-slice%3Dfalse&isSeoListPage=false",
             "user": null,
             "pass": null
         },
@@ -2494,17 +2466,17 @@
             "pass": null
         },
         "priceEvaluationExplanation": {
-            "url": "/priceevaluation/price-label-explanation-fragment?culture=bg-BG&toguru=kondor-refresh-cache=true|kondor-ops-price-authority-consumer-web=false|kondor-expensive-price-category=false|kondor-test=false|kondor-explanation-v2=false&PageSpeed=off&ModPagespeed=off",
+            "url": "/priceevaluation/price-label-explanation-fragment?culture=en-GB&toguru=kondor-refresh-cache=true|kondor-ops-price-authority-consumer-web=false|kondor-expensive-price-category=false|kondor-test=false|kondor-explanation-v2=false&PageSpeed=off&ModPagespeed=off",
             "user": null,
             "pass": null
         },
         "aiSearch": {
-            "url": "/classified-list/ai-search/search/%7B:searchText%7D?articleType=%7B%3AarticleType%7D&countryCode=bg",
+            "url": "/classified-list/ai-search/search/%7B:searchText%7D?articleType=%7B%3AarticleType%7D&countryCode=com",
             "user": null,
             "pass": null
         },
         "aiSearchConfig": {
-            "url": "/classified-list/react-filters/ai-search/config/?culture=bg-BG",
+            "url": "/classified-list/react-filters/ai-search/config/?culture=en-GB",
             "user": null,
             "pass": null
         },
@@ -2514,8 +2486,8 @@
             "pass": null
         }
     },
-    "listPageUrl": "/rezultati",
-    "refineSearchUrl": "/korekcijatursene",
+    "listPageUrl": "/results",
+    "refineSearchUrl": "/refinesearch",
     "savedSearchesUrl": "/account/searches",
     "localStorage": {
         "key": "as24HomeFilters",
@@ -2524,73 +2496,73 @@
     "mileageSteps": [
         {
             "id": 2500,
-            "name": "2 500"
+            "name": "2,500"
         },
         {
             "id": 5000,
-            "name": "5 000"
+            "name": "5,000"
         },
         {
             "id": 10000,
-            "name": "10 000"
+            "name": "10,000"
         },
         {
             "id": 20000,
-            "name": "20 000"
+            "name": "20,000"
         },
         {
             "id": 30000,
-            "name": "30 000"
+            "name": "30,000"
         },
         {
             "id": 40000,
-            "name": "40 000"
+            "name": "40,000"
         },
         {
             "id": 50000,
-            "name": "50 000"
+            "name": "50,000"
         },
         {
             "id": 60000,
-            "name": "60 000"
+            "name": "60,000"
         },
         {
             "id": 70000,
-            "name": "70 000"
+            "name": "70,000"
         },
         {
             "id": 80000,
-            "name": "80 000"
+            "name": "80,000"
         },
         {
             "id": 90000,
-            "name": "90 000"
+            "name": "90,000"
         },
         {
             "id": 100000,
-            "name": "100 000"
+            "name": "100,000"
         },
         {
             "id": 125000,
-            "name": "125 000"
+            "name": "125,000"
         },
         {
             "id": 150000,
-            "name": "150 000"
+            "name": "150,000"
         },
         {
             "id": 175000,
-            "name": "175 000"
+            "name": "175,000"
         },
         {
             "id": 200000,
-            "name": "200 000"
+            "name": "200,000"
         }
     ],
-    "tld": "BG",
+    "tld": "COM",
     "isAggregatedOfferTypes": true,
     "toggles": {
-        "crossBorderList": false,
+        "crossBorderList": true,
         "priceEvaluationFilters": false,
         "financeRateFilter": false,
         "stickyListPageButtonExperiment": true,
@@ -2615,23 +2587,31 @@
         {
             "key": {
                 "id": "N",
-                "name": "нови"
+                "name": "New"
             },
             "values": [
-                "N",
-                "S"
+                "N"
             ]
         },
         {
             "key": {
                 "id": "U",
-                "name": "употребявани"
+                "name": "Used"
             },
             "values": [
                 "U",
                 "D",
                 "J",
                 "O"
+            ]
+        },
+        {
+            "key": {
+                "id": "S",
+                "name": "Pre-registered"
+            },
+            "values": [
+                "S"
             ]
         }
     ],
@@ -2642,263 +2622,263 @@
         },
         {
             "id": "2",
-            "name": "Въздушна възглавница"
+            "name": "Driver-side airbag"
         },
         {
             "id": "3",
-            "name": "Аirbag дясна седалка"
+            "name": "Passenger-side airbag"
         },
         {
             "id": "4",
-            "name": "Шибедах"
+            "name": "Sunroof"
         },
         {
             "id": "10",
-            "name": "Радио"
+            "name": "Radio"
         },
         {
             "id": "11",
-            "name": "4х4"
+            "name": "4WD"
         },
         {
             "id": "13",
-            "name": "Ел. стъкла"
+            "name": "Power windows"
         },
         {
             "id": "15",
-            "name": "Лети джанти"
+            "name": "Alloy wheels"
         },
         {
             "id": "17",
-            "name": "Централно заключване"
+            "name": "Central door lock"
         },
         {
             "id": "18",
-            "name": "Аларма"
+            "name": "Alarm system"
         },
         {
             "id": "23",
-            "name": "Навигация"
+            "name": "Navigation system"
         },
         {
             "id": "26",
-            "name": "Имобилайзер"
+            "name": "Immobilizer"
         },
         {
             "id": "32",
-            "name": "Страничен Аirbag"
+            "name": "Side airbag"
         },
         {
             "id": "34",
-            "name": "Отопление на седалките"
+            "name": "Seat heating"
         },
         {
             "id": "36",
-            "name": "Пригоден за инвалиди"
+            "name": "Handicapped enabled"
         },
         {
             "id": "38",
-            "name": "Темпомат"
+            "name": "Cruise control"
         },
         {
             "id": "39",
-            "name": "Ксенонови фарове"
+            "name": "Xenon headlights"
         },
         {
             "id": "41",
-            "name": "Бордови компютър"
+            "name": "On-board computer"
         },
         {
             "id": "42",
-            "name": "ESP"
+            "name": "Electronic stability control"
         },
         {
             "id": "19",
-            "name": "Фарове за мъгла"
+            "name": "Fog lights"
         },
         {
             "id": "20",
-            "name": "Теглич"
+            "name": "Trailer hitch"
         },
         {
             "id": "5",
-            "name": "Климатик"
+            "name": "Air conditioning"
         },
         {
             "id": "27",
-            "name": "Покривна греда"
+            "name": "Roof rack"
         },
         {
             "id": "12",
-            "name": "Серво управление"
+            "name": "Power steering"
         },
         {
             "id": "30",
-            "name": "Климатроник"
+            "name": "Automatic climate control"
         },
         {
             "id": "31",
-            "name": "Тракшън-контрол"
+            "name": "Traction control"
         },
         {
             "id": "16",
-            "name": "Ел. седалки"
+            "name": "Electrically adjustable seats"
         },
         {
             "id": "43",
-            "name": "MP3 плеър"
+            "name": "MP3"
         },
         {
             "id": "50",
-            "name": "Панорамен покрив"
+            "name": "Panorama roof"
         },
         {
             "id": "52",
-            "name": "стационарно парно"
+            "name": "Auxiliary heating"
         },
         {
             "id": "112",
-            "name": "Спортен пакет"
+            "name": "Sport package"
         },
         {
             "id": "113",
-            "name": "Старт/Стоп система"
+            "name": "Start-stop system"
         },
         {
             "id": "114",
-            "name": "Мултифункционален волан"
+            "name": "Multi-function steering wheel"
         },
         {
             "id": "115",
-            "name": "Дневни светлини"
+            "name": "Daytime running lights"
         },
         {
             "id": "116",
-            "name": "Спортно окачване"
+            "name": "Sport suspension"
         },
         {
             "id": "117",
-            "name": "Спортни седалки"
+            "name": "Sport seats"
         },
         {
             "id": "118",
-            "name": "Светлини за завиване"
+            "name": "Adaptive headlights"
         },
         {
             "id": "119",
-            "name": "Багажник за ски"
+            "name": "Ski bag"
         },
         {
             "id": "133",
-            "name": "Темпомат с функция за aвтоматичен контрол на дистанцията"
+            "name": "Adaptive Cruise Control"
         },
         {
             "id": "134",
-            "name": "Подлакътник"
+            "name": "Armrest"
         },
         {
             "id": "135",
-            "name": "Подгряване на предното стъкло"
+            "name": "Electrically heated windshield"
         },
         {
             "id": "136",
-            "name": "Подгряване на волана"
+            "name": "Heated steering wheel"
         },
         {
             "id": "137",
-            "name": "Асистент за изкачване при наклон"
+            "name": "Hill Holder"
         },
         {
             "id": "138",
-            "name": "Радио с цифрови честоти"
+            "name": "Digital radio"
         },
         {
             "id": "139",
-            "name": "Електрическо отваряне на багажника"
+            "name": "Electric tailgate"
         },
         {
             "id": "140",
-            "name": "LED фарове"
+            "name": "LED Headlights"
         },
         {
             "id": "141",
-            "name": "Дневни светлини"
+            "name": "LED Daytime Running Lights"
         },
         {
             "id": "142",
-            "name": "Кожен волан"
+            "name": "Leather steering wheel"
         },
         {
             "id": "143",
-            "name": "Ортопедични седалки"
+            "name": "Lumbar support"
         },
         {
             "id": "144",
-            "name": "Въздушно окачване"
+            "name": "Air suspension"
         },
         {
             "id": "145",
-            "name": "Масажиращи седалки"
+            "name": "Massage seats"
         },
         {
             "id": "146",
-            "name": "Система за разпознаване на умората"
+            "name": "Driver drowsiness detection"
         },
         {
             "id": "147",
-            "name": "Система за нощно виждане"
+            "name": "Night view assist"
         },
         {
             "id": "148",
-            "name": "EBS; Система за аварийно спиране"
+            "name": "Emergency brake assistant"
         },
         {
             "id": "149",
-            "name": "Аварийна система за пътна помощ"
+            "name": "Emergency system"
         },
         {
             "id": "150",
-            "name": "Система за контрол на налягането в гумите"
+            "name": "Tire pressure monitoring system"
         },
         {
             "id": "151",
-            "name": "разположени зад волана"
+            "name": "Shift paddles"
         },
         {
             "id": "152",
-            "name": "Плъзгаща врата"
+            "name": "Sliding door"
         },
         {
             "id": "153",
-            "name": "Безключово отключване"
+            "name": "Keyless central door lock"
         },
         {
             "id": "154",
-            "name": "Вентилирани седалки"
+            "name": "Seat ventilation"
         },
         {
             "id": "155",
-            "name": "Звукова система"
+            "name": "Sound system"
         },
         {
             "id": "156",
-            "name": "Гласови команди"
+            "name": "Voice Control"
         },
         {
             "id": "157",
-            "name": "Система за предупреждение при неволно напускане на пътната лента"
+            "name": "Lane departure warning system"
         },
         {
             "id": "158",
-            "name": "Функция за предупреждение за обекти в страничните мъртви ъгли"
+            "name": "Blind spot monitor"
         },
         {
             "id": "159",
-            "name": "Тъчскрийн"
+            "name": "Touch screen"
         },
         {
             "id": "160",
-            "name": "Телевизор"
+            "name": "Television"
         },
         {
             "id": "161",
@@ -2906,171 +2886,171 @@
         },
         {
             "id": "162",
-            "name": "Разпознаване на пътни знаци"
+            "name": "Traffic sign recognition"
         },
         {
             "id": "121",
-            "name": "Електрически странични огледала"
+            "name": "Electrical side mirrors"
         },
         {
             "id": "122",
-            "name": "Блутут/Bluetooth"
+            "name": "Bluetooth"
         },
         {
             "id": "123",
-            "name": "Head-Up дисплей"
+            "name": "Heads-up display"
         },
         {
             "id": "124",
-            "name": "Устройство свободни ръце"
+            "name": "Hands-free equipment"
         },
         {
             "id": "125",
-            "name": "Изофикс система"
+            "name": "Isofix"
         },
         {
             "id": "126",
-            "name": "Светлинен сензор"
+            "name": "Light sensor"
         },
         {
             "id": "127",
-            "name": "Сензор за дъжд"
+            "name": "Rain sensor"
         },
         {
             "id": "128",
-            "name": "Предни сензори за паркиране"
+            "name": "Parking assist system sensors front"
         },
         {
             "id": "129",
-            "name": "Задни сензори за паркиране"
+            "name": "Parking assist system sensors rear"
         },
         {
             "id": "130",
-            "name": "Камера в помощ на паркирането"
+            "name": "Parking assist system camera"
         },
         {
             "id": "131",
-            "name": "Автоматична система за паркиране"
+            "name": "Parking assist system self-steering"
         },
         {
             "id": "132",
-            "name": "Компактдиск/CD"
+            "name": "CD player"
         }
     ],
     "conditionEquipments": [
         {
             "id": "37",
-            "name": "Гаранция"
+            "name": "Guarantee"
         },
         {
             "id": "49",
-            "name": "Обслужване по сервизна книжка"
+            "name": "With full service history"
         },
         {
             "id": "53",
-            "name": "Партикел филтър"
+            "name": "Particulate filter"
         },
         {
             "id": "110",
-            "name": "без превозно средство за пушене"
+            "name": "Non-smoking vehicle"
         }
     ],
     "allBodyColorIds": [
         {
             "id": 1,
-            "name": "бежов",
+            "name": "Beige",
             "cssClassName": "beige"
         },
         {
             "id": 2,
-            "name": "син",
+            "name": "Blue",
             "cssClassName": "blue"
         },
         {
             "id": 3,
-            "name": "кафяв",
+            "name": "Brown",
             "cssClassName": "brown"
         },
         {
             "id": 4,
-            "name": "бронзов",
+            "name": "Bronze",
             "cssClassName": "bronze"
         },
         {
             "id": 5,
-            "name": "жълт",
+            "name": "Yellow",
             "cssClassName": "yellow"
         },
         {
             "id": 6,
-            "name": "сив",
+            "name": "Grey",
             "cssClassName": "grey"
         },
         {
             "id": 7,
-            "name": "зелен",
+            "name": "Green",
             "cssClassName": "green"
         },
         {
             "id": 10,
-            "name": "червен",
+            "name": "Red",
             "cssClassName": "red"
         },
         {
             "id": 11,
-            "name": "черен",
+            "name": "Black",
             "cssClassName": "black"
         },
         {
             "id": 12,
-            "name": "сребрист",
+            "name": "Silver",
             "cssClassName": "silver"
         },
         {
             "id": 13,
-            "name": "виолетов",
+            "name": "Violet",
             "cssClassName": "violet"
         },
         {
             "id": 14,
-            "name": "бял",
+            "name": "White",
             "cssClassName": "white"
         },
         {
             "id": 15,
-            "name": "оранжев",
+            "name": "Orange",
             "cssClassName": "orange"
         },
         {
             "id": 16,
-            "name": "Златен",
+            "name": "Gold",
             "cssClassName": "gold"
         }
     ],
     "allInteriorColorIds": [
         {
             "id": 1,
-            "name": "бежов",
+            "name": "Beige",
             "cssClassName": "beige"
         },
         {
             "id": 2,
-            "name": "черен",
+            "name": "Black",
             "cssClassName": "black"
         },
         {
             "id": 3,
-            "name": "Cив",
+            "name": "Grey",
             "cssClassName": "grey"
         },
         {
             "id": 4,
-            "name": "кафяв",
+            "name": "Brown",
             "cssClassName": "brown"
         },
         {
             "id": 5,
-            "name": "други",
+            "name": "Other",
             "cssClassName": "other"
         }
     ],
@@ -3079,17 +3059,17 @@
     "allSellerTypes": [
         {
             "id": "P",
-            "name": "Частно"
+            "name": "Private"
         },
         {
             "id": "D",
-            "name": "Търговец"
+            "name": "Dealer"
         }
     ],
     "allPowerTypes": [
         {
             "id": "hp",
-            "name": "к.с."
+            "name": "hp"
         },
         {
             "id": "kw",
@@ -3099,40 +3079,40 @@
     "allPaintWorks": [
         {
             "id": "M",
-            "name": "Металик"
+            "name": "Metallic"
         }
     ],
     "allPreviousOwnersIds": [
         {
             "id": 1,
-            "name": "от първа ръка"
+            "name": "1"
         },
         {
             "id": 2,
-            "name": "до 2"
+            "name": "2"
         },
         {
             "id": 3,
-            "name": "до 3"
+            "name": "3"
         },
         {
             "id": 4,
-            "name": "от 3"
+            "name": "> 3"
         }
     ],
     "allBedTypeIds": {
         "bedTypes": [
             {
                 "id": 206,
-                "name": "Легло"
+                "name": "Bed"
             },
             {
                 "id": 207,
-                "name": "Подемно легло"
+                "name": "Lift bed"
             },
             {
                 "id": 208,
-                "name": "Етажно легло"
+                "name": "Bunk bed"
             }
         ],
         "label": "Types of bed"
@@ -3189,5 +3169,5 @@
         "itemId": null
     },
     "initialRoute": "home-search-mask",
-    "visitorId": "6023f0fa-c6b2-493c-8394-c1dee42f7230"
+    "visitorId": "4efe5306-67e7-40c9-8c92-12b0456471be"
 }

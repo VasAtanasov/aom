@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Select, Row, Col, Typography, Radio, Button } from 'antd';
+import { Select, Row, Col, Typography, Radio } from 'antd';
 import { Container } from '../../../util/commonWrappers';
 import {
     HERO_MAIN_HEIGHT,
@@ -9,6 +9,7 @@ import {
     HERO_MAIN_RESPONSIVE,
     DEFAULT_COLOR
 } from '../../../util/constants';
+import StyledButton from '../../common/StyledButton';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -125,31 +126,10 @@ const SelectContainer = styled(Col)`
 `;
 
 const SearchButtonContainer = styled(Col)`
-    padding: 2rem 0 0.5rem ! important;
+    padding: 1.5rem 0.5rem 0.5rem ! important;
 
-    & .ant-btn-primary {
-        text-transform: uppercase;
-        font-weight: 500;
-        letter-spacing: 1.2px;
-
-        & span {
-            color: #fff !important;
-        }
-
-        background-color: ${DEFAULT_COLOR};
-        border-color: ${DEFAULT_COLOR};
-    }
-
-    & .ant-btn-primary:hover,
-    & .ant-btn-primary:focus {
-        background-color: rgba(247, 183, 29, 0.6);
-        border-color: rgba(247, 183, 29, 1);
-    }
-
-    & .ant-btn-primary:active,
-    & .ant-btn-primary.active {
-        background-color: ${DEFAULT_COLOR};
-        border-color: ${DEFAULT_COLOR};
+    & .search-button {
+        height: 40px !important;
     }
 `;
 
@@ -226,9 +206,7 @@ const QuickSearch = () => {
                                 </SelectContainer>
                             ))}
                             <SearchButtonContainer span={24}>
-                                <Button type="primary" block>
-                                    Search
-                                </Button>
+                                <StyledButton className="search-button" text="Search" />
                             </SearchButtonContainer>
                         </SearchForm>
                     </Container>
