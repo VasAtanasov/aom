@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import styled from "styled-components";
 import { DEFAULT_COLOR } from '../../util/constants';
 import { Select } from 'antd';
@@ -21,7 +21,6 @@ const SelectWrapper = styled.div`
                 box-shadow: 0 0 0 2px rgba(247, 183, 29, 0.2);
     }
 `;
-
 
 function onBlur() {
     console.log('blur');
@@ -55,7 +54,7 @@ const StyledSelect = (props) => {
                 }
             >
                 {options.map(({ id, name }, idx) => (
-                    <Option key={name + idx} value={id}>{name}</Option>
+                    <Option key={`${name}_${idx}`} value={id}>{name}</Option>
                 ))}
             </Select>
         </SelectWrapper>

@@ -6,6 +6,7 @@ import './App.css';
 import Layout from '../../hoc/Layout'
 import Contacts from '../contacts/Contacts';
 import Advanced from '../search/Advanced';
+import NotFound from '../common/NotFound';
 
 export const routes = [
     {
@@ -34,6 +35,7 @@ const App = () => {
                 {routes.map((routObj, idx) => (
                     <Route exact key={idx} path={routObj.path} component={routObj.component} />
                 ))}
+                <Route component={NotFound} />
             </Switch>
         </Layout>
     );

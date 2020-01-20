@@ -11,7 +11,7 @@ const BrowseByMakeContainer = styled.div`
         color: ${DEFAULT_COLOR};
         display: inline-block;
         letter-spacing: 1.1;
-        font-weight: 500;   
+        font-weight: 500;
         font-size: 15px;
         margin-top: 2rem;
     }

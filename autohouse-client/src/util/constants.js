@@ -23,3 +23,5 @@ export const HOME_SECTION_CONTAINER_SIZE = {
     maxWidth: "908px",
     margin: '0 auto'
 }
+
+export const API_BASE_URL = 'http://localhost:8007/api';

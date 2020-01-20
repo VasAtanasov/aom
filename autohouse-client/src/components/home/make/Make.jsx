@@ -1,16 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const MakeComponent = (props) => {
-    
-    return (
-        <div className={props.className}>
-            <img src={props.imgSrc} alt="make icon" />
-        </div>
-    )
-}
-
-const Make = styled(MakeComponent)`
+const MakeCardContainer = styled.div`
     cursor: pointer;
     width: 150px;
     margin: 0 auto;
@@ -42,5 +33,11 @@ const Make = styled(MakeComponent)`
         height: 80px;
     }
 `;
+
+const Make = ({ imgSrc }) => (
+    <MakeCardContainer>
+        <img src={imgSrc} alt="make icon" />
+    </MakeCardContainer>
+)
 
 export default Make;

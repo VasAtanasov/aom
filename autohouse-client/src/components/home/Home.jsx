@@ -22,6 +22,25 @@ const HomeSectionWhite = styled(HomeSection)`
     background-color: white;
 `;
 
+const HomeSectionWithBackground = styled.div`
+    position: relative;
+    background-image: url(/images/bg_4.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+`;
+
+const Overlay = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    opacity: .7;
+    background: #000000;
+`;
+
 const TabsContainer = styled(Tabs)`
 
     & .ant-tabs-bar {
@@ -93,6 +112,9 @@ const Home = () => {
                     <BrowsByTown />
                 </BrowsByContainer>
             </HomeSection>
+            <HomeSectionWithBackground>
+                <Overlay />
+            </HomeSectionWithBackground>
         </Fragment>
     )
 }

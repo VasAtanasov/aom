@@ -39,14 +39,17 @@ const ButtonWrapper = styled.div`
             height: 48px;
             background-color: ${DEFAULT_COLOR};
 
-            span {
+
+            span, 
+            i::before {
                 color: white;
             }
 
             :hover {
                 background-color: white;
 
-                span {
+                span,
+                i::before {
                     color: ${DEFAULT_COLOR};
                 }
             }
@@ -54,9 +57,11 @@ const ButtonWrapper = styled.div`
     }
 `;
 
-const StyledButton = ({ text, className }) => (
+const StyledButton = ({ children, className }) => (
     <ButtonWrapper>
-        <Button className={className}>{text}</Button>
+        <Button className={className}>
+            {children}
+        </Button>
     </ButtonWrapper>
 );
 

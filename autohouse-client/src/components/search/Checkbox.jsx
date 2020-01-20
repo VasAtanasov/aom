@@ -55,8 +55,8 @@ const CheckBoxContainer = styled.div`
 
 const Checkbox = ({ id, text }) => (
     <CheckBoxContainer>
-        <input type="checkbox" id={id} />
-        <label htmlFor={id}>{text}</label>
+        <input type="checkbox" id={`${id}_${text}`} />
+        <label htmlFor={`${id}_${text}`}>{text}</label>
     </CheckBoxContainer>
 )
 

@@ -33,7 +33,7 @@ const TownCardContainer = styled(Col)`
                         text-align: center;
                         line-height: 72px;
                         letter-spacing: 0.2px;
-                        font-size: 14px;
+                        font-size: 16px;
                         color: white;
                         transition: 0.3s;
 

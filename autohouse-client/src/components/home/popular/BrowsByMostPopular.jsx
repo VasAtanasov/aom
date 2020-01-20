@@ -11,6 +11,10 @@ const MostPopularCardContainer = styled(Col)`
             border-color: rgba(0, 0, 0, 0.15);
         }
 
+        & .ant-card-cover {
+            min-height: 150px;
+        }
+
         & .ant-card-body {
             padding: 15px 24px;
             

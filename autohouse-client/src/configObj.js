@@ -4335,7 +4335,7 @@ export default {
                 "id": 2017,
                 "name": "2017"
             },
-              
+
             {
                 "id": 2018,
                 "name": "2018"
@@ -4344,45 +4344,11 @@ export default {
                 "id": 2019,
                 "name": "2019"
             },
-           
+
             {
                 "id": 2020,
                 "name": "2020"
             },
-        ],
-        "engineSizes": [
-            {
-                "id": 500,
-                "name": "500 cc"
-            },
-            {
-                "id": 1000,
-                "name": "1.000 cc"
-            },
-            {
-                "id": 1500,
-                "name": "1.500 cc"
-            },
-            {
-                "id": 2000,
-                "name": "2.000 cc"
-            },
-            {
-                "id": 2500,
-                "name": "2.500 cc"
-            },
-            {
-                "id": 3000,
-                "name": "3.000 cc"
-            },
-            {
-                "id": 3500,
-                "name": "3.500 cc"
-            },
-            {
-                "id": 4000,
-                "name": "4.000 cc"
-            }
         ],
         "horsePowers": [
             {
@@ -4506,60 +4472,72 @@ export default {
         ],
         "bodyTypes": [
             {
-                "id": "Berline",
-                "name": "bodyType.berline"
+                "name": "SUV",
+                "id": "bodyType.suv"
             },
             {
-                "id": "Break",
-                "name": "bodyType.break"
+                "name": "MPV",
+                "id": "bodyType.mvp"
             },
             {
-                "id": "Cabriolet",
-                "name": "bodyType.cabriolet"
+                "name": "CPO",
+                "id": "bodyType.cpo"
             },
             {
-                "id": "Compact",
-                "name": "bodyType.compact"
+                "name": "Hybrid",
+                "id": "bodyType.hybrid"
             },
             {
-                "id": "Coupé",
-                "name": "bodyType.coupé"
+                "name": "Sedan",
+                "id": "bodyType.sedan"
             },
             {
-                "id": "Hatchback",
-                "name": "bodyType.hatchback"
+                "name": "Crossover",
+                "id": "bodyType.crossover"
             },
             {
-                "id": "Lighttruck",
-                "name": "bodyType.lighttruck"
+                "name": "Luxury",
+                "id": "bodyType.luxury"
             },
             {
-                "id": "Minibus",
-                "name": "bodyType.minibus"
+                "name": "Pickup",
+                "id": "bodyType.pickup"
             },
             {
-                "id": "Motorbike",
-                "name": "bodyType.motorbike"
+                "name": "Hatchback",
+                "id": "bodyType.hatchback"
             },
             {
-                "id": "MPV",
-                "name": "bodyType.mpv"
+                "name": "Minivan",
+                "id": "bodyType.minivan"
             },
             {
-                "id": "Pickup",
-                "name": "bodyType.pickup"
+                "name": "Coupe",
+                "id": "bodyType.coupe"
             },
             {
-                "id": "SUV",
-                "name": "bodyType.suv"
+                "name": "Convertible",
+                "id": "bodyType.convertible"
             },
             {
-                "id": "Trailer",
-                "name": "bodyType.trailer"
+                "name": "Truck",
+                "id": "bodyType.truck"
             },
             {
-                "id": "Truck",
-                "name": "bodyType.truck"
+                "name": "Wagon",
+                "id": "bodyType.wagon"
+            },
+            {
+                "name": "Sport",
+                "id": "bodyType.sport"
+            },
+            {
+                "name": "Van",
+                "id": "bodyType.van"
+            },
+            {
+                "name": "Other",
+                "id": "bodyType.other"
             }
         ],
         "fuelTypes": [
@@ -4588,224 +4566,454 @@ export default {
         ],
         "effluentStandards": [
             {
-                "id": "EU1",
-                "name": "emissionStandard.EU1"
+                "name": "EU1",
+                "id": "emissionStandard.EU1"
             },
             {
-                "id": "EU2",
-                "name": "emissionStandard.EU2"
+                "name": "EU2",
+                "id": "emissionStandard.EU2"
             },
             {
-                "id": "EU3",
-                "name": "emissionStandard.EU3"
+                "name": "EU3",
+                "id": "emissionStandard.EU3"
             },
             {
-                "id": "EU4",
-                "name": "emissionStandard.EU4"
+                "name": "EU4",
+                "id": "emissionStandard.EU4"
             },
             {
-                "id": "EU5",
-                "name": "emissionStandard.EU5"
+                "name": "EU5",
+                "id": "emissionStandard.EU5"
             },
             {
-                "id": "EU6",
-                "name": "emissionStandard.EU6"
+                "name": "EU6",
+                "id": "emissionStandard.EU6"
             }
         ],
         "bodyColors": [
             {
-                "id": "Beige",
-                "name": "common.color.beige"
+                "name": "Black",
+                "id": "common.color.black"
             },
             {
-                "id": "Black",
-                "name": "common.color.black"
+                "name": "Gray",
+                "id": "common.color.gray"
             },
             {
-                "id": "Blue",
-                "name": "common.color.blue"
+                "name": "Cream",
+                "id": "common.color.cream"
             },
             {
-                "id": "Brown",
-                "name": "common.color.brown"
+                "name": "Dark Blue",
+                "id": "common.color.darkBlue"
             },
             {
-                "id": "Burgundy",
-                "name": "common.color.burgundy"
+                "name": "Light Blue",
+                "id": "common.color.lightBlue"
             },
             {
-                "id": "Gray",
-                "name": "common.color.gray"
+                "name": "Dark Brown",
+                "id": "common.color.darkBrown"
             },
             {
-                "id": "Green",
-                "name": "common.color.green"
+                "name": "Light Brown",
+                "id": "common.color.lightBrown"
             },
             {
-                "id": "Orange",
-                "name": "common.color.orange"
+                "name": "Light Red",
+                "id": "common.color.lightRed"
             },
             {
-                "id": "Purple",
-                "name": "common.color.purple"
+                "name": "Orange",
+                "id": "common.color.orange"
             },
             {
-                "id": "Red",
-                "name": "common.color.red"
+                "name": "Red",
+                "id": "common.color.red"
             },
             {
-                "id": "White",
-                "name": "common.color.white"
+                "name": "White",
+                "id": "common.color.white"
             },
             {
-                "id": "Yellow",
-                "name": "common.color.yellow"
+                "name": "Silver",
+                "id": "common.color.silver"
+            },
+            {
+                "name": "Gold",
+                "id": "common.color.gold"
             }
         ],
         "damageTypes": [
             {
-                "id": 1,
-                "name": "damage.noDamage"
+                "name": "No Damage",
+                "id": "damage.noDamage"
             },
             {
-                "id": 2,
-                "name": "damage.bodyDamage"
+                "name": "Body Damage",
+                "id": "damage.bodyDamage"
             },
             {
-                "id": 3,
-                "name": "damage.technicalDamage"
+                "name": "Technical Damage",
+                "id": "damage.technicalDamage"
             },
             {
-                "id": 4,
-                "name": "damage.bodyAndTechnicalDamage"
+                "name": "Body and Technical Damage",
+                "id": "damage.bodyAndTechnicalDamage"
             }
         ],
         "equipments": [
             {
-                "id": "Adaptive cruise control",
-                "name": "equipment.Adaptivecruisecontrol"
+                "id": 6,
+                "name": "4WD"
             },
-            {
-                "id": "Air conditioning",
-                "name": "equipment.Airconditioning"
-            },
-            {
-                "id": "Air suspension",
-                "name": "equipment.Airsuspension"
-            },
-            {
-                "id": "Automatic air conditioning",
-                "name": "equipment.Automaticairconditioning"
-            },
-            {
-                "id": "Auxiliary heater",
-                "name": "equipment.Auxiliaryheater"
-            },
-            {
-                "id": "Blind spot warning",
-                "name": "equipment.Blindspotwarning"
-            },
-            {
-                "id": "Four wheel drive",
-                "name": "equipment.Fourwheeldrive"
-            },
-            {
-                "id": "Head-up display",
-                "name": "equipment.Head-updisplay"
-            },
-            {
-                "id": "Lane control assistant",
-                "name": "equipment.Lanecontrolassistant"
-            },
-            {
-                "id": "Leather upholstry",
-                "name": "equipment.Leatherupholstry"
-            },
-            {
-                "id": "LED headlights",
-                "name": "equipment.LEDheadlights"
-            },
-            {
-                "id": "Park distance control",
-                "name": "equipment.Parkdistancecontrol"
-            },
-            {
-                "id": "Rear view camera",
-                "name": "equipment.Rearviewcamera"
-            },
-            {
-                "id": "Satellite Navigation System",
-                "name": "equipment.SatelliteNavigationSystem"
-            },
-            {
-                "id": "Tow bar",
-                "name": "equipment.Towbar"
-            },
-            {
-                "id": "Xenon headlights",
-                "name": "equipment.Xenonheadlights"
-            }
-        ],
-        "auctionTypes": [
             {
                 "id": 1,
-                "name": "auctionType.dynamic"
+                "name": "ABS"
+            },
+            {
+                "id": 39,
+                "name": "Adaptive Cruise Control"
+            },
+            {
+                "id": 37,
+                "name": "Adaptive headlights"
+            },
+            {
+                "id": 22,
+                "name": "Air conditioning"
+            },
+            {
+                "id": 50,
+                "name": "Air suspension"
+            },
+            {
+                "id": 10,
+                "name": "Alarm system"
+            },
+            {
+                "id": 8,
+                "name": "Alloy wheels"
+            },
+            {
+                "id": 40,
+                "name": "Armrest"
+            },
+            {
+                "id": 25,
+                "name": "Automatic climate control"
+            },
+            {
+                "id": 30,
+                "name": "Auxiliary heating"
+            },
+            {
+                "id": 64,
+                "name": "Blind spot monitor"
+            },
+            {
+                "id": 70,
+                "name": "Bluetooth"
+            },
+            {
+                "id": 80,
+                "name": "CD player"
+            },
+            {
+                "id": 9,
+                "name": "Central door lock"
+            },
+            {
+                "id": 16,
+                "name": "Cruise control"
+            },
+            {
+                "id": 34,
+                "name": "Daytime running lights"
+            },
+            {
+                "id": 44,
+                "name": "Digital radio"
+            },
+            {
+                "id": 52,
+                "name": "Driver drowsiness detection"
             },
             {
                 "id": 2,
-                "name": "auctionType.buyNow"
+                "name": "Driver-side airbag"
+            },
+            {
+                "id": 45,
+                "name": "Electric tailgate"
+            },
+            {
+                "id": 69,
+                "name": "Electrical side mirrors"
+            },
+            {
+                "id": 27,
+                "name": "Electrically adjustable seats"
+            },
+            {
+                "id": 41,
+                "name": "Electrically heated windshield"
+            },
+            {
+                "id": 19,
+                "name": "Electronic stability control"
+            },
+            {
+                "id": 54,
+                "name": "Emergency brake assistant"
+            },
+            {
+                "id": 55,
+                "name": "Emergency system"
+            },
+            {
+                "id": 20,
+                "name": "Fog lights"
+            },
+            {
+                "id": 81,
+                "name": "Guarantee"
+            },
+            {
+                "id": 15,
+                "name": "Handicapped enabled"
+            },
+            {
+                "id": 72,
+                "name": "Hands-free equipment"
+            },
+            {
+                "id": 71,
+                "name": "Heads-up display"
+            },
+            {
+                "id": 42,
+                "name": "Heated steering wheel"
+            },
+            {
+                "id": 43,
+                "name": "Hill Holder"
+            },
+            {
+                "id": 12,
+                "name": "Immobilizer"
+            },
+            {
+                "id": 73,
+                "name": "Isofix"
+            },
+            {
+                "id": 59,
+                "name": "Keyless central door lock"
+            },
+            {
+                "id": 63,
+                "name": "Lane departure warning system"
+            },
+            {
+                "id": 48,
+                "name": "Leather steering wheel"
+            },
+            {
+                "id": 47,
+                "name": "LED Daytime Running Lights"
+            },
+            {
+                "id": 46,
+                "name": "LED Headlights"
+            },
+            {
+                "id": 74,
+                "name": "Light sensor"
+            },
+            {
+                "id": 49,
+                "name": "Lumbar support"
+            },
+            {
+                "id": 51,
+                "name": "Massage seats"
+            },
+            {
+                "id": 85,
+                "name": "Metallic"
+            },
+            {
+                "id": 28,
+                "name": "MP3"
+            },
+            {
+                "id": 33,
+                "name": "Multi-function steering wheel"
+            },
+            {
+                "id": 11,
+                "name": "Navigation system"
+            },
+            {
+                "id": 53,
+                "name": "Night view assist"
+            },
+            {
+                "id": 84,
+                "name": "Non-smoking vehicle"
+            },
+            {
+                "id": 18,
+                "name": "On-board computer"
+            },
+            {
+                "id": 29,
+                "name": "Panorama roof"
+            },
+            {
+                "id": 78,
+                "name": "Parking assist system camera"
+            },
+            {
+                "id": 79,
+                "name": "Parking assist system self-steering"
+            },
+            {
+                "id": 76,
+                "name": "Parking assist system sensors front"
+            },
+            {
+                "id": 77,
+                "name": "Parking assist system sensors rear"
+            },
+            {
+                "id": 83,
+                "name": "Particulate filter"
             },
             {
                 "id": 3,
-                "name": "auctionType.buyNowPickUp"
+                "name": "Passenger-side airbag"
             },
             {
-                "id": 4,
-                "name": "auctionType.blind"
+                "id": 24,
+                "name": "Power steering"
+            },
+            {
+                "id": 7,
+                "name": "Power windows"
             },
             {
                 "id": 5,
-                "name": "auctionType.target"
+                "name": "Radio"
+            },
+            {
+                "id": 75,
+                "name": "Rain sensor"
+            },
+            {
+                "id": 23,
+                "name": "Roof rack"
+            },
+            {
+                "id": 14,
+                "name": "Seat heating"
+            },
+            {
+                "id": 60,
+                "name": "Seat ventilation"
+            },
+            {
+                "id": 57,
+                "name": "Shift paddles"
+            },
+            {
+                "id": 13,
+                "name": "Side airbag"
+            },
+            {
+                "id": 38,
+                "name": "Ski bag"
+            },
+            {
+                "id": 58,
+                "name": "Sliding door"
+            },
+            {
+                "id": 61,
+                "name": "Sound system"
+            },
+            {
+                "id": 31,
+                "name": "Sport package"
+            },
+            {
+                "id": 36,
+                "name": "Sport seats"
+            },
+            {
+                "id": 35,
+                "name": "Sport suspension"
+            },
+            {
+                "id": 32,
+                "name": "Start-stop system"
+            },
+            {
+                "id": 4,
+                "name": "Sunroof"
+            },
+            {
+                "id": 66,
+                "name": "Television"
+            },
+            {
+                "id": 56,
+                "name": "Tire pressure monitoring system"
+            },
+            {
+                "id": 65,
+                "name": "Touch screen"
+            },
+            {
+                "id": 26,
+                "name": "Traction control"
+            },
+            {
+                "id": 68,
+                "name": "Traffic sign recognition"
+            },
+            {
+                "id": 21,
+                "name": "Trailer hitch"
+            },
+            {
+                "id": 67,
+                "name": "USB"
+            },
+            {
+                "id": 62,
+                "name": "Voice Control"
+            },
+            {
+                "id": 82,
+                "name": "With full service history"
+            },
+            {
+                "id": 17,
+                "name": "Xenon headlights"
             }
         ],
-        "originCountries": [
+        "seatCount": [
             {
-                "id": "be",
-                "name": "country.be"
+                "id": "seactCount.one",
+                "name": 1
             },
             {
-                "id": "de",
-                "name": "country.de"
+                "id": "seactCount.two",
+                "name": 2
             },
-            {
-                "id": "es",
-                "name": "country.es"
-            },
-            {
-                "id": "fr",
-                "name": "country.fr"
-            },
-            {
-                "id": "it",
-                "name": "country.it"
-            },
-            {
-                "id": "lu",
-                "name": "country.lu"
-            },
-            {
-                "id": "nl",
-                "name": "country.nl"
-            },
-            {
-                "id": "pl",
-                "name": "country.pl"
-            },
-            {
-                "id": "se",
-                "name": "country.se"
-            }
-        ],
+        ]
     },
     "searching": false,
     "searchCriteria": {

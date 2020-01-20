@@ -8,8 +8,8 @@ const CheckboxCriteria = (props) => {
 
     return (
         <Row type="flex" className={styledCompClass}>
-            {criteria.map(cr => (
-                <Col key={cr.name + cr.id} xs={24} sm={12} lg={8}>
+            {criteria.map((cr, idx) => (
+                <Col key={cr.name + cr.id + idx} xs={24} sm={12} lg={8}>
                     <Checkbox id={cr.id} text={cr.name} />
                 </Col>
             ))}
