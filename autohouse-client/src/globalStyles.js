@@ -48,7 +48,7 @@ export default createGlobalStyle`
     }
 
     body {
-        font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+        font-family: 'Open Sans', sans-serif;
         font-size: 13px;
         line-height: 1.4;
         font-weight: 400;

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Col, } from 'antd';
-import PopularCard from './PopularCard'
+import PopularCard from './PopularCard';
+import { DEFAULT_COLOR } from '../../../util/constants';
 
 const MostPopularCardContainer = styled(Col)`
     & .ant-card {
@@ -9,6 +10,10 @@ const MostPopularCardContainer = styled(Col)`
 
         :hover {
             border-color: rgba(0, 0, 0, 0.15);
+
+            & .ant-card-meta-title {
+                color: ${DEFAULT_COLOR}
+            }
         }
 
         & .ant-card-cover {
@@ -19,7 +24,13 @@ const MostPopularCardContainer = styled(Col)`
             padding: 15px 24px;
             
             & .ant-card-meta {
+
                 & .ant-card-meta-detail {
+
+                    & .ant-card-meta-title {
+                        transition: 0.2s;
+                    }
+                    
                     & .ant-card-meta-description {
 
                     }
