@@ -71,7 +71,6 @@ const Navigation = () => {
         </StyledLink>
     ));
 
-
     return (
         <Navbar scrolled={scrolled} awake={awake} sleep={sleep}>
             <NavLink to="/">
