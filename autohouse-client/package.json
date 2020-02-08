@@ -1,0 +1,15 @@
+{
+  "name": "Autohouse",
+  "version": "1.0.0",
+  "description": "Car offers site",
+  "main": "index.js",
+  "repository": "https://github.com/VasAtanasov/autohouse.git",
+  "author": "Vasil Atanasov",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "next": "^9.2.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}
