@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { StyledContainer } from './MyComponent.styles.js';
+import { StyledContainer } from './Home.styles.js';
 
 const MyComponent = ({ weCool }) => (
     <StyledContainer>
