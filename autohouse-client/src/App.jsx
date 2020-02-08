@@ -1,5 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Home } from "./components";
+import Theme from "./Theme";
+import GlobalStyles from './utils/styles/global';
 
 const pageToShow = pageName => {
     if (pageName === "Home") return <Home />;
@@ -8,9 +10,13 @@ const pageToShow = pageName => {
 
 const App = ({ pageName }) => {
     return (
-        <div>{pageToShow(pageName)}</div>
+        <Theme>
+            <GlobalStyles />
+            <Fragment>{
+                pageToShow(pageName)}
+            </Fragment>
+        </Theme>
     )
 };
 
 export default App;
-    
