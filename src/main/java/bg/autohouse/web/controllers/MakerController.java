@@ -31,7 +31,9 @@ public class MakerController {
   private final ModelMapperWrapper modelMapper;
   private final MakerService makerService;
 
-  @ApiOperation("Retrieves all makers with models available in database.")
+  @ApiOperation(
+      value = "Retrieves all makers with models available in database.",
+      response = List.class)
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
   @GetMapping
   public ResponseEntity<List<MakerResponseModel>> getMakers() {

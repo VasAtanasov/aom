@@ -13,7 +13,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "makers")
+@Table(
+    name = "makers",
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "uk_makers_name",
+          columnNames = {"name"})
+    })
 public class Maker extends BaseLongEntity {
 
   private static final long serialVersionUID = -2811586455073721689L;
@@ -38,8 +44,8 @@ public class Maker extends BaseLongEntity {
   }
 
   @Builder
-  public Maker(final Long id, final String name) {
-    super(id);
+  public Maker(final String name) {
+    super(null);
     this.name = name;
   }
 }
