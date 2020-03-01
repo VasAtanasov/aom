@@ -1,4 +1,4 @@
-package bg.autohouse.service.models;
+package bg.autohouse.web.models.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ModelServiceModel {
+public class ModelResponseModel {
   private Long id;
   private String name;
 }

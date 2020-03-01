@@ -5,12 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BaseException extends RuntimeException {
+public abstract class BaseException extends RuntimeException {
 
-    private int status;
+  private static final long serialVersionUID = 3859964215866372293L;
+  private int status;
 
-    BaseException(int status, String message) {
-        super(message);
-        this.setStatus(status);
-    }
+  // TODO lombok call to super
+  BaseException(String message, int status) {
+    super(message);
+    this.setStatus(status);
+  }
 }

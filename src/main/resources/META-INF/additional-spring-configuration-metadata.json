@@ -1,21 +1,22 @@
 {
-  "properties": [{
-      "name": "cloudinary.cloud-name",
+  "properties": [
+    {
+      "name": "app.cloudinary.cloud-name",
       "type": "java.lang.String",
       "description": "Description for cloudinary.cloud-name."
     },
     {
-      "name": "cloudinary.api-key",
+      "name": "app.cloudinary.api-key",
       "type": "java.lang.String",
       "description": "Description for cloudinary.api-key."
     },
     {
-      "name": "cloudinary.api-secret",
+      "name": "app.cloudinary.api-secret",
       "type": "java.lang.String",
       "description": "Description for cloudinary.api-secret."
     },
     {
-      "name": "screenshotMachine.customerKey",
+      "name": "app.screenshot-machine.customer-key",
       "type": "java.lang.String",
       "description": "Description for screenshotMachine.customerKey."
     },
@@ -23,6 +24,16 @@
       "name": "app.dropbox.access.token",
       "type": "java.lang.String",
       "description": "Description for app.dropbox.access.token."
+    },
+    {
+      "name": "app.date-format",
+      "type": "java.lang.String",
+      "description": "A description for 'app.date-format'"
+    },
+    {
+      "name": "app.time-zone",
+      "type": "java.lang.String",
+      "description": "A description for 'app.time-zone'"
     }
   ]
 }

@@ -1,12 +1,11 @@
 package bg.autohouse.data.models;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.Entity;
-import javax.persistence.*;
 
 @Getter
 @Setter
@@ -15,25 +14,19 @@ import javax.persistence.*;
 @Table(name = "models")
 public class Model extends BaseLongEntity {
 
-    @Column(name = "name", nullable = false)
-    private String name;
+  private static final long serialVersionUID = 3257573416154758517L;
 
-    @Column(name = "pretty_name", nullable = false)
-    private String prettyName;
+  @Column(name = "name", nullable = false)
+  private String name;
 
-    @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "maker_id",
-            referencedColumnName = "id",
-            nullable = false
-    )
-    private Maker maker;
+  @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY)
+  @JoinColumn(name = "maker_id", referencedColumnName = "id", nullable = false)
+  private Maker maker;
 
-    @Builder
-    public Model(Long id, String name, String prettyName, Maker maker) {
-        super(id);
-        this.name = name;
-        this.prettyName = prettyName;
-        this.maker = maker;
-    }
+  @Builder
+  public Model(final Long id, final String name, final Maker maker) {
+    super(id);
+    this.name = name;
+    this.maker = maker;
+  }
 }
