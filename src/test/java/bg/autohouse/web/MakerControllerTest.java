@@ -6,23 +6,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.BaseTest;
+import bg.autohouse.common.Constants;
 import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.repositories.MakerRepository;
+import bg.autohouse.util.JsonParser;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 public class MakerControllerTest extends BaseTest {
-  static final Maker maker = Maker.builder().name("Audi").build();
+  static final String MAKER_NAME = "Audi";
+
+  static final Maker maker = Maker.builder().name(MAKER_NAME).build();
 
   @Autowired MakerRepository makerRepository;
-
+  @Autowired JsonParser jsonParser;
   @Autowired Gson gson;
 
   @Before
+  @Transactional
   public void setUp() {
     Maker savedMaker = makerRepository.save(maker);
     log.info(gson.toJson(savedMaker));
@@ -34,10 +40,12 @@ public class MakerControllerTest extends BaseTest {
   }
 
   @Test
-  public void whenGetMakerId_shouldReturn() throws Exception {
+  public void whenGetMaker_notExistingId_shouldReturnFalse() throws Exception {
     mvcPerformer
         .performGet("/api/makers/123")
         .andExpect(status().isNotFound())
-        .andExpect(jsonPath("$.success", is(false)));
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(Constants.EXCEPTION_MAKER_NOT_FOUND)))
+        .andExpect(jsonPath("$.status", is("Not Found")));
   }
 }

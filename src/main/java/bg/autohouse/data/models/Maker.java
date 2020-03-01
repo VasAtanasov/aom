@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -47,5 +48,10 @@ public class Maker extends BaseLongEntity {
   public Maker(final String name) {
     super(null);
     this.name = name;
+  }
+
+  @Override
+  public String toString() {
+    return new Gson().toJson(this);
   }
 }

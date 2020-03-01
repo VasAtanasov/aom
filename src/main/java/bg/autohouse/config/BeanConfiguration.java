@@ -34,7 +34,7 @@ public class BeanConfiguration {
 
   @Bean
   public Gson gson() {
-    return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+    return new GsonBuilder().setPrettyPrinting().create();
   }
 
   // TODO Uncomment when spring security dependency is added
