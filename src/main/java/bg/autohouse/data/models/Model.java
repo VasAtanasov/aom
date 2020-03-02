@@ -20,12 +20,16 @@ public class Model extends BaseLongEntity {
   private String name;
 
   @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "maker_id", referencedColumnName = "id", nullable = false)
+  @JoinColumn(
+      name = "maker_id",
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "fk_models_makers_id"),
+      nullable = false)
   private Maker maker;
 
   @Builder
-  public Model(final Long id, final String name, final Maker maker) {
-    super(id);
+  public Model(final String name, final Maker maker) {
+    super(null);
     this.name = name;
     this.maker = maker;
   }
