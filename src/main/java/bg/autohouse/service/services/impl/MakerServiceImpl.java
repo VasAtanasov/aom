@@ -1,26 +1,33 @@
 package bg.autohouse.service.services.impl;
 
+import bg.autohouse.data.models.Maker;
+import bg.autohouse.data.models.Model;
 import bg.autohouse.data.repositories.MakerRepository;
+import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.service.models.MakerServiceModel;
+import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerServiceImpl implements MakerService {
 
   private final MakerRepository makerRepository;
+  private final ModelRepository modelRepository;
   private final ModelMapperWrapper modelMapper;
 
   @Override
+  @Transactional(readOnly = true)
   public MakerServiceModel getModelsForMaker(Long id) {
     return makerRepository
         .findById(id)
@@ -29,6 +36,7 @@ public class MakerServiceImpl implements MakerService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<MakerServiceModel> getAllMakers() {
     return makerRepository.findAll().stream()
         .map(maker -> modelMapper.map(maker, MakerServiceModel.class))
@@ -36,7 +44,19 @@ public class MakerServiceImpl implements MakerService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean isMaker(Long id) {
     return makerRepository.existsById(id);
+  }
+
+  @Override
+  public MakerServiceModel addModelToMaker(
+      @NotNull Long makerId, ModelServiceModel modelServiceModel) {
+    Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
+    Model model = modelMapper.map(modelServiceModel, Model.class);
+    model.setMaker(maker);
+    modelRepository.save(model);
+
+    return modelMapper.map(maker, MakerServiceModel.class);
   }
 }

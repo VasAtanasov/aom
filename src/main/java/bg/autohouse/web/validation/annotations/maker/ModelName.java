@@ -1,7 +1,7 @@
 package bg.autohouse.web.validation.annotations.maker;
 
-import static bg.autohouse.web.validation.MessageCodes.CODE_MAKER_NAME_BLANK;
-import static bg.autohouse.web.validation.MessageCodes.CODE_MAKER_NAME_LENGTH;
+import static bg.autohouse.web.validation.MessageCodes.CODE_MODEL_NAME_BLANK;
+import static bg.autohouse.web.validation.MessageCodes.CODE_MODEL_NAME_LENGTH;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -13,16 +13,16 @@ import javax.validation.Payload;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@NotBlank(message = "{" + CODE_MAKER_NAME_BLANK + "}")
+@NotBlank(message = "{" + CODE_MODEL_NAME_BLANK + "}")
 @Size(
-    message = "{" + CODE_MAKER_NAME_LENGTH + "}",
-    min = MakerName.MIN_LENGTH,
-    max = MakerName.MAX_LENGTH)
+    message = "{" + CODE_MODEL_NAME_LENGTH + "}",
+    min = ModelName.MIN_LENGTH,
+    max = ModelName.MAX_LENGTH)
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface MakerName {
+public @interface ModelName {
 
   int MIN_LENGTH = 1;
   int MAX_LENGTH = 32;

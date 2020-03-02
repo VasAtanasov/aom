@@ -13,11 +13,12 @@ import lombok.*;
 @ApiModel(description = "Class representing a maker basic information")
 public class MakerResponseModel {
 
-  @JsonIgnore
-  private static final String ID_MESSAGE =
-      "Primary identifier, must be populated for update & delete operations";
+  @JsonIgnore private static final String ID_MESSAGE = "Primary identifier.";
 
   @JsonIgnore private static final String ONLY_FOR_GET_MESSAGE = "Used only for get operations";
+
+  @JsonIgnore
+  private static final String COLLECTION_MODELS = "Collection of models retried from database.";
 
   @ApiModelProperty(value = ID_MESSAGE)
   private Long id;
@@ -25,6 +26,7 @@ public class MakerResponseModel {
   @ApiModelProperty(value = ONLY_FOR_GET_MESSAGE, position = 2)
   private String name;
 
+  @ApiModelProperty(value = COLLECTION_MODELS, position = 3)
   private List<ModelResponseModel> models = new ArrayList<>();
 
   @Builder

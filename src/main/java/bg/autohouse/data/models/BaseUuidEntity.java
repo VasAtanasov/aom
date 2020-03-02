@@ -1,7 +1,7 @@
 package bg.autohouse.data.models;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.persistence.*;
 import lombok.*;
@@ -31,11 +31,11 @@ public abstract class BaseUuidEntity implements Serializable {
 
   @Temporal(TemporalType.TIMESTAMP)
   @CreatedDate
-  protected Date createdAt;
+  protected LocalDateTime createdAt;
 
   @Temporal(TemporalType.TIMESTAMP)
   @LastModifiedDate
-  protected Date updatedAt;
+  protected LocalDateTime updatedAt;
 
   @CreatedBy
   @Column(name = "created_by")

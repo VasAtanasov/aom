@@ -1,7 +1,7 @@
 @host = http://localhost:8007/api
 
 ### GET All makers available
-GET {{host}}/makers/1 HTTP/1.1
+GET {{host}}/makers/2313 HTTP/1.1
 
 ###
 
@@ -9,7 +9,18 @@ POST {{host}}/makers HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Au"
+  "name": ""
 }
 
 ###
+
+GET {{host}}/makers/1 HTTP/1.1
+
+###
+
+POST {{host}}/makers/431 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "new modeaasdadadl"
+}

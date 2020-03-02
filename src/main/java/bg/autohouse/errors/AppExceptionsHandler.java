@@ -1,7 +1,7 @@
 package bg.autohouse.errors;
 
-import bg.autohouse.web.models.response.ApiResponse;
-import java.util.Date;
+import bg.autohouse.web.models.response.ApiResponseModel;
+import java.time.LocalDateTime;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,11 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler({MakerNotFoundException.class})
   public final ResponseEntity<Object> handleNotFoundExceptions(Exception ex, WebRequest request) {
 
-    ApiResponse response =
-        ApiResponse.builder()
+    ApiResponseModel response =
+        ApiResponseModel.builder()
             .success(Boolean.FALSE)
             .message(ex.getMessage())
-            .timestamp(new Date())
+            .timestamp(LocalDateTime.now())
             .status(HttpStatus.NOT_FOUND.getReasonPhrase())
             .build();
 
@@ -30,11 +30,11 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(value = {Exception.class})
   public ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {
 
-    ApiResponse response =
-        ApiResponse.builder()
+    ApiResponseModel response =
+        ApiResponseModel.builder()
             .success(Boolean.FALSE)
             .message(ex.getMessage())
-            .timestamp(new Date())
+            .timestamp(LocalDateTime.now())
             .status(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
             .build();
 

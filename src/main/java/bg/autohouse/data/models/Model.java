@@ -16,7 +16,7 @@ public class Model extends BaseLongEntity {
 
   private static final long serialVersionUID = 3257573416154758517L;
 
-  @Column(name = "name", nullable = false)
+  @Column(name = "name", nullable = false, unique = true)
   private String name;
 
   @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY)
