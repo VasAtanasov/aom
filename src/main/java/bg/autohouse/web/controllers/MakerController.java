@@ -11,12 +11,14 @@ import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
+import bg.autohouse.web.models.response.MakerResponseWrapper;
 import bg.autohouse.web.models.response.ModelResponseModel;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -65,7 +67,7 @@ public class MakerController extends BaseController {
         @ApiResponse(code = 200, message = "OK")
       })
   @GetMapping(
-      value = "{makerId}",
+      value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(
       @ApiParam(name = "makerId", value = "The ID of the maker.", required = true)
@@ -80,7 +82,7 @@ public class MakerController extends BaseController {
   }
 
   @GetMapping(
-      value = "{makerId}/models",
+      value = "/{makerId}/models",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getModelsByMakerId(
       @ApiParam(name = "makerId", value = "The ID of the maker.", required = true)
@@ -88,10 +90,26 @@ public class MakerController extends BaseController {
           @NotNull
           Long makerId) {
 
-    List<ModelResponseModel> maker =
+    MakerResponseWrapper makerResponseModel =
+        modelMapper.map(makerService.getOne(makerId), MakerResponseWrapper.class);
+
+    List<ModelResponseModel> models =
         modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
 
-    return handleRequestSuccess(maker, REQUEST_SUCCESS);
+    // Map<String, Object> payload =
+
+    makerResponseModel.setModels(models);
+
+    return handleRequestSuccess(
+        new LinkedHashMap<>() {
+          private static final long serialVersionUID = 1L;
+
+          {
+            put("makerName", makerResponseModel.getName());
+            put("models", models);
+          }
+        },
+        REQUEST_SUCCESS);
   }
 
   @ApiOperation(value = "Creates new maker entity.", response = MakerResponseModel.class)
@@ -108,7 +126,10 @@ public class MakerController extends BaseController {
   @ApiOperation(
       value = "Creates new model for the given maker entity.",
       response = ModelResponseModel.class)
-  @PostMapping("{makerId}")
+  @PostMapping(
+      value = "/{makerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
   // TODO add description for parameters
   public ResponseEntity<?> addModel(
       @PathVariable @NotNull Long makerId,
