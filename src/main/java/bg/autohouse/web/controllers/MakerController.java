@@ -17,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Api(tags = "makers")
 @RestController
@@ -47,7 +45,7 @@ public class MakerController extends BaseController {
       value = "Retrieves all makers with models available in database.",
       response = List.class)
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
-  @GetMapping
+  @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
 
     List<MakerResponseModel> makers =
@@ -55,8 +53,7 @@ public class MakerController extends BaseController {
             .map(model -> modelMapper.map(model, MakerResponseModel.class))
             .collect(Collectors.toUnmodifiableList());
 
-    // TODO add Pageable
-    return handleSuccessRequest(makers, REQUEST_SUCCESS_);
+    return handleRequestSuccess(makers, REQUEST_SUCCESS);
   }
 
   @ApiOperation(
@@ -67,7 +64,9 @@ public class MakerController extends BaseController {
         @ApiResponse(code = 404, message = Constants.EXCEPTION_MAKER_NOT_FOUND),
         @ApiResponse(code = 200, message = "OK")
       })
-  @GetMapping("{makerId}")
+  @GetMapping(
+      value = "{makerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(
       @ApiParam(name = "makerId", value = "The ID of the maker.", required = true)
           @PathVariable
@@ -75,9 +74,24 @@ public class MakerController extends BaseController {
           Long makerId) {
 
     MakerResponseModel maker =
-        modelMapper.map(makerService.getModelsForMaker(makerId), MakerResponseModel.class);
+        modelMapper.map(makerService.getOne(makerId), MakerResponseModel.class);
 
-    return handleSuccessRequest(maker, REQUEST_SUCCESS_);
+    return handleRequestSuccess(maker, REQUEST_SUCCESS);
+  }
+
+  @GetMapping(
+      value = "{makerId}/models",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getModelsByMakerId(
+      @ApiParam(name = "makerId", value = "The ID of the maker.", required = true)
+          @PathVariable
+          @NotNull
+          Long makerId) {
+
+    List<ModelResponseModel> maker =
+        modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
+
+    return handleRequestSuccess(maker, REQUEST_SUCCESS);
   }
 
   @ApiOperation(value = "Creates new maker entity.", response = MakerResponseModel.class)
@@ -86,7 +100,7 @@ public class MakerController extends BaseController {
   public ResponseEntity<?> createMaker(
       @Valid @RequestBody MakerCreateRequestModel createRequest, BindingResult result) {
 
-    if (result.hasErrors()) return handleBadRequest(result, BAD_REQUEST);
+    if (result.hasErrors()) return handleRequestError(result, BAD_REQUEST);
 
     return ResponseEntity.ok().build();
   }
@@ -101,22 +115,17 @@ public class MakerController extends BaseController {
       @Valid @RequestBody ModelCreateRequestModel createRequest,
       BindingResult result) {
 
-    if (result.hasErrors()) return handleBadRequest(result, BAD_REQUEST);
+    if (result.hasErrors()) return handleRequestError(result, BAD_REQUEST);
 
     MakerServiceModel updatedMaker =
         makerService.addModelToMaker(
             makerId, modelMapper.map(createRequest, ModelServiceModel.class));
 
     MakerResponseModel response = modelMapper.map(updatedMaker, MakerResponseModel.class);
-    URI location =
-        ServletUriComponentsBuilder.fromCurrentContextPath()
-            .path("/api/makers")
-            .buildAndExpand()
-            .toUri();
-    // TODO add handelCreateSuccess
 
-    return handleSuccessRequest(
+    return handleCreateSuccess(
         response,
-        String.format(MODEL_CREATE_SUCCESS, createRequest.getName(), updatedMaker.getName()));
+        String.format(MODEL_CREATE_SUCCESS, createRequest.getName(), updatedMaker.getName()),
+        "/api/makers");
   }
 }

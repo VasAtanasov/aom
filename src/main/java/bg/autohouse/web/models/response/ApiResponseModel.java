@@ -1,5 +1,6 @@
 package bg.autohouse.web.models.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ public class ApiResponseModel {
   private String message;
 
   @JsonProperty("timestamp")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
   private LocalDateTime timestamp;
 
   @JsonProperty("status")

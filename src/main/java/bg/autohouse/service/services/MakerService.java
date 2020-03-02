@@ -6,11 +6,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 public interface MakerService {
-  MakerServiceModel getModelsForMaker(Long id);
+  MakerServiceModel getOne(Long id);
 
   List<MakerServiceModel> getAllMakers();
 
   boolean isMaker(Long id);
 
   MakerServiceModel addModelToMaker(@NotNull Long makerId, ModelServiceModel modelServiceModel);
+
+  List<ModelServiceModel> getModelsForMaker(@NotNull Long makerId);
 }

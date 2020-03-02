@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfiguration implements WebMvcConfigurer {
 
   public static final String URL_INDEX = "/";
-  public static final String URL_API_BASE = "/api";
+  public static final String URL_API_BASE = "/api/vehicles";
 
   public static final String URL_ADMIN_BASE = "/admin";
   public static final String URL_ADMIN_USERS = URL_ADMIN_BASE + "/users";

@@ -28,7 +28,7 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   @Transactional(readOnly = true)
-  public MakerServiceModel getModelsForMaker(Long id) {
+  public MakerServiceModel getOne(Long id) {
     return makerRepository
         .findById(id)
         .map(maker -> modelMapper.map(maker, MakerServiceModel.class))
@@ -58,5 +58,10 @@ public class MakerServiceImpl implements MakerService {
     modelRepository.save(model);
 
     return modelMapper.map(maker, MakerServiceModel.class);
+  }
+
+  @Override
+  public List<ModelServiceModel> getModelsForMaker(Long makerId) {
+    return modelMapper.mapAll(modelRepository.findAllByMakerId(makerId), ModelServiceModel.class);
   }
 }

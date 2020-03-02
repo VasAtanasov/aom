@@ -3,8 +3,6 @@ package bg.autohouse.web.models.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.*;
 
 @Getter
@@ -26,8 +24,8 @@ public class MakerResponseModel {
   @ApiModelProperty(value = ONLY_FOR_GET_MESSAGE, position = 2)
   private String name;
 
-  @ApiModelProperty(value = COLLECTION_MODELS, position = 3)
-  private List<ModelResponseModel> models = new ArrayList<>();
+  // @ApiModelProperty(value = COLLECTION_MODELS, position = 3)
+  // private List<ModelResponseModel> models = new ArrayList<>();
 
   @Builder
   public MakerResponseModel(Long id, String name) {
