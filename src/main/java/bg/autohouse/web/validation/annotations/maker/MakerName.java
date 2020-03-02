@@ -24,7 +24,7 @@ import javax.validation.constraints.Size;
 @Documented
 public @interface MakerName {
 
-  int MIN_LENGTH = 1;
+  int MIN_LENGTH = 11;
   int MAX_LENGTH = 32;
 
   String message() default "";
