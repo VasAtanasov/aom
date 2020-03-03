@@ -1,9 +1,9 @@
 package bg.autohouse.config;
 
+import bg.autohouse.Autohouse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.bind.annotation.RestController;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -29,7 +29,8 @@ public class SwaggerConfiguration {
 
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
-        .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+        // .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+        .apis(RequestHandlerSelectors.basePackage(Autohouse.class.getPackage().getName()))
         .paths(PathSelectors.any())
         .build()
         .apiInfo(apiEndPointsInfo());

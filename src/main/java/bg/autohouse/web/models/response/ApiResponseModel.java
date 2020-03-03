@@ -3,6 +3,7 @@ package bg.autohouse.web.models.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.annotations.ApiModel;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import lombok.AllArgsConstructor;
@@ -11,9 +12,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@ApiModel("Api response wrapper.")
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 @Builder
 @JsonPropertyOrder({"success", "message", "status", "timestamp", "payload"})
@@ -26,7 +28,8 @@ public class ApiResponseModel {
 
   @JsonProperty("timestamp")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-  private LocalDateTime timestamp;
+  @Builder.Default
+  private LocalDateTime timestamp = LocalDateTime.now();
 
   @JsonProperty("status")
   private String status;

@@ -33,18 +33,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "makers")
+@Api(tags = MakerController.CONTROLLER_TAG)
 @RestController
 @RequestMapping(WebConfiguration.URL_MAKERS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerController extends BaseController {
 
+  public static final String CONTROLLER_TAG = "makers";
+
   private final ModelMapperWrapper modelMapper;
   private final MakerService makerService;
 
-  @ApiOperation(
-      value = "Retrieves all makers with models available in database.",
-      response = List.class)
+  @ApiOperation(value = "Retrieves all makers.", response = List.class)
   @ApiResponses(value = {@ApiResponse(code = 200, message = "OK")})
   @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
@@ -70,6 +70,7 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(
       @ApiParam(name = "makerId", value = "The ID of the maker.", required = true)
+          @Valid
           @PathVariable
           @NotNull
           Long makerId) {
@@ -118,7 +119,7 @@ public class MakerController extends BaseController {
       value = "Creates new model for the given maker entity.",
       response = ModelResponseModel.class)
   @PostMapping(
-      value = "/{makerId}",
+      value = "/{makerId}/models",
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   // TODO add description for parameters

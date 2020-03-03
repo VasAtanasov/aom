@@ -2,7 +2,6 @@ package bg.autohouse.web.controllers;
 
 import bg.autohouse.web.models.response.ApiResponseModel;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ public abstract class BaseController {
         .body(
             ApiResponseModel.builder()
                 .success(Boolean.TRUE)
-                .timestamp(LocalDateTime.now())
                 .message(message)
                 .payload(payload)
                 .status(HttpStatus.OK.getReasonPhrase())
@@ -36,7 +34,6 @@ public abstract class BaseController {
         .body(
             ApiResponseModel.builder()
                 .success(Boolean.TRUE)
-                .timestamp(LocalDateTime.now())
                 .message(message)
                 .payload(payload)
                 .status(HttpStatus.OK.getReasonPhrase())
@@ -53,7 +50,6 @@ public abstract class BaseController {
     ApiResponseModel response =
         ApiResponseModel.builder()
             .success(Boolean.FALSE)
-            .timestamp(LocalDateTime.now())
             .message(message)
             .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
             .payload(errorMap)
