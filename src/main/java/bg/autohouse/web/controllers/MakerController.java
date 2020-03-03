@@ -18,7 +18,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -81,6 +80,9 @@ public class MakerController extends BaseController {
     return handleRequestSuccess(maker, REQUEST_SUCCESS);
   }
 
+  @ApiOperation(
+      value = "Retrieves all models for give maker id.",
+      response = MakerResponseWrapper.class)
   @GetMapping(
       value = "/{makerId}/models",
       produces = {APP_V1_MEDIA_TYPE_JSON})
@@ -96,20 +98,9 @@ public class MakerController extends BaseController {
     List<ModelResponseModel> models =
         modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
 
-    // Map<String, Object> payload =
-
     makerResponseModel.setModels(models);
 
-    return handleRequestSuccess(
-        new LinkedHashMap<>() {
-          private static final long serialVersionUID = 1L;
-
-          {
-            put("makerName", makerResponseModel.getName());
-            put("models", models);
-          }
-        },
-        REQUEST_SUCCESS);
+    return handleRequestSuccess(makerResponseModel, REQUEST_SUCCESS);
   }
 
   @ApiOperation(value = "Creates new maker entity.", response = MakerResponseModel.class)
