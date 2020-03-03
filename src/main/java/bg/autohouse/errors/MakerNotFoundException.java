@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class MakerNotFoundException extends BaseException {
+public class MakerNotFoundException extends ApiBaseException {
   private static final long serialVersionUID = -7754651575929506002L;
 
   public MakerNotFoundException() {

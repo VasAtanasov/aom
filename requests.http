@@ -15,7 +15,7 @@ Content-Type: application/json
 
 ###
 
-GET {{host}}/makers/1/models HTTP/1.1
+GET {{host}}/makers/sdff/models HTTP/1.1
 
 ###
 

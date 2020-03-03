@@ -21,11 +21,9 @@ import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,7 +70,6 @@ public class MakerController extends BaseController {
       @ApiParam(name = "makerId", value = "The ID of the maker.", required = true)
           @Valid
           @PathVariable
-          @NotNull
           Long makerId) {
 
     MakerResponseModel maker =
@@ -89,8 +86,8 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getModelsByMakerId(
       @ApiParam(name = "makerId", value = "The ID of the maker.", required = true)
+          @Valid
           @PathVariable
-          @NotNull
           Long makerId) {
 
     MakerResponseWrapper makerResponseModel =
@@ -107,10 +104,8 @@ public class MakerController extends BaseController {
   @ApiOperation(value = "Creates new maker entity.", response = MakerResponseModel.class)
   @PostMapping
   // TODO add description for parameters
-  public ResponseEntity<?> createMaker(
-      @Valid @RequestBody MakerCreateRequestModel createRequest, BindingResult result) {
-
-    if (result.hasErrors()) return handleRequestError(result, BAD_REQUEST);
+  // TODO to implement method
+  public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
 
     return ResponseEntity.ok().build();
   }
@@ -124,11 +119,7 @@ public class MakerController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   // TODO add description for parameters
   public ResponseEntity<?> addModel(
-      @PathVariable @NotNull Long makerId,
-      @Valid @RequestBody ModelCreateRequestModel createRequest,
-      BindingResult result) {
-
-    if (result.hasErrors()) return handleRequestError(result, BAD_REQUEST);
+      @PathVariable Long makerId, @Valid @RequestBody ModelCreateRequestModel createRequest) {
 
     MakerServiceModel updatedMaker =
         makerService.addModelToMaker(
