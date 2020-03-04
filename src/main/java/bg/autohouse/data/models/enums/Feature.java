@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Feature {
+public enum Feature implements Textable {
   ABS("ABS"),
   DRIVER_SIDE_AIRBAG("Driver-side airbag"),
   PASSENGER_SIDE_AIRBAG("Passenger-side airbag"),

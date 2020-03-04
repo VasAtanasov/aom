@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum FuelType {
+public enum FuelType implements Textable {
   GASOLINE("Gasoline"),
   DIESEL("Diesel"),
   ETHANOL("Ethanol"),

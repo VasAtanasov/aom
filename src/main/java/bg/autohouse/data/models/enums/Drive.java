@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Drive {
+public enum Drive implements Textable {
   FRONT_WHEEL_DRIVE("Front Wheel Drive"),
   REAR_WHEEL_DRIVE("Rear Wheel Drive"),
   FOUR_WHEEL_DRIVE("Four Wheel Drive"),

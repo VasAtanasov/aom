@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum EuroStandard {
+public enum EuroStandard implements Textable {
   EURO1("Euro 1"),
   EURO2("Euro 2"),
   EURO3("Euro 3"),

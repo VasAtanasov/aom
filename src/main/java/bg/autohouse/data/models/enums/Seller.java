@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Seller {
+public enum Seller implements Textable {
   PRIVATE("Private"),
   DEALER("Dealer");
 

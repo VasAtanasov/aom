@@ -16,8 +16,8 @@ public enum OrderBy {
   REGISTRATION_ASC("First registration ascending", "vehicleYear"),
   REGISTRATION_DSC("First registration descending", "vehicleYear,desc");
 
-  private final String value;
   private final String text;
+  private final String value;
 
   @Override
   public String toString() {

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum BodyStyle {
+public enum BodyStyle implements Textable {
   SUV("SUV"),
   MPV("MPV"),
   CPO("CPO"),

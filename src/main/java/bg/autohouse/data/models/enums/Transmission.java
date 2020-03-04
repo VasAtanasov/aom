@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Transmission {
+public enum Transmission implements Textable {
   AUTOMATIC("Automatic"),
   SEMI_AUTOMATIC("Semi-automatic"),
   MANUAL("Manual");

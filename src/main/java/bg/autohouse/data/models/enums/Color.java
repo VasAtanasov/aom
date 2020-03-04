@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Color {
+public enum Color implements Textable {
   BLACK("Black"),
   GRAY("Gray"),
   CREAM("Cream"),

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum State {
+public enum State implements Textable {
   NEW("New"),
   USED("Used"),
   ACCIDENT("Accident");

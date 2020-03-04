@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Upholstery {
+public enum Upholstery implements Textable {
   ALCANTARA("alcantara"),
   CLOTH("Cloth"),
   FULL_LEATHER("Full leather"),
