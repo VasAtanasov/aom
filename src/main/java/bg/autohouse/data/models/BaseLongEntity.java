@@ -12,9 +12,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @MappedSuperclass
-public abstract class BaseLongEntity implements Serializable {
+public abstract class BaseLongEntity extends BaseAuditEntity implements Serializable {
 
   private static final long serialVersionUID = 1L;
 

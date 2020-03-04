@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
-@Table(name = "models")
+@Table(name = EntityConstants.MODELS_TABLE)
 public class Model extends BaseLongEntity {
 
   private static final long serialVersionUID = 3257573416154758517L;
@@ -22,11 +22,10 @@ public class Model extends BaseLongEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
-  @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY)
+  @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
       name = "maker_id",
       referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "fk_models_makers_id"),
-      nullable = false)
+      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_models_makers_id"))
   private Maker maker;
 }

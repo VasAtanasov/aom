@@ -15,7 +15,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
 @Table(
-    name = "makers",
+    name = EntityConstants.MAKERS_TABLE,
     uniqueConstraints = {
       @UniqueConstraint(
           name = "uk_makers_name",
@@ -25,6 +25,6 @@ public class Maker extends BaseLongEntity {
 
   private static final long serialVersionUID = -2811586455073721689L;
 
-  @Column(name = "name", unique = true, nullable = false)
+  @Column(name = "name", nullable = false)
   private String name;
 }
