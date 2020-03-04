@@ -53,6 +53,7 @@ public class MakerServiceImpl implements MakerService {
   public MakerServiceModel addModelToMaker(
       @NotNull Long makerId, ModelServiceModel modelServiceModel) {
     Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
+    // TODO check if model exist for maker
     Model model = modelMapper.map(modelServiceModel, Model.class);
     model.setMaker(maker);
     modelRepository.save(model);

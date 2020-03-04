@@ -21,13 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class MakerControllerTest extends BaseTest {
   static final String MAKER_NAME = "Audi";
 
-  static final Maker maker = Maker.builder().name(MAKER_NAME).build();
+  static final Maker maker = new Maker();
 
   @Autowired MakerRepository makerRepository;
   @Autowired JsonParser jsonParser;
 
   @Before
   public void setUp() {
+    maker.setName("audi");
     Maker savedMaker = makerRepository.save(maker);
     log.info(jsonParser.toString(savedMaker));
   }

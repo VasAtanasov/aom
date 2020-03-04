@@ -14,16 +14,10 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
-@Table(
-    name = "makers",
-    uniqueConstraints = {
-      @UniqueConstraint(
-          name = "uk_makers_name",
-          columnNames = {"name"})
-    })
-public class Maker extends BaseLongEntity {
+@Table(name = "equipments")
+public class Equipment extends BaseLongEntity {
 
-  private static final long serialVersionUID = -2811586455073721689L;
+  private static final long serialVersionUID = -5293962302684079808L;
 
   @Column(name = "name", unique = true, nullable = false)
   private String name;

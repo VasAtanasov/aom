@@ -2,7 +2,6 @@ package bg.autohouse.data.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,6 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseUuidEntity implements Serializable {
@@ -44,17 +44,4 @@ public abstract class BaseUuidEntity implements Serializable {
   @LastModifiedBy
   @Column(name = "modified_by")
   private String modifiedBy;
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof BaseUuidEntity)) return false;
-    BaseUuidEntity that = (BaseUuidEntity) o;
-    return getId().equals(that.getId());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(getId());
-  }
 }
