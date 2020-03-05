@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "locations")
+@Table(name = EntityConstants.LOCATIONS)
 public class Location extends BaseLongEntity {
 
   private static final long serialVersionUID = -2377398736911388136L;

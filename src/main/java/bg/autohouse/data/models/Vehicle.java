@@ -15,7 +15,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "vehicles")
+@Table(
+    name = EntityConstants.VEHICLES,
+    indexes = {
+      @Index(name = "idx_" + EntityConstants.VEHICLES, columnList = "id, maker_id, model_id")
+    })
 public class Vehicle extends BaseUuidEntity {
 
   private static final long serialVersionUID = -797198687403481966L;

@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
-@Table(name = EntityConstants.MODELS_TABLE)
+@Table(name = EntityConstants.MODELS)
 public class Model extends BaseLongEntity {
 
   private static final long serialVersionUID = 3257573416154758517L;

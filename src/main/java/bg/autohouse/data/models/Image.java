@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "images")
+@Table(name = EntityConstants.IMAGES)
 @Builder
 public class Image extends BaseUuidEntity {
 

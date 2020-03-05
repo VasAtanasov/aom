@@ -15,7 +15,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
 @Table(
-    name = EntityConstants.MAKERS_TABLE,
+    name = EntityConstants.MAKERS,
     uniqueConstraints = {
       @UniqueConstraint(
           name = "uk_makers_name",

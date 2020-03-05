@@ -7,15 +7,23 @@ import javax.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 
+// TODO add named queries
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "offers")
+@Table(name = EntityConstants.OFFERS)
 public class Offer extends BaseUuidEntity implements EntityDetails {
 
   private static final long serialVersionUID = -2840866963962522737L;
+
+  @OneToOne(
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      mappedBy = "offer")
+  private Vehicle vehicle;
 
   @Column(name = "thumbnail", nullable = false)
   private String thumbnail;

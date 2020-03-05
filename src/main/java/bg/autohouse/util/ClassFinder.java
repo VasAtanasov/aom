@@ -4,7 +4,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class ClassFinder {
 
   private static final char PKG_SEPARATOR = '.';

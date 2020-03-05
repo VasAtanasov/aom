@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "engines")
+@Table(name = EntityConstants.ENGINES)
 public class Engine extends BaseUuidEntity {
 
   private static final long serialVersionUID = 3158862397025624400L;

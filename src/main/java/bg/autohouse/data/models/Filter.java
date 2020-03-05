@@ -23,7 +23,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "filters")
+@Table(name = EntityConstants.FILTERS)
 public class Filter extends BaseUuidEntity implements EntityDetails {
 
   private static final long serialVersionUID = 1915410703216504289L;
