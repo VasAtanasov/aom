@@ -1,4 +1,4 @@
-const filter = {
+{
   "maker": null,
   "model": null,
   "fuelType": null,
@@ -7,24 +7,26 @@ const filter = {
   "color": null,
   "euroStandard": null,
   "drive": null,
-  "mileages": {
+  "mileage": {
     "from": null,
     "to": null
   },
-  "prices": {
+  "price": {
     "from": null,
     "to": null
   },
-  "registrationYears": {
+  "registrationYear": {
     "from": null,
     "to": null
   },
-  "horsePowers": {
+  "horsePower": {
     "from": null,
     "to": null
   },
   "feature": [],
   "seller": [],
   "state": [],
-  "upholstery": []
+  "upholstery": [],
+  "hasAccident": false,
+  "sortOption": null
 }

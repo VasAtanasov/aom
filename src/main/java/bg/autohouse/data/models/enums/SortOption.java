@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum OrderBy {
+public enum SortOption {
   LATEST("Latest offers first", "auditCreatedOn,desc"),
   PRICE_ASC("Price ascending", "price"),
   PRICE_DSC("Price descending", "price,desc"),
