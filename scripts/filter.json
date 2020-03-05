@@ -1,0 +1,98 @@
+{
+  "filters": {
+    "sorting": "PriceAscending",
+    "vehicleType": "car",
+    "vat": null,
+    "numberOfAxles": null,
+    "xborder": null,
+    "paintWorks": [],
+    "makeModelModellineVersions": [
+      {
+        "makeId": null,
+        "modelId": null,
+        "modellineId": "",
+        "version": null,
+        "availableModelModelLines": [],
+        "topModelIds": [],
+        "id": 0
+      }
+    ],
+    "bodyTypes": [],
+    "fuelTypes": [],
+    "gears": [],
+    "usageState": [
+      "N",
+      "U"
+    ],
+    "upholsteries": [],
+    "onlineSinceId": null,
+    "firstRegistrationYear": {
+      "from": null,
+      "to": null
+    },
+    "price": {
+      "from": null,
+      "to": null
+    },
+    "financeRate": {
+      "from": null,
+      "to": null
+    },
+    "priceOrFinanceRateSelection": "price",
+    "mileage": {
+      "from": null,
+      "to": null
+    },
+    "seats": {
+      "from": null,
+      "to": null
+    },
+    "beds": {
+      "from": null,
+      "to": null
+    },
+    "emissionClass": null,
+    "emissionSticker": null,
+    "previousOwner": null,
+    "power": {
+      "type": "kw",
+      "from": null,
+      "to": null
+    },
+    "country": "",
+    "area": {
+      "lastSuggestion": null,
+      "lat": null,
+      "lon": null
+    },
+    "zipRadius": null,
+    "priceEvaluation": [],
+    "offerTypes": [
+      "N",
+      "J",
+      "U",
+      "O",
+      "D",
+      "S"
+    ],
+    "doors": "All",
+    "seller": null,
+    "equipments": [],
+    "bodyColors": [],
+    "interiorColors": [],
+    "seals": [],
+    "currentPage": null,
+    "dealerId": null,
+    "otTransactable": null,
+    "otOneSideContract": null,
+    "grossWeight": {
+      "from": null,
+      "to": null
+    },
+    "newDriverSuitable": null,
+    "consumption": {
+      "from": null,
+      "to": null
+    }
+  }
+}

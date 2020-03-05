@@ -1,10 +1,12 @@
 package bg.autohouse.data.models.enums;
 
+import bg.autohouse.data.models.annotations.SelectCriteria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@SelectCriteria
 public enum Color implements Textable {
   BLACK("Black"),
   GRAY("Gray"),

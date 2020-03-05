@@ -1,23 +1,22 @@
 package bg.autohouse.data.models.enums;
 
+import bg.autohouse.data.models.annotations.SelectCriteria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum SortOption {
-  LATEST("Latest offers first", "auditCreatedOn,desc"),
-  PRICE_ASC("Price ascending", "price"),
-  PRICE_DSC("Price descending", "price,desc"),
-  MILEAGE_ASC("Mileage ascending", "vehicleMileage"),
-  MILEAGE_DSC("Mileage descending", "vehicleMileage,desc"),
-  POWER_ASC("Power ascending", "vehicleEnginePower"),
-  POWER_DSC("Power descending", "vehicleEnginePower,desc"),
-  REGISTRATION_ASC("First registration ascending", "vehicleYear"),
-  REGISTRATION_DSC("First registration descending", "vehicleYear,desc");
+@SelectCriteria
+public enum SortOption implements Textable {
+  LATEST("createdOn,desc"),
+  PRICE_ASC("price"),
+  PRICE_DSC("price,desc"),
+  MILEAGE_ASC("vehicleMileage"),
+  MILEAGE_DSC("vehicleMileage,desc"),
+  REGISTRATION_ASC("vehicleYear"),
+  REGISTRATION_DSC("vehicleYear,desc");
 
   private final String text;
-  private final String value;
 
   @Override
   public String toString() {

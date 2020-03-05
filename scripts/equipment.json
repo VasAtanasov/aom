@@ -1,0 +1,344 @@
+{
+  "equipments": [
+    {
+      "id": "1",
+      "name": "ABS"
+    },
+    {
+      "id": "2",
+      "name": "Driver-side airbag"
+    },
+    {
+      "id": "3",
+      "name": "Passenger-side airbag"
+    },
+    {
+      "id": "4",
+      "name": "Sunroof"
+    },
+    {
+      "id": "10",
+      "name": "Radio"
+    },
+    {
+      "id": "11",
+      "name": "4WD"
+    },
+    {
+      "id": "13",
+      "name": "Power windows"
+    },
+    {
+      "id": "15",
+      "name": "Alloy wheels"
+    },
+    {
+      "id": "17",
+      "name": "Central door lock"
+    },
+    {
+      "id": "18",
+      "name": "Alarm system"
+    },
+    {
+      "id": "23",
+      "name": "Navigation system"
+    },
+    {
+      "id": "26",
+      "name": "Immobilizer"
+    },
+    {
+      "id": "32",
+      "name": "Side airbag"
+    },
+    {
+      "id": "34",
+      "name": "Seat heating"
+    },
+    {
+      "id": "36",
+      "name": "Handicapped enabled"
+    },
+    {
+      "id": "38",
+      "name": "Cruise control"
+    },
+    {
+      "id": "39",
+      "name": "Xenon headlights"
+    },
+    {
+      "id": "41",
+      "name": "On-board computer"
+    },
+    {
+      "id": "42",
+      "name": "Electronic stability control"
+    },
+    {
+      "id": "19",
+      "name": "Fog lights"
+    },
+    {
+      "id": "20",
+      "name": "Trailer hitch"
+    },
+    {
+      "id": "5",
+      "name": "Air conditioning"
+    },
+    {
+      "id": "27",
+      "name": "Roof rack"
+    },
+    {
+      "id": "12",
+      "name": "Power steering"
+    },
+    {
+      "id": "30",
+      "name": "Automatic climate control"
+    },
+    {
+      "id": "31",
+      "name": "Traction control"
+    },
+    {
+      "id": "16",
+      "name": "Electrically adjustable seats"
+    },
+    {
+      "id": "43",
+      "name": "MP3"
+    },
+    {
+      "id": "50",
+      "name": "Panorama roof"
+    },
+    {
+      "id": "52",
+      "name": "Auxiliary heating"
+    },
+    {
+      "id": "112",
+      "name": "Sport package"
+    },
+    {
+      "id": "113",
+      "name": "Start-stop system"
+    },
+    {
+      "id": "114",
+      "name": "Multi-function steering wheel"
+    },
+    {
+      "id": "115",
+      "name": "Daytime running lights"
+    },
+    {
+      "id": "116",
+      "name": "Sport suspension"
+    },
+    {
+      "id": "117",
+      "name": "Sport seats"
+    },
+    {
+      "id": "118",
+      "name": "Adaptive headlights"
+    },
+    {
+      "id": "119",
+      "name": "Ski bag"
+    },
+    {
+      "id": "133",
+      "name": "Adaptive Cruise Control"
+    },
+    {
+      "id": "134",
+      "name": "Armrest"
+    },
+    {
+      "id": "135",
+      "name": "Electrically heated windshield"
+    },
+    {
+      "id": "136",
+      "name": "Heated steering wheel"
+    },
+    {
+      "id": "137",
+      "name": "Hill Holder"
+    },
+    {
+      "id": "138",
+      "name": "Digital radio"
+    },
+    {
+      "id": "139",
+      "name": "Electric tailgate"
+    },
+    {
+      "id": "140",
+      "name": "LED Headlights"
+    },
+    {
+      "id": "141",
+      "name": "LED Daytime Running Lights"
+    },
+    {
+      "id": "142",
+      "name": "Leather steering wheel"
+    },
+    {
+      "id": "143",
+      "name": "Lumbar support"
+    },
+    {
+      "id": "144",
+      "name": "Air suspension"
+    },
+    {
+      "id": "145",
+      "name": "Massage seats"
+    },
+    {
+      "id": "146",
+      "name": "Driver drowsiness detection"
+    },
+    {
+      "id": "147",
+      "name": "Night view assist"
+    },
+    {
+      "id": "148",
+      "name": "Emergency brake assistant"
+    },
+    {
+      "id": "149",
+      "name": "Emergency system"
+    },
+    {
+      "id": "150",
+      "name": "Tire pressure monitoring system"
+    },
+    {
+      "id": "151",
+      "name": "Shift paddles"
+    },
+    {
+      "id": "152",
+      "name": "Sliding door"
+    },
+    {
+      "id": "153",
+      "name": "Keyless central door lock"
+    },
+    {
+      "id": "154",
+      "name": "Seat ventilation"
+    },
+    {
+      "id": "155",
+      "name": "Sound system"
+    },
+    {
+      "id": "156",
+      "name": "Voice Control"
+    },
+    {
+      "id": "157",
+      "name": "Lane departure warning system"
+    },
+    {
+      "id": "158",
+      "name": "Blind spot monitor"
+    },
+    {
+      "id": "159",
+      "name": "Touch screen"
+    },
+    {
+      "id": "160",
+      "name": "Television"
+    },
+    {
+      "id": "161",
+      "name": "USB"
+    },
+    {
+      "id": "162",
+      "name": "Traffic sign recognition"
+    },
+    {
+      "id": "121",
+      "name": "Electrical side mirrors"
+    },
+    {
+      "id": "122",
+      "name": "Bluetooth"
+    },
+    {
+      "id": "123",
+      "name": "Heads-up display"
+    },
+    {
+      "id": "124",
+      "name": "Hands-free equipment"
+    },
+    {
+      "id": "125",
+      "name": "Isofix"
+    },
+    {
+      "id": "126",
+      "name": "Light sensor"
+    },
+    {
+      "id": "127",
+      "name": "Rain sensor"
+    },
+    {
+      "id": "128",
+      "name": "Parking assist system sensors front"
+    },
+    {
+      "id": "129",
+      "name": "Parking assist system sensors rear"
+    },
+    {
+      "id": "130",
+      "name": "Parking assist system camera"
+    },
+    {
+      "id": "131",
+      "name": "Parking assist system self-steering"
+    },
+    {
+      "id": "132",
+      "name": "CD player"
+    },
+    {
+      "id": "37",
+      "name": "Guarantee"
+    },
+    {
+      "id": "49",
+      "name": "With full service history"
+    },
+    {
+      "id": "53",
+      "name": "Particulate filter"
+    },
+    {
+      "id": "110",
+      "name": "Non-smoking vehicle"
+    },
+    {
+      "id": "133",
+      "name": "Metallic"
+    }
+  ]
+}

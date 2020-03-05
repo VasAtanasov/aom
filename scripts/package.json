@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "mysql": "latest",
+    "promise-mysql": "^4.1.1"
+  },
+  "devDependencies": {
+    "axios": "^0.19.0"
+  }
+}

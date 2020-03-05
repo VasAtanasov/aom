@@ -285,6 +285,29 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
     return handleExceptionInternal(ex, response, headers, HttpStatus.NOT_ACCEPTABLE, request);
   }
 
+  // 409
+
+  @ExceptionHandler(value = {ResourceAlreadyExistsException.class})
+  public final ResponseEntity<Object> handleAlreadyExists(
+      final ApiBaseException ex, final WebRequest request) {
+
+    final ErrorModel errorModel =
+        ErrorModel.builder()
+            .errorCode(HttpStatus.CONFLICT.value())
+            .field("error", ex.getMessage())
+            .build();
+
+    final ApiResponseModel response =
+        ApiResponseModel.builder()
+            .success(Boolean.FALSE)
+            .message(ex.getLocalizedMessage())
+            .status(HttpStatus.CONFLICT.getReasonPhrase())
+            .payload(errorModel)
+            .build();
+
+    return handleExceptionInternal(ex, response, new HttpHeaders(), HttpStatus.CONFLICT, request);
+  }
+
   // 415
 
   @Override

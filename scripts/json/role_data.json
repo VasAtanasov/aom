@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "authority": "ROLE_ROOT"
+  },
+  {
+    "id": 2,
+    "authority": "ROLE_ADMIN"
+  },
+  {
+    "id": 3,
+    "authority": "ROLE_MODERATOR"
+  },
+  {
+    "id": 4,
+    "authority": "ROLE_USER"
+  }
+]

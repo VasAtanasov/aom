@@ -1,0 +1,684 @@
+{
+  "data": [
+    {
+      "asciiname": "Sofia",
+      "population": 1152556,
+      "location": "https://www.google.com/maps/?q=42.69751,23.32415"
+    },
+    {
+      "asciiname": "Plovdiv",
+      "population": 340494,
+      "location": "https://www.google.com/maps/?q=42.15,24.75"
+    },
+    {
+      "asciiname": "Varna",
+      "population": 312770,
+      "location": "https://www.google.com/maps/?q=43.21667,27.91667"
+    },
+    {
+      "asciiname": "Burgas",
+      "population": 195966,
+      "location": "https://www.google.com/maps/?q=42.50606,27.46781"
+    },
+    {
+      "asciiname": "Ruse",
+      "population": 156238,
+      "location": "https://www.google.com/maps/?q=43.85639,25.97083"
+    },
+    {
+      "asciiname": "Stara Zagora",
+      "population": 143431,
+      "location": "https://www.google.com/maps/?q=42.43278,25.64194"
+    },
+    {
+      "asciiname": "Pleven",
+      "population": 118675,
+      "location": "https://www.google.com/maps/?q=43.41667,24.61667"
+    },
+    {
+      "asciiname": "Sliven",
+      "population": 96368,
+      "location": "https://www.google.com/maps/?q=42.68583,26.32917"
+    },
+    {
+      "asciiname": "Dobrich",
+      "population": 94831,
+      "location": "https://www.google.com/maps/?q=43.56667,27.83333"
+    },
+    {
+      "asciiname": "Shumen",
+      "population": 87283,
+      "location": "https://www.google.com/maps/?q=43.27064,26.92286"
+    },
+    {
+      "asciiname": "Pernik",
+      "population": 82467,
+      "location": "https://www.google.com/maps/?q=42.6,23.03333"
+    },
+    {
+      "asciiname": "Yambol",
+      "population": 80116,
+      "location": "https://www.google.com/maps/?q=42.48333,26.5"
+    },
+    {
+      "asciiname": "Haskovo",
+      "population": 79699,
+      "location": "https://www.google.com/maps/?q=41.93415,25.55557"
+    },
+    {
+      "asciiname": "Pazardzhik",
+      "population": 75977,
+      "location": "https://www.google.com/maps/?q=42.2,24.33333"
+    },
+    {
+      "asciiname": "Blagoevgrad",
+      "population": 71306,
+      "location": "https://www.google.com/maps/?q=42.01667,23.1"
+    },
+    {
+      "asciiname": "Veliko Turnovo",
+      "population": 66217,
+      "location": "https://www.google.com/maps/?q=43.08124,25.62904"
+    },
+    {
+      "asciiname": "Gabrovo",
+      "population": 66175,
+      "location": "https://www.google.com/maps/?q=42.87472,25.33417"
+    },
+    {
+      "asciiname": "Vratsa",
+      "population": 64941,
+      "location": "https://www.google.com/maps/?q=43.21,23.5625"
+    },
+    {
+      "asciiname": "Kazanlak",
+      "population": 55196,
+      "location": "https://www.google.com/maps/?q=42.61667,25.4"
+    },
+    {
+      "asciiname": "Vidin",
+      "population": 54409,
+      "location": "https://www.google.com/maps/?q=43.99,22.8725"
+    },
+    {
+      "asciiname": "Asenovgrad",
+      "population": 52170,
+      "location": "https://www.google.com/maps/?q=42.01667,24.86667"
+    },
+    {
+      "asciiname": "Kardzhali",
+      "population": 51000,
+      "location": "https://www.google.com/maps/?q=41.65,25.36667"
+    },
+    {
+      "asciiname": "Kyustendil",
+      "population": 48286,
+      "location": "https://www.google.com/maps/?q=42.28389,22.69111"
+    },
+    {
+      "asciiname": "Montana",
+      "population": 47445,
+      "location": "https://www.google.com/maps/?q=43.4125,23.225"
+    },
+    {
+      "asciiname": "Dimitrovgrad",
+      "population": 43288,
+      "location": "https://www.google.com/maps/?q=42.05,25.6"
+    },
+    {
+      "asciiname": "Lovech",
+      "population": 42211,
+      "location": "https://www.google.com/maps/?q=43.13333,24.71667"
+    },
+    {
+      "asciiname": "Silistra",
+      "population": 39715,
+      "location": "https://www.google.com/maps/?q=44.11667,27.26667"
+    },
+    {
+      "asciiname": "Razgrad",
+      "population": 38285,
+      "location": "https://www.google.com/maps/?q=43.53333,26.51667"
+    },
+    {
+      "asciiname": "Targovishte",
+      "population": 37774,
+      "location": "https://www.google.com/maps/?q=43.2512,26.57215"
+    },
+    {
+      "asciiname": "Dupnitsa",
+      "population": 34764,
+      "location": "https://www.google.com/maps/?q=42.26667,23.11667"
+    },
+    {
+      "asciiname": "Gorna Oryahovitsa",
+      "population": 32792,
+      "location": "https://www.google.com/maps/?q=43.12778,25.70167"
+    },
+    {
+      "asciiname": "Svishtov",
+      "population": 32256,
+      "location": "https://www.google.com/maps/?q=43.61959,25.35044"
+    },
+    {
+      "asciiname": "Smolyan",
+      "population": 32069,
+      "location": "https://www.google.com/maps/?q=41.57439,24.71204"
+    },
+    {
+      "asciiname": "Petrich",
+      "population": 30308,
+      "location": "https://www.google.com/maps/?q=41.39846,23.20702"
+    },
+    {
+      "asciiname": "Samokov",
+      "population": 26765,
+      "location": "https://www.google.com/maps/?q=42.337,23.5528"
+    },
+    {
+      "asciiname": "Lom",
+      "population": 26594,
+      "location": "https://www.google.com/maps/?q=43.81389,23.23611"
+    },
+    {
+      "asciiname": "Sandanski",
+      "population": 26459,
+      "location": "https://www.google.com/maps/?q=41.56667,23.28333"
+    },
+    {
+      "asciiname": "Sevlievo",
+      "population": 24582,
+      "location": "https://www.google.com/maps/?q=43.02583,25.11361"
+    },
+    {
+      "asciiname": "Nova Zagora",
+      "population": 24340,
+      "location": "https://www.google.com/maps/?q=42.48333,26.01667"
+    },
+    {
+      "asciiname": "Velingrad",
+      "population": 24036,
+      "location": "https://www.google.com/maps/?q=42.02754,23.99155"
+    },
+    {
+      "asciiname": "Cherven Bryag",
+      "population": 21688,
+      "location": "https://www.google.com/maps/?q=43.26667,24.1"
+    },
+    {
+      "asciiname": "Troyan",
+      "population": 21162,
+      "location": "https://www.google.com/maps/?q=42.89427,24.71589"
+    },
+    {
+      "asciiname": "Aytos",
+      "population": 20986,
+      "location": "https://www.google.com/maps/?q=42.7,27.25"
+    },
+    {
+      "asciiname": "Botevgrad",
+      "population": 20909,
+      "location": "https://www.google.com/maps/?q=42.9,23.78333"
+    },
+    {
+      "asciiname": "Gotse Delchev",
+      "population": 20471,
+      "location": "https://www.google.com/maps/?q=41.56667,23.73333"
+    },
+    {
+      "asciiname": "Karlovo",
+      "population": 19958,
+      "location": "https://www.google.com/maps/?q=42.63333,24.8"
+    },
+    {
+      "asciiname": "Karnobat",
+      "population": 19709,
+      "location": "https://www.google.com/maps/?q=42.65,26.98333"
+    },
+    {
+      "asciiname": "Panagyurishte",
+      "population": 19389,
+      "location": "https://www.google.com/maps/?q=42.49518,24.19021"
+    },
+    {
+      "asciiname": "Svilengrad",
+      "population": 19279,
+      "location": "https://www.google.com/maps/?q=41.76667,26.2"
+    },
+    {
+      "asciiname": "Harmanli",
+      "population": 18931,
+      "location": "https://www.google.com/maps/?q=41.93333,25.9"
+    },
+    {
+      "asciiname": "Peshtera",
+      "population": 18676,
+      "location": "https://www.google.com/maps/?q=42.03372,24.29995"
+    },
+    {
+      "asciiname": "Chirpan",
+      "population": 17243,
+      "location": "https://www.google.com/maps/?q=42.2,25.33333"
+    },
+    {
+      "asciiname": "Parvomay",
+      "population": 17000,
+      "location": "https://www.google.com/maps/?q=42.1,25.21667"
+    },
+    {
+      "asciiname": "Popovo",
+      "population": 16571,
+      "location": "https://www.google.com/maps/?q=43.35,26.23333"
+    },
+    {
+      "asciiname": "Rakovski",
+      "population": 15782,
+      "location": "https://www.google.com/maps/?q=42.27408,24.94083"
+    },
+    {
+      "asciiname": "Berkovitsa",
+      "population": 15027,
+      "location": "https://www.google.com/maps/?q=43.23581,23.12738"
+    },
+    {
+      "asciiname": "Radomir",
+      "population": 14755,
+      "location": "https://www.google.com/maps/?q=42.54565,22.96553"
+    },
+    {
+      "asciiname": "Kozloduy",
+      "population": 14717,
+      "location": "https://www.google.com/maps/?q=43.77864,23.72058"
+    },
+    {
+      "asciiname": "Radnevo",
+      "population": 14667,
+      "location": "https://www.google.com/maps/?q=42.3,25.93333"
+    },
+    {
+      "asciiname": "Ihtiman",
+      "population": 14154,
+      "location": "https://www.google.com/maps/?q=42.43333,23.81667"
+    },
+    {
+      "asciiname": "Tryavna",
+      "population": 13818,
+      "location": "https://www.google.com/maps/?q=42.86667,25.5"
+    },
+    {
+      "asciiname": "Provadia",
+      "population": 13755,
+      "location": "https://www.google.com/maps/?q=43.18333,27.43333"
+    },
+    {
+      "asciiname": "Pomorie",
+      "population": 13714,
+      "location": "https://www.google.com/maps/?q=42.56326,27.62986"
+    },
+    {
+      "asciiname": "Byala Slatina",
+      "population": 13307,
+      "location": "https://www.google.com/maps/?q=43.46667,23.93333"
+    },
+    {
+      "asciiname": "Novi Pazar",
+      "population": 13276,
+      "location": "https://www.google.com/maps/?q=43.35,27.2"
+    },
+    {
+      "asciiname": "Balchik",
+      "population": 13000,
+      "location": "https://www.google.com/maps/?q=43.42166,28.15848"
+    },
+    {
+      "asciiname": "Razlog",
+      "population": 12486,
+      "location": "https://www.google.com/maps/?q=41.8863,23.46714"
+    },
+    {
+      "asciiname": "Pavlikeni",
+      "population": 12214,
+      "location": "https://www.google.com/maps/?q=43.24278,25.32194"
+    },
+    {
+      "asciiname": "Kostinbrod",
+      "population": 12175,
+      "location": "https://www.google.com/maps/?q=42.81667,23.21667"
+    },
+    {
+      "asciiname": "Stamboliyski",
+      "population": 12070,
+      "location": "https://www.google.com/maps/?q=42.13333,24.53333"
+    },
+    {
+      "asciiname": "Mezdra",
+      "population": 11975,
+      "location": "https://www.google.com/maps/?q=43.15,23.7"
+    },
+    {
+      "asciiname": "Levski",
+      "population": 11467,
+      "location": "https://www.google.com/maps/?q=43.36667,25.13333"
+    },
+    {
+      "asciiname": "Kavarna",
+      "population": 11205,
+      "location": "https://www.google.com/maps/?q=43.43601,28.33953"
+    },
+    {
+      "asciiname": "Elhovo",
+      "population": 11107,
+      "location": "https://www.google.com/maps/?q=42.16667,26.56667"
+    },
+    {
+      "asciiname": "Etropole",
+      "population": 11031,
+      "location": "https://www.google.com/maps/?q=42.83333,24"
+    },
+    {
+      "asciiname": "Teteven",
+      "population": 10790,
+      "location": "https://www.google.com/maps/?q=42.91667,24.26667"
+    },
+    {
+      "asciiname": "Tutrakan",
+      "population": 10022,
+      "location": "https://www.google.com/maps/?q=44.05,26.61667"
+    },
+    {
+      "asciiname": "Lukovit",
+      "population": 9792,
+      "location": "https://www.google.com/maps/?q=43.2,24.16667"
+    },
+    {
+      "asciiname": "Belene",
+      "population": 9781,
+      "location": "https://www.google.com/maps/?q=43.64594,25.12627"
+    },
+    {
+      "asciiname": "Zlatni Pyasatsi",
+      "population": 9760,
+      "location": "https://www.google.com/maps/?q=43.285,28.0418"
+    },
+    {
+      "asciiname": "Isperih",
+      "population": 9735,
+      "location": "https://www.google.com/maps/?q=43.71667,26.83333"
+    },
+    {
+      "asciiname": "Sredets",
+      "population": 9573,
+      "location": "https://www.google.com/maps/?q=42.34747,27.17898"
+    },
+    {
+      "asciiname": "Veliki Preslav",
+      "population": 9425,
+      "location": "https://www.google.com/maps/?q=43.16667,26.81667"
+    },
+    {
+      "asciiname": "Bansko",
+      "population": 9232,
+      "location": "https://www.google.com/maps/?q=41.8383,23.48851"
+    },
+    {
+      "asciiname": "Omurtag",
+      "population": 9070,
+      "location": "https://www.google.com/maps/?q=43.1,26.41667"
+    },
+    {
+      "asciiname": "Kubrat",
+      "population": 8980,
+      "location": "https://www.google.com/maps/?q=43.79658,26.50063"
+    },
+    {
+      "asciiname": "Svoge",
+      "population": 8964,
+      "location": "https://www.google.com/maps/?q=42.96667,23.35"
+    },
+    {
+      "asciiname": "Septemvri",
+      "population": 8745,
+      "location": "https://www.google.com/maps/?q=42.21138,24.12946"
+    },
+    {
+      "asciiname": "Krichim",
+      "population": 8580,
+      "location": "https://www.google.com/maps/?q=42.05,24.46667"
+    },
+    {
+      "asciiname": "Lyaskovets",
+      "population": 8488,
+      "location": "https://www.google.com/maps/?q=43.11111,25.72833"
+    },
+    {
+      "asciiname": "Gulubovo",
+      "population": 8400,
+      "location": "https://www.google.com/maps/?q=42.13333,25.85"
+    },
+    {
+      "asciiname": "Rakitovo",
+      "population": 8376,
+      "location": "https://www.google.com/maps/?q=41.99012,24.0873"
+    },
+    {
+      "asciiname": "Dryanovo",
+      "population": 8346,
+      "location": "https://www.google.com/maps/?q=42.97897,25.4785"
+    },
+    {
+      "asciiname": "Devnya",
+      "population": 8171,
+      "location": "https://www.google.com/maps/?q=43.22222,27.56944"
+    },
+    {
+      "asciiname": "Pirdop",
+      "population": 8136,
+      "location": "https://www.google.com/maps/?q=42.7,24.18333"
+    },
+    {
+      "asciiname": "Lyubimets",
+      "population": 8065,
+      "location": "https://www.google.com/maps/?q=41.83333,26.08333"
+    },
+    {
+      "asciiname": "Beloslav",
+      "population": 7989,
+      "location": "https://www.google.com/maps/?q=43.1896,27.70429"
+    },
+    {
+      "asciiname": "Hisarya",
+      "population": 7903,
+      "location": "https://www.google.com/maps/?q=42.5,24.7"
+    },
+    {
+      "asciiname": "General Toshevo",
+      "population": 7758,
+      "location": "https://www.google.com/maps/?q=43.70123,28.03787"
+    },
+    {
+      "asciiname": "Slivnitsa",
+      "population": 7545,
+      "location": "https://www.google.com/maps/?q=42.85182,23.03792"
+    },
+    {
+      "asciiname": "Varshets",
+      "population": 7512,
+      "location": "https://www.google.com/maps/?q=43.19356,23.2868"
+    },
+    {
+      "asciiname": "Devin",
+      "population": 7393,
+      "location": "https://www.google.com/maps/?q=41.74327,24.40003"
+    },
+    {
+      "asciiname": "Simeonovgrad",
+      "population": 7388,
+      "location": "https://www.google.com/maps/?q=42.03333,25.83333"
+    },
+    {
+      "asciiname": "Elin Pelin",
+      "population": 7373,
+      "location": "https://www.google.com/maps/?q=42.66667,23.6"
+    },
+    {
+      "asciiname": "Zlatograd",
+      "population": 7331,
+      "location": "https://www.google.com/maps/?q=41.3795,25.09605"
+    },
+    {
+      "asciiname": "Dolni Chiflik",
+      "population": 7169,
+      "location": "https://www.google.com/maps/?q=42.99296,27.71596"
+    },
+    {
+      "asciiname": "Aksakovo",
+      "population": 7132,
+      "location": "https://www.google.com/maps/?q=43.25615,27.82105"
+    },
+    {
+      "asciiname": "Knezha",
+      "population": 6889,
+      "location": "https://www.google.com/maps/?q=43.5,24.08333"
+    },
+    {
+      "asciiname": "Tervel",
+      "population": 6808,
+      "location": "https://www.google.com/maps/?q=43.74789,27.40911"
+    },
+    {
+      "asciiname": "Dulovo",
+      "population": 6788,
+      "location": "https://www.google.com/maps/?q=43.81667,27.15"
+    },
+    {
+      "asciiname": "Simitli",
+      "population": 6729,
+      "location": "https://www.google.com/maps/?q=41.88333,23.11667"
+    },
+    {
+      "asciiname": "Tvarditsa",
+      "population": 6519,
+      "location": "https://www.google.com/maps/?q=42.7,25.9"
+    },
+    {
+      "asciiname": "Topolovgrad",
+      "population": 6464,
+      "location": "https://www.google.com/maps/?q=42.08333,26.33333"
+    },
+    {
+      "asciiname": "Saedinenie",
+      "population": 6427,
+      "location": "https://www.google.com/maps/?q=42.26667,24.55"
+    },
+    {
+      "asciiname": "Kotel",
+      "population": 6421,
+      "location": "https://www.google.com/maps/?q=42.88333,26.45"
+    },
+    {
+      "asciiname": "Nesebar",
+      "population": 6302,
+      "location": "https://www.google.com/maps/?q=42.65921,27.73602"
+    },
+    {
+      "asciiname": "Bobov Dol",
+      "population": 6184,
+      "location": "https://www.google.com/maps/?q=42.36256,23.00324"
+    },
+    {
+      "asciiname": "Tsarevo",
+      "population": 6085,
+      "location": "https://www.google.com/maps/?q=42.16955,27.84541"
+    },
+    {
+      "asciiname": "Elena",
+      "population": 6042,
+      "location": "https://www.google.com/maps/?q=42.93333,25.88333"
+    },
+    {
+      "asciiname": "Yakoruda",
+      "population": 6008,
+      "location": "https://www.google.com/maps/?q=42.02528,23.68417"
+    },
+    {
+      "asciiname": "Straldzha",
+      "population": 5817,
+      "location": "https://www.google.com/maps/?q=42.6,26.68333"
+    },
+    {
+      "asciiname": "Zlatitsa",
+      "population": 5786,
+      "location": "https://www.google.com/maps/?q=42.71667,24.13333"
+    },
+    {
+      "asciiname": "Strazhitsa",
+      "population": 5728,
+      "location": "https://www.google.com/maps/?q=43.23333,25.96667"
+    },
+    {
+      "asciiname": "Oryahovo",
+      "population": 5706,
+      "location": "https://www.google.com/maps/?q=43.73504,23.95792"
+    },
+    {
+      "asciiname": "Belogradchik",
+      "population": 5688,
+      "location": "https://www.google.com/maps/?q=43.62722,22.68361"
+    },
+    {
+      "asciiname": "Polski Trambesh",
+      "population": 5663,
+      "location": "https://www.google.com/maps/?q=43.37233,25.63525"
+    },
+    {
+      "asciiname": "Madan",
+      "population": 5661,
+      "location": "https://www.google.com/maps/?q=41.49869,24.93973"
+    },
+    {
+      "asciiname": "Chepelare",
+      "population": 5478,
+      "location": "https://www.google.com/maps/?q=41.73333,24.68333"
+    },
+    {
+      "asciiname": "Perushtitsa",
+      "population": 5350,
+      "location": "https://www.google.com/maps/?q=42.05,24.55"
+    },
+    {
+      "asciiname": "Dalgopol",
+      "population": 5272,
+      "location": "https://www.google.com/maps/?q=43.05,27.35"
+    },
+    {
+      "asciiname": "Krumovgrad",
+      "population": 5271,
+      "location": "https://www.google.com/maps/?q=41.47127,25.65485"
+    },
+    {
+      "asciiname": "Dolni Dabnik",
+      "population": 5259,
+      "location": "https://www.google.com/maps/?q=43.4,24.43333"
+    },
+    {
+      "asciiname": "Valchedram",
+      "population": 5207,
+      "location": "https://www.google.com/maps/?q=43.69281,23.44518"
+    },
+    {
+      "asciiname": "Vetovo",
+      "population": 5175,
+      "location": "https://www.google.com/maps/?q=43.7,26.26667"
+    },
+    {
+      "asciiname": "Godech",
+      "population": 5154,
+      "location": "https://www.google.com/maps/?q=43.01682,23.04852"
+    },
+    {
+      "asciiname": "Nedelino",
+      "population": 5017,
+      "location": "https://www.google.com/maps/?q=41.45602,25.08008"
+    }
+  ]
+}

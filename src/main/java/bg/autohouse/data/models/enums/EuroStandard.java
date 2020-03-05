@@ -1,10 +1,12 @@
 package bg.autohouse.data.models.enums;
 
+import bg.autohouse.data.models.annotations.SelectCriteria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@SelectCriteria
 public enum EuroStandard implements Textable {
   EURO1("Euro 1"),
   EURO2("Euro 2"),

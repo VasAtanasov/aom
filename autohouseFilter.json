@@ -1,12 +1,20 @@
 {
   "maker": null,
   "model": null,
-  "fuelType": null,
-  "transmission": null,
   "bodyStyle": null,
   "color": null,
-  "euroStandard": null,
   "drive": null,
+  "euroStandard": null,
+  "fuelType": null,
+  "transmission": null,
+  "doors": {
+    "from": null,
+    "to": null
+  },
+  "seats": {
+    "from": null,
+    "to": null
+  },
   "mileage": {
     "from": null,
     "to": null

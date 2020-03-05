@@ -8,7 +8,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class EnumUtils {
 
-  public static <T extends Enum<T>, Textable> LinkedHashMap<Object, String> ENUM_MAP(
+  public static <T extends Enum<T>, Textable> LinkedHashMap<Object, String> ENUM_MAP_OF_TEXTABLE(
       Class<? extends Textable> enumClass) {
 
     LinkedHashMap<Object, String> map = new LinkedHashMap<>();
@@ -19,13 +19,13 @@ public class EnumUtils {
     return map;
   }
 
-  // public static <T extends Enum<T>> LinkedHashMap<T, String> ENUM_MAP(Class<T> enumClass) {
-  //   LinkedHashMap<T, String> map = new LinkedHashMap<>();
-  //   Stream.of(enumClass.getEnumConstants())
-  //       .sorted((a, b) -> a.toString().compareToIgnoreCase(b.toString()))
-  //       .forEach(t -> map.put(t, t.toString()));
-  //   return map;
-  // }
+  public static <T extends Enum<T>> LinkedHashMap<T, String> ENUM_MAP(Class<T> enumClass) {
+    LinkedHashMap<T, String> map = new LinkedHashMap<>();
+    Stream.of(enumClass.getEnumConstants())
+        .sorted((a, b) -> a.toString().compareToIgnoreCase(b.toString()))
+        .forEach(t -> map.put(t, t.toString()));
+    return map;
+  }
 
   public static <T extends Enum<T>> Optional<T> fromString(String string, Class<T> enumClass) {
     return Stream.of(enumClass.getEnumConstants())

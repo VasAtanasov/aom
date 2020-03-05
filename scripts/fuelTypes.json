@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Gasoline"
+  },
+  {
+    "id": 2,
+    "name": "Diesel"
+  },
+  {
+    "id": 1,
+    "name": "Ethanol"
+  },
+  {
+    "id": 3,
+    "name": "Electric"
+  },
+  {
+    "id": 4,
+    "name": "Hydrogen"
+  },
+  {
+    "id": 5,
+    "name": "LPG"
+  },
+  {
+    "id": 6,
+    "name": "CNG"
+  },
+  {
+    "id": 7,
+    "name": "Electric/Gasoline"
+  },
+  {
+    "id": 8,
+    "name": "Others"
+  },
+  {
+    "id": 9,
+    "name": "Electric/Diesel"
+  }
+]

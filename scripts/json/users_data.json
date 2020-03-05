@@ -1,0 +1,67 @@
+[
+  {
+    "id": "3c1bd01a-7cce-4650-9ed1-5d389fd21848",
+    "username": "vas",
+    "password": "$2y$12$SHLkzDwv.FbFsZhIpM17Suzc10qPwQq0Wdn1mxoiCUdse/RUsaXFG",
+    "first_name": "Fredra",
+    "last_name": "Fones",
+    "email": "ffones0@cbc.ca",
+    "is_active": true,
+    "created_on": "2019-10-18 14:41:09",
+    "last_login": "2019-11-04 06:42:09",
+    "modified_on": "2019-11-20 04:45:15",
+    "phone_number": "+359-805-982-598"
+  },
+  {
+    "id": "553bfca7-8a9a-422e-a12f-85b773bfcd48",
+    "username": "slethbrig1",
+    "password": "$2y$12$SHLkzDwv.FbFsZhIpM17Suzc10qPwQq0Wdn1mxoiCUdse/RUsaXFG",
+    "first_name": "Shanda",
+    "last_name": "Lethbrig",
+    "email": "slethbrig1@amazon.de",
+    "is_active": true,
+    "created_on": "2019-10-20 03:27:58",
+    "last_login": "2019-11-08 08:00:56",
+    "modified_on": "2019-11-14 02:49:19",
+    "phone_number": "+359-802-248-776"
+  },
+  {
+    "id": "07b8eff7-ff8b-4793-87eb-1244b7e8a490",
+    "username": "dhellicar2",
+    "password": "$2y$12$SHLkzDwv.FbFsZhIpM17Suzc10qPwQq0Wdn1mxoiCUdse/RUsaXFG",
+    "first_name": "Daveta",
+    "last_name": "Hellicar",
+    "email": "dhellicar2@rediff.com",
+    "is_active": true,
+    "created_on": "2019-10-18 20:56:02",
+    "last_login": "2019-11-23 10:23:42",
+    "modified_on": "2019-11-03 02:42:17",
+    "phone_number": "+359-809-883-807"
+  },
+  {
+    "id": "4a498172-3553-417a-a289-6179e85b3f5b",
+    "username": "bgniewosz3",
+    "password": "$2y$12$SHLkzDwv.FbFsZhIpM17Suzc10qPwQq0Wdn1mxoiCUdse/RUsaXFG",
+    "first_name": "Belinda",
+    "last_name": "Gniewosz",
+    "email": "bgniewosz3@japanpost.jp",
+    "is_active": true,
+    "created_on": "2019-10-07 13:21:53",
+    "last_login": "2019-11-16 08:55:35",
+    "modified_on": "2019-11-18 17:51:59",
+    "phone_number": "+359-862-782-876"
+  },
+  {
+    "id": "34755f80-9f9c-471b-ae0e-44ee3b523ab2",
+    "username": "ylampke4",
+    "password": "$2y$12$SHLkzDwv.FbFsZhIpM17Suzc10qPwQq0Wdn1mxoiCUdse/RUsaXFG",
+    "first_name": "Yolande",
+    "last_name": "Lampke",
+    "email": "ylampke4@yelp.com",
+    "is_active": true,
+    "created_on": "2019-10-07 12:23:12",
+    "last_login": "2019-12-01 17:18:14",
+    "modified_on": "2019-11-08 06:54:20",
+    "phone_number": "+359-859-797-527"
+  }
+]

@@ -81,6 +81,20 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   private RangeCriteria mileage;
 
   @AttributeOverrides({
+    @AttributeOverride(name = "from", column = @Column(name = "doors_from")),
+    @AttributeOverride(name = "to", column = @Column(name = "doors_to"))
+  })
+  @Embedded
+  private RangeCriteria doors;
+
+  @AttributeOverrides({
+    @AttributeOverride(name = "from", column = @Column(name = "seats_from")),
+    @AttributeOverride(name = "to", column = @Column(name = "seats_to"))
+  })
+  @Embedded
+  private RangeCriteria seats;
+
+  @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "registrationYear_from")),
     @AttributeOverride(name = "to", column = @Column(name = "registrationYear_to"))
   })

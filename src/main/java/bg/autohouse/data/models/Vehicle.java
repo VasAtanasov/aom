@@ -42,8 +42,14 @@ public class Vehicle extends BaseUuidEntity {
 
   @Embedded private ManufactureDate manufactureDate;
 
-  @Column(name = "mileage", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  @Column(name = "mileage", columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer mileage = 0;
+
+  @Column(name = "seats", columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  private Integer seats;
+
+  @Column(name = "doors", columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  private Integer doors;
 
   @Column(name = "state", nullable = false)
   @Enumerated(EnumType.STRING)

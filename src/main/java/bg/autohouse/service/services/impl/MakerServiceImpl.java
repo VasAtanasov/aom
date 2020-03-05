@@ -5,6 +5,7 @@ import bg.autohouse.data.models.Model;
 import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.errors.MakerNotFoundException;
+import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.MakerService;
@@ -52,8 +53,16 @@ public class MakerServiceImpl implements MakerService {
   @Override
   public MakerServiceModel addModelToMaker(
       @NotNull Long makerId, ModelServiceModel modelServiceModel) {
+
     Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
-    // TODO check if model exist for maker
+
+    boolean modelExists =
+        modelRepository.existsByNameAndMakerId(modelServiceModel.getName(), makerId);
+
+    if (modelExists) {
+      throw new ResourceAlreadyExistsException("Model with name already exists!");
+    }
+
     Model model = modelMapper.map(modelServiceModel, Model.class);
     model.setMaker(maker);
     modelRepository.save(model);

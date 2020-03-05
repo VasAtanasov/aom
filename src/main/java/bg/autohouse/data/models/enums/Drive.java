@@ -1,10 +1,12 @@
 package bg.autohouse.data.models.enums;
 
+import bg.autohouse.data.models.annotations.SelectCriteria;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@SelectCriteria
 public enum Drive implements Textable {
   FRONT_WHEEL_DRIVE("Front Wheel Drive"),
   REAR_WHEEL_DRIVE("Rear Wheel Drive"),
