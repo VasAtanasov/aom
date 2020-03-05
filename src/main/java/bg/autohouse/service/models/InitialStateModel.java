@@ -36,5 +36,8 @@ public class InitialStateModel {
   @Builder.Default private List<String> searchCriteriaNamesForCheckboxCriteria = new ArrayList<>();
   @Builder.Default private List<String> searchCriteriaNamesForSelectCriteria = new ArrayList<>();
   @Builder.Default private List<String> searchCriteriaNamesForRangeCriteria = new ArrayList<>();
+
+  @Builder.Default private List<MakerServiceModel> makers = new ArrayList<>();
+
   @Builder.Default private Map<String, Object> metadata = new LinkedHashMap<>();
 }
