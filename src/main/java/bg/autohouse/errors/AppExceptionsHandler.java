@@ -1,9 +1,9 @@
 package bg.autohouse.errors;
 
-import bg.autohouse.errors.models.ErrorModel;
 import bg.autohouse.errors.models.HttpMediaTypeErrorModel;
 import bg.autohouse.errors.models.HttpRequestMethodErrorModel;
 import bg.autohouse.errors.models.ValidationErrorModel;
+import bg.autohouse.util.Assert;
 import bg.autohouse.web.models.response.ApiResponseModel;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
@@ -18,6 +18,7 @@ import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,6 +41,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @Slf4j
 @RestControllerAdvice
+@ControllerAdvice
 public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
   private static final ImmutableMap<Class<?>, HttpStatus> exceptionToStatusMapping =
@@ -51,39 +54,20 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
           .put(MissingServletRequestParameterException.class, HttpStatus.BAD_REQUEST)
           .put(MethodArgumentTypeMismatchException.class, HttpStatus.BAD_REQUEST)
           .put(HttpRequestMethodNotSupportedException.class, HttpStatus.BAD_REQUEST)
-          // .put(NotFoundException.class, HttpStatus.NOT_FOUND)
-          .put(EntityNotFoundException.class, HttpStatus.NOT_FOUND)
-          .put(ModelNotFoundException.class, HttpStatus.NOT_FOUND)
-          .put(MakerNotFoundException.class, HttpStatus.NOT_FOUND)
-          .put(NoHandlerFoundException.class, HttpStatus.NOT_FOUND)
-          .put(HttpMediaTypeNotAcceptableException.class, HttpStatus.NOT_ACCEPTABLE)
-          .put(ResourceAlreadyExistsException.class, HttpStatus.CONFLICT)
-          .put(HttpMediaTypeNotSupportedException.class, HttpStatus.UNSUPPORTED_MEDIA_TYPE)
-          // .put(RevisionConflictException.class, HttpStatus.CONFLICT)
-          // .put(OptimisticLockingFailureException.class, HttpStatus.CONFLICT)
-          // .put(AccessDeniedException.class, HttpStatus.FORBIDDEN)
           .put(IllegalArgumentException.class, HttpStatus.BAD_REQUEST)
+          .put(NotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(EntityNotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(NoHandlerFoundException.class, HttpStatus.NOT_FOUND)
+          .put(MakerNotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(ModelNotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(HttpMediaTypeNotAcceptableException.class, HttpStatus.NOT_ACCEPTABLE)
+          .put(HttpMediaTypeNotSupportedException.class, HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+          .put(ResourceAlreadyExistsException.class, HttpStatus.CONFLICT)
+          .put(OptimisticLockingFailureException.class, HttpStatus.CONFLICT)
+          // when add spring security
+          // .put(AccessDeniedException.class, HttpStatus.FORBIDDEN)
           .put(IllegalStateException.class, HttpStatus.INTERNAL_SERVER_ERROR)
           .build();
-
-  private static HttpStatus getHttpStatusCode(final @Nonnull Throwable ex) {
-    final ResponseStatus annotationStatusCode =
-        AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
-
-    if (annotationStatusCode != null) {
-      return annotationStatusCode.value();
-    }
-
-    for (final Map.Entry<Class<?>, HttpStatus> entry : exceptionToStatusMapping.entrySet()) {
-      if (entry.getKey().isAssignableFrom(ex.getClass())) {
-        return entry.getValue();
-      }
-    }
-
-    log.warn("Unknown exception type: " + ex.getClass().getName());
-
-    return HttpStatus.INTERNAL_SERVER_ERROR;
-  }
 
   // 400
 
@@ -96,15 +80,11 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     Set<ValidationErrorModel> errors = getValidationErrors(ex.getBindingResult());
 
-    final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message("Validation of one or more arguments failed.")
-            .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-            .payload(errors)
-            .build();
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.BAD_REQUEST, request);
+    final ApiResponseModel response = exposeApiResponseErrorModel(ex, httpStatus, errors);
+
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   @Override
@@ -116,15 +96,11 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     Set<ValidationErrorModel> errors = getValidationErrors(ex.getBindingResult());
 
-    final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-            .payload(errors)
-            .build();
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.BAD_REQUEST, request);
+    final ApiResponseModel response = exposeApiResponseErrorModel(ex, httpStatus, errors);
+
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   @Override
@@ -134,7 +110,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
       final HttpStatus status,
       final WebRequest request) {
 
-    logger.info(ex.getClass().getName());
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
 
     final String error =
         ex.getValue()
@@ -143,21 +119,10 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
             + " should be of type "
             + ex.getRequiredType();
 
-    final ErrorModel errorModel =
-        ErrorModel.builder()
-            .errorCode(HttpStatus.BAD_REQUEST.value())
-            .field("error", error)
-            .build();
-
     final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-            .payload(errorModel)
-            .build();
+        exposeApiResponseErrorModelWithMessage(ex, httpStatus, null, error);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.BAD_REQUEST, request);
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   @Override
@@ -166,25 +131,15 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
-    //
+
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
+
     final String error = ex.getRequestPartName() + " part is missing";
 
-    final ErrorModel errorModel =
-        ErrorModel.builder()
-            .errorCode(HttpStatus.BAD_REQUEST.value())
-            .field("error", error)
-            .build();
-
     final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-            .payload(errorModel)
-            .build();
+        exposeApiResponseErrorModelWithMessage(ex, httpStatus, error, null);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.BAD_REQUEST, request);
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   @Override
@@ -193,73 +148,15 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    logger.info(ex.getClass().getName());
-    //
+
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
+
     final String error = ex.getParameterName() + " parameter is missing";
 
-    final ErrorModel errorModel =
-        ErrorModel.builder()
-            .errorCode(HttpStatus.BAD_REQUEST.value())
-            .field("error", error)
-            .build();
-
     final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-            .payload(errorModel)
-            .build();
+        exposeApiResponseErrorModelWithMessage(ex, httpStatus, null, error);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.BAD_REQUEST, request);
-  }
-
-  @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-  public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-      final MethodArgumentTypeMismatchException ex, final WebRequest request) {
-    logger.info(ex.getClass().getName());
-    //
-    final String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
-
-    final ErrorModel errorModel =
-        ErrorModel.builder()
-            .errorCode(HttpStatus.BAD_REQUEST.value())
-            .field("error", error)
-            .build();
-
-    final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-            .payload(errorModel)
-            .build();
-
-    return handleExceptionInternal(
-        ex, response, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-  }
-
-  // 404
-
-  @ExceptionHandler(value = {MakerNotFoundException.class, ModelNotFoundException.class})
-  public final ResponseEntity<Object> handleNotFoundExceptions(
-      final ApiBaseException ex, final WebRequest request) {
-
-    final ErrorModel errorModel =
-        ErrorModel.builder()
-            .errorCode(HttpStatus.BAD_REQUEST.value())
-            .field("error", ex.getMessage())
-            .build();
-
-    final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.NOT_FOUND.getReasonPhrase())
-            .payload(errorModel)
-            .build();
-
-    return handleExceptionInternal(ex, response, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   @Override
@@ -269,34 +166,27 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
       final HttpStatus status,
       final WebRequest request) {
     logger.info(ex.getClass().getName());
-    //
+
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
+
     final String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
 
-    final ErrorModel errorModel =
-        ErrorModel.builder()
-            .errorCode(HttpStatus.BAD_REQUEST.value())
-            .field("error", error)
-            .build();
-
     final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.NOT_FOUND.getReasonPhrase())
-            .payload(errorModel)
-            .build();
+        exposeApiResponseErrorModelWithMessage(ex, httpStatus, null, error);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.NOT_FOUND, request);
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   // 405
-
+  // TODO Fix the information given from the exception is not error information
   @Override
   public ResponseEntity<Object> handleHttpRequestMethodNotSupported(
       final HttpRequestMethodNotSupportedException ex,
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
+
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
 
     final HttpRequestMethodErrorModel httpRequestMethodErrorModel =
         HttpRequestMethodErrorModel.builder()
@@ -305,101 +195,107 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
             .build();
 
     final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-            .payload(httpRequestMethodErrorModel)
-            .build();
+        exposeApiResponseErrorModel(ex, httpStatus, httpRequestMethodErrorModel);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.BAD_REQUEST, request);
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   // 406
-
+  // TODO Fix the information given from the exception is not error information
   @Override
   public ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(
-      HttpMediaTypeNotAcceptableException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request) {
+      final HttpMediaTypeNotAcceptableException ex,
+      final HttpHeaders headers,
+      final HttpStatus status,
+      final WebRequest request) {
+
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
 
     final HttpMediaTypeErrorModel httpMediaTypeErrorModel =
         HttpMediaTypeErrorModel.builder().mediaType(ex.getSupportedMediaTypes()).build();
 
     ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.NOT_ACCEPTABLE.getReasonPhrase())
-            .payload(Collections.singleton(httpMediaTypeErrorModel))
-            .build();
+        exposeApiResponseErrorModel(ex, httpStatus, httpMediaTypeErrorModel);
 
-    return handleExceptionInternal(ex, response, headers, HttpStatus.NOT_ACCEPTABLE, request);
-  }
-
-  // 409
-
-  @ExceptionHandler(value = {ResourceAlreadyExistsException.class})
-  public final ResponseEntity<Object> handleAlreadyExists(
-      final ApiBaseException ex, final WebRequest request) {
-
-    final ErrorModel errorModel =
-        ErrorModel.builder()
-            .errorCode(HttpStatus.CONFLICT.value())
-            .field("error", ex.getMessage())
-            .build();
-
-    final ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.CONFLICT.getReasonPhrase())
-            .payload(errorModel)
-            .build();
-
-    return handleExceptionInternal(ex, response, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   // 415
-
+  // TODO Fix the information given from the exception is not error information
   @Override
   public ResponseEntity<Object> handleHttpMediaTypeNotSupported(
-      HttpMediaTypeNotSupportedException ex,
-      HttpHeaders headers,
-      HttpStatus status,
-      WebRequest request) {
+      final HttpMediaTypeNotSupportedException ex,
+      final HttpHeaders headers,
+      final HttpStatus status,
+      final WebRequest request) {
+
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
 
     final HttpMediaTypeErrorModel httpMediaTypeErrorModel =
         HttpMediaTypeErrorModel.builder().mediaType(ex.getSupportedMediaTypes()).build();
 
     ApiResponseModel response =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .message(ex.getLocalizedMessage())
-            .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.getReasonPhrase())
-            .payload(Collections.singleton(httpMediaTypeErrorModel))
-            .build();
+        exposeApiResponseErrorModel(ex, httpStatus, Collections.singleton(httpMediaTypeErrorModel));
 
-    return handleExceptionInternal(
-        ex, response, headers, HttpStatus.UNSUPPORTED_MEDIA_TYPE, request);
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
 
   // 500
 
-  @ExceptionHandler(value = {RuntimeException.class})
-  public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-    logger.error("Global error handler exception: ", ex);
+  @ExceptionHandler(value = {Throwable.class})
+  public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
 
-    ApiResponseModel response =
+    logger.error("Global error handler exception: ", ex);
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
+
+    final ApiResponseModel response =
+        exposeApiResponseErrorModelWithMessage(ex, httpStatus, null, "Something went wrong.");
+
+    return handleExceptionInternal(ex, response, new HttpHeaders(), httpStatus, request);
+  }
+
+  // Custom exceptions
+
+  @ExceptionHandler(
+      value = {
+        MakerNotFoundException.class,
+        ModelNotFoundException.class,
+        NotFoundException.class,
+        ResourceAlreadyExistsException.class
+      })
+  public final ResponseEntity<Object> handleNotFoundExceptions(
+      final ApiBaseException ex, final WebRequest request) {
+
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
+
+    final ApiResponseModel response = exposeApiResponseErrorModel(ex, httpStatus, null);
+
+    return handleExceptionInternal(ex, response, new HttpHeaders(), httpStatus, request);
+  }
+
+  public ApiResponseModel exposeApiResponseErrorModelWithMessage(
+      final Throwable ex, final HttpStatus httpStatus, final Object payload, final String message) {
+
+    final ApiResponseModel.ApiResponseModelBuilder builder =
         ApiResponseModel.builder()
             .success(Boolean.FALSE)
-            .message("Something went wrong.")
-            .status(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-            .build();
+            .status(httpStatus.value())
+            .errors(payload);
 
-    return handleExceptionInternal(
-        ex, response, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+    if (Assert.has(message)) {
+      builder.message(message);
+    } else if (shouldExposeExceptionMessage(ex) && Assert.has(ex.getMessage())) {
+      builder.message(ex.getMessage());
+    } else {
+      builder.message(httpStatus.getReasonPhrase());
+    }
+
+    return builder.build();
+  }
+
+  public ApiResponseModel exposeApiResponseErrorModel(
+      final Throwable ex, HttpStatus httpStatus, Object payload) {
+    return exposeApiResponseErrorModelWithMessage(ex, httpStatus, payload, null);
   }
 
   private Set<ValidationErrorModel> getValidationErrors(BindingResult result) {
@@ -429,5 +325,31 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
     return arguments == null
         ? Collections.emptyList()
         : Stream.of(arguments).skip(1).map(Object::toString).collect(Collectors.toList());
+  }
+
+  private static HttpStatus getHttpStatusCode(final @Nonnull Throwable ex) {
+    final ResponseStatus annotationStatusCode =
+        AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
+
+    if (annotationStatusCode != null) {
+      return annotationStatusCode.value();
+    }
+
+    for (final Map.Entry<Class<?>, HttpStatus> entry : exceptionToStatusMapping.entrySet()) {
+      if (entry.getKey().isAssignableFrom(ex.getClass())) {
+        return entry.getValue();
+      }
+    }
+
+    log.warn("Unknown exception type: " + ex.getClass().getName());
+
+    return HttpStatus.INTERNAL_SERVER_ERROR;
+  }
+
+  private static boolean shouldExposeExceptionMessage(final @Nonnull Throwable ex) {
+    return ex instanceof MakerNotFoundException
+        || ex instanceof NotFoundException
+        || ex instanceof ModelNotFoundException
+        || ex instanceof ResourceAlreadyExistsException;
   }
 }

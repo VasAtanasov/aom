@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = MakerController.CONTROLLER_TAG)
 @RestController
-@RequestMapping(WebConfiguration.URL_MAKERS)
+@RequestMapping(value = WebConfiguration.URL_MAKERS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerController extends BaseController {
 
@@ -110,14 +110,11 @@ public class MakerController extends BaseController {
     return ResponseEntity.ok().build();
   }
 
+  // TODO add description for parameters
   @ApiOperation(
       value = "Creates new model for the given maker entity.",
       response = ModelResponseModel.class)
-  @PostMapping(
-      value = "/{makerId}/models",
-      produces = {APP_V1_MEDIA_TYPE_JSON},
-      consumes = {APP_V1_MEDIA_TYPE_JSON})
-  // TODO add description for parameters
+  @PostMapping(value = "/{makerId}/models")
   public ResponseEntity<?> addModel(
       @PathVariable Long makerId, @Valid @RequestBody ModelCreateRequestModel createRequest) {
 

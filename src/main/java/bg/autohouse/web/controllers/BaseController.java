@@ -1,5 +1,6 @@
 package bg.autohouse.web.controllers;
 
+import bg.autohouse.util.Assert;
 import bg.autohouse.web.models.response.ApiResponseModel;
 import java.net.URI;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,8 @@ public abstract class BaseController {
 
   protected ResponseEntity<?> handleCreateSuccess(Object payload, String message, String path) {
 
+    final HttpStatus status = HttpStatus.OK;
+
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath().path(path).buildAndExpand().toUri();
 
@@ -19,20 +22,23 @@ public abstract class BaseController {
         .body(
             ApiResponseModel.builder()
                 .success(Boolean.TRUE)
-                .message(message)
-                .payload(payload)
-                .status(HttpStatus.OK.getReasonPhrase())
+                .message(Assert.has(message) ? message : status.getReasonPhrase())
+                .data(payload)
+                .status(status.value())
                 .build());
   }
 
   protected ResponseEntity<?> handleRequestSuccess(Object payload, String message) {
+
+    final HttpStatus status = HttpStatus.OK;
+
     return ResponseEntity.ok()
         .body(
             ApiResponseModel.builder()
                 .success(Boolean.TRUE)
-                .message(message)
-                .payload(payload)
-                .status(HttpStatus.OK.getReasonPhrase())
+                .message(Assert.has(message) ? message : status.getReasonPhrase())
+                .data(payload)
+                .status(status.value())
                 .build());
   }
 }

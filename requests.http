@@ -1,11 +1,11 @@
 @host = http://localhost:8007/api/vehicles
 
-GET   {{host}}/   HTTP/1.1
+post {{host}}  HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 
 ###
 ### GET All makers available
-GET   {{host}}/makers/2   HTTP/1.1
+GET {{host}}/makers/2  HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 
 ###
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ###
 
-GET {{host}}/makers/1/models HTTP/1.1
+DELETE  {{host}}/makers/21/models HTTP/1.1
 
 ###
 
@@ -28,5 +28,5 @@ Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-  "name": "aaa"
+  "name": ""
 }
