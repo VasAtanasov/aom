@@ -3,7 +3,7 @@ package bg.autohouse.service.services;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import java.util.List;
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 
 public interface MakerService {
   MakerServiceModel getOne(Long id);
@@ -12,7 +12,7 @@ public interface MakerService {
 
   boolean isMaker(Long id);
 
-  MakerServiceModel addModelToMaker(@NotNull Long makerId, ModelServiceModel modelServiceModel);
+  MakerServiceModel addModelToMaker(@Nonnull Long makerId, ModelServiceModel modelServiceModel);
 
-  List<ModelServiceModel> getModelsForMaker(@NotNull Long makerId);
+  List<ModelServiceModel> getModelsForMaker(@Nonnull Long makerId);
 }

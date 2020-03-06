@@ -1,6 +1,5 @@
 package bg.autohouse.errors.models;
 
-import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,6 @@ import lombok.Setter;
 import lombok.Singular;
 import org.springframework.http.MediaType;
 
-@ApiModel("HttpMediaTypeError")
 @Getter
 @Setter
 @Builder

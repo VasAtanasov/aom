@@ -1,6 +1,5 @@
 package bg.autohouse.errors.models;
 
-import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Builder;
@@ -8,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Singular;
 
-@ApiModel("ValidationError")
 @Getter
 @Setter
 @Builder

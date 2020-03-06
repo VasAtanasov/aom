@@ -12,7 +12,7 @@ import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +52,7 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   public MakerServiceModel addModelToMaker(
-      @NotNull Long makerId, ModelServiceModel modelServiceModel) {
+      @Nonnull Long makerId, ModelServiceModel modelServiceModel) {
 
     Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
 
