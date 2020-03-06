@@ -5,12 +5,19 @@ import bg.autohouse.errors.models.HttpMediaTypeErrorModel;
 import bg.autohouse.errors.models.HttpRequestMethodErrorModel;
 import bg.autohouse.errors.models.ValidationErrorModel;
 import bg.autohouse.web.models.response.ApiResponseModel;
+import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nonnull;
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +29,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -29,8 +37,53 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+@Slf4j
 @RestControllerAdvice
 public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
+
+  private static final ImmutableMap<Class<?>, HttpStatus> exceptionToStatusMapping =
+      ImmutableMap.<Class<?>, HttpStatus>builder()
+          .put(ValidationException.class, HttpStatus.BAD_REQUEST)
+          .put(MethodArgumentNotValidException.class, HttpStatus.BAD_REQUEST)
+          .put(BindException.class, HttpStatus.BAD_REQUEST)
+          .put(TypeMismatchException.class, HttpStatus.BAD_REQUEST)
+          .put(MissingServletRequestPartException.class, HttpStatus.BAD_REQUEST)
+          .put(MissingServletRequestParameterException.class, HttpStatus.BAD_REQUEST)
+          .put(MethodArgumentTypeMismatchException.class, HttpStatus.BAD_REQUEST)
+          .put(HttpRequestMethodNotSupportedException.class, HttpStatus.BAD_REQUEST)
+          // .put(NotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(EntityNotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(ModelNotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(MakerNotFoundException.class, HttpStatus.NOT_FOUND)
+          .put(NoHandlerFoundException.class, HttpStatus.NOT_FOUND)
+          .put(HttpMediaTypeNotAcceptableException.class, HttpStatus.NOT_ACCEPTABLE)
+          .put(ResourceAlreadyExistsException.class, HttpStatus.CONFLICT)
+          .put(HttpMediaTypeNotSupportedException.class, HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+          // .put(RevisionConflictException.class, HttpStatus.CONFLICT)
+          // .put(OptimisticLockingFailureException.class, HttpStatus.CONFLICT)
+          // .put(AccessDeniedException.class, HttpStatus.FORBIDDEN)
+          .put(IllegalArgumentException.class, HttpStatus.BAD_REQUEST)
+          .put(IllegalStateException.class, HttpStatus.INTERNAL_SERVER_ERROR)
+          .build();
+
+  private static HttpStatus getHttpStatusCode(final @Nonnull Throwable ex) {
+    final ResponseStatus annotationStatusCode =
+        AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
+
+    if (annotationStatusCode != null) {
+      return annotationStatusCode.value();
+    }
+
+    for (final Map.Entry<Class<?>, HttpStatus> entry : exceptionToStatusMapping.entrySet()) {
+      if (entry.getKey().isAssignableFrom(ex.getClass())) {
+        return entry.getValue();
+      }
+    }
+
+    log.warn("Unknown exception type: " + ex.getClass().getName());
+
+    return HttpStatus.INTERNAL_SERVER_ERROR;
+  }
 
   // 400
 
