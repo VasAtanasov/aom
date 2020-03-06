@@ -13,6 +13,7 @@ import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
 import bg.autohouse.web.models.response.MakerResponseWrapper;
 import bg.autohouse.web.models.response.ModelResponseModel;
+import com.google.common.collect.ImmutableMap;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -52,7 +53,11 @@ public class MakerController extends BaseController {
             .map(model -> modelMapper.map(model, MakerResponseModel.class))
             .collect(Collectors.toUnmodifiableList());
 
-    return handleRequestSuccess(makers, REQUEST_SUCCESS);
+    return handleRequestSuccess(toMap("makers", makers), REQUEST_SUCCESS);
+  }
+
+  private <T> ImmutableMap<String, List<T>> toMap(final String key, final List<T> objects) {
+    return ImmutableMap.of(key, objects);
   }
 
   @ApiOperation(
