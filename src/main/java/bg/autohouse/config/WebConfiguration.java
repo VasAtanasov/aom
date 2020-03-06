@@ -10,6 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
+  public static final String APP_V1_MEDIA_TYPE_JSON = "application/bg.autohouse.api-v1+json";
+
   public static final String URL_INDEX = "/";
   public static final String URL_API_BASE = "/api/vehicles";
 
@@ -24,6 +26,7 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_USER_PROFILE = URL_USER_BASE + "/profile";
 
   public static final String URL_MAKERS = "/makers";
+  public static final String OFFERS = "/offers";
 
   private static final long MAX_AGE_SECS = 3600;
 

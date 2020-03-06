@@ -1,5 +1,6 @@
 package bg.autohouse;
 
+import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -21,8 +21,8 @@ public class MvcPerformer {
         .perform(
             post(url)
                 .content(asJsonString(object))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                .contentType(APP_V1_MEDIA_TYPE_JSON)
+                .accept(APP_V1_MEDIA_TYPE_JSON))
         .andDo(print());
   }
 
@@ -31,13 +31,13 @@ public class MvcPerformer {
         .perform(
             put(url)
                 .content(asJsonString(object))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                .contentType(APP_V1_MEDIA_TYPE_JSON)
+                .accept(APP_V1_MEDIA_TYPE_JSON))
         .andDo(print());
   }
 
   public ResultActions performGet(final String url) throws Exception {
-    return mockMvc.perform(get(url)).andDo(print());
+    return mockMvc.perform(get(url).accept(APP_V1_MEDIA_TYPE_JSON)).andDo(print());
   }
 
   public static String asJsonString(final Object obj) {

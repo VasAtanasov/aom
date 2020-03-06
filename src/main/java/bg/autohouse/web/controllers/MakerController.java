@@ -1,6 +1,7 @@
 package bg.autohouse.web.controllers;
 
 import static bg.autohouse.common.Constants.*;
+import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.MakerServiceModel;
@@ -26,10 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = WebConfiguration.URL_MAKERS,
-    produces = {BaseController.APP_V1_MEDIA_TYPE_JSON},
-    consumes = {BaseController.APP_V1_MEDIA_TYPE_JSON})
+@RequestMapping(WebConfiguration.URL_MAKERS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerController extends BaseController {
 
@@ -38,7 +36,7 @@ public class MakerController extends BaseController {
   private final ModelMapperWrapper modelMapper;
   private final MakerService makerService;
 
-  @GetMapping
+  @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
 
     List<MakerResponseModel> makers =
@@ -49,12 +47,16 @@ public class MakerController extends BaseController {
     return handleRequestSuccess(toMap("makers", makers), REQUEST_SUCCESS);
   }
 
-  @PostMapping
+  @PostMapping(
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping("/{makerId}")
+  @GetMapping(
+      value = "/{makerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(@Valid @PathVariable Long makerId) {
 
     MakerResponseModel maker =
@@ -63,7 +65,9 @@ public class MakerController extends BaseController {
     return handleRequestSuccess(toMap("maker", maker), REQUEST_SUCCESS);
   }
 
-  @GetMapping("/{makerId}/models")
+  @GetMapping(
+      value = "/{makerId}/models",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getModelsByMakerId(@Valid @PathVariable Long makerId) {
 
     MakerResponseWrapper makerResponseModel =
@@ -77,8 +81,11 @@ public class MakerController extends BaseController {
     return handleRequestSuccess(makerResponseModel, REQUEST_SUCCESS);
   }
 
-  @PostMapping("/{makerId}/models")
-  public ResponseEntity<?> addModel(
+  @PostMapping(
+      value = "/{makerId}/models",
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> createModel(
       @PathVariable Long makerId, @Valid @RequestBody ModelCreateRequestModel createRequest) {
 
     MakerServiceModel updatedMaker =

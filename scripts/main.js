@@ -6,163 +6,171 @@ const dbConnection = require("./dbConnection");
 // const autoscout = require("./autoscout-obj");
 // const cardatabase = require("./cardatabase");
 
+const API_PREFIX = "auto_";
+
 const mapName = function(str) {
-    return str.replace(/\s+/g, "_").toLowerCase();
+  return str.replace(/\s+/g, "_").toLowerCase();
 };
 
 const writeToFile = function(fileName, content) {
-    require("fs").writeFile(fileName, content, function(err) {
-        if (err) {
-            console.error("Crap happens");
-        }
-    });
+  require("fs").writeFile(fileName, content, function(err) {
+    if (err) {
+      console.error("Crap happens");
+    }
+  });
 };
 
 const appendRowToFile = function(fileName, row) {
-    require("fs").appendFile(fileName, row, function(err) {
-        if (err) {
-            console.error("Crap happens");
-        }
-    });
+  require("fs").appendFile(fileName, row, function(err) {
+    if (err) {
+      console.error("Crap happens");
+    }
+  });
 };
 
 const carMakeModelObj = (function(cmm) {
-    const cmmArray = [];
-    const cmmSQL = [];
-    const modelSQL = [];
+  const cmmArray = [];
+  const cmmSQL = [];
+  const modelSQL = [];
 
-    let modelId = 0;
-    let makeId = 0;
+  let modelId = 0;
+  let makeId = 0;
 
-    cmm.forEach((row, rowIndex, matrix) => {
-        const make = row[0];
+  cmm.forEach((row, rowIndex, matrix) => {
+    const make = row[0];
 
-        const makeObj = {};
-        makeObj["id"] = ++makeId;
-        makeObj["name"] = make;
-        makeObj["models"] = [];
+    const makeObj = {};
+    makeObj["id"] = ++makeId;
+    makeObj["name"] = make;
+    makeObj["models"] = [];
 
-        // const insertRow = `insert into makers (id, name) values (${makeObj.id}, '${makeObj.name}');`;
-        const insertRow = `insert into makers (id, name) values (${makeObj.id}, '${makeObj.name}');`;
-        cmmSQL.push(insertRow);
+    // const insertRow = `insert into makers (id, name) values (${makeObj.id}, '${makeObj.name}');`;
+    const insertRow = `insert into ${API_PREFIX}makers (id, name) values (${makeObj.id}, '${makeObj.name}');`;
+    cmmSQL.push(insertRow);
 
-        row.slice(2).forEach((model, index) => {
-            const modelObj = {};
-            modelObj["id"] = ++modelId;
-            modelObj["name"] = model;
-            makeObj.models.push(modelObj);
+    row.slice(2).forEach((model, index) => {
+      const modelObj = {};
+      modelObj["id"] = ++modelId;
+      modelObj["name"] = model;
+      makeObj.models.push(modelObj);
 
-            // const insertRow = `insert into models (id, name, maker_id, maker_name) values (${modelObj.id}, '${modelObj.name}', ${makeObj.id},' ${make}');`;
-            const insertRow = `insert into models (id, name, maker_id) values (${modelObj.id}, '${modelObj.name}', ${makeObj.id});`;
-            modelSQL.push(insertRow);
-        });
-
-        cmmArray.push(makeObj);
+      // const insertRow = `insert into models (id, name, maker_id, maker_name) values (${modelObj.id}, '${modelObj.name}', ${makeObj.id},' ${make}');`;
+      const insertRow = `insert into ${API_PREFIX}models (id, name, maker_id) values (${modelObj.id}, '${modelObj.name}', ${makeObj.id});`;
+      modelSQL.push(insertRow);
     });
 
-    const newArray = cmmSQL.concat(modelSQL);
+    cmmArray.push(makeObj);
+  });
 
-    return {
-        cmmArray,
-        newArray
-    };
+  const newArray = cmmSQL.concat(modelSQL);
+
+  return {
+    cmmArray,
+    newArray
+  };
 })(cmm);
 
 const townsObj = (function(townsArray) {
-    const townsObjArray = [];
-    const townsSQL = [];
+  const townsObjArray = [];
+  const townsSQL = [];
 
-    townsArray.forEach((town, idx) => {
-        const index = idx + 1;
+  townsArray.forEach((town, idx) => {
+    const index = idx + 1;
 
-        const townObj = {};
+    const townObj = {};
 
-        townObj["id"] = index;
-        townObj["name"] = town.asciiname;
-        townsObjArray.push(townObj);
+    townObj["id"] = index;
+    townObj["name"] = town.asciiname;
+    townsObjArray.push(townObj);
 
-        const insertRow = `insert into locations (id, name, maps_url) values (${index}, '${town.asciiname}', '${town.location}');`;
-        // const insertRow = `insert into locations (id, name) values (${index}, '${town.asciiname}');`;
-        townsSQL.push(insertRow);
-    });
+    const insertRow = `insert into ${API_PREFIX}locations (id, name, maps_url) values (${index}, '${town.asciiname}', '${town.location}');`;
+    // const insertRow = `insert into locations (id, name) values (${index}, '${town.asciiname}');`;
+    townsSQL.push(insertRow);
+  });
 
-    return {
-        townsObjArray,
-        townsSQL
-    };
+  return {
+    townsObjArray,
+    townsSQL
+  };
 })(towns);
 
 async function executeQuery(query) {
-    let con = await dbConnection();
-    try {
-        await con.query("START TRANSACTION");
-        await con.query(query);
-        await con.query("COMMIT");
-        console.log(query);
-    } catch (ex) {
-        await con.query("ROLLBACK");
-        console.log(ex);
-        throw ex;
-    } finally {
-        await con.release();
-        await con.destroy();
-    }
+  let con = await dbConnection();
+  try {
+    await con.query("START TRANSACTION");
+    await con.query(query);
+    await con.query("COMMIT");
+    console.log(query);
+  } catch (ex) {
+    await con.query("ROLLBACK");
+    console.log(ex);
+    throw ex;
+  } finally {
+    await con.release();
+    await con.destroy();
+  }
 }
 
+const http = require("./requester").http;
+
+const baseUrl = "http://localhost:8007/api";
+
 (async function main() {
-    // const generateColorInsert = require("./generateColorData");
-    // const generateRoleInsert = require("./generateRoleData");
-    // const colorSql = await generateColorInsert();
-    // const rolesSql = await generateRoleInsert();
+  // const generateColorInsert = require("./generateColorData");
+  // const generateRoleInsert = require("./generateRoleData");
+  // const colorSql = await generateColorInsert();
+  // const rolesSql = await generateRoleInsert();
 
-    let entitiesArray = [
-        carMakeModelObj.newArray,
-        townsObj.townsSQL
-        // colorSql,
-        // rolesSql
-    ];
+  // const state = await http.get(baseUrl);
 
-    const insert = entitiesArray.reduce((a, b) => {
-        return a.concat(b);
-    }, []);
+  let entitiesArray = [
+    carMakeModelObj.newArray,
+    townsObj.townsSQL
+    // colorSql,
+    // rolesSql
+  ];
 
-    // await executeQuery(insert.join("\n"));
+  const insert = entitiesArray.reduce((a, b) => {
+    return a.concat(b);
+  }, []);
 
-    // const generateVehiclesInsert = require("./generateVehicleData");
-    // const generateVehiclesFeaturesSqlInserts = require("./generateVehicleFeaturesData");
-    // const generateEngineSqlInsert = require("./generateEngineData");
-    // const generateOfferSqlInsert = require("./generateOfferData");
-    // const generateUserSqlInsert = require("./generateUserData");
-    // const generateImageSqlInset = require("./generateImageData");
-    // const generateUserRoleSqlInset = require("./generateUserRoleData");
+  // await executeQuery(insert.join("\n"));
 
-    // const vehiclesInsertSql = await generateVehiclesInsert();
-    // const vehiclesFeaturesSql = await generateVehiclesFeaturesSqlInserts();
-    // const enginesSql = await generateEngineSqlInsert();
-    // const usersSql = await generateUserSqlInsert();
-    // const offerSql = await generateOfferSqlInsert();
-    // const imageSql = await generateImageSqlInset();
-    // const userRoleSql = await generateUserRoleSqlInset();
+  // const generateVehiclesInsert = require("./generateVehicleData");
+  // const generateVehiclesFeaturesSqlInserts = require("./generateVehicleFeaturesData");
+  // const generateEngineSqlInsert = require("./generateEngineData");
+  // const generateOfferSqlInsert = require("./generateOfferData");
+  // const generateUserSqlInsert = require("./generateUserData");
+  // const generateImageSqlInset = require("./generateImageData");
+  // const generateUserRoleSqlInset = require("./generateUserRoleData");
 
-    // const sql = [
-    //     usersSql,
-    //     offerSql,
-    //     vehiclesInsertSql,
-    //     vehiclesFeaturesSql,
-    //     enginesSql,
-    //     imageSql,
-    //     userRoleSql
-    // ];
+  // const vehiclesInsertSql = await generateVehiclesInsert();
+  // const vehiclesFeaturesSql = await generateVehiclesFeaturesSqlInserts();
+  // const enginesSql = await generateEngineSqlInsert();
+  // const usersSql = await generateUserSqlInsert();
+  // const offerSql = await generateOfferSqlInsert();
+  // const imageSql = await generateImageSqlInset();
+  // const userRoleSql = await generateUserRoleSqlInset();
 
-    // const dependentInserts = sql.reduce((a, b) => {
-    //     return a.concat(b);
-    // }, []);
+  // const sql = [
+  //     usersSql,
+  //     offerSql,
+  //     vehiclesInsertSql,
+  //     vehiclesFeaturesSql,
+  //     enginesSql,
+  //     imageSql,
+  //     userRoleSql
+  // ];x
 
-    writeToFile("./data.sql", "");
-    appendRowToFile("./data.sql", insert.join("\n"));
+  // const dependentInserts = sql.reduce((a, b) => {
+  //     return a.concat(b);
+  // }, []);
 
-    // writeToFile("./data-next.sql", "");
-    // appendRowToFile("./data-next.sql", dependentInserts.join("\n"));
+  writeToFile("./data.sql", "");
+  appendRowToFile("./data.sql", insert.join("\n"));
 
-    // await executeQuery(dependentInserts.join("\n"));
+  // writeToFile("./data-next.sql", "");
+  // appendRowToFile("./data-next.sql", dependentInserts.join("\n"));
+
+  // await executeQuery(dependentInserts.join("\n"));
 })();

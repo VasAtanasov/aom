@@ -1,6 +1,6 @@
 @host = http://localhost:8007/api/vehicles
 
-post {{host}}  HTTP/1.1
+GET {{host}}/state  HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 
 ###

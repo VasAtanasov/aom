@@ -2,6 +2,7 @@ package bg.autohouse.data.models;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString(callSuper = false)
+@AllArgsConstructor(staticName = "of")
 @EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
 @Table(name = EntityConstants.MODELS)

@@ -44,7 +44,7 @@ async function generateOfferSqlInsert() {
             price_modified_on: futureDate(sqlDate, utils.getRandomInt(1, 30)),
             valid_until: futureDate(sqlDate, 90),
             location_id: utils.getRandomValueFromArray(locationsIds),
-            user_id: utils.getRandomValueFromArray(usersUUIDs),
+            // user_id: utils.getRandomValueFromArray(usersUUIDs),
         };
 
         offers.push(offerObj)

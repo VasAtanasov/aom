@@ -1,6 +1,7 @@
 package bg.autohouse.web.controllers;
 
 import static bg.autohouse.common.Constants.*;
+import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.InitialStateModel;
@@ -19,7 +20,9 @@ public class HomeController extends BaseController {
 
   private final InitialStateService initialStateService;
 
-  @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
+  @GetMapping(
+      value = "/state",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getInitialState() {
 
     InitialStateModel initialState = initialStateService.getInitialState();
