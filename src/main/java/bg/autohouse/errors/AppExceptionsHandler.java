@@ -5,6 +5,7 @@ import bg.autohouse.errors.models.HttpRequestMethodErrorModel;
 import bg.autohouse.errors.models.ValidationErrorModel;
 import bg.autohouse.util.Assert;
 import bg.autohouse.web.models.response.ApiResponseModel;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
 import java.util.List;
@@ -65,9 +66,17 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
           .put(HttpMediaTypeNotSupportedException.class, HttpStatus.UNSUPPORTED_MEDIA_TYPE)
           .put(ResourceAlreadyExistsException.class, HttpStatus.CONFLICT)
           .put(OptimisticLockingFailureException.class, HttpStatus.CONFLICT)
-          // when add spring security
+          // TODO when add spring security
           // .put(AccessDeniedException.class, HttpStatus.FORBIDDEN)
           .put(IllegalStateException.class, HttpStatus.INTERNAL_SERVER_ERROR)
+          .build();
+
+  private static final ImmutableList<Class<?>> customExceptions =
+      ImmutableList.<Class<?>>builder()
+          .add(MakerNotFoundException.class)
+          .add(ModelNotFoundException.class)
+          .add(NotFoundException.class)
+          .add(ResourceAlreadyExistsException.class)
           .build();
 
   // 400
@@ -264,7 +273,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
         ResourceAlreadyExistsException.class
       })
   public final ResponseEntity<Object> handleNotFoundExceptions(
-      final ApiBaseException ex, final WebRequest request) {
+      final Exception ex, final WebRequest request) {
 
     final HttpStatus httpStatus = getHttpStatusCode(ex);
 
@@ -360,9 +369,6 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
   }
 
   private static boolean shouldExposeExceptionMessage(final @Nonnull Throwable ex) {
-    return ex instanceof MakerNotFoundException
-        || ex instanceof NotFoundException
-        || ex instanceof ModelNotFoundException
-        || ex instanceof ResourceAlreadyExistsException;
+    return customExceptions.contains(ex.getClass());
   }
 }

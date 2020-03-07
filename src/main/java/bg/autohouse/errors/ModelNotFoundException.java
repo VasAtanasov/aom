@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class ModelNotFoundException extends ApiBaseException {
+public class ModelNotFoundException extends RuntimeException {
   private static final long serialVersionUID = -7754651575929506002L;
 
   public ModelNotFoundException() {
@@ -13,6 +13,6 @@ public class ModelNotFoundException extends ApiBaseException {
   }
 
   public ModelNotFoundException(String message) {
-    super(message, HttpStatus.NOT_FOUND);
+    super(message);
   }
 }

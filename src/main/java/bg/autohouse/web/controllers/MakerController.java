@@ -89,9 +89,9 @@ public class MakerController extends BaseController {
   public ResponseEntity<?> createModel(
       @PathVariable Long makerId, @Valid @RequestBody ModelCreateRequestModel createRequest) {
 
-    MakerServiceModel updatedMaker =
-        makerService.addModelToMaker(
-            makerId, modelMapper.map(createRequest, ModelServiceModel.class));
+    ModelServiceModel modelServiceModel = modelMapper.map(createRequest, ModelServiceModel.class);
+
+    MakerServiceModel updatedMaker = makerService.addModelToMaker(makerId, modelServiceModel);
 
     MakerResponseModel response = modelMapper.map(updatedMaker, MakerResponseModel.class);
 
