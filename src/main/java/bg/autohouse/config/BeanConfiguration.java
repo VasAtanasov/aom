@@ -5,13 +5,10 @@ import com.google.gson.GsonBuilder;
 import java.util.Properties;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration.AccessLevel;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 // TODO Uncomment when spring security dependency is added
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -62,19 +59,19 @@ public class BeanConfiguration {
     return mailSender;
   }
 
-  @Bean
-  public MessageSource messageSource() {
-    ReloadableResourceBundleMessageSource messageSource =
-        new ReloadableResourceBundleMessageSource();
-    messageSource.setBasename("classpath:messages");
-    messageSource.setDefaultEncoding("UTF-8");
-    return messageSource;
-  }
+  // @Bean
+  // public MessageSource messageSource() {
+  //   ReloadableResourceBundleMessageSource messageSource =
+  //       new ReloadableResourceBundleMessageSource();
+  //   messageSource.setBasename("classpath:messages");
+  //   messageSource.setDefaultEncoding("UTF-8");
+  //   return messageSource;
+  // }
 
-  @Bean
-  public LocalValidatorFactoryBean validator() {
-    LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-    bean.setValidationMessageSource(messageSource());
-    return bean;
-  }
+  // @Bean
+  // public LocalValidatorFactoryBean validator() {
+  //   LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+  //   bean.setValidationMessageSource(messageSource());
+  //   return bean;
+  // }
 }

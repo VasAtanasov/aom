@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @Component
 public class MvcPerformer {
+
   @Autowired protected MockMvc mockMvc;
 
   public ResultActions performPost(final String url, final Object object) throws Exception {

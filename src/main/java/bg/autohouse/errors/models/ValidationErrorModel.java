@@ -1,5 +1,6 @@
 package bg.autohouse.errors.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.List;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import lombok.Singular;
 @Getter
 @Setter
 @Builder
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ValidationErrorModel implements Serializable {
 
   private static final long serialVersionUID = 5246526371043071934L;

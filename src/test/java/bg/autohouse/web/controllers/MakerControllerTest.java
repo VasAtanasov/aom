@@ -1,6 +1,7 @@
 package bg.autohouse.web.controllers;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -15,8 +16,8 @@ import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class MakerControllerTest extends BaseTest {
 
   @Autowired JsonParser jsonParser;
 
-  @Before
+  @BeforeEach
   public void setUp() {
 
     Maker maker = Maker.of(MAKER_NAME);
@@ -53,11 +54,14 @@ public class MakerControllerTest extends BaseTest {
 
   @Test
   public void whenGetMakers_shouldReturn() throws Exception {
-    mvcPerformer.performGet(API_BASE + "/makers").andExpect(status().isOk());
+    mvcPerformer
+        .performGet(API_BASE + "/makers")
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.makers", hasSize(1)));
   }
 
   @Test
-  public void whenGetMaker_existingId_shouldReturnOk() throws Exception {
+  public void whenGetMaker_WithExistingId_shouldReturnOk() throws Exception {
     mvcPerformer
         .performGet(API_BASE + "/makers/1")
         .andExpect(status().isOk())
@@ -69,7 +73,7 @@ public class MakerControllerTest extends BaseTest {
   }
 
   @Test
-  public void whenGetMaker_notExistingId_shouldReturnFalse() throws Exception {
+  public void whenGetMaker_WithNotExistingId_shouldReturnFalse() throws Exception {
     mvcPerformer
         .performGet(API_BASE + "/makers/123")
         .andExpect(status().isNotFound())
@@ -79,7 +83,7 @@ public class MakerControllerTest extends BaseTest {
   }
 
   @Test
-  public void whenCreateModel_shouldReturnCreated() throws Exception {
+  public void whenCreateModel_withValidBody_shouldReturnCreated() throws Exception {
     ModelCreateRequestModel model = ModelCreateRequestModel.of("Banana");
 
     String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "Banana", MAKER_NAME);
@@ -90,5 +94,15 @@ public class MakerControllerTest extends BaseTest {
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.message", is(expectedMessage)))
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
+  }
+
+  @Test
+  public void whenCreateModel_withInvalidBody_shouldReturn400() throws Exception {
+    ModelCreateRequestModel model = ModelCreateRequestModel.of("");
+    mvcPerformer
+        .performPost(API_BASE + "/makers/1/models", model)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())));
   }
 }
