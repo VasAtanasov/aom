@@ -59,8 +59,9 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(@Valid @PathVariable Long makerId) {
 
-    MakerResponseModel maker =
-        modelMapper.map(makerService.getOne(makerId), MakerResponseModel.class);
+    MakerServiceModel model = makerService.getOne(makerId);
+
+    MakerResponseModel maker = modelMapper.map(model, MakerResponseModel.class);
 
     return handleRequestSuccess(toMap("maker", maker), REQUEST_SUCCESS);
   }

@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.data.annotation.LastModifiedDate;
 
 // TODO add named queries
+// TODO add validation annotations to entities
 @Getter
 @Setter
 @NoArgsConstructor

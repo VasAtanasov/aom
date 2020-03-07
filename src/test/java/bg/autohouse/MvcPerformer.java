@@ -7,18 +7,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-@Component
-public class MvcPerformer {
+// @Component
+// @RequiredArgsConstructor
+public abstract class MvcPerformer {
 
-  @Autowired protected MockMvc mockMvc;
+  // private final MockMvc mockMvc;
+
+  public abstract MockMvc getMockMvc();
 
   public ResultActions performPost(final String url, final Object object) throws Exception {
-    return mockMvc
+    return getMockMvc()
         .perform(
             post(url)
                 .content(asJsonString(object))
@@ -28,7 +29,7 @@ public class MvcPerformer {
   }
 
   public ResultActions performPut(final String url, final Object object) throws Exception {
-    return mockMvc
+    return getMockMvc()
         .perform(
             put(url)
                 .content(asJsonString(object))
@@ -38,7 +39,7 @@ public class MvcPerformer {
   }
 
   public ResultActions performGet(final String url) throws Exception {
-    return mockMvc.perform(get(url).accept(APP_V1_MEDIA_TYPE_JSON)).andDo(print());
+    return getMockMvc().perform(get(url).accept(APP_V1_MEDIA_TYPE_JSON)).andDo(print());
   }
 
   public static String asJsonString(final Object obj) {
