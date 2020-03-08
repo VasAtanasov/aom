@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.web.validation.annotations.maker.MakerName;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString(callSuper = false)
 @AllArgsConstructor(staticName = "of")
-@Builder
 @EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
 @Table(
@@ -29,6 +29,13 @@ public class Maker extends BaseLongEntity {
 
   private static final long serialVersionUID = -2811586455073721689L;
 
+  @MakerName
   @Column(name = "name", nullable = false)
   private String name;
+
+  @Builder
+  public Maker(Long id, String name) {
+    super(id);
+    this.name = name;
+  }
 }

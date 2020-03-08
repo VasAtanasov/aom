@@ -1,6 +1,6 @@
 package bg.autohouse.web.validation.annotations.offer;
 
-import static bg.autohouse.web.validation.MessageCodes.CODE_MAKER_NAME_BLANK;
+import static bg.autohouse.web.validation.ValidationMessages.CODE_MAKER_NAME_BLANK;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 

@@ -51,8 +51,11 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
+    // TODO implement create Maker
     return ResponseEntity.ok().build();
   }
+
+  // TODO create maker with list of models
 
   @GetMapping(
       value = "/{makerId}",

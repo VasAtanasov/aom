@@ -1,8 +1,13 @@
 package bg.autohouse.data.models;
 
+import static bg.autohouse.web.validation.ValidationMessages.CODE_MAKER_NULL;
+
+import bg.autohouse.web.validation.annotations.maker.ModelName;
 import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,12 +27,20 @@ public class Model extends BaseLongEntity {
   private static final long serialVersionUID = 3257573416154758517L;
 
   @Column(name = "name", nullable = false)
+  @ModelName
   private String name;
 
+  @NotNull(message = "{" + CODE_MAKER_NULL + "}")
   @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
       name = "maker_id",
       referencedColumnName = "id",
       foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_models_makers_id"))
   private Maker maker;
+
+  @Builder
+  public Model(Long id, String name) {
+    super(id);
+    this.name = name;
+  }
 }

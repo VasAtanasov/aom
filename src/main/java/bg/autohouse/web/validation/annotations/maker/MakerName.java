@@ -1,7 +1,7 @@
 package bg.autohouse.web.validation.annotations.maker;
 
-import static bg.autohouse.web.validation.MessageCodes.CODE_MAKER_NAME_BLANK;
-import static bg.autohouse.web.validation.MessageCodes.CODE_MAKER_NAME_LENGTH;
+import static bg.autohouse.web.validation.ValidationMessages.CODE_MAKER_NAME_BLANK;
+import static bg.autohouse.web.validation.ValidationMessages.CODE_MAKER_NAME_LENGTH;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
