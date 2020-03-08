@@ -1,7 +1,10 @@
 package bg.autohouse.web.controllers;
 
+import static bg.autohouse.web.controllers.ResponseBodyMatchers.*;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,6 +35,7 @@ public class MakerControllerIsolationTest extends MvcPerformer {
   static final String API_BASE = "/api/vehicles";
 
   @Autowired private MockMvc mockMvc;
+
   @MockBean private MakerRepository makerRepository;
   @MockBean private MakerService makerService;
   @MockBean private InitialStateService initialStateService;
@@ -43,7 +47,7 @@ public class MakerControllerIsolationTest extends MvcPerformer {
   }
 
   @Test
-  void whenValidId_thenReturns200() throws Exception {
+  void whenGetMaker_withValidId_thenReturns200() throws Exception {
 
     MakerServiceModel model = MakerServiceModel.builder().id(1L).name(MAKER_NAME).build();
     MakerResponseModel response = MakerResponseModel.builder().id(1L).name(MAKER_NAME).build();
@@ -72,7 +76,7 @@ public class MakerControllerIsolationTest extends MvcPerformer {
   }
 
   @Test
-  void whenInvalidMediaType_thenReturns404() throws Exception {
+  void whenInvalidMediaType_thenReturns406() throws Exception {
 
     mockMvc
         .perform(get(API_BASE + "/makers/").accept(MediaType.APPLICATION_JSON))
@@ -85,25 +89,52 @@ public class MakerControllerIsolationTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withValidBody_shouldReturn201() throws Exception {
 
-    // ModelServiceModel model = ModelServiceModel.builder().id(1L).name("A$").build();
     ModelServiceModel modelServiceModel = ModelServiceModel.builder().name("A4").build();
     MakerServiceModel updatedMaker = MakerServiceModel.builder().id(1L).name(MAKER_NAME).build();
     MakerResponseModel response = MakerResponseModel.builder().id(1L).name(MAKER_NAME).build();
 
+    doReturn(modelServiceModel).when(modelMapper).map(any(ModelCreateRequestModel.class), any());
+
+    doReturn(updatedMaker)
+        .when(makerService)
+        .addModelToMaker(anyLong(), any(ModelServiceModel.class));
+
+    doReturn(response).when(modelMapper).map(any(MakerServiceModel.class), any());
+
+    String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "A4", MAKER_NAME);
+
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4");
-    given(modelMapper.map(createRequestModel, ModelServiceModel.class))
-        .willReturn(modelServiceModel);
-
-    // given(makerService.addModelToMaker(1L, modelServiceModel)).willReturn(updatedMaker);
-
-    // given(modelMapper.map(any(MakerServiceModel.class), any())).willReturn(response);
-
-    String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "Banana", MAKER_NAME);
-
     performPost(API_BASE + "/makers/1/models", createRequestModel)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.message", is(expectedMessage)))
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
+  }
+
+  @Test
+  public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
+
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("");
+
+    performPost(API_BASE + "/makers/1/models", createRequestModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+        .andExpect(jsonPath("$.errors", hasSize(2)));
+  }
+
+  @Test
+  public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
+
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null);
+
+    performPost(API_BASE + "/makers/1/models", createRequestModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+        .andExpect(jsonPath("$.errors", hasSize(1)))
+        .andExpect(responseBody().containsError("name", "must not be null"));
   }
 }

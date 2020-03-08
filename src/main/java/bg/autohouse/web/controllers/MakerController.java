@@ -88,7 +88,7 @@ public class MakerController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createModel(
       @PathVariable Long makerId, @Valid @RequestBody ModelCreateRequestModel createRequest) {
-
+    // TODO refactor to return the model not the maker object
     ModelServiceModel modelServiceModel = modelMapper.map(createRequest, ModelServiceModel.class);
 
     MakerServiceModel updatedMaker = makerService.addModelToMaker(makerId, modelServiceModel);

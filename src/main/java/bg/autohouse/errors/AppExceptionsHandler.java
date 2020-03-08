@@ -324,7 +324,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
               .fieldName(err.getField())
               .rejectedValue(err.getRejectedValue())
               .params(collectArguments(err.getArguments()))
-              .message(err.getField() + ": " + err.getDefaultMessage())
+              .message(err.getDefaultMessage())
               .build();
 
   private Function<ObjectError, ValidationErrorModel> objectErrorToValidationErrorModel =
