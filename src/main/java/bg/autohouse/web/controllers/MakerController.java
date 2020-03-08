@@ -39,8 +39,10 @@ public class MakerController extends BaseController {
   @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
 
+    List<MakerServiceModel> makerServiceModels = makerService.getAllMakers();
+
     List<MakerResponseModel> makers =
-        makerService.getAllMakers().stream()
+        makerServiceModels.stream()
             .map(model -> modelMapper.map(model, MakerResponseModel.class))
             .collect(Collectors.toUnmodifiableList());
 
@@ -91,16 +93,21 @@ public class MakerController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createModel(
       @PathVariable Long makerId, @Valid @RequestBody ModelCreateRequestModel createRequest) {
-    // TODO refactor to return the model not the maker object
+
     ModelServiceModel modelServiceModel = modelMapper.map(createRequest, ModelServiceModel.class);
+    makerService.addModelToMaker(makerId, modelServiceModel);
 
-    MakerServiceModel updatedMaker = makerService.addModelToMaker(makerId, modelServiceModel);
+    MakerResponseWrapper makerResponseModel =
+        modelMapper.map(makerService.getOne(makerId), MakerResponseWrapper.class);
 
-    MakerResponseModel response = modelMapper.map(updatedMaker, MakerResponseModel.class);
+    List<ModelResponseModel> models =
+        modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
+
+    makerResponseModel.setModels(models);
 
     String message =
-        String.format(MODEL_CREATE_SUCCESS, createRequest.getName(), updatedMaker.getName());
+        String.format(MODEL_CREATE_SUCCESS, createRequest.getName(), makerResponseModel.getName());
 
-    return handleCreateSuccess(response, message, "/api/makers");
+    return handleCreateSuccess(makerResponseModel, message, "/api/makers");
   }
 }

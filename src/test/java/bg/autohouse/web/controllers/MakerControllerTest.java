@@ -14,13 +14,17 @@ import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.service.models.MakerServiceModel;
-import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.InitialStateService;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
+import bg.autohouse.web.models.response.MakerResponseWrapper;
+import bg.autohouse.web.models.response.ModelResponseModel;
 import bg.autohouse.web.validation.ValidationMessages;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -44,6 +48,32 @@ public class MakerControllerTest extends MvcPerformer {
   @Override
   public MockMvc getMockMvc() {
     return mockMvc;
+  }
+
+  @Test
+  void whenGetMakers_thenReturns200() throws Exception {
+    List<MakerServiceModel> serviceModels = new ArrayList<>();
+    List<MakerResponseModel> responseModels = new ArrayList<>();
+
+    for (int i = 0; i < 10; i++) {
+      MakerServiceModel serviceModel =
+          MakerServiceModel.builder().id(Long.valueOf(i)).name("Maker" + i).build();
+      serviceModels.add(serviceModel);
+
+      MakerResponseModel responseModel =
+          MakerResponseModel.builder().id(Long.valueOf(i)).name("Maker" + i).build();
+      responseModels.add(responseModel);
+
+      when(modelMapper.map(serviceModel, MakerResponseModel.class)).thenReturn(responseModel);
+    }
+
+    when(makerService.getAllMakers()).thenReturn(serviceModels);
+
+    performGet(API_BASE + "/makers")
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.success", is(true)))
+        .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
+        .andExpect(jsonPath("$.data.makers", hasSize(responseModels.size())));
   }
 
   @Test
@@ -89,16 +119,24 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withValidBody_shouldReturn201() throws Exception {
 
-    ModelServiceModel modelServiceModel = ModelServiceModel.builder().name("A4").build();
-    MakerServiceModel updatedMaker = MakerServiceModel.builder().id(1L).name(MAKER_NAME).build();
-    MakerResponseModel response = MakerResponseModel.builder().id(1L).name(MAKER_NAME).build();
+    ModelResponseModel modelServiceModel = ModelResponseModel.builder().id(10L).name("A4").build();
 
-    when(modelMapper.map(any(ModelCreateRequestModel.class), any())).thenReturn(modelServiceModel);
+    List<ModelResponseModel> responseModels = new ArrayList<>();
 
-    when(makerService.addModelToMaker(anyLong(), any(ModelServiceModel.class)))
-        .thenReturn(updatedMaker);
+    for (int i = 0; i < 10; i++) {
+      ModelResponseModel responseModel =
+          ModelResponseModel.builder().id(Long.valueOf(i)).name("Model" + i).build();
+      responseModels.add(responseModel);
+    }
+    responseModels.add(modelServiceModel);
 
+    MakerServiceModel makerServiceModel =
+        MakerServiceModel.builder().id(1L).name(MAKER_NAME).build();
+    when(makerService.getOne(anyLong())).thenReturn(makerServiceModel);
+
+    MakerResponseWrapper response = MakerResponseWrapper.builder().id(1L).name(MAKER_NAME).build();
     when(modelMapper.map(any(MakerServiceModel.class), any())).thenReturn(response);
+    when(modelMapper.mapAll(any(Collection.class), any())).thenReturn(responseModels);
 
     String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "A4", MAKER_NAME);
 
