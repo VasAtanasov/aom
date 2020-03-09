@@ -15,4 +15,6 @@ public interface MakerService {
   MakerServiceModel addModelToMaker(@Nonnull Long makerId, ModelServiceModel modelServiceModel);
 
   List<ModelServiceModel> getModelsForMaker(@Nonnull Long makerId);
+
+  MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel);
 }

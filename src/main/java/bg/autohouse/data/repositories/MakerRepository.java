@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MakerRepository extends JpaRepository<Maker, Long> {
   Optional<Maker> findByName(String name);
+
+  boolean existsByName(String name);
 }

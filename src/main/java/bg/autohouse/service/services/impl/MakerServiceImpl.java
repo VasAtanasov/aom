@@ -4,6 +4,7 @@ import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Model;
 import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.ModelRepository;
+import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.MakerServiceModel;
@@ -11,7 +12,6 @@ import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,7 @@ public class MakerServiceImpl implements MakerService {
   @Override
   @Transactional(readOnly = true)
   public List<MakerServiceModel> getAllMakers() {
-    return makerRepository.findAll().stream()
-        .map(maker -> modelMapper.map(maker, MakerServiceModel.class))
-        .collect(Collectors.toUnmodifiableList());
+    return modelMapper.mapAll(makerRepository.findAll(), MakerServiceModel.class);
   }
 
   @Override
@@ -60,7 +58,7 @@ public class MakerServiceImpl implements MakerService {
         modelRepository.existsByNameAndMakerId(modelServiceModel.getName(), makerId);
 
     if (modelExists) {
-      throw new ResourceAlreadyExistsException("Model with name already exists!");
+      throw new ResourceAlreadyExistsException(ExceptionsMessages.MODEL_WITH_NAME_EXISTS);
     }
 
     Model model = modelMapper.map(modelServiceModel, Model.class);
@@ -74,5 +72,19 @@ public class MakerServiceImpl implements MakerService {
   @Transactional(readOnly = true)
   public List<ModelServiceModel> getModelsForMaker(Long makerId) {
     return modelMapper.mapAll(modelRepository.findAllByMakerId(makerId), ModelServiceModel.class);
+  }
+
+  @Override
+  public MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel) {
+    boolean makerExists = makerRepository.existsByName(makerServiceModel.getName());
+
+    if (makerExists) {
+      throw new ResourceAlreadyExistsException(ExceptionsMessages.MAKER_WITH_NAME_EXISTS);
+    }
+
+    Maker maker = modelMapper.map(makerServiceModel, Maker.class);
+    makerRepository.save(maker);
+
+    return modelMapper.map(maker, MakerServiceModel.class);
   }
 }

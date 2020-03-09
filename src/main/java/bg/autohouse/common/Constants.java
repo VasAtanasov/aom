@@ -7,4 +7,5 @@ public class Constants {
 
   public static final String REQUEST_SUCCESS = "Data was retrieved successful";
   public static final String MODEL_CREATE_SUCCESS = "Successfully added model %s for %s!";
+  public static final String MAKER_CREATE_SUCCESS = "Successfully added maker: %s";
 }

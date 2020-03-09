@@ -5,13 +5,9 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
+@Builder
 public class MakerServiceModel {
   private Long id;
   private String name;
-
-  @Builder
-  public MakerServiceModel(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
 }

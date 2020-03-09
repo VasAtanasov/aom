@@ -3,6 +3,7 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.common.Constants.*;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
+import bg.autohouse.common.Constants;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
@@ -53,8 +54,12 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
-    // TODO implement create Maker
-    return ResponseEntity.ok().build();
+    MakerServiceModel makerServiceModel = modelMapper.map(createRequest, MakerServiceModel.class);
+    MakerServiceModel createdMaker = makerService.createMaker(makerServiceModel);
+    return handleCreateSuccess(
+        toMap("maker", modelMapper.map(createdMaker, MakerResponseModel.class)),
+        String.format(Constants.MAKER_CREATE_SUCCESS, createRequest.getName()),
+        "/api/vehicles/makers");
   }
 
   // TODO create maker with list of models

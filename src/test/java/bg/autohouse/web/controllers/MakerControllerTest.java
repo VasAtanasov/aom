@@ -17,13 +17,13 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.services.InitialStateService;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
 import bg.autohouse.web.models.response.MakerResponseWrapper;
 import bg.autohouse.web.models.response.ModelResponseModel;
 import bg.autohouse.web.validation.ValidationMessages;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +121,7 @@ public class MakerControllerTest extends MvcPerformer {
 
     ModelResponseModel modelServiceModel = ModelResponseModel.builder().id(10L).name("A4").build();
 
-    List<ModelResponseModel> responseModels = new ArrayList<>();
+    List<Object> responseModels = new ArrayList<>();
 
     for (int i = 0; i < 10; i++) {
       ModelResponseModel responseModel =
@@ -136,7 +136,7 @@ public class MakerControllerTest extends MvcPerformer {
 
     MakerResponseWrapper response = MakerResponseWrapper.builder().id(1L).name(MAKER_NAME).build();
     when(modelMapper.map(any(MakerServiceModel.class), any())).thenReturn(response);
-    when(modelMapper.mapAll(any(Collection.class), any())).thenReturn(responseModels);
+    when(modelMapper.mapAll(anyList(), any())).thenReturn(responseModels);
 
     String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "A4", MAKER_NAME);
 
@@ -173,5 +173,24 @@ public class MakerControllerTest extends MvcPerformer {
         .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(responseBody().containsError("name", ValidationMessages.MODEL_NAME_BLANK));
+  }
+
+  @Test
+  public void whenCreateMaker_withValidBody_shouldReturn201() throws Exception {
+    MakerServiceModel makerServiceModel = MakerServiceModel.of(null, MAKER_NAME);
+    when(modelMapper.map(any(MakerCreateRequestModel.class), any())).thenReturn(makerServiceModel);
+    when(makerService.createMaker(any(MakerServiceModel.class))).thenReturn(makerServiceModel);
+
+    MakerResponseModel response = MakerResponseModel.builder().id(1L).name(MAKER_NAME).build();
+    when(modelMapper.map(any(MakerServiceModel.class), any())).thenReturn(response);
+
+    String expectedMessage = String.format(Constants.MAKER_CREATE_SUCCESS, MAKER_NAME);
+    MakerCreateRequestModel createRequestModel = MakerCreateRequestModel.of(MAKER_NAME);
+    performPost(API_BASE + "/makers", createRequestModel)
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.success", is(true)))
+        .andExpect(jsonPath("$.message", is(expectedMessage)))
+        .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())))
+        .andExpect(jsonPath("$.data.maker.name", is(MAKER_NAME)));
   }
 }
