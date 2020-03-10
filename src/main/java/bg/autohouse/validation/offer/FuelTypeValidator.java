@@ -1,4 +1,4 @@
-package bg.autohouse.web.validation;
+package bg.autohouse.validation.offer;
 
 /** FuelTypeValidator */
 public class FuelTypeValidator {}

@@ -3,7 +3,7 @@ package bg.autohouse.data.entities;
 import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Model;
-import bg.autohouse.web.validation.ValidationMessages;
+import bg.autohouse.validation.ValidationMessages;
 import org.junit.jupiter.api.Test;
 
 public class ModelValidationTest extends HibernateValidatorTest {

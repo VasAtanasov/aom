@@ -1,6 +1,7 @@
 package bg.autohouse.web.models.request;
 
-import bg.autohouse.web.validation.annotations.maker.MakerName;
+import bg.autohouse.validation.maker.MakerName;
+import bg.autohouse.validation.maker.UniqueMakerName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,5 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 public class MakerCreateRequestModel {
-  @MakerName private String name;
+  @MakerName @UniqueMakerName private String name;
 }

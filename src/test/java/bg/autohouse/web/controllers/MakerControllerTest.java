@@ -17,12 +17,12 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.services.InitialStateService;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.validation.ValidationMessages;
 import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
 import bg.autohouse.web.models.response.MakerResponseWrapper;
 import bg.autohouse.web.models.response.ModelResponseModel;
-import bg.autohouse.web.validation.ValidationMessages;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -140,7 +140,7 @@ public class MakerControllerTest extends MvcPerformer {
 
     String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "A4", MAKER_NAME);
 
-    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4");
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", 1L);
     performPost(API_BASE + "/makers/1/models", createRequestModel)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
@@ -151,7 +151,7 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
 
-    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("");
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", null);
 
     performPost(API_BASE + "/makers/1/models", createRequestModel)
         .andExpect(status().isBadRequest())
@@ -164,7 +164,7 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
 
-    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, null);
 
     performPost(API_BASE + "/makers/1/models", createRequestModel)
         .andExpect(status().isBadRequest())

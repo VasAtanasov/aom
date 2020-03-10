@@ -1,6 +1,6 @@
 package bg.autohouse.data.models;
 
-import bg.autohouse.web.validation.annotations.maker.MakerName;
+import bg.autohouse.validation.maker.MakerName;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;

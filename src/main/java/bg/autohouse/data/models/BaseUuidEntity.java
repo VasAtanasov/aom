@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Setter
@@ -13,7 +14,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseUuidEntity extends BaseAuditEntity implements Serializable {
+public abstract class BaseUuidEntity extends BaseAuditEntity
+    implements Serializable, Persistable<String> {
 
   private static final long serialVersionUID = 1L;
 
@@ -23,4 +25,10 @@ public abstract class BaseUuidEntity extends BaseAuditEntity implements Serializ
   @Column(name = "id", unique = true, nullable = false, updatable = false)
   @Access(AccessType.PROPERTY)
   private String id;
+
+  @Override
+  @Transient
+  public boolean isNew() {
+    return null == getId();
+  }
 }

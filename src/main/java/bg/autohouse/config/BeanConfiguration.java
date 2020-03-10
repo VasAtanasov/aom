@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 // TODO Uncomment when spring security dependency is added
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,6 +58,11 @@ public class BeanConfiguration {
     props.put("mail.smtp.starttls.enable", "true");
     props.put("mail.debug", "true");
     return mailSender;
+  }
+
+  @Bean
+  public LocalValidatorFactoryBean validator() {
+    return new LocalValidatorFactoryBean();
   }
 
   // @Bean

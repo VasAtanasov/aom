@@ -1,4 +1,4 @@
-package bg.autohouse.web.validation;
+package bg.autohouse.validation;
 
 import lombok.experimental.UtilityClass;
 
@@ -21,6 +21,9 @@ public class ValidationMessages {
   public static final String MODEL_NAME_LENGTH =
       "Model name length should be between {min} and {max} symbols.";
 
-  public static final String CODE_MAKER_NULL = "maker.null";
   public static final String MAKER_NULL = "Model must be assigned to a given Maker";
+  public static final String CODE_MAKER_NULL = "maker.null";
+
+  public static final String CODE_MAKER_NAME_EXISTS = "maker.name.exists";
+  public static final String MAKER_NAME_EXISTS = "Maker name already exists.";
 }

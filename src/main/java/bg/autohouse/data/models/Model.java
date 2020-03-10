@@ -1,8 +1,8 @@
 package bg.autohouse.data.models;
 
-import static bg.autohouse.web.validation.ValidationMessages.CODE_MAKER_NULL;
+import static bg.autohouse.validation.ValidationMessages.CODE_MAKER_NULL;
 
-import bg.autohouse.web.validation.annotations.maker.ModelName;
+import bg.autohouse.validation.maker.ModelName;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;

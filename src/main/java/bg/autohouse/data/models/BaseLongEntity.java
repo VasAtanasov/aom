@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -14,7 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id", callSuper = false)
 @MappedSuperclass
-public abstract class BaseLongEntity extends BaseAuditEntity implements Serializable {
+public abstract class BaseLongEntity extends BaseAuditEntity
+    implements Serializable, Persistable<Long> {
 
   private static final long serialVersionUID = 1L;
 
@@ -23,4 +25,10 @@ public abstract class BaseLongEntity extends BaseAuditEntity implements Serializ
   @Column(name = "id", updatable = false, unique = true, nullable = false)
   @Access(AccessType.PROPERTY)
   private Long id;
+
+  @Override
+  @Transient
+  public boolean isNew() {
+    return null == getId();
+  }
 }

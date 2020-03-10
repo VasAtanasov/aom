@@ -1,7 +1,6 @@
-package bg.autohouse.web.validation.annotations.maker;
+package bg.autohouse.validation.offer;
 
-import static bg.autohouse.web.validation.ValidationMessages.CODE_MODEL_NAME_BLANK;
-import static bg.autohouse.web.validation.ValidationMessages.CODE_MODEL_NAME_LENGTH;
+import static bg.autohouse.validation.ValidationMessages.CODE_MAKER_NAME_BLANK;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -11,18 +10,15 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
-@NotBlank(message = "{" + CODE_MODEL_NAME_BLANK + "}")
-@Size(
-    message = "{" + CODE_MODEL_NAME_LENGTH + "}",
-    min = ModelName.MIN_LENGTH,
-    max = ModelName.MAX_LENGTH)
+@NotBlank(message = "{" + CODE_MAKER_NAME_BLANK + "}")
+@NotNull()
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})
 @Documented
-public @interface ModelName {
+public @interface ValidFuelType {
 
   int MIN_LENGTH = 1;
   int MAX_LENGTH = 32;

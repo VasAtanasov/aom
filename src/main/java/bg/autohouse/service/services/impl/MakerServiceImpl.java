@@ -76,15 +76,8 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   public MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel) {
-    boolean makerExists = makerRepository.existsByName(makerServiceModel.getName());
-
-    if (makerExists) {
-      throw new ResourceAlreadyExistsException(ExceptionsMessages.MAKER_WITH_NAME_EXISTS);
-    }
-
     Maker maker = modelMapper.map(makerServiceModel, Maker.class);
     makerRepository.save(maker);
-
     return modelMapper.map(maker, MakerServiceModel.class);
   }
 }
