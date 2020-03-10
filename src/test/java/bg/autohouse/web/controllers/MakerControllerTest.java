@@ -151,7 +151,7 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
 
-    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", null);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", 1L);
 
     performPost(API_BASE + "/makers/1/models", createRequestModel)
         .andExpect(status().isBadRequest())
@@ -164,7 +164,7 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
 
-    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, null);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1l);
 
     performPost(API_BASE + "/makers/1/models", createRequestModel)
         .andExpect(status().isBadRequest())
@@ -193,4 +193,6 @@ public class MakerControllerTest extends MvcPerformer {
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())))
         .andExpect(jsonPath("$.data.maker.name", is(MAKER_NAME)));
   }
+
+  // TODO tests for model create with invalid makerId;
 }
