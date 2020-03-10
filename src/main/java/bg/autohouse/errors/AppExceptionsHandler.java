@@ -24,6 +24,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -57,6 +58,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
           .put(MethodArgumentTypeMismatchException.class, HttpStatus.BAD_REQUEST)
           .put(HttpRequestMethodNotSupportedException.class, HttpStatus.BAD_REQUEST)
           .put(IllegalArgumentException.class, HttpStatus.BAD_REQUEST)
+          .put(HttpMessageNotReadableException.class, HttpStatus.BAD_REQUEST)
           .put(NotFoundException.class, HttpStatus.NOT_FOUND)
           .put(EntityNotFoundException.class, HttpStatus.NOT_FOUND)
           .put(NoHandlerFoundException.class, HttpStatus.NOT_FOUND)
@@ -179,6 +181,21 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
     final HttpStatus httpStatus = getHttpStatusCode(ex);
 
     final String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
+
+    final ApiResponseModel response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
+
+    return handleExceptionInternal(ex, response, headers, httpStatus, request);
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleHttpMessageNotReadable(
+      final HttpMessageNotReadableException ex,
+      final HttpHeaders headers,
+      final HttpStatus status,
+      final WebRequest request) {
+    final HttpStatus httpStatus = getHttpStatusCode(ex);
+
+    final String error = ExceptionsMessages.INVALID_DATA_TYPE;
 
     final ApiResponseModel response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
 

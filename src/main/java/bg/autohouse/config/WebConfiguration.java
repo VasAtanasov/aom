@@ -26,6 +26,7 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_USER_PROFILE = URL_USER_BASE + "/profile";
 
   public static final String URL_MAKERS = "/makers";
+  public static final String URL_MODELS = "/models";
   public static final String OFFERS = "/offers";
 
   private static final long MAX_AGE_SECS = 3600;

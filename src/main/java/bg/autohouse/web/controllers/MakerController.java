@@ -59,7 +59,7 @@ public class MakerController extends BaseController {
     return handleCreateSuccess(
         toMap("maker", modelMapper.map(createdMaker, MakerResponseModel.class)),
         String.format(Constants.MAKER_CREATE_SUCCESS, createRequest.getName()),
-        "/api/vehicles/makers");
+        WebConfiguration.URL_API_BASE + WebConfiguration.URL_MAKERS);
   }
 
   // TODO create maker with list of models
@@ -113,6 +113,14 @@ public class MakerController extends BaseController {
     String message =
         String.format(MODEL_CREATE_SUCCESS, createRequest.getName(), makerResponseModel.getName());
 
-    return handleCreateSuccess(makerResponseModel, message, "/api/makers");
+    String locationURI =
+        WebConfiguration.URL_API_BASE
+            + WebConfiguration.URL_MAKERS
+            + "/"
+            + makerId
+            + "/"
+            + WebConfiguration.URL_MODELS;
+
+    return handleCreateSuccess(makerResponseModel, message, locationURI);
   }
 }

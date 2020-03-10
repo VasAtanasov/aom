@@ -164,7 +164,7 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
 
-    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1l);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1L);
 
     performPost(API_BASE + "/makers/1/models", createRequestModel)
         .andExpect(status().isBadRequest())
@@ -173,6 +173,32 @@ public class MakerControllerTest extends MvcPerformer {
         .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(responseBody().containsError("name", ValidationMessages.MODEL_NAME_BLANK));
+  }
+
+  @Test
+  public void whenCreateModel_withNullId_shouldReturn400() throws Exception {
+
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", null);
+
+    performPost(API_BASE + "/makers/1/models", createRequestModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+        .andExpect(jsonPath("$.errors", hasSize(1)))
+        .andExpect(responseBody().containsError("makerId", ValidationMessages.MAKER_ID_NULL));
+  }
+
+  @Test
+  public void whenCreateModel_witInvalidTypeId_shouldReturn400() throws Exception {
+
+    String createModelJson = "{\"name\":\"A4\",\"makerId\":\"invalid_id\"}";
+
+    performPost(API_BASE + "/makers/1/models", createModelJson)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(ExceptionsMessages.INVALID_DATA_TYPE)))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())));
   }
 
   @Test
@@ -193,6 +219,4 @@ public class MakerControllerTest extends MvcPerformer {
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())))
         .andExpect(jsonPath("$.data.maker.name", is(MAKER_NAME)));
   }
-
-  // TODO tests for model create with invalid makerId;
 }

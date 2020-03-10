@@ -26,4 +26,7 @@ public class ValidationMessages {
 
   public static final String CODE_MAKER_NAME_EXISTS = "maker.name.exists";
   public static final String MAKER_NAME_EXISTS = "Maker name already exists.";
+
+  public static final String CODE_MAKER_ID_NULL = "maker.id.null";
+  public static final String MAKER_ID_NULL = "Maker id cannot be null.";
 }
