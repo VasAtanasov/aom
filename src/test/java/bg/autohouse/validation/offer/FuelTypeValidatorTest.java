@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 public class FuelTypeValidatorTest {
-  private FuelTypeValidator fuelTypeValidator = new FuelTypeValidator();
+  private FuelTypeValidator validator = new FuelTypeValidator();
 
   @Nested
   class FuelTypeValidFlow {
@@ -15,6 +15,7 @@ public class FuelTypeValidatorTest {
       assertThat(isValid("Diesel")).isTrue();
       assertThat(isValid("diesel")).isTrue();
       assertThat(isValid("Gasoline")).isTrue();
+      assertThat(isValid("Electric_Gasoline")).isTrue();
     }
   }
 
@@ -28,6 +29,6 @@ public class FuelTypeValidatorTest {
   }
 
   private boolean isValid(String value) {
-    return fuelTypeValidator.isValid(value, null);
+    return validator.isValid(value, null);
   }
 }

@@ -1,5 +1,6 @@
 package bg.autohouse.validation.offer;
 
+import static bg.autohouse.validation.ValidationMessages.CODE_INVALID_EURO_STANDARD_NULL;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -11,11 +12,11 @@ import javax.validation.Payload;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = EuroStandardValidator.class)
 @Documented
 public @interface ValidEuroStandard {
 
-  String message() default "";
+  String message() default "{" + CODE_INVALID_EURO_STANDARD_NULL + "}";
 
   Class<?>[] groups() default {};
 
