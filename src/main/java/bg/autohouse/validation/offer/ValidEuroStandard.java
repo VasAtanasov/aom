@@ -1,6 +1,5 @@
 package bg.autohouse.validation.offer;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_INVALID_FUEL_TYPE_NULL;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -12,11 +11,11 @@ import javax.validation.Payload;
 
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
-@Constraint(validatedBy = FuelTypeValidator.class)
+@Constraint(validatedBy = {})
 @Documented
-public @interface ValidFuelType {
+public @interface ValidEuroStandard {
 
-  String message() default "{" + CODE_INVALID_FUEL_TYPE_NULL + "}";
+  String message() default "";
 
   Class<?>[] groups() default {};
 

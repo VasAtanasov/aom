@@ -50,7 +50,7 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   public MakerServiceModel addModelToMaker(
-      @Nonnull Long makerId, ModelServiceModel modelServiceModel) {
+      @Nonnull Long makerId, @Nonnull ModelServiceModel modelServiceModel) {
 
     Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
 

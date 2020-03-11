@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class ModelServiceModel {
   private Long id;
   private String name;

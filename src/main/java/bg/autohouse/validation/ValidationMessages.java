@@ -29,4 +29,12 @@ public class ValidationMessages {
 
   public static final String CODE_MAKER_ID_NULL = "maker.id.null";
   public static final String MAKER_ID_NULL = "Maker id cannot be null.";
+
+  public static final String CODE_INVALID_FUEL_TYPE_NULL = "fuelType.invalid.value";
+  public static final String INVALID_FUEL_TYPE_NULL =
+      "Provided fuel type value is non existent or invalid.";
+
+  public static final String CODE_INVALID_EURO_STANDARD_NULL = "euroStandard.invalid.value";
+  public static final String INVALID_EURO_STANDARD_NULL =
+      "Provided euro standard value is non existent or invalid.";
 }
