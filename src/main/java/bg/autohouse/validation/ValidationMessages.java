@@ -39,5 +39,8 @@ public class ValidationMessages {
       "Provided euro standard value is non existent or invalid.";
 
   public static final String CODE_INVALID_ENGINE_POWER = "engine.power.invalid";
-  public static final String INVALID_ENGINE_POWER = "Engine power must be positive number";
+  public static final String INVALID_ENGINE_POWER = "Engine power must valid be positive number";
+
+  public static final String CODE_INVALID_STATE = "vehicle.state.invalid";
+  public static final String INVALID_STATE = "Invalid vehicle sate";
 }

@@ -18,7 +18,7 @@ public class EngineCreateRequestTest extends HibernateValidatorTest {
     isInvalid(createRequest);
     assertMessage(createRequest, field, message);
   }
-  // TODO test with null values
+
   private static Stream<Arguments> createRequestSet() {
     return Stream.of(
         Arguments.of(
@@ -32,6 +32,18 @@ public class EngineCreateRequestTest extends HibernateValidatorTest {
         Arguments.of(
             EngineCreateRequest.of("Gasoline", 100, "EURO10"),
             "euroStandard",
-            ValidationMessages.INVALID_EURO_STANDARD_NULL));
+            ValidationMessages.INVALID_EURO_STANDARD_NULL),
+        Arguments.of(
+            EngineCreateRequest.of(null, 100, "EURO6"),
+            "fuelType",
+            ValidationMessages.INVALID_FUEL_TYPE_NULL),
+        Arguments.of(
+            EngineCreateRequest.of("Gasoline", 100, null),
+            "euroStandard",
+            ValidationMessages.INVALID_EURO_STANDARD_NULL),
+        Arguments.of(
+            EngineCreateRequest.of("Gasoline", null, "EURO6"),
+            "power",
+            ValidationMessages.INVALID_ENGINE_POWER));
   }
 }

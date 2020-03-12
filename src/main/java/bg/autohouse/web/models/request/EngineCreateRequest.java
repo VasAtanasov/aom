@@ -20,8 +20,8 @@ public class EngineCreateRequest {
 
   @ValidFuelType private String fuelType;
 
+  @NotNull(message = "{" + ValidationMessages.CODE_INVALID_ENGINE_POWER + "}")
   @Positive(message = "{" + ValidationMessages.CODE_INVALID_ENGINE_POWER + "}")
-  @NotNull
   @Builder.Default
   private Integer power = 1;
 

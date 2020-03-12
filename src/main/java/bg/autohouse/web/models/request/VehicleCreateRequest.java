@@ -1,5 +1,6 @@
 package bg.autohouse.web.models.request;
 
+import bg.autohouse.validation.offer.ValidState;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,8 @@ public class VehicleCreateRequest {
   // @Positive @NotNull private Long modelId;
 
   @Valid private EngineCreateRequest engine;
+
+  @ValidState private String state;
 
   // @Positive @NotNull private Integer mileage;
   // @Positive @NotNull private Integer seats;
