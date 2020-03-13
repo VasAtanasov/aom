@@ -9,9 +9,9 @@ public class EuroStandardValidatorTest {
   private EuroStandardValidator validator = new EuroStandardValidator();
 
   @Nested
-  class EuroStandardValidFlow {
+  class ValidFlow {
     @Test
-    void isValid_shouldReturnTrue_whenValidFuelType() {
+    void isValid_shouldReturnTrue_whenValidEuroStandard() {
       assertThat(isValid("Euro1")).isTrue();
       assertThat(isValid("Euro2")).isTrue();
       assertThat(isValid("Euro3")).isTrue();
@@ -22,9 +22,9 @@ public class EuroStandardValidatorTest {
   }
 
   @Nested
-  class EuroStandardInvalidFlow {
+  class InvalidFlow {
     @Test
-    void isValid_shouldReturnFalse_whenInvalidFuelType() {
+    void isValid_shouldReturnFalse_whenInvalidEuroStandard() {
       assertThat(isValid("Not valid")).isFalse();
       assertThat(isValid("")).isFalse();
     }

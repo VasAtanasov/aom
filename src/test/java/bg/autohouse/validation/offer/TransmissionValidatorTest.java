@@ -5,23 +5,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-public class StateValidatorTest {
-  private StateValidator validator = new StateValidator();
+public class TransmissionValidatorTest {
+  private TransmissionValidator validator = new TransmissionValidator();
 
   @Nested
   class ValidFlow {
     @Test
-    void isValid_shouldReturnTrue_whenValidState() {
-      assertThat(isValid("new")).isTrue();
-      assertThat(isValid("used")).isTrue();
-      assertThat(isValid("accident")).isTrue();
+    void isValid_shouldReturnTrue_whenValidTransmission() {
+      assertThat(isValid("Manual")).isTrue();
+      assertThat(isValid("Automatic")).isTrue();
+      assertThat(isValid("SEMI_AUTOMATIC")).isTrue();
     }
   }
 
   @Nested
   class InvalidFlow {
     @Test
-    void isValid_shouldReturnFalse_whenInvalidState() {
+    void isValid_shouldReturnFalse_whenInvalidTransmission() {
       assertThat(isValid("Not valid")).isFalse();
       assertThat(isValid("")).isFalse();
     }

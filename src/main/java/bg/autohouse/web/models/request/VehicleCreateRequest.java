@@ -1,6 +1,12 @@
 package bg.autohouse.web.models.request;
 
+import bg.autohouse.validation.offer.ValidBodyStyle;
+import bg.autohouse.validation.offer.ValidColor;
+import bg.autohouse.validation.offer.ValidDrive;
+import bg.autohouse.validation.offer.ValidNumber;
 import bg.autohouse.validation.offer.ValidState;
+import bg.autohouse.validation.offer.ValidTransmission;
+import bg.autohouse.validation.offer.ValidUpholstery;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,15 +20,30 @@ import lombok.Setter;
 @AllArgsConstructor(staticName = "of")
 @Builder
 public class VehicleCreateRequest {
-  // @Positive @NotNull private Long makerId;
-  // @Positive @NotNull private Long modelId;
+  // TODO Existent validation
+  // TODO Feature validation and List<Feature> to add to this create request
+  // @ExistentMaker
+  private Long makerId;
+
+  // @ExistentModel
+  private Long modelId;
 
   @Valid private EngineCreateRequest engine;
 
-  @ValidState private String state;
+  @ValidNumber(field = "mileage")
+  private Integer mileage;
 
-  // @Positive @NotNull private Integer mileage;
-  // @Positive @NotNull private Integer seats;
-  // @Positive @NotNull private Integer doors;
-  // @Positive @NotNull private String state;
+  @ValidNumber(field = "seats")
+  private Integer seats;
+
+  @ValidNumber(field = "doors")
+  private Integer doors;
+
+  @ValidState private String state;
+  @ValidBodyStyle private String bodyStyle;
+  @ValidTransmission private String transmission;
+  @ValidDrive private String drive;
+  @ValidColor private String color;
+  @ValidUpholstery private String upholstery;
+  @Builder.Default private boolean hasAccident = false;
 }

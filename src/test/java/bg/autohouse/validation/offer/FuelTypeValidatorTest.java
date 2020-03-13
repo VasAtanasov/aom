@@ -9,7 +9,7 @@ public class FuelTypeValidatorTest {
   private FuelTypeValidator validator = new FuelTypeValidator();
 
   @Nested
-  class FuelTypeValidFlow {
+  class ValidFlow {
     @Test
     void isValid_shouldReturnTrue_whenValidFuelType() {
       assertThat(isValid("Diesel")).isTrue();
@@ -20,7 +20,7 @@ public class FuelTypeValidatorTest {
   }
 
   @Nested
-  class FuelTypeInvalidFlow {
+  class InvalidFlow {
     @Test
     void isValid_shouldReturnFalse_whenInvalidFuelType() {
       assertThat(isValid("Not valid fuel")).isFalse();

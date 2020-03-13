@@ -43,4 +43,25 @@ public class ValidationMessages {
 
   public static final String CODE_INVALID_STATE = "vehicle.state.invalid";
   public static final String INVALID_STATE = "Invalid vehicle sate";
+
+  public static final String CODE_INVALID_BODY_STYLE = "vehicle.body.style.invalid";
+  public static final String INVALID_BODY_STYLE = "Invalid or non existent body style";
+
+  public static final String CODE_INVALID_TRANSMISSION = "vehicle.transmission.invalid";
+  public static final String INVALID_TRANSMISSION = "Invalid or non existent transmission";
+
+  public static final String CODE_INVALID_DRIVE = "vehicle.drive.invalid";
+  public static final String INVALID_DRIVE = "Invalid or non existent drive-train";
+
+  public static final String CODE_INVALID_COLOR = "vehicle.color.invalid";
+  public static final String INVALID_COLOR = "Invalid or non existent color";
+
+  public static final String CODE_INVALID_UPHOLSTERY = "vehicle.upholstery.invalid";
+  public static final String INVALID_UPHOLSTERY = "Invalid or non existent upholstery";
+
+  public static final String CODE_INVALID_FEATURE = "vehicle.feature.invalid";
+  public static final String INVALID_FEATURE = "Invalid or non existent feature";
+
+  public static final String CODE_INVALID_NUMBER = "number.invalid";
+  public static final String INVALID_NUMBER = "Positive value must be provided: {field}";
 }

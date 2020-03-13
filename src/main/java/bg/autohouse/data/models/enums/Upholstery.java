@@ -8,7 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @CheckboxCriteria
 public enum Upholstery implements Textable {
-  ALCANTARA("alcantara"),
   CLOTH("Cloth"),
   FULL_LEATHER("Full leather"),
   PART_LEATHER("Part leather"),
