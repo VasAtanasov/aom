@@ -10,11 +10,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = FeatureValidator.class)
+@Constraint(validatedBy = FeatureListValidator.class)
 @Documented
-public @interface ValidFeature {
+public @interface ValidFeatureList {
 
   String message() default "{" + CODE_INVALID_FEATURE + "}";
 

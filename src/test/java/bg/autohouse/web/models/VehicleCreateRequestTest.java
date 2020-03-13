@@ -4,12 +4,16 @@ import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Color;
 import bg.autohouse.data.models.enums.Drive;
+import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Transmission;
 import bg.autohouse.data.models.enums.Upholstery;
 import bg.autohouse.validation.ValidationMessages;
 import bg.autohouse.web.models.request.EngineCreateRequest;
 import bg.autohouse.web.models.request.VehicleCreateRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -26,10 +30,26 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
       EngineCreateRequest.of("Invalid Fuel", 100, "EURO6");
 
   private static final EngineCreateRequest invalidEnginePower =
-      EngineCreateRequest.of("Invalid Fuel", -100, "EURO6");
+      EngineCreateRequest.of("Gasoline", -100, "EURO6");
 
   private static final EngineCreateRequest invalidEngineEuroStandard =
-      EngineCreateRequest.of("Invalid Fuel", 100, "EURO100");
+      EngineCreateRequest.of("Gasoline", 100, "EURO100");
+
+  private static final List<String> validFeatures =
+      Arrays.asList(
+          Feature.DRIVER_SIDE_AIRBAG.name(),
+          Feature.MULTI_FUNCTION_STEERING_WHEEL.name(),
+          Feature.NIGHT_VIEW_ASSIST.name(),
+          Feature.EMERGENCY_BRAKE_ASSISTANT.name(),
+          Feature.DRIVER_SIDE_AIRBAG.name());
+
+  private static final List<String> invalidFeatures =
+      Arrays.asList(
+          Feature.DRIVER_SIDE_AIRBAG.name(),
+          Feature.MULTI_FUNCTION_STEERING_WHEEL.name(),
+          Feature.NIGHT_VIEW_ASSIST.name(),
+          "invalid feature",
+          Feature.DRIVER_SIDE_AIRBAG.name());
 
   @ParameterizedTest
   @MethodSource("createRequestSet")
@@ -55,6 +75,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.toString())
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
+                .features(validFeatures)
                 .upholstery(Upholstery.FULL_LEATHER.toString())
                 .build(),
             "mileage",
@@ -72,6 +93,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.toString())
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
+                .features(validFeatures)
                 .upholstery(Upholstery.FULL_LEATHER.toString())
                 .build(),
             "seats",
@@ -90,6 +112,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
             "doors",
             String.format(ERROR_MESSAGE, "doors")),
@@ -107,6 +130,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
             "state",
             ValidationMessages.INVALID_STATE),
@@ -124,6 +148,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
             "transmission",
             ValidationMessages.INVALID_TRANSMISSION),
@@ -141,6 +166,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(INVALID_VALUE)
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
             "drive",
             ValidationMessages.INVALID_DRIVE),
@@ -158,6 +184,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(INVALID_VALUE)
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
             "color",
             ValidationMessages.INVALID_COLOR),
@@ -175,6 +202,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(INVALID_VALUE)
+                .features(validFeatures)
                 .build(),
             "upholstery",
             ValidationMessages.INVALID_UPHOLSTERY),
@@ -192,6 +220,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
             "bodyStyle",
             ValidationMessages.INVALID_BODY_STYLE),
@@ -204,11 +233,12 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .seats(10)
                 .doors(4)
                 .state(State.NEW.toString())
-                .bodyStyle(INVALID_VALUE)
+                .bodyStyle(BodyStyle.CONVERTIBLE.toString())
                 .transmission(Transmission.AUTOMATIC.toString())
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
             "engine.fuelType",
             ValidationMessages.INVALID_FUEL_TYPE_NULL),
@@ -221,14 +251,15 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .seats(10)
                 .doors(4)
                 .state(State.NEW.toString())
-                .bodyStyle(INVALID_VALUE)
+                .bodyStyle(BodyStyle.CONVERTIBLE.toString())
                 .transmission(Transmission.AUTOMATIC.toString())
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
-            "engine.fuelType",
-            ValidationMessages.INVALID_FUEL_TYPE_NULL),
+            "engine.power",
+            ValidationMessages.INVALID_ENGINE_POWER),
         Arguments.of(
             VehicleCreateRequest.builder()
                 .makerId(1L)
@@ -238,13 +269,50 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .seats(10)
                 .doors(4)
                 .state(State.NEW.toString())
-                .bodyStyle(INVALID_VALUE)
+                .bodyStyle(BodyStyle.CONVERTIBLE.toString())
                 .transmission(Transmission.AUTOMATIC.toString())
                 .drive(Drive.ALL_WHEEL_DRIVE.toString())
                 .color(Color.DARK_RED.toString())
                 .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(validFeatures)
                 .build(),
-            "engine.fuelType",
-            ValidationMessages.INVALID_FUEL_TYPE_NULL));
+            "engine.euroStandard",
+            ValidationMessages.INVALID_EURO_STANDARD_NULL),
+        Arguments.of(
+            VehicleCreateRequest.builder()
+                .makerId(1L)
+                .modelId(1L)
+                .engine(validEngine)
+                .mileage(10)
+                .seats(10)
+                .doors(4)
+                .state(State.NEW.toString())
+                .bodyStyle(BodyStyle.CONVERTIBLE.toString())
+                .transmission(Transmission.AUTOMATIC.toString())
+                .drive(Drive.ALL_WHEEL_DRIVE.toString())
+                .color(Color.DARK_RED.toString())
+                .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(invalidFeatures)
+                .build(),
+            "features",
+            ValidationMessages.INVALID_FEATURE),
+        Arguments.of(
+            VehicleCreateRequest.builder()
+                .makerId(1L)
+                .modelId(1L)
+                .engine(validEngine)
+                .mileage(10)
+                .seats(10)
+                .doors(4)
+                .state(State.NEW.toString())
+                .bodyStyle(BodyStyle.CONVERTIBLE.toString())
+                .transmission(Transmission.AUTOMATIC.toString())
+                .drive(Drive.ALL_WHEEL_DRIVE.toString())
+                .color(Color.DARK_RED.toString())
+                .upholstery(Upholstery.FULL_LEATHER.toString())
+                .features(new ArrayList<>())
+                .build(),
+            "features",
+            ValidationMessages.INVALID_FEATURE));
   }
 }

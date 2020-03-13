@@ -3,10 +3,13 @@ package bg.autohouse.web.models.request;
 import bg.autohouse.validation.offer.ValidBodyStyle;
 import bg.autohouse.validation.offer.ValidColor;
 import bg.autohouse.validation.offer.ValidDrive;
+import bg.autohouse.validation.offer.ValidFeatureList;
 import bg.autohouse.validation.offer.ValidNumber;
 import bg.autohouse.validation.offer.ValidState;
 import bg.autohouse.validation.offer.ValidTransmission;
 import bg.autohouse.validation.offer.ValidUpholstery;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,5 +48,8 @@ public class VehicleCreateRequest {
   @ValidDrive private String drive;
   @ValidColor private String color;
   @ValidUpholstery private String upholstery;
+
+  @ValidFeatureList @Builder.Default private List<String> features = new ArrayList<>();
+
   @Builder.Default private boolean hasAccident = false;
 }

@@ -2,27 +2,28 @@ package bg.autohouse.validation.offer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import bg.autohouse.data.models.enums.Feature;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 public class FeatureValidatorTest {
-  private FeatureValidator validator = new FeatureValidator();
+  private FeatureListValidator validator = new FeatureListValidator();
 
   @Nested
   class ValidFlow {
     @Test
     void isValid_shouldReturnTrue_whenValidFeature() {
-      assertThat(isValid("AUTOMATIC_CLIMATE_CONTROL")).isTrue();
-      assertThat(isValid("TRACTION_CONTROL")).isTrue();
-      assertThat(isValid("ELECTRICALLY_ADJUSTABLE_SEATS")).isTrue();
-      assertThat(isValid("MP3")).isTrue();
-      assertThat(isValid("PANORAMA_ROOF")).isTrue();
-      assertThat(isValid("AUXILIARY_HEATING")).isTrue();
-      assertThat(isValid("SPORT_PACKAGE")).isTrue();
-      assertThat(isValid("START_STOP_SYSTEM")).isTrue();
-      assertThat(isValid("MULTI_FUNCTION_STEERING_WHEEL")).isTrue();
-      assertThat(isValid("DAYTIME_RUNNING_LIGHTS")).isTrue();
-      assertThat(isValid("SPORT_SUSPENSION")).isTrue();
+      assertThat(
+              isValid(
+                  Arrays.asList(
+                      Feature.DRIVER_SIDE_AIRBAG.name(),
+                      Feature.MULTI_FUNCTION_STEERING_WHEEL.name(),
+                      Feature.NIGHT_VIEW_ASSIST.name(),
+                      Feature.EMERGENCY_BRAKE_ASSISTANT.name(),
+                      Feature.DRIVER_SIDE_AIRBAG.name())))
+          .isTrue();
     }
   }
 
@@ -30,12 +31,19 @@ public class FeatureValidatorTest {
   class InvalidFlow {
     @Test
     void isValid_shouldReturnFalse_whenInvalidFeature() {
-      assertThat(isValid("Not valid")).isFalse();
-      assertThat(isValid("")).isFalse();
+      assertThat(
+              isValid(
+                  Arrays.asList(
+                      Feature.DRIVER_SIDE_AIRBAG.name(),
+                      Feature.MULTI_FUNCTION_STEERING_WHEEL.name(),
+                      Feature.NIGHT_VIEW_ASSIST.name(),
+                      "invalid feature",
+                      Feature.DRIVER_SIDE_AIRBAG.name())))
+          .isFalse();
     }
   }
 
-  private boolean isValid(String value) {
+  private boolean isValid(List<String> value) {
     return validator.isValid(value, null);
   }
 }
