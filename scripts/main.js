@@ -113,12 +113,10 @@ async function executeQuery(query) {
 
 const http = require("./requester").http;
 
-const baseUrl = "http://localhost:8007/api";
+const baseUrl = "http://localhost:8007/api/vehicles";
 
 (async function main() {
-  // const generateColorInsert = require("./generateColorData");
   // const generateRoleInsert = require("./generateRoleData");
-  // const colorSql = await generateColorInsert();
   // const rolesSql = await generateRoleInsert();
 
   // const state = await http.get(baseUrl);
@@ -126,7 +124,6 @@ const baseUrl = "http://localhost:8007/api";
   let entitiesArray = [
     carMakeModelObj.newArray,
     townsObj.townsSQL
-    // colorSql,
     // rolesSql
   ];
 
@@ -134,43 +131,54 @@ const baseUrl = "http://localhost:8007/api";
     return a.concat(b);
   }, []);
 
+  const response = await http.get(baseUrl + "/state");
+
+  const state = response.data;
+  const metadata = state.data.metadata;
+
   // await executeQuery(insert.join("\n"));
 
-  // const generateVehiclesInsert = require("./generateVehicleData");
-  // const generateVehiclesFeaturesSqlInserts = require("./generateVehicleFeaturesData");
-  // const generateEngineSqlInsert = require("./generateEngineData");
+  const generateVehiclesInsert = require("./generateVehicleData");
+  const generateEngineSqlInsert = require("./generateEngineData");
+  const generateVehiclesFeaturesSqlInserts = require("./generateVehicleFeaturesData");
   // const generateOfferSqlInsert = require("./generateOfferData");
   // const generateUserSqlInsert = require("./generateUserData");
   // const generateImageSqlInset = require("./generateImageData");
   // const generateUserRoleSqlInset = require("./generateUserRoleData");
 
-  // const vehiclesInsertSql = await generateVehiclesInsert();
-  // const vehiclesFeaturesSql = await generateVehiclesFeaturesSqlInserts();
-  // const enginesSql = await generateEngineSqlInsert();
+  const vehiclesInsertSql = await generateVehiclesInsert(
+    metadata,
+    state.data.makers
+  );
+  const enginesSql = await generateEngineSqlInsert(metadata);
+  const vehiclesFeaturesSql = await generateVehiclesFeaturesSqlInserts(
+    metadata
+  );
   // const usersSql = await generateUserSqlInsert();
   // const offerSql = await generateOfferSqlInsert();
   // const imageSql = await generateImageSqlInset();
   // const userRoleSql = await generateUserRoleSqlInset();
+  let a = 5;
 
-  // const sql = [
-  //     usersSql,
-  //     offerSql,
-  //     vehiclesInsertSql,
-  //     vehiclesFeaturesSql,
-  //     enginesSql,
-  //     imageSql,
-  //     userRoleSql
-  // ];x
+  const sql = [
+    //     usersSql,
+    //     offerSql,
+    vehiclesInsertSql,
+    vehiclesFeaturesSql,
+    enginesSql
+    //     imageSql,
+    //     userRoleSql
+  ];
 
-  // const dependentInserts = sql.reduce((a, b) => {
-  //     return a.concat(b);
-  // }, []);
+  const dependentInserts = sql.reduce((a, b) => {
+    return a.concat(b);
+  }, []);
 
   writeToFile("./data.sql", "");
   appendRowToFile("./data.sql", insert.join("\n"));
 
-  // writeToFile("./data-next.sql", "");
-  // appendRowToFile("./data-next.sql", dependentInserts.join("\n"));
+  writeToFile("./data-next.sql", "");
+  appendRowToFile("./data-next.sql", dependentInserts.join("\n"));
 
   // await executeQuery(dependentInserts.join("\n"));
 })();

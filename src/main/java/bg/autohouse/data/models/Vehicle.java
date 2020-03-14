@@ -81,10 +81,10 @@ public class Vehicle extends BaseUuidEntity {
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
-      name = "filter_feature",
+      name = "vehicle_feature",
       joinColumns =
           @JoinColumn(
-              name = "filter_id",
+              name = "vehicle_id",
               referencedColumnName = "id",
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_feature_vehicle_id")))
   @Column(name = "feature")

@@ -16,10 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -32,6 +32,7 @@ public class InitialStateServiceImpl implements InitialStateService {
   private final ModelMapperWrapper modelMapper;
 
   @Override
+  @Transactional(readOnly = true)
   public InitialStateModel getInitialState() {
     Map<String, Object> criteria = new HashMap<>();
     List<String> searchCriteriaNamesForCheckboxCriteria = new ArrayList<>();

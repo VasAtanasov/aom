@@ -5,7 +5,7 @@ Accept: application/bg.autohouse.api-v1+json
 
 ###
 ### GET All makers available
-GET {{host}}/makers/232  HTTP/1.1
+GET {{host}}/makers/1  HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 
 ###
@@ -20,7 +20,7 @@ Content-Type: application/bg.autohouse.api-v1+json
 
 ###
 
-DELETE  {{host}}/makers/21/models HTTP/1.1
+GET  {{host}}/makers/1/models HTTP/1.1
 
 ###
 
