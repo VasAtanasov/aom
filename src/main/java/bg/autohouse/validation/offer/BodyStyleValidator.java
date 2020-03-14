@@ -11,6 +11,10 @@ public class BodyStyleValidator implements ConstraintValidator<ValidBodyStyle, S
 
   @Override
   public boolean isValid(String bodyStyle, ConstraintValidatorContext context) {
+    return validate(bodyStyle);
+  }
+
+  public static boolean validate(final String bodyStyle) {
     if (!Assert.has(bodyStyle)) {
       return false;
     }

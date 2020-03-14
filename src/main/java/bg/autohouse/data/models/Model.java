@@ -1,6 +1,6 @@
 package bg.autohouse.data.models;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_MAKER_NULL;
+import static bg.autohouse.validation.ValidationMessages.MAKER_NULL;
 
 import bg.autohouse.validation.maker.ModelName;
 import javax.persistence.*;
@@ -30,7 +30,7 @@ public class Model extends BaseLongEntity {
   @ModelName
   private String name;
 
-  @NotNull(message = "{" + CODE_MAKER_NULL + "}")
+  @NotNull(message = MAKER_NULL)
   @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
       name = "maker_id",

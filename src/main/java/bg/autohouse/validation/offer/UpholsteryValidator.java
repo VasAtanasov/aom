@@ -11,12 +11,16 @@ public class UpholsteryValidator implements ConstraintValidator<ValidUpholstery,
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
+    return validate(value);
+  }
+
+  public static boolean validate(final String value) {
     if (!Assert.has(value)) {
       return false;
     }
 
-    Optional<Upholstery> euroStandard = EnumUtils.fromString(value, Upholstery.class);
+    Optional<Upholstery> upholstery = EnumUtils.fromString(value, Upholstery.class);
 
-    return euroStandard.isPresent();
+    return upholstery.isPresent();
   }
 }

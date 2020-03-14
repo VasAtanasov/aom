@@ -1,6 +1,6 @@
 package bg.autohouse.validation.maker;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_MAKER_NAME_EXISTS;
+import static bg.autohouse.validation.ValidationMessages.MAKER_NAME_EXISTS;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -16,7 +16,7 @@ import javax.validation.Payload;
 @Documented
 public @interface UniqueMakerName {
 
-  String message() default "{" + CODE_MAKER_NAME_EXISTS + "}";
+  String message() default MAKER_NAME_EXISTS;
 
   Class<?>[] groups() default {};
 

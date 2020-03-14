@@ -11,6 +11,10 @@ public class ColorValidator implements ConstraintValidator<ValidColor, String> {
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
+    return validate(value);
+  }
+
+  public static boolean validate(final String value) {
     if (!Assert.has(value)) {
       return false;
     }

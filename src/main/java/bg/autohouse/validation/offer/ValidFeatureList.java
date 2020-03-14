@@ -1,6 +1,6 @@
 package bg.autohouse.validation.offer;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_INVALID_FEATURE;
+import static bg.autohouse.validation.ValidationMessages.INVALID_FEATURE;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -16,7 +16,7 @@ import javax.validation.Payload;
 @Documented
 public @interface ValidFeatureList {
 
-  String message() default "{" + CODE_INVALID_FEATURE + "}";
+  String message() default INVALID_FEATURE;
 
   Class<?>[] groups() default {};
 

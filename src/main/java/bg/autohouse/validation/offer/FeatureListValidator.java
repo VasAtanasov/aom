@@ -11,6 +11,10 @@ public class FeatureListValidator implements ConstraintValidator<ValidFeatureLis
 
   @Override
   public boolean isValid(List<String> values, ConstraintValidatorContext context) {
+    return validate(values);
+  }
+
+  public static boolean validate(final List<String> values) {
     if (!Assert.has(values)) {
       return false;
     }

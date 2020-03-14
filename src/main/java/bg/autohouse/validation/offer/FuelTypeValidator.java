@@ -11,10 +11,14 @@ public class FuelTypeValidator implements ConstraintValidator<ValidFuelType, Str
 
   @Override
   public boolean isValid(String fuelTypeString, ConstraintValidatorContext context) {
-    if (!Assert.has(fuelTypeString)) {
+    return validate(fuelTypeString);
+  }
+
+  public static boolean validate(final String value) {
+    if (!Assert.has(value)) {
       return false;
     }
-    Optional<FuelType> fuelType = EnumUtils.fromString(fuelTypeString, FuelType.class);
+    Optional<FuelType> fuelType = EnumUtils.fromString(value, FuelType.class);
 
     return fuelType.isPresent();
   }

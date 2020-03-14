@@ -1,6 +1,6 @@
 package bg.autohouse.validation.offer;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_INVALID_FUEL_TYPE_NULL;
+import static bg.autohouse.validation.ValidationMessages.INVALID_FUEL_TYPE_NULL;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -16,7 +16,7 @@ import javax.validation.Payload;
 @Documented
 public @interface ValidFuelType {
 
-  String message() default "{" + CODE_INVALID_FUEL_TYPE_NULL + "}";
+  String message() default INVALID_FUEL_TYPE_NULL;
 
   Class<?>[] groups() default {};
 

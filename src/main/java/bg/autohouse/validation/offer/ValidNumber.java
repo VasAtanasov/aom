@@ -1,6 +1,6 @@
 package bg.autohouse.validation.offer;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_INVALID_NUMBER;
+import static bg.autohouse.validation.ValidationMessages.INVALID_NUMBER;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -16,7 +16,7 @@ import javax.validation.Payload;
 @Documented
 public @interface ValidNumber {
 
-  String message() default "{" + CODE_INVALID_NUMBER + "}";
+  String message() default INVALID_NUMBER;
 
   String field();
 

@@ -1,6 +1,6 @@
 package bg.autohouse.validation.offer;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_INVALID_MODEL_DATA;
+import static bg.autohouse.validation.ValidationMessages.INVALID_MODEL_ID;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -16,7 +16,7 @@ import javax.validation.Payload;
 @Documented
 public @interface ValidModelData {
 
-  String message() default "{" + CODE_INVALID_MODEL_DATA + "}";
+  String message() default INVALID_MODEL_ID;
 
   Class<?>[] groups() default {};
 

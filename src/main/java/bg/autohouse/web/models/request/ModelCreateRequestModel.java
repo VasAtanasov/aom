@@ -15,6 +15,6 @@ import lombok.Setter;
 public class ModelCreateRequestModel {
   @ModelName private String name;
 
-  @NotNull(message = "{" + ValidationMessages.CODE_MAKER_ID_NULL + "}")
+  @NotNull(message = ValidationMessages.MAKER_ID_NULL)
   private Long makerId;
 }

@@ -1,7 +1,7 @@
 package bg.autohouse.validation.maker;
 
-import static bg.autohouse.validation.ValidationMessages.CODE_MODEL_NAME_BLANK;
-import static bg.autohouse.validation.ValidationMessages.CODE_MODEL_NAME_LENGTH;
+import static bg.autohouse.validation.ValidationMessages.MODEL_NAME_BLANK;
+import static bg.autohouse.validation.ValidationMessages.MODEL_NAME_LENGTH;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -13,11 +13,8 @@ import javax.validation.Payload;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@NotBlank(message = "{" + CODE_MODEL_NAME_BLANK + "}")
-@Size(
-    message = "{" + CODE_MODEL_NAME_LENGTH + "}",
-    min = ModelName.MIN_LENGTH,
-    max = ModelName.MAX_LENGTH)
+@NotBlank(message = MODEL_NAME_BLANK)
+@Size(message = MODEL_NAME_LENGTH, min = ModelName.MIN_LENGTH, max = ModelName.MAX_LENGTH)
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})

@@ -11,11 +11,15 @@ public class StateValidator implements ConstraintValidator<ValidState, String> {
 
   @Override
   public boolean isValid(String stateString, ConstraintValidatorContext context) {
-    if (!Assert.has(stateString)) {
+    return validate(stateString);
+  }
+
+  public static boolean validate(final String value) {
+    if (!Assert.has(value)) {
       return false;
     }
 
-    Optional<State> state = EnumUtils.fromString(stateString, State.class);
+    Optional<State> state = EnumUtils.fromString(value, State.class);
 
     return state.isPresent();
   }

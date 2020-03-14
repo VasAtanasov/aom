@@ -8,7 +8,10 @@ public class NumberValidator implements ConstraintValidator<ValidNumber, Integer
 
   @Override
   public boolean isValid(Integer value, ConstraintValidatorContext context) {
+    return validate(value);
+  }
 
+  public static boolean validate(final Integer value) {
     return Assert.has(value) && value > 0;
   }
 }

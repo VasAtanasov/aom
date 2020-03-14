@@ -1,5 +1,6 @@
 package bg.autohouse.web.models.request;
 
+import bg.autohouse.validation.ValidationMessages;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -19,8 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor(staticName = "of")
 @Builder
 public class OfferCreateRequest {
-  @NotNull @Valid private VehicleCreateRequest vehicle;
-  @NotNull @Positive private Integer price;
-  @NotBlank private String description;
+  @NotNull(message = ValidationMessages.MISSING_VEHICLE_DATA)
+  @Valid
+  private VehicleCreateRequest vehicle;
+
+  @NotNull(message = ValidationMessages.NULL_VALUE_OFFER_PRICE)
+  @Positive(message = ValidationMessages.INVALID_PRICE)
+  private Integer price;
+
+  @NotBlank(message = ValidationMessages.MISSING_INVALID_DESCRIPTION)
+  private String description;
+
   @Builder.Default private List<MultipartFile> images = new ArrayList<>();
 }

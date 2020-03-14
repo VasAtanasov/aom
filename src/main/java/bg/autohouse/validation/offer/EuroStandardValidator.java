@@ -11,12 +11,15 @@ public class EuroStandardValidator implements ConstraintValidator<ValidEuroStand
 
   @Override
   public boolean isValid(String euroStandardString, ConstraintValidatorContext context) {
-    if (!Assert.has(euroStandardString)) {
+    return validate(euroStandardString);
+  }
+
+  public static boolean validate(final String value) {
+    if (!Assert.has(value)) {
       return false;
     }
 
-    Optional<EuroStandard> euroStandard =
-        EnumUtils.fromString(euroStandardString, EuroStandard.class);
+    Optional<EuroStandard> euroStandard = EnumUtils.fromString(value, EuroStandard.class);
 
     return euroStandard.isPresent();
   }
