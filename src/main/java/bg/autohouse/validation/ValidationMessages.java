@@ -60,8 +60,13 @@ public class ValidationMessages {
   public static final String INVALID_UPHOLSTERY = "Invalid or non existent upholstery";
 
   public static final String CODE_INVALID_FEATURE = "vehicle.feature.invalid";
-  public static final String INVALID_FEATURE = "Invalid or non existent feature";
+  public static final String INVALID_FEATURE =
+      "The list of features contains invalid or non existent feature";
 
   public static final String CODE_INVALID_NUMBER = "number.invalid";
   public static final String INVALID_NUMBER = "Positive value must be provided: {field}";
+
+  public static final String CODE_INVALID_MODEL_DATA = "vehicle.model.data.invalid";
+  public static final String INVALID_MODEL_ID =
+      "Valid and existing maker and model id must be provided.";
 }

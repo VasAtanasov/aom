@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 
 // TODO add named queries
 // TODO add validation annotations to entities
@@ -37,10 +36,9 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   private List<Image> images = new ArrayList<>();
 
   @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
-  private Integer price;
+  private Integer price = 0;
 
   @Temporal(TemporalType.TIMESTAMP)
-  @LastModifiedDate
   @Column(name = "price_modified_on")
   private Date priceModifiedOn;
 
@@ -62,4 +60,19 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
 
   @Column(name = "is_expired")
   private boolean isExpired = false;
+
+  @Transient private Integer previousPrice;
+
+  @PreUpdate
+  private void doBeforeUpdate() {
+    int areEqualPrices = Integer.compare(previousPrice, price);
+    if (areEqualPrices != 0) {
+      priceModifiedOn = new Date();
+    }
+  }
+
+  @PostLoad
+  private void storePriceState() {
+    previousPrice = price;
+  }
 }

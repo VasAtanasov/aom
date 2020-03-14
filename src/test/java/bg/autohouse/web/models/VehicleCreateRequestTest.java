@@ -1,5 +1,6 @@
 package bg.autohouse.web.models;
 
+
 import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Color;

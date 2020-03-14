@@ -11,6 +11,7 @@ import bg.autohouse.validation.offer.ValidUpholstery;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,13 +24,8 @@ import lombok.Setter;
 @AllArgsConstructor(staticName = "of")
 @Builder
 public class VehicleCreateRequest {
-  // TODO Existent validation
-  // TODO Feature validation and List<Feature> to add to this create request
-  // @ExistentMaker
-  private Long makerId;
-
-  // @ExistentModel
-  private Long modelId;
+  @NotNull private Long makerId;
+  @NotNull private Long modelId;
 
   @Valid private EngineCreateRequest engine;
 

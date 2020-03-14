@@ -14,5 +14,7 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
 
   boolean existsByNameAndMakerId(String name, Long makerId);
 
+  boolean existsByIdAndMakerId(Long id, Long makerId);
+
   Model findByName(String name);
 }
