@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @SelectCriteria
 public enum SortOption implements Textable {
-  LATEST("createdOn,desc"),
+  LATEST("createdAt,desc"),
   PRICE_ASC("price"),
   PRICE_DSC("price,desc"),
   MILEAGE_ASC("vehicleMileage"),
