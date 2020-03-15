@@ -18,8 +18,12 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
 
   private static final long serialVersionUID = -2840866963962522737L;
 
+  @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+  private User user;
+
   @OneToOne(
-      fetch = FetchType.EAGER,
+      fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       mappedBy = "offer")

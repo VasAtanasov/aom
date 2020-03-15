@@ -17,4 +17,5 @@ public class EntityConstants {
   public static final String LOCATIONS = PREFIX + "locations";
   public static final String OFFERS = PREFIX + "offers";
   public static final String VEHICLES = PREFIX + "vehicles";
+  public static final String USERS = PREFIX + "users";
 }

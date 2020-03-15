@@ -5,12 +5,6 @@ async function generateVehiclesSqlInsert(metadata, makers) {
   const services = require("./services");
   const http = require("./requester").http;
 
-  const makerService = services.makerService;
-  const bodyStyleService = services.bodyStyleService;
-  const driveService = services.driveService;
-  const colorService = services.colorService;
-  const gearService = services.gearsService;
-
   const makersIds = makers.map(maker => maker.id);
 
   const vehicles = [];
@@ -18,7 +12,6 @@ async function generateVehiclesSqlInsert(metadata, makers) {
   for (let i = 0; i < vehiclesUUIDs.length; i++) {
     const vehiclesUUD = vehiclesUUIDs[i];
     const makerId = utils.getRandomValueFromArray(makersIds);
-    const http = require("./requester").http;
     const modelIds = await http
       .get(`${services.BASE_URL}/makers/${makerId}/models`)
       .then(data => {

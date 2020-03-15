@@ -19,10 +19,12 @@ public abstract class BaseAuditEntity {
 
   @Temporal(TemporalType.TIMESTAMP)
   @CreatedDate
+  @Column(name = "created_at")
   protected Date createdAt;
 
   @Temporal(TemporalType.TIMESTAMP)
   @LastModifiedDate
+  @Column(name = "updated_at")
   protected Date updatedAt;
 
   @CreatedBy

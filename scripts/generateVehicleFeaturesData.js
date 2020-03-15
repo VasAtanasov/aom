@@ -23,10 +23,7 @@ async function generateVehiclesFeaturesSqlInserts(metadata) {
     }
   });
 
-  const generator = new InsertGenerator(
-    `${services.API_PREFIX}vehicle_feature`,
-    relationRecord
-  );
+  const generator = new InsertGenerator(`vehicle_feature`, relationRecord);
   return generator.generateDataSql();
 }
 

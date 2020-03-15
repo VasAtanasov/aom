@@ -19,14 +19,14 @@ public class MakerRepositoryTest {
   @Autowired private MakerRepository makerRepository;
 
   @Test
-  @Sql("makerData.sql")
+  @Sql("test-data.sql")
   void whenInitializedByDbUnit_thenFindsByName() {
     Maker maker = makerRepository.findByName("Audi").orElse(null);
     List<Maker> allMakers = makerRepository.findAll();
 
     assertThat(maker).isNotNull();
     assertThat(maker.getName()).isEqualTo("Audi");
-    assertThat(allMakers).size().isEqualTo(9);
+    assertThat(allMakers).size().isEqualTo(135);
   }
 
   @Test

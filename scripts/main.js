@@ -131,18 +131,18 @@ const baseUrl = "http://localhost:8007/api/vehicles";
     return a.concat(b);
   }, []);
 
+  // await executeQuery(insert.join("\n"));
+
   const response = await http.get(baseUrl + "/state");
 
   const state = response.data;
   const metadata = state.data.metadata;
 
-  // await executeQuery(insert.join("\n"));
-
   const generateVehiclesInsert = require("./generateVehicleData");
   const generateEngineSqlInsert = require("./generateEngineData");
   const generateVehiclesFeaturesSqlInserts = require("./generateVehicleFeaturesData");
-  // const generateOfferSqlInsert = require("./generateOfferData");
-  // const generateUserSqlInsert = require("./generateUserData");
+  const generateOfferSqlInsert = require("./generateOfferData");
+  const generateUserSqlInsert = require("./generateUserData");
   // const generateImageSqlInset = require("./generateImageData");
   // const generateUserRoleSqlInset = require("./generateUserRoleData");
 
@@ -154,15 +154,15 @@ const baseUrl = "http://localhost:8007/api/vehicles";
   const vehiclesFeaturesSql = await generateVehiclesFeaturesSqlInserts(
     metadata
   );
-  // const usersSql = await generateUserSqlInsert();
-  // const offerSql = await generateOfferSqlInsert();
+  const usersSql = await generateUserSqlInsert();
+  const offerSql = await generateOfferSqlInsert();
   // const imageSql = await generateImageSqlInset();
   // const userRoleSql = await generateUserRoleSqlInset();
   let a = 5;
 
   const sql = [
-    //     usersSql,
-    //     offerSql,
+    usersSql,
+    offerSql,
     vehiclesInsertSql,
     vehiclesFeaturesSql,
     enginesSql
@@ -176,9 +176,10 @@ const baseUrl = "http://localhost:8007/api/vehicles";
 
   writeToFile("./data.sql", "");
   appendRowToFile("./data.sql", insert.join("\n"));
+  appendRowToFile("./data.sql", dependentInserts.join("\n"));
 
-  writeToFile("./data-next.sql", "");
-  appendRowToFile("./data-next.sql", dependentInserts.join("\n"));
+  // writeToFile("./data-next.sql", "");
+  // appendRowToFile("./data-next.sql", dependentInserts.join("\n"));
 
   // await executeQuery(dependentInserts.join("\n"));
 })();
