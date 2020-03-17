@@ -32,3 +32,8 @@ Content-Type: application/bg.autohouse.api-v1+json
   "name": "New Model sdada",
   "makerId": "1"
 }
+###
+
+GET  {{host}}/offers/nklnl HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json

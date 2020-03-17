@@ -1,6 +1,8 @@
 package bg.autohouse.service.services.impl;
 
+import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.repositories.OfferRepository;
+import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.service.models.OfferTopServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.ModelMapperWrapper;
@@ -32,5 +34,12 @@ public class OfferServiceImpl implements OfferService {
             .map(offer -> modelMapper.map(offer, OfferTopServiceModel.class))
             .collect(Collectors.toUnmodifiableList());
     return topOffers;
+  }
+
+  @Override
+  public List<OfferTopServiceModel> getOffersByFuelType(FuelType fuelType) {
+    return modelMapper.mapAll(
+        offerRepository.findAll(OfferSpecifications.hasFuelType(fuelType)),
+        OfferTopServiceModel.class);
   }
 }

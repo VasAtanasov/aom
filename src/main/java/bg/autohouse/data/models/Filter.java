@@ -19,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// TO add location
 @Getter
 @Setter
 @NoArgsConstructor
@@ -62,7 +63,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Column(name = "euro_standard")
   private EuroStandard euroStandard;
 
-  @Column(name = "drive", nullable = false)
+  @Column(name = "drive")
   @Enumerated(EnumType.STRING)
   private Drive drive;
 
