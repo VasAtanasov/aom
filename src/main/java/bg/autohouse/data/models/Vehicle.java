@@ -24,7 +24,7 @@ public class Vehicle extends BaseUuidEntity {
 
   private static final long serialVersionUID = -797198687403481966L;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @MapsId
   @JoinColumn(name = "id")
   private Offer offer;
