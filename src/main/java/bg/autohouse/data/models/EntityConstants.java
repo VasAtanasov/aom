@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -18,4 +19,14 @@ public class EntityConstants {
   public static final String OFFERS = PREFIX + "offers";
   public static final String VEHICLES = PREFIX + "vehicles";
   public static final String USERS = PREFIX + "users";
+
+  public static final Integer MIN_VALUE = 1;
+  public static final Integer PRICE_TO = 10_000_000;
+  public static final Integer MILEAGE_TO = 10_000_000;
+  public static final Integer DOORS_TO = 7;
+  public static final Integer SEATS_TO = 12;
+  public static final Integer POWER_TO = 5000;
+
+  public static final Integer YEAR_FROM = 1930;
+  public static final Integer YEAR_TO = LocalDate.now().getYear();
 }

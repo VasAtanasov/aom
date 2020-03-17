@@ -46,7 +46,7 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @Column(name = "price_modified_on")
   private Date priceModifiedOn;
 
-  @ManyToOne(targetEntity = Location.class)
+  @ManyToOne(targetEntity = Location.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
   private Location location;
 

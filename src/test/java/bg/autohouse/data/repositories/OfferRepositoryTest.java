@@ -2,7 +2,11 @@ package bg.autohouse.data.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.Offer;
+import bg.autohouse.data.models.enums.FuelType;
+import bg.autohouse.data.specifications.OfferSpecifications;
+import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,5 +41,19 @@ public class OfferRepositoryTest {
 
     assertThat(offers).size().isEqualTo(DEFAULT_SIZE);
     assertThat(offersPage.getTotalElements()).isEqualTo(100);
+  }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenOfferFilter_byFuelType_shouldReturnCollection() {
+    Filter filter = Filter.builder().fuelType(FuelType.GASOLINE).build();
+    long count = offerRepository.count();
+    assertThat(count).isEqualTo(100);
+
+    Specification<Offer> offerSpecification = OfferSpecifications.getOffersByFilter(filter);
+
+    List<Offer> offers = offerRepository.findAll(offerSpecification);
+    assertThat(offers)
+        .allMatch(offer -> offer.getVehicle().getEngine().getFuelType().equals(FuelType.GASOLINE));
   }
 }

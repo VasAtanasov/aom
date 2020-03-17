@@ -1,5 +1,7 @@
 package bg.autohouse.data.models;
 
+import static bg.autohouse.data.models.EntityConstants.*;
+
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Color;
 import bg.autohouse.data.models.enums.Drive;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +27,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 @Table(name = EntityConstants.FILTERS)
 public class Filter extends BaseUuidEntity implements EntityDetails {
 
@@ -72,42 +78,48 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
     @AttributeOverride(name = "to", column = @Column(name = "price_to"))
   })
   @Embedded
-  private RangeCriteria price;
+  @Builder.Default
+  private RangeCriteria price = RangeCriteria.of(MIN_VALUE, PRICE_TO);
 
   @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "mileage_from")),
     @AttributeOverride(name = "to", column = @Column(name = "mileage_to"))
   })
   @Embedded
-  private RangeCriteria mileage;
+  @Builder.Default
+  private RangeCriteria mileage = RangeCriteria.of(MIN_VALUE, MILEAGE_TO);
 
   @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "doors_from")),
     @AttributeOverride(name = "to", column = @Column(name = "doors_to"))
   })
   @Embedded
-  private RangeCriteria doors;
+  @Builder.Default
+  private RangeCriteria doors = RangeCriteria.of(MIN_VALUE, DOORS_TO);
 
   @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "seats_from")),
     @AttributeOverride(name = "to", column = @Column(name = "seats_to"))
   })
   @Embedded
-  private RangeCriteria seats;
+  @Builder.Default
+  private RangeCriteria seats = RangeCriteria.of(MIN_VALUE, SEATS_TO);
 
   @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "registrationYear_from")),
     @AttributeOverride(name = "to", column = @Column(name = "registrationYear_to"))
   })
   @Embedded
-  private RangeCriteria registrationYear;
+  @Builder.Default
+  private RangeCriteria registrationYear = RangeCriteria.of(YEAR_FROM, YEAR_TO);
 
   @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "horsePower_from")),
     @AttributeOverride(name = "to", column = @Column(name = "horsePower_to"))
   })
   @Embedded
-  private RangeCriteria horsePower;
+  @Builder.Default
+  private RangeCriteria horsePower = RangeCriteria.of(MIN_VALUE, POWER_TO);
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
@@ -119,6 +131,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_feature_filter_id")))
   @Column(name = "feature")
   @Enumerated(value = EnumType.STRING)
+  @Builder.Default
   private List<Feature> feature = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Seller.class)
@@ -131,6 +144,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_seller_filter_id")))
   @Column(name = "seller")
   @Enumerated(value = EnumType.STRING)
+  @Builder.Default
   private List<Seller> seller = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = State.class)
@@ -143,6 +157,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_state_filter_id")))
   @Column(name = "state")
   @Enumerated(value = EnumType.STRING)
+  @Builder.Default
   private List<State> state = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Upholstery.class)
@@ -155,21 +170,27 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_upholstery_filter_id")))
   @Column(name = "upholstery")
   @Enumerated(value = EnumType.STRING)
+  @Builder.Default
   private List<Upholstery> upholstery = new ArrayList<>();
 
   @Column(name = "is_deleted")
+  @Builder.Default
   private boolean isDeleted = false;
 
+  @Builder.Default
   @Column(name = "is_expired")
   private boolean isExpired = false;
 
   @Column(name = "is_active")
+  @Builder.Default
   private boolean isActive = true;
 
   @Column(name = "has_accident")
+  @Builder.Default
   private boolean hasAccident = false;
 
   @Column(name = "sort_option", nullable = false)
   @Enumerated(EnumType.STRING)
+  @Builder.Default
   private SortOption sortOption = SortOption.LATEST;
 }

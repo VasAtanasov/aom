@@ -1,10 +1,12 @@
 package bg.autohouse.data.specifications;
 
+import bg.autohouse.data.models.Engine;
 import bg.autohouse.data.models.Engine_;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.ManufactureDate_;
 import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.Offer_;
+import bg.autohouse.data.models.Vehicle;
 import bg.autohouse.data.models.Vehicle_;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.util.Assert;
@@ -21,6 +23,14 @@ public class OfferSpecifications {
   public static Specification<Offer> getOffersByFilter(Filter filter) {
     return (root, query, cb) -> {
       List<Predicate> restrictions = new ArrayList<>();
+
+      Join<Offer, Vehicle> offerVehicleJoin = root.join(Offer_.vehicle, JoinType.LEFT);
+      Join<Vehicle, Engine> vehicleEngineJoin =
+          offerVehicleJoin.join(Vehicle_.engine, JoinType.LEFT);
+
+      restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
+      restrictions.add(cb.equal(root.get(Offer_.isExpired), Boolean.FALSE));
+      restrictions.add(cb.equal(root.get(Offer_.isDeleted), Boolean.FALSE));
 
       if (Assert.has(filter.getMaker())) {
         restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.maker), filter.getMaker()));
@@ -90,6 +100,12 @@ public class OfferSpecifications {
               root.get(Offer_.vehicle).get(Vehicle_.manufactureDate).get(ManufactureDate_.year),
               filter.getRegistrationYear().getFrom(),
               filter.getRegistrationYear().getTo()));
+
+      restrictions.add(
+          cb.between(
+              root.get(Offer_.vehicle).get(Vehicle_.engine).get(Engine_.power),
+              filter.getHorsePower().getFrom(),
+              filter.getHorsePower().getTo()));
 
       log.info(
           "Have generated {} predicates, look like: {}",
