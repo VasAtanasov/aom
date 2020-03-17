@@ -1,12 +1,10 @@
 package bg.autohouse.data.specifications;
 
-import bg.autohouse.data.models.Engine;
 import bg.autohouse.data.models.Engine_;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.ManufactureDate_;
 import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.Offer_;
-import bg.autohouse.data.models.Vehicle;
 import bg.autohouse.data.models.Vehicle_;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.util.Assert;
@@ -24,9 +22,7 @@ public class OfferSpecifications {
     return (root, query, cb) -> {
       List<Predicate> restrictions = new ArrayList<>();
 
-      Join<Offer, Vehicle> offerVehicleJoin = root.join(Offer_.vehicle, JoinType.LEFT);
-      Join<Vehicle, Engine> vehicleEngineJoin =
-          offerVehicleJoin.join(Vehicle_.engine, JoinType.LEFT);
+      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
       restrictions.add(cb.equal(root.get(Offer_.isExpired), Boolean.FALSE));
