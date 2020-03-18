@@ -14,7 +14,6 @@ import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
 import bg.autohouse.web.models.response.MakerResponseWrapper;
-import bg.autohouse.web.models.response.ModelResponseModel;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -55,6 +54,7 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
+    // TODO create maker with list of models
     MakerServiceModel makerServiceModel = modelMapper.map(createRequest, MakerServiceModel.class);
     MakerServiceModel createdMaker = makerService.createMaker(makerServiceModel);
     return handleCreateSuccess(
@@ -63,38 +63,17 @@ public class MakerController extends BaseController {
         WebConfiguration.URL_API_BASE + WebConfiguration.URL_MAKERS);
   }
 
-  // TODO create maker with list of models
-
   @GetMapping(
       value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(@Valid @PathVariable Long makerId) {
-
     MakerModelServiceModel model = makerService.getOne(makerId);
-
     MakerResponseWrapper maker = modelMapper.map(model, MakerResponseWrapper.class);
-
     return handleRequestSuccess(toMap("maker", maker), REQUEST_SUCCESS);
   }
 
-  @GetMapping(
-      value = "/{makerId}/models",
-      produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> getModelsByMakerId(@Valid @PathVariable Long makerId) {
-
-    MakerResponseWrapper makerResponseModel =
-        modelMapper.map(makerService.getOne(makerId), MakerResponseWrapper.class);
-
-    // List<ModelResponseModel> models =
-    //     modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
-
-    // makerResponseModel.setModels(models);
-
-    return handleRequestSuccess(makerResponseModel, REQUEST_SUCCESS);
-  }
-
   @PostMapping(
-      value = "/{makerId}/models",
+      value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createModel(
@@ -105,11 +84,6 @@ public class MakerController extends BaseController {
 
     MakerResponseWrapper makerResponseModel =
         modelMapper.map(makerService.getOne(makerId), MakerResponseWrapper.class);
-
-    List<ModelResponseModel> models =
-        modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
-
-    makerResponseModel.setModels(models);
 
     String message =
         String.format(MODEL_CREATE_SUCCESS, createRequest.getName(), makerResponseModel.getName());

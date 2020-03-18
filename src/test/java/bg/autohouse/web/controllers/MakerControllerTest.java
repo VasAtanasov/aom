@@ -81,10 +81,10 @@ public class MakerControllerTest extends MvcPerformer {
   void whenGetMaker_withValidId_thenReturns200() throws Exception {
 
     MakerModelServiceModel model = MakerModelServiceModel.builder().id(1L).name(MAKER_NAME).build();
-    MakerResponseModel response = MakerResponseModel.builder().id(1L).name(MAKER_NAME).build();
+    MakerResponseWrapper response = MakerResponseWrapper.builder().id(1L).name(MAKER_NAME).build();
 
     when(makerService.getOne(1L)).thenReturn(model);
-    when(modelMapper.map(model, MakerResponseModel.class)).thenReturn(response);
+    when(modelMapper.map(model, MakerResponseWrapper.class)).thenReturn(response);
 
     performGet(API_BASE + "/makers/" + model.getId())
         .andExpect(status().isOk())
@@ -142,7 +142,7 @@ public class MakerControllerTest extends MvcPerformer {
     String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "A4", MAKER_NAME);
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", 1L);
-    performPost(API_BASE + "/makers/1/models", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.message", is(expectedMessage)))
@@ -154,7 +154,7 @@ public class MakerControllerTest extends MvcPerformer {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", 1L);
 
-    performPost(API_BASE + "/makers/1/models", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
@@ -167,7 +167,7 @@ public class MakerControllerTest extends MvcPerformer {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1L);
 
-    performPost(API_BASE + "/makers/1/models", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
@@ -181,7 +181,7 @@ public class MakerControllerTest extends MvcPerformer {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", null);
 
-    performPost(API_BASE + "/makers/1/models", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
@@ -195,7 +195,7 @@ public class MakerControllerTest extends MvcPerformer {
 
     String createModelJson = "{\"name\":\"A4\",\"makerId\":\"invalid_id\"}";
 
-    performPost(API_BASE + "/makers/1/models", createModelJson)
+    performPost(API_BASE + "/makers/1", createModelJson)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(ExceptionsMessages.INVALID_DATA_TYPE)))

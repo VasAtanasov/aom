@@ -1,4 +1,4 @@
-package bg.autohouse.service.models;
+package bg.autohouse.web.models.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@AllArgsConstructor(staticName = "of")
-public class ModelServiceModel {
-  private Long id;
-  private String name;
-  private Long makerId;
+public class FilterRequest {
+  private String fuelType;
 }

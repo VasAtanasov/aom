@@ -74,7 +74,7 @@ public class MakerServiceImplTest {
     Throwable thrown =
         catchThrowable(
             () -> {
-              makerService.addModelToMaker(1L, null);
+              makerService.addModelToMaker(1L, ModelServiceModel.of(1L, "name", 1L));
             });
 
     assertThat(thrown)
@@ -85,7 +85,7 @@ public class MakerServiceImplTest {
   @Test
   void whenAddModelToMaker_withExistingModelName_shouldThrow() {
     Maker maker = Maker.builder().id(1L).name("Audi").build();
-    ModelServiceModel model = ModelServiceModel.of(1L, "Q5");
+    ModelServiceModel model = ModelServiceModel.of(1L, "Q5", maker.getId());
 
     when(makerRepository.findById(anyLong())).thenReturn(Optional.of(maker));
     when(modelRepository.existsByNameAndMakerId(anyString(), anyLong())).thenReturn(true);
@@ -104,7 +104,7 @@ public class MakerServiceImplTest {
   @Test
   void whenAddModelToMaker_withValidData_shouldAdd() {
     Maker maker = Maker.builder().id(1L).name("Audi").build();
-    ModelServiceModel model = ModelServiceModel.of(1L, "Q5");
+    ModelServiceModel model = ModelServiceModel.of(1L, "Q5", maker.getId());
 
     when(makerRepository.findById(anyLong())).thenReturn(Optional.of(maker));
     when(modelRepository.existsByNameAndMakerId(anyString(), anyLong())).thenReturn(false);
