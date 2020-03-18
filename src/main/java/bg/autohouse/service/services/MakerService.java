@@ -1,12 +1,13 @@
 package bg.autohouse.service.services;
 
+import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 public interface MakerService {
-  MakerServiceModel getOne(Long id);
+  MakerModelServiceModel getOne(Long id);
 
   List<MakerServiceModel> getAllMakers();
 

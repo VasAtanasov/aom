@@ -134,6 +134,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Builder.Default
   private List<Feature> feature = new ArrayList<>();
 
+  // TODO Seller property form user (User type)
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Seller.class)
   @JoinTable(
       name = "filter_seller",

@@ -1,6 +1,5 @@
 package bg.autohouse.service.models;
 
-import bg.autohouse.data.models.enums.SortOption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonPropertyOrder({"isUserLoggedIn", "totalCount", "sorting"})
+@JsonPropertyOrder({"isUserLoggedIn", "totalCount", "topOffers"})
 public class InitialStateModel {
 
   @JsonProperty("isUserLoggedIn")
@@ -27,17 +26,14 @@ public class InitialStateModel {
 
   @JsonProperty("totalCount")
   @Builder.Default
-  private Integer totalCount = 0;
-
-  @JsonProperty("sorting")
-  @Builder.Default
-  private String sorting = SortOption.LATEST.toString();
+  private Long totalCount = 0L;
 
   @Builder.Default private List<String> searchCriteriaNamesForCheckboxCriteria = new ArrayList<>();
   @Builder.Default private List<String> searchCriteriaNamesForSelectCriteria = new ArrayList<>();
   @Builder.Default private List<String> searchCriteriaNamesForRangeCriteria = new ArrayList<>();
 
   @Builder.Default private List<MakerServiceModel> makers = new ArrayList<>();
+  @Builder.Default private List<OfferTopServiceModel> topOffers = new ArrayList<>();
 
   @Builder.Default private Map<String, Object> metadata = new LinkedHashMap<>();
 }

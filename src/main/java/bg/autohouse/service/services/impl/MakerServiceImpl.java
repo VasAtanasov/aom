@@ -7,6 +7,7 @@ import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
+import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.MakerService;
@@ -29,10 +30,10 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   @Transactional(readOnly = true)
-  public MakerServiceModel getOne(Long id) {
+  public MakerModelServiceModel getOne(Long id) {
     return makerRepository
         .findById(id)
-        .map(maker -> modelMapper.map(maker, MakerServiceModel.class))
+        .map(maker -> modelMapper.map(maker, MakerModelServiceModel.class))
         .orElseThrow(MakerNotFoundException::new);
   }
 

@@ -11,6 +11,7 @@ import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
+import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.MakerService;
@@ -44,7 +45,7 @@ public class MakerServiceImplTest {
 
     when(makerRepository.findById(maker.getId())).thenReturn(Optional.of(maker));
 
-    MakerServiceModel result = makerService.getOne(maker.getId());
+    MakerModelServiceModel result = makerService.getOne(maker.getId());
 
     assertThat(result).isNotNull();
   }

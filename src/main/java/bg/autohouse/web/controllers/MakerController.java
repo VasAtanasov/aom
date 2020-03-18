@@ -5,6 +5,7 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.common.Constants;
 import bg.autohouse.config.WebConfiguration;
+import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.MakerService;
@@ -69,9 +70,9 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(@Valid @PathVariable Long makerId) {
 
-    MakerServiceModel model = makerService.getOne(makerId);
+    MakerModelServiceModel model = makerService.getOne(makerId);
 
-    MakerResponseModel maker = modelMapper.map(model, MakerResponseModel.class);
+    MakerResponseWrapper maker = modelMapper.map(model, MakerResponseWrapper.class);
 
     return handleRequestSuccess(toMap("maker", maker), REQUEST_SUCCESS);
   }
@@ -84,10 +85,10 @@ public class MakerController extends BaseController {
     MakerResponseWrapper makerResponseModel =
         modelMapper.map(makerService.getOne(makerId), MakerResponseWrapper.class);
 
-    List<ModelResponseModel> models =
-        modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
+    // List<ModelResponseModel> models =
+    //     modelMapper.mapAll(makerService.getModelsForMaker(makerId), ModelResponseModel.class);
 
-    makerResponseModel.setModels(models);
+    // makerResponseModel.setModels(models);
 
     return handleRequestSuccess(makerResponseModel, REQUEST_SUCCESS);
   }

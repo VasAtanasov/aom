@@ -6,7 +6,6 @@ import bg.autohouse.data.models.ManufactureDate_;
 import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.Offer_;
 import bg.autohouse.data.models.Vehicle_;
-import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,11 @@ public class OfferSpecifications {
       List<Predicate> restrictions = new ArrayList<>();
 
       root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
+      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.maker, JoinType.LEFT);
+      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.model, JoinType.LEFT);
+      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
+      root.fetch(Offer_.location, JoinType.LEFT);
+      root.fetch(Offer_.user, JoinType.LEFT);
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
       restrictions.add(cb.equal(root.get(Offer_.isExpired), Boolean.FALSE));
@@ -32,7 +36,7 @@ public class OfferSpecifications {
         restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.maker), filter.getMaker()));
       }
 
-      if (Assert.has(filter.getMaker())) {
+      if (Assert.has(filter.getModel())) {
         restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.model), filter.getModel()));
       }
 
@@ -67,6 +71,27 @@ public class OfferSpecifications {
 
       if (Assert.has(filter.getDrive())) {
         restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.drive), filter.getDrive()));
+      }
+
+      filter
+          .getFeature()
+          .forEach(
+              feature -> {
+                restrictions.add(
+                    cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.feature)));
+              });
+
+      // TODO add check for seller( User type)
+
+      if (Assert.has(filter.getState()) && !filter.getState().isEmpty()) {
+        restrictions.add(
+            cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.state).in(filter.getState())));
+      }
+
+      if (Assert.has(filter.getUpholstery()) && !filter.getUpholstery().isEmpty()) {
+        restrictions.add(
+            cb.isTrue(
+                root.get(Offer_.vehicle).get(Vehicle_.upholstery).in(filter.getUpholstery())));
       }
 
       restrictions.add(
@@ -104,15 +129,15 @@ public class OfferSpecifications {
               filter.getHorsePower().getTo()));
 
       log.info(
-          "Have generated {} predicates, look like: {}",
+          "Have generated {} predicates, look like: {}" + System.lineSeparator(),
           restrictions.size(),
-          restrictions.stream().map(Predicate::toString).collect(Collectors.joining(", ")));
+          restrictions.stream()
+              .map(Predicate::toString)
+              .collect(Collectors.joining(System.lineSeparator())));
+
+      query.distinct(true);
+
       return cb.and(restrictions.toArray(new Predicate[0]));
     };
-  }
-
-  public static Specification<Offer> hasFuelType(FuelType fuelType) {
-    return (root, query, cb) ->
-        cb.equal(root.get(Offer_.vehicle).get(Vehicle_.engine).get(Engine_.fuelType), fuelType);
   }
 }

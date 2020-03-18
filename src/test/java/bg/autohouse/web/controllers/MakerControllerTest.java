@@ -13,6 +13,7 @@ import bg.autohouse.common.Constants;
 import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
+import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.services.InitialStateService;
 import bg.autohouse.service.services.MakerService;
@@ -79,7 +80,7 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   void whenGetMaker_withValidId_thenReturns200() throws Exception {
 
-    MakerServiceModel model = MakerServiceModel.builder().id(1L).name(MAKER_NAME).build();
+    MakerModelServiceModel model = MakerModelServiceModel.builder().id(1L).name(MAKER_NAME).build();
     MakerResponseModel response = MakerResponseModel.builder().id(1L).name(MAKER_NAME).build();
 
     when(makerService.getOne(1L)).thenReturn(model);
@@ -130,12 +131,12 @@ public class MakerControllerTest extends MvcPerformer {
     }
     responseModels.add(modelServiceModel);
 
-    MakerServiceModel makerServiceModel =
-        MakerServiceModel.builder().id(1L).name(MAKER_NAME).build();
+    MakerModelServiceModel makerServiceModel =
+        MakerModelServiceModel.builder().id(1L).name(MAKER_NAME).build();
     when(makerService.getOne(anyLong())).thenReturn(makerServiceModel);
 
     MakerResponseWrapper response = MakerResponseWrapper.builder().id(1L).name(MAKER_NAME).build();
-    when(modelMapper.map(any(MakerServiceModel.class), any())).thenReturn(response);
+    when(modelMapper.map(any(MakerModelServiceModel.class), any())).thenReturn(response);
     when(modelMapper.mapAll(anyList(), any())).thenReturn(responseModels);
 
     String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "A4", MAKER_NAME);

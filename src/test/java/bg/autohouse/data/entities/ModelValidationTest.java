@@ -13,7 +13,7 @@ public class ModelValidationTest extends HibernateValidatorTest {
 
   @Test
   void whenModelName_isNull_shouldInvalidateWithMessage() {
-    Maker maker = Maker.of(MAKER);
+    Maker maker = Maker.builder().name(MAKER).build();
     Model modelNullName = Model.of(null, maker);
     Model modelEmptyName = Model.of("", maker);
 
@@ -33,7 +33,8 @@ public class ModelValidationTest extends HibernateValidatorTest {
 
   @Test
   void whenMakerName_isValid_shouldInvalidateWithMessage() {
-    Maker maker = Maker.of(MAKER);
+    Maker maker = Maker.builder().name(MAKER).build();
+
     Model model = Model.of(MODEL, maker);
     isValid(maker);
     isValid(model);

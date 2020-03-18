@@ -1,11 +1,17 @@
 package bg.autohouse.data.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
+import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Offer;
+import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
+import bg.autohouse.data.models.enums.State;
+import bg.autohouse.data.models.enums.Upholstery;
 import bg.autohouse.data.specifications.OfferSpecifications;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -46,14 +52,53 @@ public class OfferRepositoryTest {
   @Test
   @Sql("test-data.sql")
   void whenOfferFilter_byFuelType_shouldReturnCollection() {
-    Filter filter = Filter.builder().fuelType(FuelType.GASOLINE).build();
-    long count = offerRepository.count();
-    assertThat(count).isEqualTo(100);
+    List<Feature> features = Arrays.asList(Feature.CD_PLAYER);
+    Filter filter = Filter.builder().fuelType(FuelType.GASOLINE).feature(features).build();
 
-    Specification<Offer> offerSpecification = OfferSpecifications.getOffersByFilter(filter);
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
 
     List<Offer> offers = offerRepository.findAll(offerSpecification);
+
     assertThat(offers)
         .allMatch(offer -> offer.getVehicle().getEngine().getFuelType().equals(FuelType.GASOLINE));
+  }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenOfferFilter_byMaker_shouldReturnCollection() {
+    Maker maker = Maker.builder().id(23L).name("Cupra").build();
+    Filter filter = Filter.builder().maker(maker).build();
+
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+
+    List<Offer> offers = offerRepository.findAll(offerSpecification);
+
+    assertThat(offers).allMatch(offer -> offer.getVehicle().getMaker().equals(maker));
+  }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenOfferFilter_byState_shouldReturnCollection() {
+    List<State> state = Arrays.asList(State.NEW, State.USED);
+    Filter filter = Filter.builder().state(state).build();
+
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+
+    List<Offer> offers = offerRepository.findAll(offerSpecification);
+
+    assertThat(offers).allMatch(offer -> state.contains(offer.getVehicle().getState()));
+  }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenOfferFilter_byUpholstery_shouldReturnCollection() {
+    List<Upholstery> upholsteries = Arrays.asList(Upholstery.FULL_LEATHER);
+    Filter filter = Filter.builder().upholstery(upholsteries).build();
+
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+
+    List<Offer> offers = offerRepository.findAll(offerSpecification);
+
+    assertThat(offers).allMatch(offer -> upholsteries.contains(offer.getVehicle().getUpholstery()));
   }
 }

@@ -10,21 +10,21 @@ public class MakerValidationTest extends HibernateValidatorTest {
 
   @Test
   void whenMakerName_isNull_shouldInvalidateWithMessage() {
-    Maker maker = Maker.of(null);
+    Maker maker = Maker.builder().name(null).build();
     isInvalid(maker);
     assertMessage(maker, NAME, ValidationMessages.MAKER_NAME_BLANK);
   }
 
   @Test
   void whenMakerName_isEmpty_shouldInvalidateWithMessage() {
-    Maker maker = Maker.of("");
+    Maker maker = Maker.builder().name("").build();
     isInvalid(maker);
     assertMessage(maker, NAME, ValidationMessages.MAKER_NAME_BLANK);
   }
 
   @Test
   void whenMakerName_isValid_shouldInvalidateWithMessage() {
-    Maker maker = Maker.of("Audi");
+    Maker maker = Maker.builder().name("Audi").build();
     isValid(maker);
   }
 }
