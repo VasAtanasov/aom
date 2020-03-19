@@ -101,4 +101,19 @@ public class OfferRepositoryTest {
 
     assertThat(offers).allMatch(offer -> upholsteries.contains(offer.getVehicle().getUpholstery()));
   }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenFilterOffer_pageable_shouldReturnCollection() {
+    List<State> state = Arrays.asList(State.NEW, State.USED);
+    Filter filter = Filter.builder().state(state).build();
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+
+    Sort sort = Sort.by("createdAt", "hitCount").descending();
+    Pageable pageable = PageRequest.of(0, 20, sort);
+
+    Page<Offer> offersPage = offerRepository.findAll(offerSpecification, pageable);
+
+    assertThat(offersPage.getContent()).isNotEmpty();
+  }
 }

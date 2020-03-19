@@ -21,12 +21,21 @@ public class OfferSpecifications {
     return (root, query, cb) -> {
       List<Predicate> restrictions = new ArrayList<>();
 
-      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
-      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.maker, JoinType.LEFT);
-      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.model, JoinType.LEFT);
-      root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
-      root.fetch(Offer_.location, JoinType.LEFT);
-      root.fetch(Offer_.user, JoinType.LEFT);
+      if (currentQueryIsCountRecords(query)) {
+        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.engine, JoinType.LEFT);
+        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.maker, JoinType.LEFT);
+        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.model, JoinType.LEFT);
+        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.feature, JoinType.LEFT);
+        root.join(Offer_.location, JoinType.LEFT);
+        root.join(Offer_.user, JoinType.LEFT);
+      } else {
+        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
+        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.maker, JoinType.LEFT);
+        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.model, JoinType.LEFT);
+        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
+        root.fetch(Offer_.location, JoinType.LEFT);
+        root.fetch(Offer_.user, JoinType.LEFT);
+      }
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
       restrictions.add(cb.equal(root.get(Offer_.isExpired), Boolean.FALSE));
@@ -139,5 +148,10 @@ public class OfferSpecifications {
 
       return cb.and(restrictions.toArray(new Predicate[0]));
     };
+  }
+
+  private static boolean currentQueryIsCountRecords(CriteriaQuery<?> criteriaQuery) {
+    return criteriaQuery.getResultType() == Long.class
+        || criteriaQuery.getResultType() == long.class;
   }
 }
