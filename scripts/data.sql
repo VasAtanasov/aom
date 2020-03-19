@@ -2285,7 +2285,8 @@ insert into auto_locations (id, name, maps_url) values (132, 'Dolni Dabnik', 'ht
 insert into auto_locations (id, name, maps_url) values (133, 'Valchedram', 'https://www.google.com/maps/?q=43.69281,23.44518');
 insert into auto_locations (id, name, maps_url) values (134, 'Vetovo', 'https://www.google.com/maps/?q=43.7,26.26667');
 insert into auto_locations (id, name, maps_url) values (135, 'Godech', 'https://www.google.com/maps/?q=43.01682,23.04852');
-insert into auto_locations (id, name, maps_url) values (136, 'Nedelino', 'https://www.google.com/maps/?q=41.45602,25.08008');insert into auto_users (id) values ('3c1bd01a-7cce-4650-9ed1-5d389fd21848');
+insert into auto_locations (id, name, maps_url) values (136, 'Nedelino', 'https://www.google.com/maps/?q=41.45602,25.08008');
+insert into auto_users (id) values ('3c1bd01a-7cce-4650-9ed1-5d389fd21848');
 insert into auto_users (id) values ('553bfca7-8a9a-422e-a12f-85b773bfcd48');
 insert into auto_users (id) values ('07b8eff7-ff8b-4793-87eb-1244b7e8a490');
 insert into auto_users (id) values ('4a498172-3553-417a-a289-6179e85b3f5b');

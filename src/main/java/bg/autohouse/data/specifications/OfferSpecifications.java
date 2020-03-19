@@ -5,6 +5,7 @@ import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.ManufactureDate_;
 import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.Offer_;
+import bg.autohouse.data.models.User_;
 import bg.autohouse.data.models.Vehicle_;
 import bg.autohouse.util.Assert;
 import java.util.ArrayList;
@@ -90,7 +91,9 @@ public class OfferSpecifications {
                     cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.feature)));
               });
 
-      // TODO add check for seller( User type)
+      if (Assert.has(filter.getSeller()) && !filter.getSeller().isEmpty()) {
+        restrictions.add(cb.isTrue(root.get(Offer_.user).get(User_.seller).in(filter.getSeller())));
+      }
 
       if (Assert.has(filter.getState()) && !filter.getState().isEmpty()) {
         restrictions.add(

@@ -2285,11 +2285,12 @@ insert into auto_locations (id, name, maps_url) values (132, 'Dolni Dabnik', 'ht
 insert into auto_locations (id, name, maps_url) values (133, 'Valchedram', 'https://www.google.com/maps/?q=43.69281,23.44518');
 insert into auto_locations (id, name, maps_url) values (134, 'Vetovo', 'https://www.google.com/maps/?q=43.7,26.26667');
 insert into auto_locations (id, name, maps_url) values (135, 'Godech', 'https://www.google.com/maps/?q=43.01682,23.04852');
-insert into auto_locations (id, name, maps_url) values (136, 'Nedelino', 'https://www.google.com/maps/?q=41.45602,25.08008');insert into auto_users (id) values ('3c1bd01a-7cce-4650-9ed1-5d389fd21848');
-insert into auto_users (id) values ('553bfca7-8a9a-422e-a12f-85b773bfcd48');
-insert into auto_users (id) values ('07b8eff7-ff8b-4793-87eb-1244b7e8a490');
-insert into auto_users (id) values ('4a498172-3553-417a-a289-6179e85b3f5b');
-insert into auto_users (id) values ('34755f80-9f9c-471b-ae0e-44ee3b523ab2');
+insert into auto_locations (id, name, maps_url) values (136, 'Nedelino', 'https://www.google.com/maps/?q=41.45602,25.08008');
+insert into auto_users (id, seller) values ('3c1bd01a-7cce-4650-9ed1-5d389fd21848', 'PRIVATE');
+insert into auto_users (id, seller) values ('553bfca7-8a9a-422e-a12f-85b773bfcd48', 'PRIVATE');
+insert into auto_users (id, seller) values ('07b8eff7-ff8b-4793-87eb-1244b7e8a490', 'PRIVATE');
+insert into auto_users (id, seller) values ('4a498172-3553-417a-a289-6179e85b3f5b', 'PRIVATE');
+insert into auto_users (id, seller) values ('34755f80-9f9c-471b-ae0e-44ee3b523ab2', 'DEALER');
 insert into auto_offers (id, created_at, thumbnail, description, hit_count, is_active, is_deleted, is_expired, updated_at, price, price_modified_on, location_id, user_id) values ('53a4ba76-9cda-44a1-8d17-10702b1d405a', '2019-10-30 14:01:55', '/images/offers/cars/201909-12/53a4ba76-9cda-44a1-8d17-10702b1d405a/thumbnail.jpg', 'imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis', 3377, 1, 0, 0, '2019-10-31 12:01:55', 305089, '2019-11-26 12:01:55', 24, '34755f80-9f9c-471b-ae0e-44ee3b523ab2');
 insert into auto_offers (id, created_at, thumbnail, description, hit_count, is_active, is_deleted, is_expired, updated_at, price, price_modified_on, location_id, user_id) values ('f18d602b-e1a5-48d0-a68f-92ebbc397a00', '2019-10-23 11:09:34', '/images/offers/cars/201909-12/f18d602b-e1a5-48d0-a68f-92ebbc397a00/thumbnail.jpg', 'ante ipsum primis in faucibus orci luctus et ultrices posuere', 4125, 1, 0, 0, '2019-10-31 09:09:34', 447037, '2019-10-23 11:09:34', 82, '34755f80-9f9c-471b-ae0e-44ee3b523ab2');
 insert into auto_offers (id, created_at, thumbnail, description, hit_count, is_active, is_deleted, is_expired, updated_at, price, price_modified_on, location_id, user_id) values ('05cb0dce-a3dc-4118-b074-31e1c988d8ec', '2019-09-20 10:30:59', '/images/offers/cars/201909-12/05cb0dce-a3dc-4118-b074-31e1c988d8ec/thumbnail.jpg', 'habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam varius', 232, 1, 0, 0, '2019-09-20 10:30:59', 52038, '2019-09-20 10:30:59', 42, '553bfca7-8a9a-422e-a12f-85b773bfcd48');

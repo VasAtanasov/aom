@@ -9,7 +9,6 @@ import bg.autohouse.data.models.enums.EuroStandard;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.models.enums.Seller;
-import bg.autohouse.data.models.enums.SortOption;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Transmission;
 import bg.autohouse.data.models.enums.Upholstery;
@@ -134,7 +133,6 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Builder.Default
   private List<Feature> feature = new ArrayList<>();
 
-  // TODO Seller property form user (User type)
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Seller.class)
   @JoinTable(
       name = "filter_seller",
@@ -189,9 +187,4 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Column(name = "has_accident")
   @Builder.Default
   private boolean hasAccident = false;
-
-  @Column(name = "sort_option", nullable = false)
-  @Enumerated(EnumType.STRING)
-  @Builder.Default
-  private SortOption sortOption = SortOption.LATEST;
 }

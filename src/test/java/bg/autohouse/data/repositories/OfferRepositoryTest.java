@@ -8,6 +8,7 @@ import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
+import bg.autohouse.data.models.enums.Seller;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Upholstery;
 import bg.autohouse.data.specifications.OfferSpecifications;
@@ -115,5 +116,18 @@ public class OfferRepositoryTest {
     Page<Offer> offersPage = offerRepository.findAll(offerSpecification, pageable);
 
     assertThat(offersPage.getContent()).isNotEmpty();
+  }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenOfferFilter_bySeller_shouldReturnCollection() {
+    List<Seller> seller = Arrays.asList(Seller.DEALER);
+    Filter filter = Filter.builder().seller(seller).build();
+
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+
+    List<Offer> offers = offerRepository.findAll(offerSpecification);
+
+    assertThat(offers).allMatch(offer -> seller.contains(offer.getUser().getSeller()));
   }
 }

@@ -154,7 +154,8 @@ const baseUrl = "http://localhost:8007/api/vehicles";
   const vehiclesFeaturesSql = await generateVehiclesFeaturesSqlInserts(
     metadata
   );
-  const usersSql = await generateUserSqlInsert();
+  const usersSql = await generateUserSqlInsert(metadata.seller);
+  4;
   const offerSql = await generateOfferSqlInsert();
   // const imageSql = await generateImageSqlInset();
   // const userRoleSql = await generateUserRoleSqlInset();
@@ -181,5 +182,5 @@ const baseUrl = "http://localhost:8007/api/vehicles";
   // writeToFile("./data-next.sql", "");
   // appendRowToFile("./data-next.sql", dependentInserts.join("\n"));
 
-  // await executeQuery(dependentInserts.join("\n"));
+  await executeQuery(dependentInserts.join("\n"));
 })();
