@@ -15,7 +15,7 @@ async function generateVehiclesSqlInsert(metadata, makers) {
     const modelIds = await http
       .get(`${services.BASE_URL}/makers/${makerId}`)
       .then(data => {
-        let models = (data.data.models = data.data.data.models);
+        let models = data.data.data.maker.models;
         return models.map(model => {
           return model.id;
         });

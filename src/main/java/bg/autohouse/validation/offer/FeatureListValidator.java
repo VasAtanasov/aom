@@ -19,10 +19,6 @@ public class FeatureListValidator implements ConstraintValidator<ValidFeatureLis
       return false;
     }
 
-    if (values.isEmpty()) {
-      return false;
-    }
-
     boolean allValid =
         values.stream()
             .allMatch(feature -> EnumUtils.fromString(feature, Feature.class).isPresent());

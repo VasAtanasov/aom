@@ -131,7 +131,7 @@ const baseUrl = "http://localhost:8007/api/vehicles";
     return a.concat(b);
   }, []);
 
-  // await executeQuery(insert.join("\n"));
+  await executeQuery(insert.join("\n"));
 
   const response = await http.get(baseUrl + "/state");
 
@@ -155,7 +155,6 @@ const baseUrl = "http://localhost:8007/api/vehicles";
     metadata
   );
   const usersSql = await generateUserSqlInsert(metadata.seller);
-  4;
   const offerSql = await generateOfferSqlInsert();
   // const imageSql = await generateImageSqlInset();
   // const userRoleSql = await generateUserRoleSqlInset();

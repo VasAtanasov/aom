@@ -6,6 +6,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Offer;
+import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.models.enums.Seller;
@@ -53,8 +54,7 @@ public class OfferRepositoryTest {
   @Test
   @Sql("test-data.sql")
   void whenOfferFilter_byFuelType_shouldReturnCollection() {
-    List<Feature> features = Arrays.asList(Feature.CD_PLAYER);
-    Filter filter = Filter.builder().fuelType(FuelType.GASOLINE).feature(features).build();
+    Filter filter = Filter.builder().fuelType(FuelType.GASOLINE).build();
 
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
 
@@ -62,6 +62,18 @@ public class OfferRepositoryTest {
 
     assertThat(offers)
         .allMatch(offer -> offer.getVehicle().getEngine().getFuelType().equals(FuelType.GASOLINE));
+  }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenOfferFilter_byBodyStyle_shouldReturnCollection() {
+    Filter filter = Filter.builder().bodyStyle(BodyStyle.SUV).build();
+
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+
+    List<Offer> offers = offerRepository.findAll(offerSpecification);
+
+    assertThat(offers).allMatch(offer -> offer.getVehicle().getBodyStyle().equals(BodyStyle.SUV));
   }
 
   @Test
@@ -129,5 +141,25 @@ public class OfferRepositoryTest {
     List<Offer> offers = offerRepository.findAll(offerSpecification);
 
     assertThat(offers).allMatch(offer -> seller.contains(offer.getUser().getSeller()));
+  }
+
+  @Test
+  @Sql("test-data.sql")
+  void whenOfferFilter_byFeatureWithNullValues_shouldReturnSameCollectionWithoutNulls() {
+    List<Feature> features = Arrays.asList(Feature.CD_PLAYER);
+    List<Feature> featuresWithNulls = Arrays.asList(Feature.CD_PLAYER, null, null);
+
+    Filter filter = Filter.builder().feature(features).build();
+    Filter filterFeaturesWithNulls = Filter.builder().feature(featuresWithNulls).build();
+
+    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+    Specification<Offer> offerSpecificationFeaturesWithNulls =
+        where(OfferSpecifications.getOffersByFilter(filterFeaturesWithNulls));
+
+    List<Offer> offers = offerRepository.findAll(offerSpecification);
+    List<Offer> offersFeaturesWithNulls =
+        offerRepository.findAll(offerSpecificationFeaturesWithNulls);
+
+    assertThat(offers).size().isEqualTo(offersFeaturesWithNulls.size());
   }
 }

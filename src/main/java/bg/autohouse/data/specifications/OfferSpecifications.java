@@ -7,7 +7,9 @@ import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.Offer_;
 import bg.autohouse.data.models.User_;
 import bg.autohouse.data.models.Vehicle_;
+import bg.autohouse.data.models.enums.*;
 import bg.autohouse.util.Assert;
+import bg.autohouse.util.F;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,23 +89,26 @@ public class OfferSpecifications {
           .getFeature()
           .forEach(
               feature -> {
+                if (!Assert.has(feature)) return;
                 restrictions.add(
                     cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.feature)));
               });
 
-      if (Assert.has(filter.getSeller()) && !filter.getSeller().isEmpty()) {
-        restrictions.add(cb.isTrue(root.get(Offer_.user).get(User_.seller).in(filter.getSeller())));
+      if (!F.isNullOrEmpty(filter.getSeller())) {
+        List<Seller> sellers = F.filterToList(filter.getSeller(), seller -> Assert.has(seller));
+        restrictions.add(cb.isTrue(root.get(Offer_.user).get(User_.seller).in(sellers)));
       }
 
-      if (Assert.has(filter.getState()) && !filter.getState().isEmpty()) {
-        restrictions.add(
-            cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.state).in(filter.getState())));
+      if (!F.isNullOrEmpty(filter.getState())) {
+        List<State> states = F.filterToList(filter.getState(), state -> Assert.has(state));
+        restrictions.add(cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.state).in(states)));
       }
 
-      if (Assert.has(filter.getUpholstery()) && !filter.getUpholstery().isEmpty()) {
+      if (!F.isNullOrEmpty(filter.getUpholstery())) {
+        List<Upholstery> upholsteries =
+            F.filterToList(filter.getUpholstery(), upholstery -> Assert.has(upholstery));
         restrictions.add(
-            cb.isTrue(
-                root.get(Offer_.vehicle).get(Vehicle_.upholstery).in(filter.getUpholstery())));
+            cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.upholstery).in(upholsteries)));
       }
 
       restrictions.add(
