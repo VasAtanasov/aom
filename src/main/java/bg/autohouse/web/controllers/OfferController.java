@@ -4,7 +4,7 @@ import static bg.autohouse.common.Constants.*;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
-import bg.autohouse.service.models.OfferServiceModel;
+import bg.autohouse.service.models.OfferTopServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.FilterRequest;
@@ -51,11 +51,7 @@ public class OfferController extends BaseController {
               sort = SORT,
               direction = Sort.Direction.DESC)
           Pageable pageable) {
-
-    int a = 5;
-
-    Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
-
+    Page<OfferTopServiceModel> page = offerService.searchOffers(filterRequest, pageable);
     return handleRequestSuccess(page, REQUEST_SUCCESS);
   }
 }
