@@ -1,6 +1,7 @@
 package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.Offer;
+import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,17 @@ public interface OfferRepository
               + "JOIN FETCH v.model m "
               + "WHERE o.isActive = 1 AND o.isDeleted = 0 AND o.isExpired = 0")
   Stream<Offer> findLatestOffers(Pageable pageable);
+
+  @Query(
+      value =
+          "SELECT o FROM Offer o "
+              + "JOIN FETCH o.vehicle v "
+              + "JOIN FETCH o.location l "
+              + "JOIN FETCH v.engine e "
+              + "JOIN FETCH v.maker mk "
+              + "JOIN FETCH v.model m "
+              + "WHERE o.isActive = 1 AND o.isDeleted = 0 AND o.isExpired = 0")
+  List<Offer> findAll();
 
   @Query(
       value =

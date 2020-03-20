@@ -1,12 +1,16 @@
 package bg.autohouse.service.services.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import bg.autohouse.data.models.enums.Feature;
+import bg.autohouse.data.models.Offer;
+import bg.autohouse.data.models.enums.FuelType;
+import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.service.models.OfferTopServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.web.models.request.FilterRequest;
-import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -18,26 +22,59 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ActiveProfiles("test")
 @Sql("/data.sql")
+@Transactional
 public class OfferServiceImplTest {
 
   @Autowired private OfferService offerService;
+  @Autowired private OfferRepository offerRepository;
+
   private Sort sort = Sort.by("createdAt").descending();
   private Pageable pageable = PageRequest.of(0, 20, sort);
 
   @Test
   void whenSearchOffers_withValidFilter_shouldMapCorrect() {
     FilterRequest filterRequest =
-        FilterRequest.builder()
-            // .fuelType(FuelType.GASOLINE.name())
-            .feature(Arrays.asList(Feature.ABS.name(), Feature.LEATHER_STEERING_WHEEL.name(), null))
-            .build();
+        FilterRequest.builder().fuelType(FuelType.GASOLINE.name()).build();
 
     Page<OfferTopServiceModel> page = offerService.searchOffers(filterRequest, pageable);
-    int a = 5;
+    List<Offer> offers =
+        offerRepository.findAll().stream()
+            .filter(offer -> offer.getVehicle().getEngine().getFuelType().equals(FuelType.GASOLINE))
+            .collect(Collectors.toList());
+
+    assertThat(page.getContent()).size().isEqualTo(offers.size());
+  }
+
+  @Test
+  @Sql("/data.sql")
+  void whenSearchOffers_withValidMakerId_shouldMapCorrect() {
+    FilterRequest filterRequest = FilterRequest.builder().makerId(1L).build();
+
+    Page<OfferTopServiceModel> page = offerService.searchOffers(filterRequest, pageable);
+    List<Offer> offers =
+        offerRepository.findAll().stream()
+            .filter(offer -> offer.getVehicle().getMaker().getId().equals(1L))
+            .collect(Collectors.toList());
+
+    assertThat(page.getContent()).size().isEqualTo(offers.size());
+  }
+
+  @Test
+  void whenSearchOffers_withValidModelId_shouldMapCorrect() {
+    FilterRequest filterRequest = FilterRequest.builder().makerId(87L).modelId(1505L).build();
+
+    Page<OfferTopServiceModel> page = offerService.searchOffers(filterRequest, pageable);
+    List<Offer> offers =
+        offerRepository.findAll().stream()
+            .filter(offer -> offer.getVehicle().getModel().getId().equals(1505L))
+            .collect(Collectors.toList());
+
+    assertThat(page.getContent()).size().isEqualTo(offers.size());
   }
 }
