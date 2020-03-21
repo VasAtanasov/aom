@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-
-// TODO Uncomment when spring security dependency is added
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class BeanConfiguration {
@@ -38,11 +37,10 @@ public class BeanConfiguration {
     return new GsonBuilder().setPrettyPrinting().create();
   }
 
-  // TODO Uncomment when spring security dependency is added
-  // @Bean
-  // public BCryptPasswordEncoder bCryptPasswordEncoder() {
-  //   return new BCryptPasswordEncoder();
-  // }
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
   @Bean
   public JavaMailSender getJavaMailSender() {
@@ -65,19 +63,8 @@ public class BeanConfiguration {
     return new LocalValidatorFactoryBean();
   }
 
-  // @Bean
-  // public MessageSource messageSource() {
-  //   ReloadableResourceBundleMessageSource messageSource =
-  //       new ReloadableResourceBundleMessageSource();
-  //   messageSource.setBasename("classpath:messages");
-  //   messageSource.setDefaultEncoding("UTF-8");
-  //   return messageSource;
-  // }
-
-  // @Bean
-  // public LocalValidatorFactoryBean validator() {
-  //   LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-  //   bean.setValidationMessageSource(messageSource());
-  //   return bean;
-  // }
+  @Bean
+  public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
+  }
 }
