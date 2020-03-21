@@ -8,7 +8,7 @@ async function generateUserSqlInsert(seller) {
   const users = usersArray.map(user => {
     return {
       id: user.id,
-      seller: utils.getRandomValueFromArray(seller)
+      seller: utils.getRandomValueFromArray(Object.keys(seller))
     };
   });
 

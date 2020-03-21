@@ -7,7 +7,7 @@ import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.service.models.InitialStateModel;
 import bg.autohouse.service.models.MakerServiceModel;
-import bg.autohouse.service.models.OfferTopServiceModel;
+import bg.autohouse.service.models.OfferServiceModel;
 import bg.autohouse.service.services.InitialStateService;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.ClassFinder;
@@ -68,7 +68,7 @@ public class InitialStateServiceImpl implements InitialStateService {
             .map(maker -> modelMapper.map(maker, MakerServiceModel.class))
             .collect(Collectors.toUnmodifiableList());
 
-    List<OfferTopServiceModel> topOffers = offerService.getTopOffers();
+    List<OfferServiceModel> topOffers = offerService.getTopOffers();
 
     InitialStateModel initialState =
         InitialStateModel.builder()

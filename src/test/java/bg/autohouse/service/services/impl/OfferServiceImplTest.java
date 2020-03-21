@@ -1,12 +1,11 @@
 package bg.autohouse.service.services.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.repositories.OfferRepository;
-import bg.autohouse.service.models.OfferTopServiceModel;
+import bg.autohouse.service.models.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.web.models.request.FilterRequest;
 import java.util.List;
@@ -42,7 +41,7 @@ public class OfferServiceImplTest {
     FilterRequest filterRequest =
         FilterRequest.builder().fuelType(FuelType.GASOLINE.name()).build();
 
-    Page<OfferTopServiceModel> page = offerService.searchOffers(filterRequest, pageable);
+    Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
     List<Offer> offers =
         offerRepository.findAll().stream()
             .filter(offer -> offer.getVehicle().getEngine().getFuelType().equals(FuelType.GASOLINE))
@@ -56,7 +55,7 @@ public class OfferServiceImplTest {
   void whenSearchOffers_withValidMakerId_shouldMapCorrect() {
     FilterRequest filterRequest = FilterRequest.builder().makerId(1L).build();
 
-    Page<OfferTopServiceModel> page = offerService.searchOffers(filterRequest, pageable);
+    Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
     List<Offer> offers =
         offerRepository.findAll().stream()
             .filter(offer -> offer.getVehicle().getMaker().getId().equals(1L))
@@ -69,7 +68,7 @@ public class OfferServiceImplTest {
   void whenSearchOffers_withValidModelId_shouldMapCorrect() {
     FilterRequest filterRequest = FilterRequest.builder().makerId(87L).modelId(1505L).build();
 
-    Page<OfferTopServiceModel> page = offerService.searchOffers(filterRequest, pageable);
+    Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
     List<Offer> offers =
         offerRepository.findAll().stream()
             .filter(offer -> offer.getVehicle().getModel().getId().equals(1505L))

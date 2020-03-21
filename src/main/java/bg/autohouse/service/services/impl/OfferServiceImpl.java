@@ -9,7 +9,7 @@ import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.specifications.OfferSpecifications;
-import bg.autohouse.service.models.OfferTopServiceModel;
+import bg.autohouse.service.models.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
@@ -37,19 +37,19 @@ public class OfferServiceImpl implements OfferService {
   private final ModelMapperWrapper modelMapper;
 
   @Override
-  public List<OfferTopServiceModel> getTopOffers() {
+  public List<OfferServiceModel> getTopOffers() {
     Sort sort = Sort.by("createdAt").descending();
     Pageable pageable = PageRequest.of(0, 20, sort);
-    List<OfferTopServiceModel> topOffers =
+    List<OfferServiceModel> topOffers =
         offerRepository
             .findLatestOffers(pageable)
-            .map(offer -> modelMapper.map(offer, OfferTopServiceModel.class))
+            .map(offer -> modelMapper.map(offer, OfferServiceModel.class))
             .collect(Collectors.toUnmodifiableList());
     return topOffers;
   }
 
   @Override
-  public Page<OfferTopServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
+  public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
     Objects.requireNonNull(filterRequest);
 
     Filter filter = modelMapper.map(filterRequest, Filter.class);
@@ -72,6 +72,6 @@ public class OfferServiceImpl implements OfferService {
 
     return offerRepository
         .findAll(offerSpecification, pageable)
-        .map(offer -> modelMapper.map(offer, OfferTopServiceModel.class));
+        .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
   }
 }

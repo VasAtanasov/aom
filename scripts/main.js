@@ -176,7 +176,7 @@ const baseUrl = "http://localhost:8007/api/vehicles";
 
   writeToFile("./data.sql", "");
   appendRowToFile("./data.sql", insert.join("\n"));
-  appendRowToFile("./data.sql", dependentInserts.join("\n"));
+  appendRowToFile("./data.sql", "\n" + dependentInserts.join("\n"));
 
   // writeToFile("./data-next.sql", "");
   // appendRowToFile("./data-next.sql", dependentInserts.join("\n"));

@@ -32,8 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerController extends BaseController {
 
-  public static final String CONTROLLER_TAG = "makers";
-
   private final ModelMapperWrapper modelMapper;
   private final MakerService makerService;
 
@@ -54,7 +52,6 @@ public class MakerController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
-    // TODO create maker with list of models
     MakerServiceModel makerServiceModel = modelMapper.map(createRequest, MakerServiceModel.class);
     MakerServiceModel createdMaker = makerService.createMaker(makerServiceModel);
     return handleCreateSuccess(

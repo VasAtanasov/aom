@@ -33,7 +33,7 @@ public class InitialStateModel {
   @Builder.Default private List<String> searchCriteriaNamesForRangeCriteria = new ArrayList<>();
 
   @Builder.Default private List<MakerServiceModel> makers = new ArrayList<>();
-  @Builder.Default private List<OfferTopServiceModel> topOffers = new ArrayList<>();
+  @Builder.Default private List<OfferServiceModel> topOffers = new ArrayList<>();
 
   @Builder.Default private Map<String, Object> metadata = new LinkedHashMap<>();
 }
