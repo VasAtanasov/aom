@@ -23,7 +23,8 @@ public class User extends BaseUuidEntity implements UserDetails {
     ROOT,
     ADMIN,
     MODERATOR,
-    USER;
+    USER,
+    REST;
 
     public String includes(Role that) {
       return this + " > " + that;
@@ -93,6 +94,10 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "seller")
   @Enumerated(EnumType.STRING)
   private Seller seller;
+
+  @Column(name = "role", nullable = false)
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(
