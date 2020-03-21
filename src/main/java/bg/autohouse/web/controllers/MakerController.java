@@ -59,7 +59,7 @@ public class MakerController extends BaseController {
         String.format(Constants.MAKER_CREATE_SUCCESS, createRequest.getName()),
         WebConfiguration.URL_API_BASE + WebConfiguration.URL_MAKERS);
   }
-
+  // TODO only admins and moderators can add makers and models
   @GetMapping(
       value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})

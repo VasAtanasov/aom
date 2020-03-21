@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @Sql("/data.sql")
 @Transactional
-public class OfferServiceImplTest {
+public class OfferServiceImplIT {
 
   @Autowired private OfferService offerService;
   @Autowired private OfferRepository offerRepository;

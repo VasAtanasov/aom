@@ -19,7 +19,7 @@ public class MakerRepositoryTest {
   @Autowired private MakerRepository makerRepository;
 
   @Test
-  @Sql("test-data.sql")
+  @Sql("/data.sql")
   void whenInitializedByDbUnit_thenFindsByName() {
     Maker maker = makerRepository.findByName("Audi").orElse(null);
     List<Maker> allMakers = makerRepository.findAll();

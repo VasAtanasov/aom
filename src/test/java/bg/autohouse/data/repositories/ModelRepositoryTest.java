@@ -17,7 +17,7 @@ public class ModelRepositoryTest {
   @Autowired private ModelRepository modelRepository;
 
   @Test
-  @Sql("test-data.sql")
+  @Sql("/data.sql")
   void whenInitializedByDbUnit_thenFindsByName() {
     boolean exists = modelRepository.existsByNameAndMakerId("Q5", 8L);
     assertThat(exists).isTrue();

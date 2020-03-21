@@ -44,5 +44,5 @@ Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-  "fuelType": "GASOLINE"
+  "fuelType": "ELECTRIC"
 }
