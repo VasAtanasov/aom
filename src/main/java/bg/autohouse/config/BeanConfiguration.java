@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
@@ -38,11 +36,6 @@ public class BeanConfiguration {
   }
 
   @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-
-  @Bean
   public JavaMailSender getJavaMailSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
     mailSender.setHost("smtp.gmail.com");
@@ -61,10 +54,5 @@ public class BeanConfiguration {
   @Bean
   public LocalValidatorFactoryBean validator() {
     return new LocalValidatorFactoryBean();
-  }
-
-  @Bean
-  public GrantedAuthorityDefaults grantedAuthorityDefaults() {
-    return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
   }
 }

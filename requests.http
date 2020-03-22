@@ -15,7 +15,7 @@ Accept:  application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-  "name": "New Maker asdasd"
+  "name": "New Maker axcxcsdasd"
 }
 
 ###
@@ -29,7 +29,7 @@ Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-  "name": "New asda",
+  "name": "New asdxzxa",
   "makerId": 1
 }
 ###

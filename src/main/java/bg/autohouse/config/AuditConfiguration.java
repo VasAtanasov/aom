@@ -1,5 +1,6 @@
 package bg.autohouse.config;
 
+import bg.autohouse.security.SecurityUtils;
 import java.util.Optional;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -13,8 +14,6 @@ public class AuditConfiguration implements AuditorAware<String> {
 
   @Override
   public Optional<String> getCurrentAuditor() {
-    // TODO ADD SecurityUtils when spring security is added
-    // return Optional.of(SecurityUtils.getCurrentUserLogin().orElse(SYSTEM_ACCOUNT));
-    return Optional.of(SYSTEM_ACCOUNT);
+    return Optional.of(SecurityUtils.getCurrentUserLogin().orElse(SYSTEM_ACCOUNT));
   }
 }

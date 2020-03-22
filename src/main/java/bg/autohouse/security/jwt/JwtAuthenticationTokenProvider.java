@@ -1,7 +1,5 @@
 package bg.autohouse.security.jwt;
 
-import static bg.autohouse.security.SecurityConstants.*;
-
 import bg.autohouse.config.properties.SecurityConfigurationProperties;
 import bg.autohouse.data.models.User;
 import io.jsonwebtoken.*;
@@ -26,7 +24,7 @@ public class JwtAuthenticationTokenProvider {
 
   public String generateToken(User user) {
     Date now = new Date();
-    Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+    Date expiryDate = new Date(now.getTime() + securityConfigurationProperties.getExpirationTime());
 
     String userId = user.getId().toString();
 
@@ -48,7 +46,7 @@ public class JwtAuthenticationTokenProvider {
       User user, JwtAuthenticationTokenType tokenType) {
 
     Date now = new Date();
-    Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+    Date expiryDate = new Date(now.getTime() + securityConfigurationProperties.getExpirationTime());
 
     String userId = user.getId().toString();
 

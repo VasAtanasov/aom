@@ -1,6 +1,8 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.util.F;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,46 +21,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Table(name = EntityConstants.USERS)
 public class User extends BaseUuidEntity implements UserDetails {
-  public enum Role implements GrantedAuthority {
-    ROOT,
-    ADMIN,
-    MODERATOR,
-    USER,
-    REST;
 
-    public String includes(Role that) {
-      return this + " > " + that;
-    }
-
-    public boolean isNormalUser() {
-      return this == USER;
-    }
-
-    public boolean isAdmin() {
-      return this == ADMIN;
-    }
-
-    public boolean isModerator() {
-      return this == MODERATOR;
-    }
-
-    public boolean isRoot() {
-      return this == ROOT;
-    }
-
-    public boolean isModeratorOrAdmin() {
-      return isModerator() || isAdmin();
-    }
-
-    public boolean canAcceptEmailToken() {
-      return isModeratorOrAdmin() || isNormalUser() || isRoot();
-    }
-
-    @Override
-    public String getAuthority() {
-      return name();
-    }
-  }
+  // TODO add user data to database
+  // TODO user service and user controller
 
   private static final long serialVersionUID = -4468841758676373460L;
 
@@ -95,10 +60,6 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Seller seller;
 
-  @Column(name = "role", nullable = false)
-  @Enumerated(EnumType.STRING)
-  private Role role;
-
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(
       name = "user_role",
@@ -117,17 +78,44 @@ public class User extends BaseUuidEntity implements UserDetails {
   }
 
   @Override
+  @Transient
   public boolean isAccountNonExpired() {
     return true;
   }
 
   @Override
+  @Transient
   public boolean isAccountNonLocked() {
     return true;
   }
 
   @Override
+  @Transient
   public boolean isCredentialsNonExpired() {
     return true;
+  }
+
+  public boolean isNormalUser() {
+    return F.containsAll(roles, Role.USER);
+  }
+
+  public boolean isAdmin() {
+    return F.containsAll(roles, Role.ADMIN);
+  }
+
+  public boolean isModerator() {
+    return F.containsAll(roles, Role.MODERATOR);
+  }
+
+  public boolean isRoot() {
+    return F.containsAll(roles, Role.ROOT);
+  }
+
+  public boolean isModeratorOrAdmin() {
+    return isModerator() || isAdmin();
+  }
+
+  public boolean canAcceptEmailToken() {
+    return isModeratorOrAdmin() || isNormalUser() || isRoot();
   }
 }

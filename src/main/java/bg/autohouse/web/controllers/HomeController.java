@@ -9,6 +9,7 @@ import bg.autohouse.service.services.InitialStateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController extends BaseController {
 
   private final InitialStateService initialStateService;
-
+  // TODO add permissions to controllers
+  @PreAuthorize("permitAll()")
   @GetMapping(
       value = "/state",
       produces = {APP_V1_MEDIA_TYPE_JSON})
