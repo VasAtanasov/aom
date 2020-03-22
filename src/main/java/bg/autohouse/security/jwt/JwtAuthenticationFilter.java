@@ -1,81 +1,65 @@
 package bg.autohouse.security.jwt;
 
-import bg.autohouse.service.services.UserService;
-import bg.autohouse.util.Assert;
+import bg.autohouse.data.models.User;
+import bg.autohouse.security.SecurityConstants;
+import bg.autohouse.web.models.request.UserLoginRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j
-@Component
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
-  public static final String HEADER_AUTHORIZATION = "Authorization";
-  public static final String AUTHORIZATION_PREFIX = "Bearer ";
-
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+  private final AuthenticationManager authenticationManager;
   private final JwtAuthenticationTokenProvider tokenProvider;
-  private final UserService userService;
+
+  public JwtAuthenticationFilter(
+      AuthenticationManager authenticationManager, JwtAuthenticationTokenProvider tokenProvider) {
+    this.authenticationManager = authenticationManager;
+    this.tokenProvider = tokenProvider;
+    this.setFilterProcessesUrl("/api/users/login");
+  }
 
   @Override
-  protected void doFilterInternal(
-      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-      throws ServletException, IOException {
+  public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
+      throws AuthenticationException {
 
-    log.debug("request method: {}", request.getMethod());
-    if ("OPTIONS".equals(request.getMethod())) { // to handle CORS
-      filterChain.doFilter(request, response);
-      return;
-    }
+    try {
+      UserLoginRequest credentials =
+          new ObjectMapper().readValue(req.getInputStream(), UserLoginRequest.class);
 
-    String jwt = parseToken(request);
+      return authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(
+              credentials.getUsername(), credentials.getPassword(), new ArrayList<>()));
 
-    if (Assert.has(jwt) && tokenProvider.validateToken(jwt)) {
-      try {
-        String userId = tokenProvider.getUserIdFromJWT(jwt);
-        log.debug("User ID: {}", userId);
-        UserDetails userDetails = userService.loadUserById(userId);
-        UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-      } catch (Exception ex) {
-        log.error("Could not set user authentication in security context", ex);
-        SecurityContextHolder.clearContext();
-      }
-
-      try {
-        filterChain.doFilter(request, response);
-      } finally {
-        // Always use temporary JWT authentication
-        SecurityContextHolder.clearContext();
-      }
-    } else {
-      filterChain.doFilter(request, response);
+    } catch (IOException e) {
+      log.error("Could not set user authentication in security context", e);
+      throw new RuntimeException(e);
     }
   }
 
-  private static String parseToken(final HttpServletRequest request) {
-    final String header = request.getHeader(HEADER_AUTHORIZATION);
+  // TODO add roles to claims
+  @Override
+  protected void successfulAuthentication(
+      HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth)
+      throws IOException, ServletException {
 
-    if (!Assert.has(header) || !header.startsWith(AUTHORIZATION_PREFIX)) {
-      return null;
-    }
+    User user = ((User) auth.getPrincipal());
+    user.getAuthorities();
+    String token = tokenProvider.generateToken(auth);
 
-    final String jwtToken = header.substring(AUTHORIZATION_PREFIX.length());
-
-    return jwtToken;
+    res.getWriter()
+        .append(SecurityConstants.HEADER_STRING + ": " + SecurityConstants.TOKEN_PREFIX + token);
+    res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+    res.addHeader("UserID", user.getId());
   }
 }

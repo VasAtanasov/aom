@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class JwtAuthenticationTokenProvider {
-  // TODO move constants to properties file
   @Autowired private SecurityConfigurationProperties securityConfigurationProperties;
 
   public String generateToken(Authentication authentication) {

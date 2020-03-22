@@ -2,18 +2,20 @@ package bg.autohouse.config;
 
 import bg.autohouse.security.jwt.JwtAuthenticationEntryPoint;
 import bg.autohouse.security.jwt.JwtAuthenticationFilter;
+import bg.autohouse.security.jwt.JwtAuthenticationTokenProvider;
+import bg.autohouse.security.jwt.JwtAuthorizationFilter;
+import bg.autohouse.service.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -44,13 +46,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   public static final String PASSWORD_RESET_URL = "/api/users/password-reset";
   public static final String H2_CONSOLE = "/h2-console/**";
 
-  private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
+  private final JwtAuthenticationTokenProvider tokenProvider;
+  private final UserService userService;
+  private final PasswordEncoder encoder;
 
-  @Bean(BeanIds.AUTHENTICATION_MANAGER)
   @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
+  protected void configure(AuthenticationManagerBuilder authBuilder) throws Exception {
+    authBuilder.userDetailsService(userService).passwordEncoder(encoder);
   }
 
   @Override
@@ -63,16 +66,33 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .exceptionHandling()
         .authenticationEntryPoint(unauthorizedHandler)
         .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .authorizeRequests()
+        .antMatchers(HttpMethod.POST, SIGN_UP_URL)
+        .permitAll()
+        .antMatchers(HttpMethod.GET, VERIFICATION_EMAIL_URL)
+        .permitAll()
+        .antMatchers(HttpMethod.POST, PASSWORD_RESET_REQUEST_URL)
+        .permitAll()
+        .antMatchers(HttpMethod.POST, PASSWORD_RESET_URL)
+        .permitAll()
+        .antMatchers(H2_CONSOLE)
+        .permitAll()
         .antMatchers(COMMON_PATTERNS)
         .permitAll()
-        .antMatchers("/api/auth/**")
-        .permitAll();
+        .anyRequest()
+        .authenticated()
+        .and()
+        .addFilter(getAuthenticationFilter())
+        .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService, tokenProvider))
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.headers().frameOptions().disable();
+  }
+
+  protected JwtAuthenticationFilter getAuthenticationFilter() throws Exception {
+    final JwtAuthenticationFilter filter =
+        new JwtAuthenticationFilter(authenticationManager(), tokenProvider);
+    return filter;
   }
 }
