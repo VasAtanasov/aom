@@ -10,4 +10,7 @@ public class ExceptionsMessages {
   public static final String MAKER_WITH_NAME_EXISTS = "Maker with given name already exists!";
   public static final String MODEL_WITH_NAME_EXISTS = "Model with given name already exists!";
   public static final String INVALID_DATA_TYPE = "Type miss-match in request body.";
+
+  public static final String USERNAME_ALREADY_EXISTS = "Username %s already exists!";
+  public static final String EMAIL_ALREADY_EXISTS = "Email %s already exists";
 }

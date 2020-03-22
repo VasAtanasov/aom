@@ -81,6 +81,7 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   public MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel) {
+    // TODO chekc if maker exists (move from validation to service)
     Maker maker = modelMapper.map(makerServiceModel, Maker.class);
     makerRepository.save(maker);
     return modelMapper.map(maker, MakerServiceModel.class);

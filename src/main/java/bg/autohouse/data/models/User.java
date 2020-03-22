@@ -36,23 +36,14 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "phone_number", nullable = true, length = 20, unique = true)
   private String phoneNumber;
 
-  @Column(
-      name = "email_address",
-      nullable = false,
-      unique = true) // enforcing one user per email add.
-  private String emailAddress;
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
 
   @Column(name = "first_name")
   private String firstName;
 
   @Column(name = "last_name")
   private String lastName;
-
-  @Column(
-      name = "display_name",
-      nullable = true,
-      length = 70) // allowing this to be nullable as might not be set
-  private String displayName;
 
   @Column private boolean enabled = true;
 

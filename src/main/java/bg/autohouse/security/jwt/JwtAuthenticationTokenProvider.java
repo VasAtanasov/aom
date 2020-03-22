@@ -6,6 +6,7 @@ import io.jsonwebtoken.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,11 +27,16 @@ public class JwtAuthenticationTokenProvider {
     Date expiryDate = new Date(now.getTime() + securityConfigurationProperties.getExpirationTime());
 
     String userId = user.getId().toString();
+    String roles =
+        user.getAuthorities().stream()
+            .map(role -> role.toString())
+            .collect(Collectors.joining(", "));
 
     Map<String, Object> claims = new HashMap<>();
     claims.put("id", userId);
+    claims.put("roles", roles);
     claims.put("username", user.getUsername());
-    claims.put("email", user.getEmailAddress());
+    claims.put("email", user.getEmail());
 
     return Jwts.builder()
         .setSubject(userId)
@@ -52,7 +58,7 @@ public class JwtAuthenticationTokenProvider {
     Map<String, Object> claims = new HashMap<>();
     claims.put("id", userId);
     claims.put("username", user.getUsername());
-    claims.put("email", user.getEmailAddress());
+    claims.put("email", user.getEmail());
 
     String token =
         Jwts.builder()
