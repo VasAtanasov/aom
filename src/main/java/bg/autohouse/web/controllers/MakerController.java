@@ -36,6 +36,7 @@ public class MakerController extends BaseController {
   private final ModelMapperWrapper modelMapper;
   private final MakerService makerService;
 
+  @PreAuthorize("permitAll()")
   @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
 
@@ -61,7 +62,9 @@ public class MakerController extends BaseController {
         String.format(Constants.MAKER_CREATE_SUCCESS, createRequest.getName()),
         WebConfiguration.URL_API_BASE + WebConfiguration.URL_MAKERS);
   }
+
   // TODO only admins and moderators can add makers and models
+  @PreAuthorize("permitAll()")
   @GetMapping(
       value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})

@@ -131,7 +131,7 @@ const baseUrl = "http://localhost:8007/api/vehicles";
     return a.concat(b);
   }, []);
 
-  await executeQuery(insert.join("\n"));
+  // await executeQuery(insert.join("\n"));
 
   const response = await http.get(baseUrl + "/state");
 

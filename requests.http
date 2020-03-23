@@ -1,4 +1,5 @@
 @host = http://localhost:8007/api/vehicles
+@users = http://localhost:8007/api/users
 
 GET {{host}}/state  HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
@@ -45,4 +46,21 @@ Content-Type: application/bg.autohouse.api-v1+json
 
 {
   "fuelType": "ELECTRIC"
+}
+
+
+###
+POST {{users}}/register HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json
+
+{
+  "username": "username",
+  "password": "123456",
+  "confirmPassword": "123456",
+  "phoneNumber": "123456",
+  "email": "email@emai.com",
+  "firstName": "firstName",
+  "lastName": "lastName",
+  "seller": "PRIVATE"
 }

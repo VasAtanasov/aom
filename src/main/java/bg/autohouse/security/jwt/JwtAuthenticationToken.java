@@ -18,10 +18,10 @@ import lombok.*;
 @Table(name = "tokens")
 @NamedQuery(
     name = JwtAuthenticationToken.DELETE_TOKEN,
-    query = "DELETE FROM Token t where t.expirationTime <= :now")
+    query = "DELETE FROM JwtAuthenticationToken t where t.expirationTime <= :now")
 public class JwtAuthenticationToken extends BaseUuidEntity {
 
-  public static final String DELETE_TOKEN = "Token.deleteAllExpiredSince";
+  public static final String DELETE_TOKEN = "JwtAuthenticationToken.deleteAllExpiredSince";
   private static final long serialVersionUID = -3553731653107716142L;
 
   @Column(name = "value", nullable = false, columnDefinition = "TEXT")

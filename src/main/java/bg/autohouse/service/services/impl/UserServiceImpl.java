@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
     log.info("Token value: " + token.getValue());
     log.info("User id: " + user.getId());
 
+    // TODO uncomment to when email enabled
     // emailService.verifyEmail(user.getEmail(), token.getValue());
 
     return modelMapper.map(user, UserServiceModel.class);
@@ -192,6 +193,7 @@ public class UserServiceImpl implements UserService {
     log.info("Password reset token: " + passwordResetToken.getValue());
     tokenRepository.save(passwordResetToken);
 
+    // TODO uncomment to when email enabled
     // emailService.sendPasswordResetRequest(
     //     user.getFirstName(), user.getEmail(), passwordResetToken.getValue());
 

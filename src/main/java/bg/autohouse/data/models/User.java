@@ -48,7 +48,7 @@ public class User extends BaseUuidEntity implements UserDetails {
   // TODO change to false when email confirmation applied.
   @Column private boolean enabled = true;
 
-  @Column(name = "seller")
+  @Column(name = "seller", nullable = false)
   @Enumerated(EnumType.STRING)
   private Seller seller;
 

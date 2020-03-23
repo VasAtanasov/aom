@@ -40,7 +40,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
       };
 
   public static final String APP_STATE_URL = "/api/vehicles/state";
-  public static final String SIGN_UP_URL = "/api//users/sign-up";
+  public static final String APP_MAKERS_URL = "/api/vehicles/makers/**";
+  public static final String REGISTER_URL = "/api//users/register";
   public static final String VERIFICATION_EMAIL_URL = "/api/users/email-verification";
   public static final String PASSWORD_RESET_REQUEST_URL = "/api/users/password-reset-request";
   public static final String PASSWORD_RESET_URL = "/api/users/password-reset";
@@ -67,13 +68,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .authenticationEntryPoint(unauthorizedHandler)
         .and()
         .authorizeRequests()
-        .antMatchers(HttpMethod.POST, SIGN_UP_URL)
+        .antMatchers(HttpMethod.POST, REGISTER_URL)
         .permitAll()
         .antMatchers(HttpMethod.GET, VERIFICATION_EMAIL_URL)
         .permitAll()
         .antMatchers(HttpMethod.POST, PASSWORD_RESET_REQUEST_URL)
         .permitAll()
         .antMatchers(HttpMethod.POST, PASSWORD_RESET_URL)
+        .permitAll()
+        .antMatchers(HttpMethod.GET, APP_STATE_URL)
+        .permitAll()
+        .antMatchers(HttpMethod.GET, APP_MAKERS_URL)
         .permitAll()
         .antMatchers(H2_CONSOLE)
         .permitAll()

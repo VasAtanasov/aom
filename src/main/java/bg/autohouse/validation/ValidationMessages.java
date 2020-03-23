@@ -58,4 +58,6 @@ public class ValidationMessages {
   public static final String MISSING_VEHICLE_DATA = "Missing vehicle data.";
 
   public static final String MISSING_INVALID_DESCRIPTION = "Missing or invalid offer description.";
+
+  public static final String INVALID_SELLER = "Invalid seller type.";
 }

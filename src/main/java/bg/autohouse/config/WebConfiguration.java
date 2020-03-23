@@ -18,12 +18,12 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_ADMIN_BASE = "/admin";
   public static final String URL_ADMIN_USERS = URL_ADMIN_BASE + "/users";
 
-  private static final String URL_USER_BASE = "/user";
-  public static final String URL_USER_REGISTER = URL_USER_BASE + "/register";
-  public static final String URL_USER_LOGIN = URL_USER_BASE + "/login";
-  public static final String URL_USER_LOGOUT = URL_USER_BASE + "/logout";
-  public static final String URL_USER_HOME = URL_USER_BASE + "/home";
-  public static final String URL_USER_PROFILE = URL_USER_BASE + "/profile";
+  public static final String URL_USER_BASE = "/users";
+  public static final String URL_USER_REGISTER = "/register";
+  public static final String URL_USER_LOGIN = "/login";
+  public static final String URL_USER_LOGOUT = "/logout";
+  public static final String URL_USER_HOME = "/home";
+  public static final String URL_USER_PROFILE = "/profile";
 
   public static final String URL_VEHICLES = "/vehicles";
   public static final String URL_MAKERS = URL_VEHICLES + "/makers";
