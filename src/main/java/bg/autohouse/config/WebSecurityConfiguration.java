@@ -40,7 +40,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
       };
 
   public static final String APP_STATE_URL = "/api/vehicles/state";
-  public static final String SIGN_UP_URL = "/api//users";
+  public static final String SIGN_UP_URL = "/api//users/sign-up";
   public static final String VERIFICATION_EMAIL_URL = "/api/users/email-verification";
   public static final String PASSWORD_RESET_REQUEST_URL = "/api/users/password-reset-request";
   public static final String PASSWORD_RESET_URL = "/api/users/password-reset";

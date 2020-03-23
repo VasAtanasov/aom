@@ -13,7 +13,7 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String APP_V1_MEDIA_TYPE_JSON = "application/bg.autohouse.api-v1+json";
 
   public static final String URL_INDEX = "/";
-  public static final String URL_API_BASE = "/api/vehicles";
+  public static final String URL_API_BASE = "/api";
 
   public static final String URL_ADMIN_BASE = "/admin";
   public static final String URL_ADMIN_USERS = URL_ADMIN_BASE + "/users";
@@ -25,9 +25,10 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_USER_HOME = URL_USER_BASE + "/home";
   public static final String URL_USER_PROFILE = URL_USER_BASE + "/profile";
 
-  public static final String URL_MAKERS = "/makers";
-  public static final String URL_MODELS = "/models";
-  public static final String OFFERS = "/offers";
+  public static final String URL_VEHICLES = "/vehicles";
+  public static final String URL_MAKERS = URL_VEHICLES + "/makers";
+  public static final String URL_MODELS = URL_VEHICLES + "/models";
+  public static final String OFFERS = URL_VEHICLES + "/offers";
 
   private static final long MAX_AGE_SECS = 3600;
 

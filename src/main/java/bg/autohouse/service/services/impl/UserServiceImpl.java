@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     user.setRoles(getInheritedRolesFromRole(Role.USER));
     userRepository.save(user);
 
-    return null;
+    return modelMapper.map(user, UserServiceModel.class);
   }
 
   private Set<Role> getInheritedRolesFromRole(Role role) {
