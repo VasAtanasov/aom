@@ -13,4 +13,10 @@ public class ExceptionsMessages {
 
   public static final String USERNAME_ALREADY_EXISTS = "Username %s already exists!";
   public static final String EMAIL_ALREADY_EXISTS = "Email %s already exists";
+  public static final String EXCEPTION_USER_NOT_FOUND_ID = "No user was found with provided id!";
+  public static final String INVALID_TOKEN = "Invalid or nonexistent token!";
+  public static final String INVALID_USER_LOGIN = "Invalid empty login username";
+  public static final String NO_SUCH_USERNAME = "Could not lookup user, no such username.";
+  public static final String NO_RECORD_FOUND = "Record with provided id is not found";
+  public static final String INVALID_UPDATE_OPERATION = "Invalid update operation";
 }

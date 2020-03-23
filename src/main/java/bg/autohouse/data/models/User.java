@@ -45,6 +45,7 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "last_name")
   private String lastName;
 
+  // TODO change to false when email confirmation applied.
   @Column private boolean enabled = true;
 
   @Column(name = "seller")

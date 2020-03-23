@@ -1,6 +1,8 @@
 package bg.autohouse.config.properties;
 
 import java.util.Properties;
+
+import org.springframework.beans.factory.annotation.Value;
 // import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -12,14 +14,14 @@ public class MailProperties {
   public static final int MAX_RECIPIENT_SEND_FAILURES = 2;
   public static final int BATCH_SIZE = 100;
 
-  // @Value("${mail.enabled}")
+  @Value("${mail.enabled}")
   boolean mailDeliveryEnabled;
 
-  // @Value("${mail.address.from}")
+  @Value("${mail.address.from}")
   private String defaultFromAddress;
 
-  // @Value("${mail.smtp.host:localhost}")
-  private String smtpHost;
+  @Value("${mail.address.password}")
+  private String password;
 
   public boolean isMailDeliveryEnabled() {
     return mailDeliveryEnabled;
@@ -43,10 +45,14 @@ public class MailProperties {
     final Properties properties = new Properties();
     properties.setProperty("mail.smtp.connectiontimeout", "1000");
     properties.setProperty("mail.smtp.timeout", "5000");
+    properties.setProperty("mail.transport.protocol", "smtp");
+    properties.setProperty("mail.smtp.auth", "true");
+    properties.setProperty("mail.smtp.starttls.enable", "true");
+    properties.setProperty("mail.debug", "true");
     return properties;
   }
 
-  public String getSmtpHost() {
-    return smtpHost;
+  public String getPassword() {
+    return password;
   }
 }

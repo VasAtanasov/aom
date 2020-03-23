@@ -45,4 +45,11 @@ public class EnumUtils {
       final Class<B> clazz, final A value) {
     return value == null ? null : Enum.valueOf(clazz, value.name());
   }
+
+  public static <T extends Enum<T>> boolean has(T enumType, Class<T> enumClass) {
+    return Stream.of(enumClass.getEnumConstants())
+        .filter(t -> t.name().equalsIgnoreCase(enumType.name()))
+        .findAny()
+        .isPresent();
+  }
 }
