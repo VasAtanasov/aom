@@ -1,6 +1,8 @@
 package bg.autohouse.web.controllers;
 
+import static bg.autohouse.web.controllers.ResponseBodyMatchers.responseBody;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -9,6 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.common.Constants;
 import bg.autohouse.errors.ExceptionsMessages;
+import bg.autohouse.utils.WithAutohouseUser;
+import bg.autohouse.validation.ValidationMessages;
+import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -33,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Sql("/data.sql")
 @TestPropertySource("classpath:test.properties")
 public class MakerControllerTest extends MvcPerformer {
-  static final String MAKER_NAME = "Audi";
   static final String API_BASE = "/api/vehicles";
 
   @Autowired private MockMvc mockMvc;
@@ -85,9 +88,7 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithMockUser(
-      username = "vas",
-      roles = {"ADMIN"})
+  @WithAutohouseUser("vas")
   public void whenCreateModel_withValidBody_shouldReturn201() throws Exception {
 
     String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "New Model", "Acura");
@@ -100,76 +101,75 @@ public class MakerControllerTest extends MvcPerformer {
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
   }
 
-  //   @Test
-  //   public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
+  @Test
+  @WithAutohouseUser("vas")
+  public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
 
-  //     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", 1L);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", 1L);
 
-  //     performPost(API_BASE + "/makers/1", createRequestModel)
-  //         .andExpect(status().isBadRequest())
-  //         .andExpect(jsonPath("$.success", is(false)))
-  //         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
-  //         .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
-  //         .andExpect(jsonPath("$.errors", hasSize(2)));
-  //   }
+    performPost(API_BASE + "/makers/1", createRequestModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+        .andExpect(jsonPath("$.errors", hasSize(2)));
+  }
 
-  //   @Test
-  //   public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
+  @Test
+  @WithAutohouseUser("vas")
+  public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
 
-  //     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1L);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1L);
 
-  //     performPost(API_BASE + "/makers/1", createRequestModel)
-  //         .andExpect(status().isBadRequest())
-  //         .andExpect(jsonPath("$.success", is(false)))
-  //         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
-  //         .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
-  //         .andExpect(jsonPath("$.errors", hasSize(1)))
-  //         .andExpect(responseBody().containsError("name", ValidationMessages.MODEL_NAME_BLANK));
-  //   }
+    performPost(API_BASE + "/makers/1", createRequestModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+        .andExpect(jsonPath("$.errors", hasSize(1)))
+        .andExpect(responseBody().containsError("name", ValidationMessages.MODEL_NAME_BLANK));
+  }
 
-  //   @Test
-  //   public void whenCreateModel_withNullId_shouldReturn400() throws Exception {
+  @Test
+  @WithAutohouseUser("vas")
+  public void whenCreateModel_withNullId_shouldReturn400() throws Exception {
 
-  //     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", null);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", null);
 
-  //     performPost(API_BASE + "/makers/1", createRequestModel)
-  //         .andExpect(status().isBadRequest())
-  //         .andExpect(jsonPath("$.success", is(false)))
-  //         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
-  //         .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
-  //         .andExpect(jsonPath("$.errors", hasSize(1)))
-  //         .andExpect(responseBody().containsError("makerId", ValidationMessages.MAKER_ID_NULL));
-  //   }
+    performPost(API_BASE + "/makers/1", createRequestModel)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())))
+        .andExpect(jsonPath("$.errors", hasSize(1)))
+        .andExpect(responseBody().containsError("makerId", ValidationMessages.MAKER_ID_NULL));
+  }
 
-  //   @Test
-  //   public void whenCreateModel_witInvalidTypeId_shouldReturn400() throws Exception {
+  @Test
+  @WithAutohouseUser("vas")
+  public void whenCreateModel_witInvalidTypeId_shouldReturn400() throws Exception {
 
-  //     String createModelJson = "{\"name\":\"A4\",\"makerId\":\"invalid_id\"}";
+    String createModelJson = "{\"name\":\"A4\",\"makerId\":\"invalid_id\"}";
 
-  //     performPost(API_BASE + "/makers/1", createModelJson)
-  //         .andExpect(status().isBadRequest())
-  //         .andExpect(jsonPath("$.success", is(false)))
-  //         .andExpect(jsonPath("$.message", is(ExceptionsMessages.INVALID_DATA_TYPE)))
-  //         .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())));
-  //   }
+    performPost(API_BASE + "/makers/1", createModelJson)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.success", is(false)))
+        .andExpect(jsonPath("$.message", is(ExceptionsMessages.INVALID_DATA_TYPE)))
+        .andExpect(jsonPath("$.status", is(HttpStatus.BAD_REQUEST.value())));
+  }
 
-  //   @Test
-  //   public void whenCreateMaker_withValidBody_shouldReturn201() throws Exception {
-  //     MakerServiceModel makerServiceModel = MakerServiceModel.of(null, MAKER_NAME);
-  //     when(modelMapper.map(any(MakerCreateRequestModel.class),
-  // any())).thenReturn(makerServiceModel);
-  //     when(makerService.createMaker(any(MakerServiceModel.class))).thenReturn(makerServiceModel);
+  @Test
+  @WithAutohouseUser("vas")
+  public void whenCreateMaker_withValidBody_shouldReturn201() throws Exception {
+    final String MAKER_NAME = "New Maker";
 
-  //     MakerResponseModel response = MakerResponseModel.builder().id(1L).name(MAKER_NAME).build();
-  //     when(modelMapper.map(any(MakerServiceModel.class), any())).thenReturn(response);
-
-  //     String expectedMessage = String.format(Constants.MAKER_CREATE_SUCCESS, MAKER_NAME);
-  //     MakerCreateRequestModel createRequestModel = MakerCreateRequestModel.of(MAKER_NAME);
-  //     performPost(API_BASE + "/makers", createRequestModel)
-  //         .andExpect(status().isCreated())
-  //         .andExpect(jsonPath("$.success", is(true)))
-  //         .andExpect(jsonPath("$.message", is(expectedMessage)))
-  //         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())))
-  //         .andExpect(jsonPath("$.data.maker.name", is(MAKER_NAME)));
-  //   }
+    String expectedMessage = String.format(Constants.MAKER_CREATE_SUCCESS, MAKER_NAME);
+    MakerCreateRequestModel createRequestModel = MakerCreateRequestModel.of(MAKER_NAME);
+    performPost(API_BASE + "/makers", createRequestModel)
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.success", is(true)))
+        .andExpect(jsonPath("$.message", is(expectedMessage)))
+        .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())))
+        .andExpect(jsonPath("$.data.maker.name", is(MAKER_NAME)));
+  }
 }

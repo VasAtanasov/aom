@@ -8,6 +8,7 @@ import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.security.jwt.JwtAuthenticationToken;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenProvider;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenRepository;
+import bg.autohouse.security.jwt.JwtAuthenticationTokenSpecifications;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenType;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
@@ -157,8 +158,15 @@ public class UserServiceImpl implements UserService {
 
     JwtAuthenticationToken tokenEntity =
         tokenRepository
-            .findByValue(token)
+            .findOne(
+                JwtAuthenticationTokenSpecifications.forUser(user.getUsername())
+                    .and(JwtAuthenticationTokenSpecifications.withValue(token)))
             .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
+
+    // JwtAuthenticationToken tokenEntity =
+    //     tokenRepository
+    //         .findByValue(token)
+    //         .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
 
     if (!EnumUtils.has(tokenEntity.getType(), JwtAuthenticationTokenType.class)
         && tokenEntity.getType().equals(JwtAuthenticationTokenType.REGISTRATION)) {
