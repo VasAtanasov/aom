@@ -54,9 +54,14 @@ public class JwtAuthenticationTokenProvider {
     Date expiryDate = new Date(now.getTime() + securityConfigurationProperties.getExpirationTime());
 
     String userId = user.getId().toString();
+    String roles =
+        user.getAuthorities().stream()
+            .map(role -> role.toString())
+            .collect(Collectors.joining(", "));
 
     Map<String, Object> claims = new HashMap<>();
     claims.put("id", userId);
+    claims.put("roles", roles);
     claims.put("username", user.getUsername());
     claims.put("email", user.getEmail());
 
