@@ -12,13 +12,10 @@ import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenProvider;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenRepository;
 import bg.autohouse.service.models.UserRegisterServiceModel;
-import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.EmailService;
 import bg.autohouse.service.services.UserService;
-import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.ModelMapperWrapperImpl;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,15 +52,6 @@ public class UserServiceTest {
     userService =
         new UserServiceImpl(
             userRepository, modelMapper, encoder, tokenProvider, tokenRepository, emailService);
-  }
-
-  @Test
-  void whenRegister_validData_shouldRegister() {
-
-    UserServiceModel userServiceModel = userService.register(VALID_REGISTER_MODEL);
-    Optional<Seller> enumValue = EnumUtils.fromString(userServiceModel.getSeller(), Seller.class);
-
-    assertThat(enumValue).isPresent();
   }
 
   @Test

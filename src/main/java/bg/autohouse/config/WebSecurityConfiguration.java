@@ -39,14 +39,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/webjars/**"
       };
 
-  public static final String APP_STATE_URL = "/api/vehicles/state";
-  public static final String APP_MAKERS_URL = "/api/vehicles/makers/**";
-  public static final String REGISTER_URL = "/api//users/register";
-  public static final String VERIFICATION_EMAIL_URL = "/api/users/email-verification";
-  public static final String PASSWORD_RESET_REQUEST_URL = "/api/users/password-reset-request";
-  public static final String PASSWORD_RESET_URL = "/api/users/password-reset";
-  public static final String H2_CONSOLE = "/h2-console/**";
+  private static final String[] PUBLIC_POST_URLS =
+      new String[] {
+        "/api//users/register",
+        "/api/users/password-reset-request",
+        "/api/users/password-reset",
+        "/api/vehicles/offers/search"
+      };
 
+  private static final String[] PUBLIC_GET_URLS =
+      new String[] {
+        "/api/users/email-verification", "/api/vehicles/state", "/api/vehicles/makers/**"
+      };
+
+  public static final String H2_CONSOLE = "/h2-console/**";
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
   private final JwtAuthenticationTokenProvider tokenProvider;
   private final UserService userService;
@@ -68,17 +74,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .authenticationEntryPoint(unauthorizedHandler)
         .and()
         .authorizeRequests()
-        .antMatchers(HttpMethod.POST, REGISTER_URL)
+        .antMatchers(HttpMethod.POST, PUBLIC_POST_URLS)
         .permitAll()
-        .antMatchers(HttpMethod.GET, VERIFICATION_EMAIL_URL)
-        .permitAll()
-        .antMatchers(HttpMethod.POST, PASSWORD_RESET_REQUEST_URL)
-        .permitAll()
-        .antMatchers(HttpMethod.POST, PASSWORD_RESET_URL)
-        .permitAll()
-        .antMatchers(HttpMethod.GET, APP_STATE_URL)
-        .permitAll()
-        .antMatchers(HttpMethod.GET, APP_MAKERS_URL)
+        .antMatchers(HttpMethod.GET, PUBLIC_GET_URLS)
         .permitAll()
         .antMatchers(H2_CONSOLE)
         .permitAll()

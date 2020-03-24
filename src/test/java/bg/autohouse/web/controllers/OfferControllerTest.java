@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,15 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @Transactional
 @Sql("/data.sql")
-public class OfferControllerIT extends MvcPerformer {
+@TestPropertySource(
+    properties = {
+      "MAIL_ADDRESS=testAddress",
+      "MAIL_PASSWORD=testPassword",
+      "SECRET=testSecret",
+      "TOKEN_EXPIRATION=13124113213",
+      "PASSWORD_RESET_EXPIRATION_TIME=1232141"
+    })
+public class OfferControllerTest extends MvcPerformer {
   static final String API_BASE = "/api/vehicles";
   static final String SEARCH_URL = API_BASE + "/offers/search";
 
@@ -58,7 +67,6 @@ public class OfferControllerIT extends MvcPerformer {
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
         .andExpect(jsonPath("$.data.page.number", is(2)))
-        .andExpect(jsonPath("$.data.page.last", is(Boolean.FALSE)))
         .andExpect(jsonPath("$.data.page.size", is(5)))
         .andExpect(jsonPath("$.data.page.empty", is(Boolean.FALSE)));
   }
