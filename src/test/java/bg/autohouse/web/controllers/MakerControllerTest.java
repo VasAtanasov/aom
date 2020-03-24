@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
@@ -30,14 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @Transactional
 @Sql("/data.sql")
-@TestPropertySource(
-    properties = {
-      "MAIL_ADDRESS=testAddress",
-      "MAIL_PASSWORD=testPassword",
-      "SECRET=testSecret",
-      "TOKEN_EXPIRATION=13124113213",
-      "PASSWORD_RESET_EXPIRATION_TIME=1232141"
-    })
+@TestPropertySource("classpath:test.properties")
 public class MakerControllerTest extends MvcPerformer {
   static final String MAKER_NAME = "Audi";
   static final String API_BASE = "/api/vehicles";
@@ -91,11 +85,14 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
+  @WithMockUser(
+      username = "vas",
+      roles = {"ADMIN"})
   public void whenCreateModel_withValidBody_shouldReturn201() throws Exception {
 
-    String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "A4", MAKER_NAME);
+    String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "New Model", "Acura");
 
-    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", 1L);
+    ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("New Model", 1L);
     performPost(API_BASE + "/makers/1", createRequestModel)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))

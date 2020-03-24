@@ -64,7 +64,6 @@ public class MakerController extends BaseController {
   }
 
   // TODO only admins and moderators can add makers and models
-  @PreAuthorize("permitAll()")
   @GetMapping(
       value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
@@ -74,6 +73,7 @@ public class MakerController extends BaseController {
     return handleRequestSuccess(toMap("maker", maker), REQUEST_SUCCESS);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping(
       value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON},

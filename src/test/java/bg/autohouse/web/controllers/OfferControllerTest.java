@@ -26,14 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @Transactional
 @Sql("/data.sql")
-@TestPropertySource(
-    properties = {
-      "MAIL_ADDRESS=testAddress",
-      "MAIL_PASSWORD=testPassword",
-      "SECRET=testSecret",
-      "TOKEN_EXPIRATION=13124113213",
-      "PASSWORD_RESET_EXPIRATION_TIME=1232141"
-    })
+@TestPropertySource("classpath:test.properties")
 public class OfferControllerTest extends MvcPerformer {
   static final String API_BASE = "/api/vehicles";
   static final String SEARCH_URL = API_BASE + "/offers/search";

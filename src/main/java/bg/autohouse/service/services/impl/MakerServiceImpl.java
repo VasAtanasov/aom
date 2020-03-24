@@ -68,7 +68,9 @@ public class MakerServiceImpl implements MakerService {
 
     Model model = modelMapper.map(modelServiceModel, Model.class);
     model.setMaker(maker);
+    maker.getModels().add(model);
     modelRepository.save(model);
+    makerRepository.save(maker);
 
     return modelMapper.map(maker, MakerServiceModel.class);
   }

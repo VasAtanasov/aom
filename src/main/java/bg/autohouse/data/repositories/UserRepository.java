@@ -10,8 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-  @Query("SELECT u from User u where lower(u.username) = lower(:username)")
+  @Query("SELECT u from User u JOIN FETCH u.roles ur where lower(u.username) = lower(:username)")
   Optional<User> findByUsernameIgnoreCase(@Param("username") String username);
+
+  @Override
+  @Query("SELECT u from User u JOIN FETCH u.roles ur where u.id = :id")
+  Optional<User> findById(String id);
 
   Optional<User> findByEmail(String email);
 
