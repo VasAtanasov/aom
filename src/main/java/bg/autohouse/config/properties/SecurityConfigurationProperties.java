@@ -6,10 +6,10 @@ public class SecurityConfigurationProperties {
   @Value("${security.jwt.secret}")
   private String jwtSecret;
 
-  @Value("${security.jwt.expiration:864000000}")
+  @Value("${security.jwt.expiration}")
   private Long expirationTime;
 
-  @Value("${security.jwt.reset.pawssord.expiration:3600000}")
+  @Value("${security.jwt.reset.pawssord.expiration}")
   private Long passwordRestExpirationTime;
 
   public byte[] getJwtSecret() {
