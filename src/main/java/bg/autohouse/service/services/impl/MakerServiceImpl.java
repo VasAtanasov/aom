@@ -46,6 +46,12 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   @Transactional(readOnly = true)
+  public List<MakerModelServiceModel> getAllMakerWithModels() {
+    return modelMapper.mapAll(makerRepository.findAllWithModels(), MakerModelServiceModel.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public boolean isMaker(Long id) {
     return makerRepository.existsById(id);
   }

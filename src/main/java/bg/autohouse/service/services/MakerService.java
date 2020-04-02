@@ -11,6 +11,8 @@ public interface MakerService {
 
   List<MakerServiceModel> getAllMakers();
 
+  List<MakerModelServiceModel> getAllMakerWithModels();
+
   boolean isMaker(Long id);
 
   MakerServiceModel addModelToMaker(@Nonnull Long makerId, ModelServiceModel modelServiceModel);

@@ -1,6 +1,7 @@
 package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.Maker;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,9 @@ public interface MakerRepository extends JpaRepository<Maker, Long> {
   @Override
   @Query("SELECT DISTINCT m FROM Maker m LEFT JOIN FETCH m.models mo WHERE m.id = :id")
   Optional<Maker> findById(Long id);
+
+  @Query("SELECT DISTINCT m FROM Maker m LEFT JOIN FETCH m.models mo")
+  List<Maker> findAllWithModels();
 
   boolean existsByName(String name);
 }

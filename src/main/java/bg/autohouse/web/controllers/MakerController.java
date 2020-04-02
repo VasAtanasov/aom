@@ -40,11 +40,11 @@ public class MakerController extends BaseController {
   @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
 
-    List<MakerServiceModel> makerServiceModels = makerService.getAllMakers();
+    List<MakerModelServiceModel> makerServiceModels = makerService.getAllMakerWithModels();
 
-    List<MakerResponseModel> makers =
+    List<MakerResponseWrapper> makers =
         makerServiceModels.stream()
-            .map(model -> modelMapper.map(model, MakerResponseModel.class))
+            .map(model -> modelMapper.map(model, MakerResponseWrapper.class))
             .collect(Collectors.toUnmodifiableList());
 
     return handleRequestSuccess(toMap("makers", makers), REQUEST_SUCCESS);
