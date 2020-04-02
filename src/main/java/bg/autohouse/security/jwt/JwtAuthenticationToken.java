@@ -1,6 +1,7 @@
 package bg.autohouse.security.jwt;
 
 import bg.autohouse.data.models.BaseUuidEntity;
+import bg.autohouse.data.models.EntityConstants;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ import lombok.*;
 @AllArgsConstructor(staticName = "of")
 @Entity
 @Table(
-    name = "tokens",
+    name = EntityConstants.TOKENS,
     indexes = {@Index(name = "idx_token_id_username", columnList = "username, id", unique = false)})
 @NamedQuery(
     name = JwtAuthenticationToken.DELETE_TOKEN,

@@ -19,6 +19,8 @@ public class EntityConstants {
   public static final String OFFERS = PREFIX + "offers";
   public static final String VEHICLES = PREFIX + "vehicles";
   public static final String USERS = PREFIX + "users";
+  public static final String TRIMS = PREFIX + "trims";
+  public static final String TOKENS = PREFIX + "tokens";
 
   public static final Integer MIN_VALUE = 1;
   public static final Integer PRICE_TO = 10_000_000;
