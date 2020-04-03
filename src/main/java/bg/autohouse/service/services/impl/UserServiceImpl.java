@@ -71,10 +71,10 @@ public class UserServiceImpl implements UserService {
     return userRepository.existsByUsernameIgnoreCase(username);
   }
 
-  @Override
-  public Boolean existsByEmail(String email) {
-    return userRepository.existsByEmailIgnoreCase(email);
-  }
+  // @Override
+  // public Boolean existsByEmail(String email) {
+  //   return userRepository.existsByEmailIgnoreCase(email);
+  // }
 
   @Override
   public UserServiceModel register(UserRegisterServiceModel model) {
@@ -84,10 +84,10 @@ public class UserServiceImpl implements UserService {
           String.format(ExceptionsMessages.USERNAME_ALREADY_EXISTS, model.getUsername()));
     }
 
-    if (existsByEmail(model.getEmail())) {
-      throw new ResourceAlreadyExistsException(
-          String.format(ExceptionsMessages.EMAIL_ALREADY_EXISTS, model.getEmail()));
-    }
+    // if (existsByEmail(model.getEmail())) {
+    //   throw new ResourceAlreadyExistsException(
+    //       String.format(ExceptionsMessages.EMAIL_ALREADY_EXISTS, model.getEmail()));
+    // }
 
     User user = modelMapper.map(model, User.class);
 
@@ -181,13 +181,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public boolean requestPasswordReset(String email) {
+  public boolean requestPasswordReset(String username) {
 
-    if (!Assert.has(email)) {
+    if (!Assert.has(username)) {
       return false;
     }
 
-    User user = userRepository.findByEmail(email).orElse(null);
+    User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
+    // User user = userRepository.findByEmail(email).orElse(null);
 
     if (user == null) return false;
 

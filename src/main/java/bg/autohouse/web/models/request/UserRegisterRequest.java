@@ -11,7 +11,9 @@ import lombok.Data;
 @Builder
 @MatchingFieldsConstraint(fields = {"password", "confirmPassword"})
 public class UserRegisterRequest {
-  @NotBlank(message = "Username is required.")
+  // @NotBlank(message = "Username is required.")
+  @NotBlank(message = "Email is required")
+  @Email(message = "Email must be valid.")
   private String username;
 
   @NotBlank(message = "Password field is required")
@@ -21,9 +23,9 @@ public class UserRegisterRequest {
 
   private String phoneNumber;
 
-  @NotBlank(message = "Email is required")
-  @Email(message = "Email must be valid.")
-  private String email;
+  // @NotBlank(message = "Email is required")
+  // @Email(message = "Email must be valid.")
+  // private String email;
 
   @NotBlank(message = "First name is required field.")
   private String firstName;

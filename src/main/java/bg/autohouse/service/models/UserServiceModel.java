@@ -17,6 +17,6 @@ public class UserServiceModel {
   private String phoneNumber;
   private String firstName;
   private String lastName;
-  private String email;
+  // private String email;
   private String seller;
 }

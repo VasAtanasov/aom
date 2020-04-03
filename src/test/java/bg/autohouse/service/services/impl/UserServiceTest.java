@@ -26,7 +26,7 @@ public class UserServiceTest {
           .username("username")
           .password("password")
           .phoneNumber("phoneNumber")
-          .email("email")
+          // .email("email")
           .firstName("firstName")
           .lastName("lastName")
           .seller(Seller.PRIVATE.name())
@@ -73,7 +73,7 @@ public class UserServiceTest {
   @Test
   void whenExistsByEmail_whenTrue_shouldThrow() {
 
-    when(userService.existsByEmail(anyString())).thenReturn(Boolean.TRUE);
+    when(userService.existsByUsername(anyString())).thenReturn(Boolean.TRUE);
 
     Throwable thrown =
         catchThrowable(
@@ -81,7 +81,7 @@ public class UserServiceTest {
               userService.register(VALID_REGISTER_MODEL);
             });
     String message =
-        String.format(ExceptionsMessages.EMAIL_ALREADY_EXISTS, VALID_REGISTER_MODEL.getEmail());
+        String.format(ExceptionsMessages.EMAIL_ALREADY_EXISTS, VALID_REGISTER_MODEL.getUsername());
     assertThat(thrown).isInstanceOf(ResourceAlreadyExistsException.class).hasMessage(message);
   }
 }

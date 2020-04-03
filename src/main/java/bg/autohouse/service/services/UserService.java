@@ -12,7 +12,7 @@ public interface UserService extends UserDetailsService {
 
   Boolean existsByUsername(String username);
 
-  Boolean existsByEmail(String email);
+  // Boolean existsByEmail(String email);
 
   UserServiceModel register(UserRegisterServiceModel model);
 
@@ -20,7 +20,7 @@ public interface UserService extends UserDetailsService {
 
   boolean verifyEmailToken(String token);
 
-  boolean requestPasswordReset(String email);
+  boolean requestPasswordReset(String username);
 
   boolean resetPassword(String token, String password);
 }

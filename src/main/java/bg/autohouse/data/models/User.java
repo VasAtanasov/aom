@@ -36,8 +36,8 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "phone_number", nullable = true, length = 20, unique = true)
   private String phoneNumber;
 
-  @Column(name = "email", nullable = false, unique = true)
-  private String email;
+  // @Column(name = "email", nullable = false, unique = true)
+  // private String email;
 
   @Column(name = "first_name")
   private String firstName;

@@ -22,9 +22,9 @@ public interface UserRepository extends JpaRepository<User, String> {
   @Query("SELECT u from User u JOIN FETCH u.roles ur where u.id = :id")
   Optional<User> findById(String id);
 
-  Optional<User> findByEmail(String email);
+  // Optional<User> findByEmail(String email);
 
   boolean existsByUsernameIgnoreCase(String username);
 
-  boolean existsByEmailIgnoreCase(String email);
+  // boolean existsByEmailIgnoreCase(String email);
 }

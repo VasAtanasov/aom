@@ -36,7 +36,7 @@ public class JwtAuthenticationTokenProvider {
     claims.put("id", userId);
     claims.put("roles", roles);
     claims.put("username", user.getUsername());
-    claims.put("email", user.getEmail());
+    // claims.put("email", user.getEmail());
 
     return Jwts.builder()
         .setSubject(userId)
@@ -63,7 +63,7 @@ public class JwtAuthenticationTokenProvider {
     claims.put("id", userId);
     claims.put("roles", roles);
     claims.put("username", user.getUsername());
-    claims.put("email", user.getEmail());
+    // claims.put("email", user.getEmail());
 
     String token =
         Jwts.builder()
