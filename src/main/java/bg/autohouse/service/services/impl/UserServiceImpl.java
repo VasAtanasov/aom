@@ -1,15 +1,23 @@
 package bg.autohouse.service.services.impl;
 
+import bg.autohouse.data.models.Address;
+import bg.autohouse.data.models.Dealership;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
+import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.repositories.AddressRepository;
+import bg.autohouse.data.repositories.DealershipRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
+import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.security.jwt.JwtAuthenticationToken;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenProvider;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenRepository;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenSpecifications;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenType;
+import bg.autohouse.service.models.DealershipServiceModel;
+import bg.autohouse.service.models.RegisterServiceModel;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.EmailService;
@@ -40,6 +48,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final DealershipRepository dealershipRepository;
+  private final AddressRepository addressRepository;
   private final ModelMapperWrapper modelMapper;
   private final PasswordEncoder encoder;
   private final JwtAuthenticationTokenProvider tokenProvider;
@@ -67,35 +77,41 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Boolean existsByUsername(String username) {
+  public boolean existsByUsername(String username) {
     return userRepository.existsByUsernameIgnoreCase(username);
   }
 
-  // @Override
-  // public Boolean existsByEmail(String email) {
-  //   return userRepository.existsByEmailIgnoreCase(email);
-  // }
+  @Override
+  public boolean existsByDealershipName(String name) {
+    return dealershipRepository.existsByNameIgnoreCase(name);
+  }
 
   @Override
-  public UserServiceModel register(UserRegisterServiceModel model) {
+  public UserServiceModel register(RegisterServiceModel model) {
+    UserRegisterServiceModel registerServiceModel = model.getUser();
 
-    if (existsByUsername(model.getUsername())) {
-      throw new ResourceAlreadyExistsException(
-          String.format(ExceptionsMessages.USERNAME_ALREADY_EXISTS, model.getUsername()));
+    if (!Assert.has(model.getDealership())
+        && registerServiceModel.getSeller().equals(Seller.DEALER.name())) {
+      throw new IllegalStateException(ExceptionsMessages.INVALID_DEALER_DATA);
     }
 
-    // if (existsByEmail(model.getEmail())) {
-    //   throw new ResourceAlreadyExistsException(
-    //       String.format(ExceptionsMessages.EMAIL_ALREADY_EXISTS, model.getEmail()));
-    // }
+    if (existsByUsername(registerServiceModel.getUsername())) {
+      throw new ResourceAlreadyExistsException(
+          String.format(
+              ExceptionsMessages.USERNAME_ALREADY_EXISTS, registerServiceModel.getUsername()));
+    }
 
-    User user = modelMapper.map(model, User.class);
+    User user = modelMapper.map(registerServiceModel, User.class);
 
     log.info("Hashing password...");
-    user.setPassword(encoder.encode(model.getPassword()));
+    user.setPassword(encoder.encode(registerServiceModel.getPassword()));
     log.info("Saving user...");
     user.setRoles(getInheritedRolesFromRole(Role.USER));
     userRepository.save(user);
+
+    if (Assert.has(model.getDealership()) && user.getSeller().equals(Seller.DEALER)) {
+      registerDealer(user.getId(), model.getDealership());
+    }
 
     JwtAuthenticationToken token =
         tokenProvider.generateTokenEntity(user, JwtAuthenticationTokenType.REGISTRATION);
@@ -106,9 +122,38 @@ public class UserServiceImpl implements UserService {
     log.info("User id: " + user.getId());
 
     // TODO uncomment to when email enabled
-    // emailService.verifyEmail(user.getEmail(), token.getValue());
+    // emailService.verifyEmail(user.getUsername(), token.getValue());
 
     return modelMapper.map(user, UserServiceModel.class);
+  }
+
+  @Override
+  public DealershipServiceModel registerDealer(String userId, DealershipServiceModel dealer) {
+
+    if (existsByDealershipName(dealer.getName())) {
+      throw new ResourceAlreadyExistsException(
+          String.format(ExceptionsMessages.DEALERSHIP_ALREADY_EXISTS, dealer.getName()));
+    }
+
+    User user =
+        userRepository
+            .findById(userId)
+            .orElseThrow(
+                () ->
+                    new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+
+    Address address =
+        addressRepository
+            .findById(dealer.getLocationId())
+            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.INVALID_LOCATION));
+
+    Dealership dealership = modelMapper.map(dealer, Dealership.class);
+    dealership.setAddress(address);
+    dealership.setUser(user);
+    // dealership.setId(userId);
+    dealershipRepository.save(dealership);
+    log.info("Saved dealership with name: {}", dealership.getName());
+    return modelMapper.map(dealership, DealershipServiceModel.class);
   }
 
   @Override
@@ -163,11 +208,6 @@ public class UserServiceImpl implements UserService {
                     .and(JwtAuthenticationTokenSpecifications.withValue(token)))
             .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
 
-    // JwtAuthenticationToken tokenEntity =
-    //     tokenRepository
-    //         .findByValue(token)
-    //         .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
-
     if (!EnumUtils.has(tokenEntity.getType(), JwtAuthenticationTokenType.class)
         && tokenEntity.getType().equals(JwtAuthenticationTokenType.REGISTRATION)) {
       return false;
@@ -188,7 +228,6 @@ public class UserServiceImpl implements UserService {
     }
 
     User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
-    // User user = userRepository.findByEmail(email).orElse(null);
 
     if (user == null) return false;
 
@@ -204,7 +243,7 @@ public class UserServiceImpl implements UserService {
 
     // TODO uncomment to when email enabled
     // emailService.sendPasswordResetRequest(
-    //     user.getFirstName(), user.getEmail(), passwordResetToken.getValue());
+    //     user.getFirstName(), user.getUsername()), passwordResetToken.getValue());
 
     return true;
   }
@@ -235,7 +274,9 @@ public class UserServiceImpl implements UserService {
 
     JwtAuthenticationToken tokenEntity =
         tokenRepository
-            .findByValue(token)
+            .findOne(
+                JwtAuthenticationTokenSpecifications.forUser(user.getUsername())
+                    .and(JwtAuthenticationTokenSpecifications.withValue(token)))
             .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
 
     if (!EnumUtils.has(tokenEntity.getType(), JwtAuthenticationTokenType.class)

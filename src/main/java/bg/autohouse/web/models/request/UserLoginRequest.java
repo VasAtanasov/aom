@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class UserLoginRequest {
-  // @NotBlank(message = "Username cannot be blank.")
   @NotBlank(message = "Email is required")
   @Email(message = "Email must be valid.")
   private String username;

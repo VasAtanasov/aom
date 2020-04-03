@@ -15,7 +15,6 @@ public class UserRegisterServiceModel {
   private String username;
   private String password;
   private String phoneNumber;
-  // private String email;
   private String firstName;
   private String lastName;
   private String seller;

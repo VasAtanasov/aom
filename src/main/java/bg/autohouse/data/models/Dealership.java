@@ -13,7 +13,7 @@ public class Dealership extends BaseUuidEntity {
 
   private static final long serialVersionUID = 5897929406117962363L;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @MapsId
   @JoinColumn(name = "id")
   private User user;
@@ -24,6 +24,7 @@ public class Dealership extends BaseUuidEntity {
   @Column(name = "description")
   private String description;
 
-  @Column(name = "address", unique = true)
-  private String address;
+  @ManyToOne(targetEntity = Address.class, fetch = FetchType.LAZY)
+  @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
+  private Address address;
 }

@@ -22,11 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = EntityConstants.USERS)
 public class User extends BaseUuidEntity implements UserDetails {
 
-  // TODO add user data to database
-  // TODO user service and user controller
-
   private static final long serialVersionUID = -4468841758676373460L;
-
+  // username == email
   @Column(name = "username", nullable = false, unique = true)
   private String username;
 
@@ -35,9 +32,6 @@ public class User extends BaseUuidEntity implements UserDetails {
 
   @Column(name = "phone_number", nullable = true, length = 20, unique = true)
   private String phoneNumber;
-
-  // @Column(name = "email", nullable = false, unique = true)
-  // private String email;
 
   @Column(name = "first_name")
   private String firstName;

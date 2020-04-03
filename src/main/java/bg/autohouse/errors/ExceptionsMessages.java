@@ -19,4 +19,8 @@ public class ExceptionsMessages {
   public static final String NO_SUCH_USERNAME = "Could not lookup user, no such username.";
   public static final String NO_RECORD_FOUND = "Record with provided id is not found";
   public static final String INVALID_UPDATE_OPERATION = "Invalid update operation";
+  public static final String DEALERSHIP_ALREADY_EXISTS =
+      "Dealership by the name of %s already exists!";
+  public static final String INVALID_DEALER_DATA = "Missing or invalid dealer data.";
+  public static final String INVALID_LOCATION = "Invalid location identifier";
 }

@@ -29,14 +29,14 @@ public class OfferSpecifications {
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.maker, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.model, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.feature, JoinType.LEFT);
-        root.join(Offer_.location, JoinType.LEFT);
+        root.join(Offer_.address, JoinType.LEFT);
         root.join(Offer_.user, JoinType.LEFT);
       } else {
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.maker, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.model, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
-        root.fetch(Offer_.location, JoinType.LEFT);
+        root.fetch(Offer_.address, JoinType.LEFT);
         root.fetch(Offer_.user, JoinType.LEFT);
       }
 
