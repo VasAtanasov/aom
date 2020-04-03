@@ -27,7 +27,7 @@ public class Location extends BaseLongEntity {
   private String country;
 
   @Column(name = "postal_code")
-  private String postalCode;
+  private Integer postalCode;
 
   @Embedded
   @AttributeOverrides({
