@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.geo.Address;
 import javax.persistence.*;
 import lombok.*;
 

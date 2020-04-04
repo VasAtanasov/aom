@@ -1,5 +1,7 @@
-package bg.autohouse.data.models;
+package bg.autohouse.data.models.geo;
 
+import bg.autohouse.data.models.BaseLongEntity;
+import bg.autohouse.data.models.EntityConstants;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;

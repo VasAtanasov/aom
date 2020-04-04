@@ -1,4 +1,4 @@
-package bg.autohouse.data.models;
+package bg.autohouse.data.models.geo;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

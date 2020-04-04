@@ -1,10 +1,10 @@
 package bg.autohouse.service.services.impl;
 
-import bg.autohouse.data.models.Address;
 import bg.autohouse.data.models.Dealership;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.data.repositories.AddressRepository;
 import bg.autohouse.data.repositories.DealershipRepository;
 import bg.autohouse.data.repositories.UserRepository;

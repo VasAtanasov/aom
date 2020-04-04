@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.geo.Address;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
