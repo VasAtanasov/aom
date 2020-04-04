@@ -4,12 +4,10 @@ import bg.autohouse.data.models.Dealership;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.Seller;
-import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.data.repositories.AddressRepository;
 import bg.autohouse.data.repositories.DealershipRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
-import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.security.jwt.JwtAuthenticationToken;
 import bg.autohouse.security.jwt.JwtAuthenticationTokenProvider;
@@ -101,6 +99,11 @@ public class UserServiceImpl implements UserService {
               ExceptionsMessages.USERNAME_ALREADY_EXISTS, registerServiceModel.getUsername()));
     }
 
+    // Address address =
+    //     addressRepository
+    //         .findById(dealer.getLocationId())
+    //         .orElseThrow(() -> new NotFoundException(ExceptionsMessages.INVALID_LOCATION));
+    // TODO add addres to user on register
     User user = modelMapper.map(registerServiceModel, User.class);
 
     log.info("Hashing password...");
@@ -142,15 +145,8 @@ public class UserServiceImpl implements UserService {
                 () ->
                     new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
 
-    Address address =
-        addressRepository
-            .findById(dealer.getLocationId())
-            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.INVALID_LOCATION));
-
     Dealership dealership = modelMapper.map(dealer, Dealership.class);
-    dealership.setAddress(address);
     dealership.setUser(user);
-    // dealership.setId(userId);
     dealershipRepository.save(dealership);
     log.info("Saved dealership with name: {}", dealership.getName());
     return modelMapper.map(dealership, DealershipServiceModel.class);

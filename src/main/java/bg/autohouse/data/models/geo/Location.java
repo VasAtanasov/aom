@@ -19,6 +19,13 @@ public class Location extends BaseLongEntity {
 
   private static final long serialVersionUID = -2377398736911388136L;
 
+  @ManyToOne(targetEntity = Province.class, fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(
+      name = "province_id",
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_locations_provinces_id"))
+  private Province province;
+
   @Column(name = "city", nullable = false)
   private String city;
 

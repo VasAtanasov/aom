@@ -3,6 +3,8 @@ package bg.autohouse.data.models;
 import static bg.autohouse.validation.ValidationMessages.MAKER_NULL;
 
 import bg.autohouse.validation.maker.ModelName;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
@@ -37,6 +39,13 @@ public class Model extends BaseLongEntity {
       referencedColumnName = "id",
       foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_models_makers_id"))
   private Maker maker;
+
+  @OneToMany(
+      mappedBy = "model",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Trim> trims = new ArrayList<>();
 
   @Builder
   public Model(Long id, String name) {

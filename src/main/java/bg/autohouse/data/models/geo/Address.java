@@ -27,7 +27,8 @@ public class Address extends BaseLongEntity {
   @Column(name = "street_name")
   private String street;
 
-  @ManyToOne
-  @JoinColumn(name = "resident_user_id", nullable = true, updatable = true)
+  @MapsId
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "id")
   private User resident;
 }

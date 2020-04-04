@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// TO add location
+// TODO add location
 @Getter
 @Setter
 @NoArgsConstructor

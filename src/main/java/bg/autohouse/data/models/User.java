@@ -2,6 +2,7 @@ package bg.autohouse.data.models;
 
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.util.F;
 import java.util.Collection;
 import java.util.HashSet;
@@ -57,6 +58,13 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "role")
   @Enumerated(value = EnumType.STRING)
   private Set<Role> roles = new HashSet<>();
+
+  @OneToOne(
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      mappedBy = "resident")
+  private Address address;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

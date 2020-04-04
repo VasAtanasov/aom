@@ -15,7 +15,8 @@ public class Image extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1L;
 
-  @Column private String thumbnailUrl;
+  @Column(name = "thumbnail_url")
+  private String thumbnailUrl;
 
   @Column(nullable = false)
   private String url;

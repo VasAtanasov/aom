@@ -1,6 +1,5 @@
 package bg.autohouse.data.models;
 
-import bg.autohouse.data.models.geo.Address;
 import javax.persistence.*;
 import lombok.*;
 
@@ -24,8 +23,4 @@ public class Dealership extends BaseUuidEntity {
 
   @Column(name = "description")
   private String description;
-
-  @ManyToOne(targetEntity = Address.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
-  private Address address;
 }

@@ -1,6 +1,5 @@
 package bg.autohouse.data.models;
 
-import bg.autohouse.data.models.geo.Address;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,10 +45,6 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "price_modified_on")
   private Date priceModifiedOn;
-
-  @ManyToOne(targetEntity = Address.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
-  private Address address;
 
   @Column(name = "hit_count", columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer hitCount = 0;

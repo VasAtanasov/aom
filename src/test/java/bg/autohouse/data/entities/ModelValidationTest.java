@@ -4,6 +4,7 @@ import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Model;
 import bg.autohouse.validation.ValidationMessages;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 public class ModelValidationTest extends HibernateValidatorTest {
@@ -14,8 +15,8 @@ public class ModelValidationTest extends HibernateValidatorTest {
   @Test
   void whenModelName_isNull_shouldInvalidateWithMessage() {
     Maker maker = Maker.builder().name(MAKER).build();
-    Model modelNullName = Model.of(null, maker);
-    Model modelEmptyName = Model.of("", maker);
+    Model modelNullName = Model.of(null, maker, new ArrayList<>());
+    Model modelEmptyName = Model.of("", maker, new ArrayList<>());
 
     isInvalid(modelNullName);
     isInvalid(modelEmptyName);
@@ -25,7 +26,7 @@ public class ModelValidationTest extends HibernateValidatorTest {
 
   @Test
   void whenMaker_isNull_shouldInvalidateWithMessage() {
-    Model model = Model.of(MODEL, null);
+    Model model = Model.of(MODEL, null, new ArrayList<>());
 
     isInvalid(model);
     assertMessage(model, "maker", ValidationMessages.MAKER_NULL);
@@ -35,7 +36,7 @@ public class ModelValidationTest extends HibernateValidatorTest {
   void whenMakerName_isValid_shouldInvalidateWithMessage() {
     Maker maker = Maker.builder().name(MAKER).build();
 
-    Model model = Model.of(MODEL, maker);
+    Model model = Model.of(MODEL, maker, new ArrayList<>());
     isValid(maker);
     isValid(model);
   }
