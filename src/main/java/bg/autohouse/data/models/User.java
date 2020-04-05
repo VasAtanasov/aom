@@ -1,7 +1,7 @@
 package bg.autohouse.data.models;
 
 import bg.autohouse.data.models.enums.Role;
-import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.util.F;
 import java.util.Collection;
@@ -43,9 +43,9 @@ public class User extends BaseUuidEntity implements UserDetails {
   // TODO change to false when email confirmation applied.
   @Column private boolean enabled = true;
 
-  @Column(name = "seller", nullable = false)
+  @Column(name = "seller_type", nullable = false)
   @Enumerated(EnumType.STRING)
-  private Seller seller;
+  private SellerType sellerType;
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(

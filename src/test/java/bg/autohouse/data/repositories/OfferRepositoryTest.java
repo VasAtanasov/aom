@@ -9,7 +9,7 @@ import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
-import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Upholstery;
 import bg.autohouse.data.specifications.OfferSpecifications;
@@ -133,14 +133,14 @@ public class OfferRepositoryTest {
   @Test
   @Sql("/data.sql")
   void whenOfferFilter_bySeller_shouldReturnCollection() {
-    List<Seller> seller = Arrays.asList(Seller.DEALER);
-    Filter filter = Filter.builder().seller(seller).build();
+    List<SellerType> sellerTypes = Arrays.asList(SellerType.DEALER);
+    Filter filter = Filter.builder().sellerTypes(sellerTypes).build();
 
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
 
     List<Offer> offers = offerRepository.findAll(offerSpecification);
 
-    assertThat(offers).allMatch(offer -> seller.contains(offer.getUser().getSeller()));
+    assertThat(offers).allMatch(offer -> sellerTypes.contains(offer.getSeller().getSellerType()));
   }
 
   @Test

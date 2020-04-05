@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.MvcPerformer;
-import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.web.models.request.DealershipRegisterRequest;
 import bg.autohouse.web.models.request.RegisterRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
@@ -36,7 +36,7 @@ public class UserControllerTest extends MvcPerformer {
           .phoneNumber("phoneNumber1")
           .firstName("firstName")
           .lastName("lastName")
-          .seller(Seller.PRIVATE.name())
+          .seller(SellerType.PRIVATE.name())
           .build();
 
   private static final UserRegisterRequest VALID_DEALER_REGISTER_MODEL =
@@ -47,7 +47,7 @@ public class UserControllerTest extends MvcPerformer {
           .phoneNumber("phoneNumber2")
           .firstName("firstName")
           .lastName("lastName")
-          .seller(Seller.DEALER.name())
+          .seller(SellerType.DEALER.name())
           .build();
 
   private static final DealershipRegisterRequest VALID_DEALERSHIP_REGISTER_MODEL =

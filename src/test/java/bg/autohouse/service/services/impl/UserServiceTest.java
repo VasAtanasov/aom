@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.*;
 
 import bg.autohouse.SingletonModelMapper;
-import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.AddressRepository;
 import bg.autohouse.data.repositories.DealershipRepository;
 import bg.autohouse.data.repositories.UserRepository;
@@ -31,7 +31,7 @@ public class UserServiceTest {
           .phoneNumber("phoneNumber")
           .firstName("firstName")
           .lastName("lastName")
-          .seller(Seller.PRIVATE.name())
+          .seller(SellerType.PRIVATE.name())
           .build();
 
   private UserRepository userRepository;

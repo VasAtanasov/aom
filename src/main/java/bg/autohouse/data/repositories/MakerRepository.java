@@ -17,6 +17,9 @@ public interface MakerRepository extends JpaRepository<Maker, Long> {
   @Query("SELECT DISTINCT m FROM Maker m LEFT JOIN FETCH m.models mo WHERE m.id = :id")
   Optional<Maker> findById(Long id);
 
+  @Query("SELECT DISTINCT m FROM Maker m LEFT JOIN FETCH m.models mo WHERE m.id = :id")
+  Optional<Maker> findByIdWithModelsTrims(Long id);
+
   @Query("SELECT DISTINCT m FROM Maker m LEFT JOIN FETCH m.models mo")
   List<Maker> findAllWithModels();
 

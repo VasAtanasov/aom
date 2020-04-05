@@ -8,7 +8,7 @@ import bg.autohouse.data.models.enums.Drive;
 import bg.autohouse.data.models.enums.EuroStandard;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
-import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Transmission;
 import bg.autohouse.data.models.enums.Upholstery;
@@ -133,7 +133,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Builder.Default
   private List<Feature> feature = new ArrayList<>();
 
-  @ElementCollection(fetch = FetchType.LAZY, targetClass = Seller.class)
+  @ElementCollection(fetch = FetchType.LAZY, targetClass = SellerType.class)
   @JoinTable(
       name = "filter_seller",
       joinColumns =
@@ -144,7 +144,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Column(name = "seller")
   @Enumerated(value = EnumType.STRING)
   @Builder.Default
-  private List<Seller> seller = new ArrayList<>();
+  private List<SellerType> sellerTypes = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = State.class)
   @JoinTable(

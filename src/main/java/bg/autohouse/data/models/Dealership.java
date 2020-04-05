@@ -16,7 +16,7 @@ public class Dealership extends BaseUuidEntity {
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @MapsId
   @JoinColumn(name = "id")
-  private User user;
+  private User dealer;
 
   @Column(name = "name", nullable = false, unique = true)
   private String name;

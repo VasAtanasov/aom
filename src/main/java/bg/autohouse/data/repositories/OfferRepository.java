@@ -13,12 +13,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OfferRepository
     extends JpaRepository<Offer, String>, JpaSpecificationExecutor<Offer> {
-
+  // TODO to format queries for new location entity
   @Query(
       value =
           "SELECT o FROM Offer o "
               + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH o.location l "
               + "JOIN FETCH v.engine e "
               + "JOIN FETCH v.maker mk "
               + "JOIN FETCH v.model m "
@@ -29,7 +28,6 @@ public interface OfferRepository
       value =
           "SELECT o FROM Offer o "
               + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH o.location l "
               + "JOIN FETCH v.engine e "
               + "JOIN FETCH v.maker mk "
               + "JOIN FETCH v.model m "
@@ -40,7 +38,6 @@ public interface OfferRepository
       value =
           "SELECT o FROM Offer o "
               + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH o.location l "
               + "JOIN FETCH v.engine e "
               + "JOIN FETCH v.maker mk "
               + "JOIN FETCH v.model m "
@@ -48,7 +45,6 @@ public interface OfferRepository
       countQuery =
           "SELECT count(o) FROM Offer o "
               + "LEFT JOIN o.vehicle v "
-              + "LEFT JOIN o.location l "
               + "LEFT JOIN v.engine e "
               + "LEFT JOIN v.maker mk "
               + "LEFT JOIN v.model m "

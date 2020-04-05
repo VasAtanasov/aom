@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.media.Image;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
 
   @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-  private User user;
+  private User seller;
 
   @OneToOne(
       fetch = FetchType.LAZY,

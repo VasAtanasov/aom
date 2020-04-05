@@ -2,57 +2,38 @@ package bg.autohouse.service.services.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Mockito.*;
 
-import bg.autohouse.SingletonModelMapper;
 import bg.autohouse.data.models.Maker;
-import bg.autohouse.data.repositories.MakerRepository;
-import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
+import bg.autohouse.service.models.ModelTrimsServicesMode;
 import bg.autohouse.service.services.MakerService;
-import bg.autohouse.util.ModelMapperWrapper;
-import bg.autohouse.util.ModelMapperWrapperImpl;
-import java.util.Optional;
-import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@Sql("/makersModelsTrims.sql")
+@TestPropertySource("classpath:test.properties")
+@Transactional
 public class MakerServiceImplTest {
 
-  private MakerRepository makerRepository;
-  private ModelRepository modelRepository;
-  private MakerService makerService;
-  private ModelMapperWrapper modelMapper =
-      new ModelMapperWrapperImpl(SingletonModelMapper.mapper());
+  @Autowired private MakerService makerService;
 
-  @BeforeEach
-  void setUp() {
-    makerRepository = mock(MakerRepository.class);
-    modelRepository = mock(ModelRepository.class);
-    makerService = new MakerServiceImpl(makerRepository, modelRepository, modelMapper);
-  }
-
-  @ParameterizedTest
-  @MethodSource("validMares")
-  void whenFindById_withExistingMaker_returnsCorrectlyMappedObject(Maker maker) {
-
-    when(makerRepository.findById(maker.getId())).thenReturn(Optional.of(maker));
-
-    MakerModelServiceModel result = makerService.getOne(maker.getId());
-
-    assertThat(result).isNotNull();
-  }
-
-  private static Stream<Maker> validMares() {
-    return Stream.of(
-        Maker.builder().id(1L).name("Audi").build(), Maker.builder().id(2L).name("BMW").build());
+  @Test
+  void whenGetMaker_byId_shouldReturn() {
+    MakerModelServiceModel maker = makerService.getOne(1L);
+    assertThat(maker).isNotNull();
   }
 
   @Test
@@ -61,7 +42,7 @@ public class MakerServiceImplTest {
     Throwable thrown =
         catchThrowable(
             () -> {
-              makerService.getOne(1L);
+              makerService.getOne(1000L);
             });
 
     assertThat(thrown)
@@ -74,7 +55,7 @@ public class MakerServiceImplTest {
     Throwable thrown =
         catchThrowable(
             () -> {
-              makerService.addModelToMaker(1L, ModelServiceModel.of(1L, "name", 1L));
+              makerService.addModelToMaker(1000L, ModelServiceModel.of(1L, "name", 1000L));
             });
 
     assertThat(thrown)
@@ -84,16 +65,12 @@ public class MakerServiceImplTest {
 
   @Test
   void whenAddModelToMaker_withExistingModelName_shouldThrow() {
-    Maker maker = Maker.builder().id(1L).name("Audi").build();
-    ModelServiceModel model = ModelServiceModel.of(1L, "Q5", maker.getId());
-
-    when(makerRepository.findById(anyLong())).thenReturn(Optional.of(maker));
-    when(modelRepository.existsByNameAndMakerId(anyString(), anyLong())).thenReturn(true);
+    ModelServiceModel model = ModelServiceModel.builder().name("ILX").makerId(2L).build();
 
     Throwable thrown =
         catchThrowable(
             () -> {
-              makerService.addModelToMaker(maker.getId(), model);
+              makerService.addModelToMaker(2L, model);
             });
 
     assertThat(thrown)
@@ -106,11 +83,20 @@ public class MakerServiceImplTest {
     Maker maker = Maker.builder().id(1L).name("Audi").build();
     ModelServiceModel model = ModelServiceModel.of(1L, "Q5", maker.getId());
 
-    when(makerRepository.findById(anyLong())).thenReturn(Optional.of(maker));
-    when(modelRepository.existsByNameAndMakerId(anyString(), anyLong())).thenReturn(false);
-
     MakerServiceModel updatedMaker = makerService.addModelToMaker(maker.getId(), model);
 
     assertThat(updatedMaker).isNotNull();
+  }
+
+  @Test
+  void whenFindModelsForMaker_shouldReturnAllModels() {
+    List<ModelTrimsServicesMode> models = makerService.getMakerModelsTrims(2L);
+    assertThat(models).isNotNull();
+  }
+
+  @Test
+  void whenGetAllMakers_shouldReturnAll() {
+    List<MakerModelServiceModel> makers = makerService.getAllMakerWithModels();
+    assertThat(makers).isNotNull();
   }
 }

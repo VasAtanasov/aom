@@ -1,6 +1,6 @@
 package bg.autohouse.validation.user;
 
-import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.EnumUtils;
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class SellerValidator implements ConstraintValidator<ValidSeller, String>
       return false;
     }
 
-    Optional<Seller> euroStandard = EnumUtils.fromString(value, Seller.class);
+    Optional<SellerType> euroStandard = EnumUtils.fromString(value, SellerType.class);
 
     return euroStandard.isPresent();
   }

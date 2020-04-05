@@ -29,13 +29,13 @@ public class OfferSpecifications {
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.maker, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.model, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.feature, JoinType.LEFT);
-        root.join(Offer_.user, JoinType.LEFT);
+        root.join(Offer_.seller, JoinType.LEFT);
       } else {
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.maker, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.model, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
-        root.fetch(Offer_.user, JoinType.LEFT);
+        root.fetch(Offer_.seller, JoinType.LEFT);
       }
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
@@ -92,9 +92,10 @@ public class OfferSpecifications {
                     cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.feature)));
               });
 
-      if (!F.isNullOrEmpty(filter.getSeller())) {
-        List<Seller> sellers = F.filterToList(filter.getSeller(), seller -> Assert.has(seller));
-        restrictions.add(cb.isTrue(root.get(Offer_.user).get(User_.seller).in(sellers)));
+      if (!F.isNullOrEmpty(filter.getSellerTypes())) {
+        List<SellerType> sellers =
+            F.filterToList(filter.getSellerTypes(), seller -> Assert.has(seller));
+        restrictions.add(cb.isTrue(root.get(Offer_.seller).get(User_.sellerType).in(sellers)));
       }
 
       if (!F.isNullOrEmpty(filter.getState())) {

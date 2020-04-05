@@ -3,7 +3,7 @@ package bg.autohouse.service.services.impl;
 import bg.autohouse.data.models.Dealership;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
-import bg.autohouse.data.models.enums.Seller;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.AddressRepository;
 import bg.autohouse.data.repositories.DealershipRepository;
 import bg.autohouse.data.repositories.UserRepository;
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     UserRegisterServiceModel registerServiceModel = model.getUser();
 
     if (!Assert.has(model.getDealership())
-        && registerServiceModel.getSeller().equals(Seller.DEALER.name())) {
+        && registerServiceModel.getSeller().equals(SellerType.DEALER.name())) {
       throw new IllegalStateException(ExceptionsMessages.INVALID_DEALER_DATA);
     }
 
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
     user.setRoles(getInheritedRolesFromRole(Role.USER));
     userRepository.save(user);
 
-    if (Assert.has(model.getDealership()) && user.getSeller().equals(Seller.DEALER)) {
+    if (Assert.has(model.getDealership()) && user.getSellerType().equals(SellerType.DEALER)) {
       registerDealer(user.getId(), model.getDealership());
     }
 
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
                     new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
 
     Dealership dealership = modelMapper.map(dealer, Dealership.class);
-    dealership.setUser(user);
+    dealership.setDealer(user);
     dealershipRepository.save(dealership);
     log.info("Saved dealership with name: {}", dealership.getName());
     return modelMapper.map(dealership, DealershipServiceModel.class);
