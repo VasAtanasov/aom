@@ -1,7 +1,7 @@
 package bg.autohouse.web.controllers;
 
 import bg.autohouse.util.Assert;
-import bg.autohouse.web.models.response.ApiResponseModel;
+import bg.autohouse.web.models.response.ResponseWrapper;
 import com.google.common.collect.ImmutableMap;
 import java.net.URI;
 import java.util.List;
@@ -36,7 +36,7 @@ public class BaseController {
 
     return ResponseEntity.created(location)
         .body(
-            ApiResponseModel.builder()
+            ResponseWrapper.builder()
                 .success(Boolean.TRUE)
                 .message(Assert.has(message) ? message : status.getReasonPhrase())
                 .data(payload)
@@ -50,7 +50,7 @@ public class BaseController {
 
     return ResponseEntity.ok()
         .body(
-            ApiResponseModel.builder()
+            ResponseWrapper.builder()
                 .success(Boolean.TRUE)
                 .message(Assert.has(message) ? message : status.getReasonPhrase())
                 .data(payload)

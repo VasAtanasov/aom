@@ -10,10 +10,12 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
 import bg.autohouse.web.models.response.MakerResponseWrapper;
+import bg.autohouse.web.util.RestUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
@@ -47,7 +49,9 @@ public class MakerController extends BaseController {
             .map(model -> modelMapper.map(model, MakerResponseWrapper.class))
             .collect(Collectors.toUnmodifiableList());
 
-    return handleRequestSuccess(toMap("makers", makers), REQUEST_SUCCESS);
+    // return handleRequestSuccess(toMap("makers", makers), REQUEST_SUCCESS);
+    return RestUtil.okayResponseWithData(
+        RestMessage.MAKERS_RETRIEVED_SUCCESSFUL, toMap("makers", makers));
   }
 
   @PreAuthorize("hasRole('ADMIN')")

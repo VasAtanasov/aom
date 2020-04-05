@@ -11,12 +11,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor(staticName = "of")
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder({"success", "message", "status", "timestamp", "data", "errors"})
-public class ApiResponseModel {
+public class ResponseWrapper {
   @JsonProperty("success")
   private Boolean success;
 

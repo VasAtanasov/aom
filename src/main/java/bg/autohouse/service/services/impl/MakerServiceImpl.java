@@ -7,7 +7,6 @@ import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
-import bg.autohouse.service.models.MakerModelCarsServiceModel;
 import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
@@ -88,13 +87,6 @@ public class MakerServiceImpl implements MakerService {
   public List<ModelTrimsServicesMode> getMakerModelsTrims(Long makerId) {
     return modelMapper.mapAll(
         modelRepository.findAllByMakerId(makerId), ModelTrimsServicesMode.class);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<MakerModelCarsServiceModel> getMakerModelCars(Long makerId) {
-
-    return null;
   }
 
   @Override

@@ -9,8 +9,8 @@ import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.PaginationHeadersUtils;
 import bg.autohouse.web.models.request.FilterRequest;
 import bg.autohouse.web.models.request.OfferCreateRequest;
-import bg.autohouse.web.models.response.ApiResponseModel;
 import bg.autohouse.web.models.response.OfferResponseModel;
+import bg.autohouse.web.models.response.ResponseWrapper;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class OfferController extends BaseController {
     return ResponseEntity.ok()
         .headers(PaginationHeadersUtils.buildPaginationHeaders(page))
         .body(
-            ApiResponseModel.builder()
+            ResponseWrapper.builder()
                 .success(Boolean.TRUE)
                 .message(REQUEST_SUCCESS)
                 .data(toMap("page", page))

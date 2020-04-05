@@ -2,7 +2,7 @@ package bg.autohouse.web.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import bg.autohouse.web.models.response.ApiResponseModel;
+import bg.autohouse.web.models.response.ResponseWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ResponseBodyMatchers {
   public ResultMatcher containsError(String expectedFieldName, String expectedMessage) {
     return mvcResult -> {
       String json = mvcResult.getResponse().getContentAsString();
-      ApiResponseModel errorResult = objectMapper.readValue(json, ApiResponseModel.class);
+      ResponseWrapper errorResult = objectMapper.readValue(json, ResponseWrapper.class);
 
       List<LinkedHashMap<String, String>> fieldErrors =
           (List<LinkedHashMap<String, String>>) errorResult.getErrors();

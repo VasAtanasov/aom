@@ -3,7 +3,6 @@ package bg.autohouse.data.repositories;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bg.autohouse.data.models.Model;
-import bg.autohouse.data.projections.ModelProjection;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
@@ -28,11 +27,22 @@ public class ModelRepositoryTest {
   }
 
   @Test
-  void whenGetMakerModelsYears_shouldReturnModelsWithYears() {
-    List<ModelProjection> models =
-        modelRepository.findMakerModelsYears(2L).collect(Collectors.toList());
-
-    int a = 5;
+  void whenFindByModelId_shouldReturnTrims() {
+    List<Model> models = modelRepository.findAllByModelId(2L).collect(Collectors.toList());
     assertThat(models).isNotEmpty();
+  }
+
+  @Test
+  void whenFindByModelId_shouldReturnModelYears() {
+    List<Object[]> modelsYears =
+        modelRepository.findAllYearsByModelId(2L).collect(Collectors.toList());
+    assertThat(modelsYears).isNotEmpty();
+  }
+
+  @Test
+  void whenFindByModelIdAndModelYear_shouldReturnModelYearTrims() {
+    List<Model> modelsYears =
+        modelRepository.findAllByModelIdAndModelYear(2L, 2020).collect(Collectors.toList());
+    assertThat(modelsYears).isNotEmpty();
   }
 }

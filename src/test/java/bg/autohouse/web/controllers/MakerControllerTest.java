@@ -13,6 +13,7 @@ import bg.autohouse.common.Constants;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.utils.WithAutohouseUser;
 import bg.autohouse.validation.ValidationMessages;
+import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @Transactional
-@Sql("/data.sql")
+@Sql("/makersModelsTrims.sql")
 @TestPropertySource("classpath:test.properties")
 public class MakerControllerTest extends MvcPerformer {
   static final String API_BASE = "/api/vehicles";
@@ -52,6 +53,7 @@ public class MakerControllerTest extends MvcPerformer {
     performGet(API_BASE + "/makers")
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success", is(true)))
+        .andExpect(jsonPath("$.message", is(RestMessage.MAKERS_RETRIEVED_SUCCESSFUL.name())))
         .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())));
   }
 

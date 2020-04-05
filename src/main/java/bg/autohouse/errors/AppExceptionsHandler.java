@@ -4,7 +4,7 @@ import bg.autohouse.errors.models.HttpMediaTypeErrorModel;
 import bg.autohouse.errors.models.HttpRequestMethodErrorModel;
 import bg.autohouse.errors.models.ValidationErrorModel;
 import bg.autohouse.util.Assert;
-import bg.autohouse.web.models.response.ApiResponseModel;
+import bg.autohouse.web.models.response.ResponseWrapper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Collections;
@@ -94,8 +94,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     final HttpStatus httpStatus = getHttpStatusCode(ex);
 
-    final ApiResponseModel response =
-        exposeApiResponseErrorModelWithPayLoad(ex, httpStatus, errors);
+    final ResponseWrapper response = exposeApiResponseErrorModelWithPayLoad(ex, httpStatus, errors);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
@@ -111,8 +110,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     final HttpStatus httpStatus = getHttpStatusCode(ex);
 
-    final ApiResponseModel response =
-        exposeApiResponseErrorModelWithPayLoad(ex, httpStatus, errors);
+    final ResponseWrapper response = exposeApiResponseErrorModelWithPayLoad(ex, httpStatus, errors);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
@@ -133,7 +131,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
             + " should be of type "
             + ex.getRequiredType();
 
-    final ApiResponseModel response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
+    final ResponseWrapper response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
@@ -149,7 +147,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     final String error = ex.getRequestPartName() + " part is missing";
 
-    final ApiResponseModel response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
+    final ResponseWrapper response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
@@ -165,7 +163,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     final String error = ex.getParameterName() + " parameter is missing";
 
-    final ApiResponseModel response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
+    final ResponseWrapper response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
@@ -182,7 +180,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     final String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
 
-    final ApiResponseModel response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
+    final ResponseWrapper response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
@@ -197,7 +195,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     final String error = ExceptionsMessages.INVALID_DATA_TYPE;
 
-    final ApiResponseModel response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
+    final ResponseWrapper response = exposeApiResponseErrorModelWithMessage(ex, httpStatus, error);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
   }
@@ -219,7 +217,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
             .supportedMethods(ex.getSupportedHttpMethods())
             .build();
 
-    final ApiResponseModel response =
+    final ResponseWrapper response =
         exposeApiResponseErrorModelWithPayLoad(ex, httpStatus, httpRequestMethodErrorModel);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
@@ -239,7 +237,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
     final HttpMediaTypeErrorModel httpMediaTypeErrorModel =
         HttpMediaTypeErrorModel.builder().mediaType(ex.getSupportedMediaTypes()).build();
 
-    ApiResponseModel response =
+    ResponseWrapper response =
         exposeApiResponseErrorModelWithPayLoad(ex, httpStatus, httpMediaTypeErrorModel);
 
     return handleExceptionInternal(ex, response, headers, httpStatus, request);
@@ -259,7 +257,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
     final HttpMediaTypeErrorModel httpMediaTypeErrorModel =
         HttpMediaTypeErrorModel.builder().mediaType(ex.getSupportedMediaTypes()).build();
 
-    ApiResponseModel response =
+    ResponseWrapper response =
         exposeApiResponseErrorModelWithPayLoad(
             ex, httpStatus, Collections.singleton(httpMediaTypeErrorModel));
 
@@ -274,7 +272,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
     logger.error("Global error handler exception: ", ex);
     final HttpStatus httpStatus = getHttpStatusCode(ex);
 
-    final ApiResponseModel response =
+    final ResponseWrapper response =
         exposeApiResponseErrorModelWithMessage(ex, httpStatus, "Something went wrong.");
 
     return handleExceptionInternal(ex, response, new HttpHeaders(), httpStatus, request);
@@ -294,34 +292,31 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
     final HttpStatus httpStatus = getHttpStatusCode(ex);
 
-    final ApiResponseModel response = exposeApiResponseErrorModel(ex, httpStatus);
+    final ResponseWrapper response = exposeApiResponseErrorModel(ex, httpStatus);
 
     return handleExceptionInternal(ex, response, new HttpHeaders(), httpStatus, request);
   }
 
-  public ApiResponseModel exposeApiResponseErrorModel(
+  public ResponseWrapper exposeApiResponseErrorModel(
       final Throwable ex, final HttpStatus httpStatus) {
     return exposeApiResponseErrorModelInternal(ex, httpStatus, null, null);
   }
 
-  public ApiResponseModel exposeApiResponseErrorModelWithMessage(
+  public ResponseWrapper exposeApiResponseErrorModelWithMessage(
       final Throwable ex, final HttpStatus httpStatus, final String message) {
     return exposeApiResponseErrorModelInternal(ex, httpStatus, null, message);
   }
 
-  public ApiResponseModel exposeApiResponseErrorModelWithPayLoad(
+  public ResponseWrapper exposeApiResponseErrorModelWithPayLoad(
       final Throwable ex, HttpStatus httpStatus, Object payload) {
     return exposeApiResponseErrorModelInternal(ex, httpStatus, payload, null);
   }
 
-  private ApiResponseModel exposeApiResponseErrorModelInternal(
+  private ResponseWrapper exposeApiResponseErrorModelInternal(
       final Throwable ex, final HttpStatus httpStatus, final Object payload, final String message) {
 
-    final ApiResponseModel.ApiResponseModelBuilder builder =
-        ApiResponseModel.builder()
-            .success(Boolean.FALSE)
-            .status(httpStatus.value())
-            .errors(payload);
+    final ResponseWrapper.ResponseWrapperBuilder builder =
+        ResponseWrapper.builder().success(Boolean.FALSE).status(httpStatus.value()).errors(payload);
 
     if (Assert.has(message)) {
       builder.message(message);
