@@ -1,9 +1,7 @@
 package bg.autohouse.web.controllers;
 
-import static bg.autohouse.common.Constants.*;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
-import bg.autohouse.common.Constants;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
@@ -48,10 +46,8 @@ public class MakerController extends BaseController {
         makerServiceModels.stream()
             .map(model -> modelMapper.map(model, MakerResponseWrapper.class))
             .collect(Collectors.toUnmodifiableList());
-
-    // return handleRequestSuccess(toMap("makers", makers), REQUEST_SUCCESS);
     return RestUtil.okayResponseWithData(
-        RestMessage.MAKERS_RETRIEVED_SUCCESSFUL, toMap("makers", makers));
+        RestMessage.MAKERS_GET_SUCCESSFUL, toMap("makers", makers));
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -61,20 +57,20 @@ public class MakerController extends BaseController {
   public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
     MakerServiceModel makerServiceModel = modelMapper.map(createRequest, MakerServiceModel.class);
     MakerServiceModel createdMaker = makerService.createMaker(makerServiceModel);
-    return handleCreateSuccess(
-        toMap("maker", modelMapper.map(createdMaker, MakerResponseModel.class)),
-        String.format(Constants.MAKER_CREATE_SUCCESS, createRequest.getName()),
-        WebConfiguration.URL_API_BASE + WebConfiguration.URL_MAKERS);
+    MakerResponseModel data = modelMapper.map(createdMaker, MakerResponseModel.class);
+    String locationURI = WebConfiguration.URL_API_BASE + WebConfiguration.URL_MAKERS;
+    return RestUtil.createSuccessResponse(
+        toMap("maker", data), RestMessage.MAKER_CREATED, locationURI);
   }
 
-  // TODO only admins and moderators can add makers and models
   @GetMapping(
       value = "/{makerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakerById(@Valid @PathVariable Long makerId) {
     MakerModelServiceModel model = makerService.getOne(makerId);
     MakerResponseWrapper maker = modelMapper.map(model, MakerResponseWrapper.class);
-    return handleRequestSuccess(toMap("maker", maker), REQUEST_SUCCESS);
+
+    return RestUtil.okayResponseWithData(RestMessage.MAKER_GET_SUCCESSFUL, toMap("maker", maker));
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -88,11 +84,8 @@ public class MakerController extends BaseController {
     ModelServiceModel modelServiceModel = modelMapper.map(createRequest, ModelServiceModel.class);
     makerService.addModelToMaker(makerId, modelServiceModel);
 
-    MakerResponseWrapper makerResponseModel =
+    MakerResponseWrapper maker =
         modelMapper.map(makerService.getOne(makerId), MakerResponseWrapper.class);
-
-    String message =
-        String.format(MODEL_CREATE_SUCCESS, createRequest.getName(), makerResponseModel.getName());
 
     String locationURI =
         WebConfiguration.URL_API_BASE
@@ -102,6 +95,6 @@ public class MakerController extends BaseController {
             + "/"
             + WebConfiguration.URL_MODELS;
 
-    return handleCreateSuccess(makerResponseModel, message, locationURI);
+    return RestUtil.createSuccessResponse(maker, RestMessage.MAKER_MODEL_CREATED, locationURI);
   }
 }

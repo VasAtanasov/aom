@@ -1,11 +1,13 @@
 package bg.autohouse.web.controllers;
 
-import static bg.autohouse.common.Constants.*;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.InitialStateModel;
 import bg.autohouse.service.services.InitialStateService;
+import bg.autohouse.web.enums.RestMessage;
+import bg.autohouse.web.models.response.ResponseWrapper;
+import bg.autohouse.web.util.RestUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController extends BaseController {
 
   private final InitialStateService initialStateService;
-  // TODO add permissions to controllers
+
   @GetMapping(
       value = "/state",
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> getInitialState() {
-
+  public ResponseEntity<ResponseWrapper> getInitialState() {
     InitialStateModel initialState = initialStateService.getInitialState();
-
-    return handleRequestSuccess(initialState, REQUEST_SUCCESS);
+    return RestUtil.okayResponseWithData(RestMessage.INITIAL_STATE_GET_SUCCESSFUL, initialState);
   }
 }

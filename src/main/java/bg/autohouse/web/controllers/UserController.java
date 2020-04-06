@@ -2,14 +2,15 @@ package bg.autohouse.web.controllers;
 
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
-import bg.autohouse.common.Constants;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.RegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.RegisterRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
+import bg.autohouse.web.util.RestUtil;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,11 @@ public class UserController extends BaseController {
   public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest model) {
     RegisterServiceModel registerServiceModel = modelMapper.map(model, RegisterServiceModel.class);
     UserServiceModel serviceModel = userService.register(registerServiceModel);
-    return handleCreateSuccess(
-        serviceModel,
-        Constants.USER_CREATE_SUCCESS,
+    String locationUrl =
         WebConfiguration.URL_API_BASE
             + WebConfiguration.URL_USER_BASE
-            + WebConfiguration.URL_USER_REGISTER);
+            + WebConfiguration.URL_USER_REGISTER;
+    return RestUtil.createSuccessResponse(
+        serviceModel, RestMessage.USER_REGISTRATION_SUCCESSFUL, locationUrl);
   }
 }

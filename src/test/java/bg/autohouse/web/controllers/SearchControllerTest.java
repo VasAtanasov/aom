@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Sql("/data.sql")
 @TestPropertySource("classpath:test.properties")
-public class OfferControllerTest extends MvcPerformer {
+public class SearchControllerTest extends MvcPerformer {
   static final String API_BASE = "/api/vehicles";
   static final String SEARCH_URL = API_BASE + "/offers/search";
 

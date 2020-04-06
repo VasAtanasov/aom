@@ -53,7 +53,7 @@ public class MakerControllerTest extends MvcPerformer {
     performGet(API_BASE + "/makers")
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success", is(true)))
-        .andExpect(jsonPath("$.message", is(RestMessage.MAKERS_RETRIEVED_SUCCESSFUL.name())))
+        .andExpect(jsonPath("$.message", is(RestMessage.MAKERS_GET_SUCCESSFUL.name())))
         .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())));
   }
 
@@ -65,6 +65,7 @@ public class MakerControllerTest extends MvcPerformer {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
+        .andExpect(jsonPath("$.message", is(RestMessage.MAKER_GET_SUCCESSFUL.name())))
         .andExpect(jsonPath("$.data.maker.id", is(1)));
   }
 

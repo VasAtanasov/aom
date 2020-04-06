@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-// @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ActiveProfiles("test")
 @Transactional
 @Sql("/data.sql")
