@@ -11,7 +11,8 @@ public class ExceptionsMessages {
   public static final String MODEL_WITH_NAME_EXISTS = "Model with given name already exists!";
   public static final String INVALID_DATA_TYPE = "Type miss-match in request body.";
 
-  public static final String USERNAME_ALREADY_EXISTS = "Username %s already exists!";
+  public static final String USER_ALREADY_EXISTS = "User already exists!";
+  public static final String INVALID_PHONE_NUMBER = "Invalid phone number";
   public static final String EMAIL_ALREADY_EXISTS = "Email %s already exists";
   public static final String EXCEPTION_USER_NOT_FOUND_ID = "No user was found with provided id!";
   public static final String INVALID_TOKEN = "Invalid or nonexistent token!";

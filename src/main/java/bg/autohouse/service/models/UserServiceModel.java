@@ -15,7 +15,5 @@ public class UserServiceModel {
   private String id;
   private String username;
   private String phoneNumber;
-  private String firstName;
-  private String lastName;
   private String seller;
 }

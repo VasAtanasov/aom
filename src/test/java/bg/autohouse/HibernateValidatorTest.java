@@ -6,7 +6,9 @@ import java.util.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class HibernateValidatorTest {
 
   protected Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -16,6 +18,7 @@ public abstract class HibernateValidatorTest {
   }
 
   protected <T> void isInvalid(T target) {
+    log.info(String.format("%s", validator.validate(target).isEmpty() == false));
     assertFalse(validator.validate(target).isEmpty());
   }
 
@@ -48,6 +51,7 @@ public abstract class HibernateValidatorTest {
       fail(String.format("Field \"%s\" doesn't have error message: %s", field, message));
     }
 
+    log.info(String.format("%s", violations.get(field).contains(message)));
     assertTrue(violations.get(field).contains(message));
   }
 }

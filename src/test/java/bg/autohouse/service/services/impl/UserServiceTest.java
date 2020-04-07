@@ -70,9 +70,25 @@ public class UserServiceTest {
             () -> {
               userService.register(VALID_REGISTER_MODEL);
             });
-    String message =
-        String.format(
-            ExceptionsMessages.USERNAME_ALREADY_EXISTS, VALID_REGISTER_MODEL.getUsername());
-    assertThat(thrown).isInstanceOf(ResourceAlreadyExistsException.class).hasMessage(message);
+
+    assertThat(thrown)
+        .isInstanceOf(ResourceAlreadyExistsException.class)
+        .hasMessage(ExceptionsMessages.USER_ALREADY_EXISTS);
+  }
+
+  @Test
+  void whenExistsByPhoneNumber_whenTrue_shouldThrow() {
+
+    when(userService.existsByPhoneNumber(anyString())).thenReturn(Boolean.TRUE);
+
+    Throwable thrown =
+        catchThrowable(
+            () -> {
+              userService.register(VALID_REGISTER_MODEL);
+            });
+
+    assertThat(thrown)
+        .isInstanceOf(ResourceAlreadyExistsException.class)
+        .hasMessage(ExceptionsMessages.USER_ALREADY_EXISTS);
   }
 }

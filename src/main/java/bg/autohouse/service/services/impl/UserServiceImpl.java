@@ -75,17 +75,35 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserServiceModel register(UserRegisterServiceModel registerServiceModel) {
-    if (existsByUsername(registerServiceModel.getUsername())) {
-      throw new ResourceAlreadyExistsException(
-          String.format(
-              ExceptionsMessages.USERNAME_ALREADY_EXISTS, registerServiceModel.getUsername()));
+  public boolean existsByPhoneNumber(String phoneNumber) {
+    return userRepository.existsByPhoneNumberIgnoreCase(phoneNumber);
+  }
+
+  @Override
+  public UserServiceModel register(UserRegisterServiceModel model) {
+    if (Assert.isEmpty(model.getPhoneNumber()) && Assert.isEmpty(model.getUsername())) {
+      throw new UsernameNotFoundException("User phone number or email address is required");
     }
 
-    User user = modelMapper.map(registerServiceModel, User.class);
+    log.info("about to try use phone & email : {}", model.getPhoneNumber(), model.getUsername());
+
+    String phoneNumber = model.getPhoneNumber();
+    String emailAddress = model.getUsername();
+    long start = System.nanoTime();
+    boolean userExists =
+        (Assert.has(phoneNumber) && existsByPhoneNumber(phoneNumber))
+            || (Assert.has(emailAddress) && existsByUsername(emailAddress));
+    long time = System.nanoTime() - start;
+    log.info("User exists check took {} nanosecs", time);
+
+    if (userExists) {
+      throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
+    }
+
+    User user = modelMapper.map(model, User.class);
 
     log.info("Hashing password...");
-    user.setPassword(encoder.encode(registerServiceModel.getPassword()));
+    user.setPassword(encoder.encode(model.getPassword()));
     log.info("Saving user...");
     user.setRoles(getInheritedRolesFromRole(Role.USER));
     userRepository.save(user);

@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+@Slf4j
 public class VehicleCreateRequestTest extends HibernateValidatorTest {
   private static final String ERROR_MESSAGE = "Positive value must be provided: %s";
   private static final String INVALID_VALUE = "Invalid value";
@@ -57,6 +59,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
 
     isInvalid(vehicleCreateRequest);
     assertMessage(vehicleCreateRequest, field, message);
+    log.info(field + ": " + message);
   }
 
   private static Stream<Arguments> createRequestSet() {

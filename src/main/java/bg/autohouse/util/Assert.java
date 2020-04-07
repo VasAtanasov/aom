@@ -17,12 +17,20 @@ public class Assert implements Serializable {
     return object != null;
   }
 
+  public static boolean isEmpty(Object object) {
+    return !has(object);
+  }
+
   /** @return TRUE when given text has any character, FALSE otherwise */
   public static boolean has(String text) {
     if (text != null && text.trim().length() > 0) {
       return true;
     }
     return false;
+  }
+
+  public static boolean isEmpty(String text) {
+    return !has(text);
   }
 
   /** @return TRUE when given text contains the given substring, FALSE otherwise */
@@ -49,6 +57,10 @@ public class Assert implements Serializable {
     return false;
   }
 
+  public static boolean isEmpty(Object[] array) {
+    return !has(array);
+  }
+
   /**
    * @return TRUE when given collection has elements; that is, it must not be {@code null} and must
    *     have at least one element. @return FALSE otherwise
@@ -59,6 +71,10 @@ public class Assert implements Serializable {
     } else {
       return false;
     }
+  }
+
+  public static boolean isEmpty(Collection<?> collection) {
+    return !has(collection);
   }
 
   /**
@@ -73,5 +89,9 @@ public class Assert implements Serializable {
       return true;
     }
     return false;
+  }
+
+  public static boolean isEmpty(Map<?, ?> map) {
+    return !has(map);
   }
 }
