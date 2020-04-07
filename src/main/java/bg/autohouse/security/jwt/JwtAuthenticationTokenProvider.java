@@ -9,18 +9,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class JwtAuthenticationTokenProvider {
   @Autowired private SecurityConfigurationProperties securityConfigurationProperties;
-
-  public String generateToken(Authentication authentication) {
-    User user = (User) authentication.getPrincipal();
-    return generateToken(user);
-  }
 
   public String generateToken(User user) {
     Date now = new Date();
@@ -30,7 +24,7 @@ public class JwtAuthenticationTokenProvider {
     String roles =
         user.getAuthorities().stream()
             .map(role -> role.toString())
-            .collect(Collectors.joining(", "));
+            .collect(Collectors.joining(","));
 
     Map<String, Object> claims = new HashMap<>();
     claims.put("id", userId);
@@ -56,7 +50,7 @@ public class JwtAuthenticationTokenProvider {
     String roles =
         user.getAuthorities().stream()
             .map(role -> role.toString())
-            .collect(Collectors.joining(", "));
+            .collect(Collectors.joining(","));
 
     Map<String, Object> claims = new HashMap<>();
     claims.put("id", userId);
@@ -72,23 +66,20 @@ public class JwtAuthenticationTokenProvider {
             .signWith(SignatureAlgorithm.HS512, securityConfigurationProperties.getJwtSecret())
             .compact();
 
-    return JwtAuthenticationToken.of(token, tokenType, user.getUsername(), expiryDate);
+    return new JwtAuthenticationToken(
+        token, tokenType, user.getUsername(), securityConfigurationProperties.getExpirationTime());
   }
 
+  // private String getTokenString()
+
   public String getUserIdFromJWT(String token) {
-    Claims claims =
-        Jwts.parser()
-            .setSigningKey(securityConfigurationProperties.getJwtSecret())
-            .parseClaimsJws(token)
-            .getBody();
-    return (String) claims.get("id");
+    Claims claims = extractClaims(token);
+    return claims.get("id", String.class);
   }
 
   public boolean validateToken(String authToken) {
     try {
-      Jwts.parser()
-          .setSigningKey(securityConfigurationProperties.getJwtSecret())
-          .parseClaimsJws(authToken);
+      parseToken(authToken);
       return true;
     } catch (SignatureException ex) {
       log.error("Invalid JWT signature");
@@ -105,23 +96,27 @@ public class JwtAuthenticationTokenProvider {
   }
 
   public boolean hasTokenExpired(String token) {
-    boolean returnValue = false;
-
     try {
-      Claims claims =
-          Jwts.parser()
-              .setSigningKey(securityConfigurationProperties.getJwtSecret())
-              .parseClaimsJws(token)
-              .getBody();
-
+      Claims claims = extractClaims(token);
       Date tokenExpirationDate = claims.getExpiration();
       Date todayDate = new Date();
-
-      returnValue = tokenExpirationDate.before(todayDate);
+      return tokenExpirationDate.before(todayDate);
     } catch (ExpiredJwtException ex) {
-      returnValue = true;
+      log.error("The token is expired.", ex);
+      return true;
+    } catch (Exception ex) {
+      log.error("Unexpected token validation error.", ex);
+      return true;
     }
+  }
 
-    return returnValue;
+  private Claims extractClaims(String token) {
+    return parseToken(token).getBody();
+  }
+
+  private Jws<Claims> parseToken(String token) {
+    return Jwts.parser()
+        .setSigningKey(securityConfigurationProperties.getJwtSecret())
+        .parseClaimsJws(token);
   }
 }

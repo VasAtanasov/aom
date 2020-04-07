@@ -15,7 +15,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
 @Entity
 @Table(
     name = EntityConstants.TOKENS,
@@ -40,4 +39,13 @@ public class JwtAuthenticationToken extends BaseUuidEntity {
 
   @Column(name = "expiration_time")
   private Date expirationTime;
+
+  public JwtAuthenticationToken(
+      String value, JwtAuthenticationTokenType type, String username, Long expirationTime) {
+    this.value = value;
+    this.type = type;
+    this.username = username;
+    Date now = new Date();
+    this.expirationTime = new Date(now.getTime() + expirationTime);
+  }
 }

@@ -47,15 +47,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
   }
 
-  // TODO add roles to claims
   @Override
   protected void successfulAuthentication(
       HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth)
       throws IOException, ServletException {
 
     User user = ((User) auth.getPrincipal());
-    user.getAuthorities();
-    String token = tokenProvider.generateToken(auth);
+    // user.getAuthorities();
+    String token = tokenProvider.generateToken(user);
 
     res.getWriter()
         .append(SecurityConstants.HEADER_STRING + ": " + SecurityConstants.TOKEN_PREFIX + token);

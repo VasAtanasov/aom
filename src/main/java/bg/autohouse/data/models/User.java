@@ -1,8 +1,8 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.SellerType;
-import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.util.F;
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,12 +34,6 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "phone_number", nullable = true, length = 20, unique = true)
   private String phoneNumber;
 
-  @Column(name = "first_name")
-  private String firstName;
-
-  @Column(name = "last_name")
-  private String lastName;
-
   // TODO change to false when email confirmation applied.
   @Column private boolean enabled = true;
 
@@ -64,7 +58,7 @@ public class User extends BaseUuidEntity implements UserDetails {
       cascade = CascadeType.ALL,
       orphanRemoval = true,
       mappedBy = "resident")
-  private Address address;
+  private Account account;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

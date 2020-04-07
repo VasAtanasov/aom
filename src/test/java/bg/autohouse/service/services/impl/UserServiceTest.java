@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import bg.autohouse.SingletonModelMapper;
 import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.AddressRepository;
-import bg.autohouse.data.repositories.DealershipRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
@@ -35,7 +34,6 @@ public class UserServiceTest {
           .build();
 
   private UserRepository userRepository;
-  private DealershipRepository dealershipRepository;
   private PasswordEncoder encoder;
   private UserService userService;
   private EmailService emailService;
@@ -53,12 +51,10 @@ public class UserServiceTest {
     emailService = mock(EmailService.class);
     tokenProvider = mock(JwtAuthenticationTokenProvider.class);
     tokenRepository = mock(JwtAuthenticationTokenRepository.class);
-    dealershipRepository = mock(DealershipRepository.class);
     addressRepository = mock(AddressRepository.class);
     userService =
         new UserServiceImpl(
             userRepository,
-            dealershipRepository,
             addressRepository,
             modelMapper,
             encoder,

@@ -1,11 +1,9 @@
 package bg.autohouse.service.services.impl;
 
-import bg.autohouse.data.models.Dealership;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.AddressRepository;
-import bg.autohouse.data.repositories.DealershipRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
@@ -46,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
-  private final DealershipRepository dealershipRepository;
   private final AddressRepository addressRepository;
   private final ModelMapperWrapper modelMapper;
   private final PasswordEncoder encoder;
@@ -77,11 +74,6 @@ public class UserServiceImpl implements UserService {
   @Override
   public boolean existsByUsername(String username) {
     return userRepository.existsByUsernameIgnoreCase(username);
-  }
-
-  @Override
-  public boolean existsByDealershipName(String name) {
-    return dealershipRepository.existsByNameIgnoreCase(name);
   }
 
   @Override
@@ -133,23 +125,26 @@ public class UserServiceImpl implements UserService {
   @Override
   public DealershipServiceModel registerDealer(String userId, DealershipServiceModel dealer) {
 
-    if (existsByDealershipName(dealer.getName())) {
-      throw new ResourceAlreadyExistsException(
-          String.format(ExceptionsMessages.DEALERSHIP_ALREADY_EXISTS, dealer.getName()));
-    }
+    // if (existsByDealershipName(dealer.getName())) {
+    //   throw new ResourceAlreadyExistsException(
+    //       String.format(ExceptionsMessages.DEALERSHIP_ALREADY_EXISTS, dealer.getName()));
+    // }
 
-    User user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(
-                () ->
-                    new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+    // User user =
+    //     userRepository
+    //         .findById(userId)
+    //         .orElseThrow(
+    //             () ->
+    //                 new
+    // UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
 
-    Dealership dealership = modelMapper.map(dealer, Dealership.class);
-    dealership.setDealer(user);
-    dealershipRepository.save(dealership);
-    log.info("Saved dealership with name: {}", dealership.getName());
-    return modelMapper.map(dealership, DealershipServiceModel.class);
+    // Dealership dealership = modelMapper.map(dealer, Dealership.class);
+    // dealership.setDealer(user);
+    // dealershipRepository.save(dealership);
+    // log.info("Saved dealership with name: {}", dealership.getName());
+    // return modelMapper.map(dealership, DealershipServiceModel.class);
+
+    return null;
   }
 
   @Override
@@ -165,8 +160,8 @@ public class UserServiceImpl implements UserService {
       throw new IllegalStateException(ExceptionsMessages.INVALID_UPDATE_OPERATION);
     }
 
-    userEntity.setFirstName(user.getFirstName());
-    userEntity.setLastName(user.getLastName());
+    // userEntity.setFirstName(user.getFirstName());
+    // userEntity.setLastName(user.getLastName());
 
     userRepository.save(userEntity);
 

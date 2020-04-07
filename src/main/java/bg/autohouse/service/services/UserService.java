@@ -13,8 +13,6 @@ public interface UserService extends UserDetailsService {
 
   boolean existsByUsername(String username);
 
-  boolean existsByDealershipName(String name);
-
   UserServiceModel register(RegisterServiceModel model);
 
   DealershipServiceModel registerDealer(String userId, DealershipServiceModel dealer);
