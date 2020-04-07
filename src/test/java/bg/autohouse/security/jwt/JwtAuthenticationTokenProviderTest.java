@@ -26,9 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Sql("/data.sql")
 @TestPropertySource("classpath:test.properties")
 public class JwtAuthenticationTokenProviderTest {
-  @Autowired private JwtAuthenticationTokenRepository tokenRepository;
+  @Autowired private JwtTokenRepository tokenRepository;
   @Autowired private UserRepository userRepository;
-  @Autowired private JwtAuthenticationTokenProvider tokenProvider;
+  @Autowired private JwtTokenProvider tokenProvider;
   @Autowired private SecurityConfigurationProperties props;
 
   @BeforeEach
@@ -37,9 +37,12 @@ public class JwtAuthenticationTokenProviderTest {
     log.info("Jwt expiration: {}", props.getExpirationTime());
     log.info("Jwt password reset expiration: {}", props.getPasswordRestExpirationTime());
     List<User> users = userRepository.findAllWithRoles();
-    List<JwtAuthenticationToken> tokens =
+    List<JwtToken> tokens =
         users.stream()
-            .map(u -> tokenProvider.generateTokenEntity(u, JwtAuthenticationTokenType.VALIDATION))
+            .map(
+                user ->
+                    tokenProvider.createJwtEntity(
+                        new JwtTokenCreateRequest(JwtTokenType.VALIDATION, user)))
             .collect(Collectors.toList());
     tokenRepository.saveAll(tokens);
   }
@@ -51,9 +54,9 @@ public class JwtAuthenticationTokenProviderTest {
 
   @Test
   void whenFindToken_existingUser_ShouldReturnNonNull() {
-    JwtAuthenticationToken tokenEntity =
+    JwtToken tokenEntity =
         tokenRepository
-            .findOne(JwtAuthenticationTokenSpecifications.forUser("vas"))
+            .findOne(JwtTokenSpecifications.forUser("vas"))
             .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
     assertThat(tokenEntity).isNotNull();
   }

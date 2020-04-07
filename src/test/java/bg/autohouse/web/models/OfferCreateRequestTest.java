@@ -35,7 +35,6 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
                   Feature.NIGHT_VIEW_ASSIST.name(),
                   Feature.EMERGENCY_BRAKE_ASSISTANT.name(),
                   Feature.DRIVER_SIDE_AIRBAG.name()))
-          .upholstery(Upholstery.FULL_LEATHER.name())
           .build();
 
   private static final VehicleCreateRequest INVALID_VEHICLE_STATE =
@@ -58,7 +57,6 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
                   Feature.NIGHT_VIEW_ASSIST.name(),
                   Feature.EMERGENCY_BRAKE_ASSISTANT.name(),
                   Feature.DRIVER_SIDE_AIRBAG.name()))
-          .upholstery(Upholstery.FULL_LEATHER.name())
           .build();
 
   private static final VehicleCreateRequest INVALID_VEHICLE_ENGINE_FUEL_TYPE =
@@ -81,7 +79,6 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
                   Feature.NIGHT_VIEW_ASSIST.name(),
                   Feature.EMERGENCY_BRAKE_ASSISTANT.name(),
                   Feature.DRIVER_SIDE_AIRBAG.name()))
-          .upholstery(Upholstery.FULL_LEATHER.name())
           .build();
 
   private static final String VALID_DESCRIPTION = "This is valid description.";

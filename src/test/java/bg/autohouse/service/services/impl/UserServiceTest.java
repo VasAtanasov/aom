@@ -10,9 +10,8 @@ import bg.autohouse.data.repositories.AddressRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
-import bg.autohouse.security.jwt.JwtAuthenticationTokenProvider;
-import bg.autohouse.security.jwt.JwtAuthenticationTokenRepository;
-import bg.autohouse.service.models.RegisterServiceModel;
+import bg.autohouse.security.jwt.JwtTokenProvider;
+import bg.autohouse.security.jwt.JwtTokenRepository;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.services.EmailService;
 import bg.autohouse.service.services.UserService;
@@ -28,8 +27,6 @@ public class UserServiceTest {
           .username("username")
           .password("password")
           .phoneNumber("phoneNumber")
-          .firstName("firstName")
-          .lastName("lastName")
           .seller(SellerType.PRIVATE.name())
           .build();
 
@@ -37,10 +34,10 @@ public class UserServiceTest {
   private PasswordEncoder encoder;
   private UserService userService;
   private EmailService emailService;
-  private JwtAuthenticationTokenRepository tokenRepository;
+  private JwtTokenRepository tokenRepository;
   private AddressRepository addressRepository;
 
-  private JwtAuthenticationTokenProvider tokenProvider;
+  private JwtTokenProvider tokenProvider;
   private ModelMapperWrapper modelMapper =
       new ModelMapperWrapperImpl(SingletonModelMapper.mapper());
 
@@ -49,8 +46,8 @@ public class UserServiceTest {
     userRepository = mock(UserRepository.class);
     encoder = mock(PasswordEncoder.class);
     emailService = mock(EmailService.class);
-    tokenProvider = mock(JwtAuthenticationTokenProvider.class);
-    tokenRepository = mock(JwtAuthenticationTokenRepository.class);
+    tokenProvider = mock(JwtTokenProvider.class);
+    tokenRepository = mock(JwtTokenRepository.class);
     addressRepository = mock(AddressRepository.class);
     userService =
         new UserServiceImpl(
@@ -67,13 +64,11 @@ public class UserServiceTest {
   void whenExistsByUsername_whenTrue_shouldThrow() {
 
     when(userService.existsByUsername(anyString())).thenReturn(Boolean.TRUE);
-    RegisterServiceModel registerServiceModel =
-        RegisterServiceModel.builder().user(VALID_REGISTER_MODEL).build();
 
     Throwable thrown =
         catchThrowable(
             () -> {
-              userService.register(registerServiceModel);
+              userService.register(VALID_REGISTER_MODEL);
             });
     String message =
         String.format(

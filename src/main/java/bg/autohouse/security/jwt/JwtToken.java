@@ -15,16 +15,17 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(
     name = EntityConstants.TOKENS,
     indexes = {@Index(name = "idx_token_id_username", columnList = "username, id", unique = false)})
 @NamedQuery(
-    name = JwtAuthenticationToken.DELETE_TOKEN,
-    query = "DELETE FROM JwtAuthenticationToken t where t.expirationTime <= :now")
-public class JwtAuthenticationToken extends BaseUuidEntity {
+    name = JwtToken.DELETE_TOKEN,
+    query = "DELETE FROM JwtToken t where t.expirationTime <= :now")
+public class JwtToken extends BaseUuidEntity {
 
-  public static final String DELETE_TOKEN = "JwtAuthenticationToken.deleteAllExpiredSince";
+  public static final String DELETE_TOKEN = "JwtToken.deleteAllExpiredSince";
   private static final long serialVersionUID = -3553731653107716142L;
 
   @Column(name = "value", nullable = false, updatable = false, columnDefinition = "TEXT")
@@ -32,20 +33,14 @@ public class JwtAuthenticationToken extends BaseUuidEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "type", nullable = false)
-  private JwtAuthenticationTokenType type;
+  private JwtTokenType type;
 
   @Column(name = "username", nullable = false)
   private String username;
 
+  @Column(name = "user_id")
+  private String userId;
+
   @Column(name = "expiration_time")
   private Date expirationTime;
-
-  public JwtAuthenticationToken(
-      String value, JwtAuthenticationTokenType type, String username, Long expirationTime) {
-    this.value = value;
-    this.type = type;
-    this.username = username;
-    Date now = new Date();
-    this.expirationTime = new Date(now.getTime() + expirationTime);
-  }
 }

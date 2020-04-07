@@ -7,7 +7,6 @@ import bg.autohouse.data.models.enums.Drive;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Transmission;
-import bg.autohouse.data.models.enums.Upholstery;
 import bg.autohouse.validation.ValidationMessages;
 import bg.autohouse.web.models.request.EngineCreateRequest;
 import bg.autohouse.web.models.request.VehicleCreateRequest;
@@ -76,7 +75,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
                 .features(validFeatures)
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .build(),
             "mileage",
             String.format(ERROR_MESSAGE, "mileage")),
@@ -94,7 +92,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
                 .features(validFeatures)
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .build(),
             "seats",
             String.format(ERROR_MESSAGE, "seats")),
@@ -111,7 +108,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "doors",
@@ -129,7 +125,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "state",
@@ -147,7 +142,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(INVALID_VALUE)
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "transmission",
@@ -165,7 +159,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(INVALID_VALUE)
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "drive",
@@ -183,7 +176,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(INVALID_VALUE)
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "color",
@@ -201,7 +193,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(INVALID_VALUE)
                 .features(validFeatures)
                 .build(),
             "upholstery",
@@ -219,7 +210,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "bodyStyle",
@@ -237,7 +227,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "engine.fuelType",
@@ -255,7 +244,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "engine.power",
@@ -273,7 +261,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(validFeatures)
                 .build(),
             "engine.euroStandard",
@@ -291,7 +278,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(invalidFeatures)
                 .build(),
             "features",
@@ -309,7 +295,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.DARK_RED.name())
-                .upholstery(Upholstery.FULL_LEATHER.name())
                 .features(new ArrayList<>())
                 .build(),
             "features",

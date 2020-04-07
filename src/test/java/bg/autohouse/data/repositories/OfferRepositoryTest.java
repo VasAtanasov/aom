@@ -11,7 +11,6 @@ import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.models.enums.State;
-import bg.autohouse.data.models.enums.Upholstery;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import java.util.Arrays;
 import java.util.List;
@@ -100,19 +99,6 @@ public class OfferRepositoryTest {
     List<Offer> offers = offerRepository.findAll(offerSpecification);
 
     assertThat(offers).allMatch(offer -> state.contains(offer.getVehicle().getState()));
-  }
-
-  @Test
-  @Sql("/data.sql")
-  void whenOfferFilter_byUpholstery_shouldReturnCollection() {
-    List<Upholstery> upholsteries = Arrays.asList(Upholstery.FULL_LEATHER);
-    Filter filter = Filter.builder().upholstery(upholsteries).build();
-
-    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
-
-    List<Offer> offers = offerRepository.findAll(offerSpecification);
-
-    assertThat(offers).allMatch(offer -> upholsteries.contains(offer.getVehicle().getUpholstery()));
   }
 
   @Test

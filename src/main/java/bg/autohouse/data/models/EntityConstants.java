@@ -23,6 +23,7 @@ public class EntityConstants {
   public static final String USERS = PREFIX + "users";
   public static final String DEALER = PREFIX + "dealer_accounts";
   public static final String PRIVATE = PREFIX + "private_accounts";
+  public static final String ACCOUNTS = PREFIX + "accounts";
   public static final String TRIMS = PREFIX + "trims";
   public static final String TOKENS = PREFIX + "tokens";
 

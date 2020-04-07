@@ -1,8 +1,7 @@
 package bg.autohouse.service.services;
 
 import bg.autohouse.data.models.User;
-import bg.autohouse.service.models.DealershipServiceModel;
-import bg.autohouse.service.models.RegisterServiceModel;
+import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.web.models.request.UserDetailsUpdateRequest;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +12,7 @@ public interface UserService extends UserDetailsService {
 
   boolean existsByUsername(String username);
 
-  UserServiceModel register(RegisterServiceModel model);
-
-  DealershipServiceModel registerDealer(String userId, DealershipServiceModel dealer);
+  UserServiceModel register(UserRegisterServiceModel model);
 
   UserServiceModel updateUser(String userId, UserDetailsUpdateRequest user, User loggedUser);
 

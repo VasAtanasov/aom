@@ -8,12 +8,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JwtAuthenticationTokenRepository
-    extends JpaRepository<JwtAuthenticationToken, String>,
-        JpaSpecificationExecutor<JwtAuthenticationToken> {
+public interface JwtTokenRepository
+    extends JpaRepository<JwtToken, String>, JpaSpecificationExecutor<JwtToken> {
 
   @Modifying
   void deleteAllExpiredSince(Date now);
 
-  Optional<JwtAuthenticationToken> findByValue(String value);
+  Optional<JwtToken> findByValue(String value);
 }

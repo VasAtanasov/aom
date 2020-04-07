@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.data.models.enums.SellerType;
-import bg.autohouse.web.models.request.DealershipRegisterRequest;
-import bg.autohouse.web.models.request.RegisterRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +32,6 @@ public class UserControllerTest extends MvcPerformer {
           .password("password")
           .confirmPassword("password")
           .phoneNumber("phoneNumber1")
-          .firstName("firstName")
-          .lastName("lastName")
           .seller(SellerType.PRIVATE.name())
           .build();
 
@@ -45,17 +41,7 @@ public class UserControllerTest extends MvcPerformer {
           .password("password")
           .confirmPassword("password")
           .phoneNumber("phoneNumber2")
-          .firstName("firstName")
-          .lastName("lastName")
           .seller(SellerType.DEALER.name())
-          .build();
-
-  private static final DealershipRegisterRequest VALID_DEALERSHIP_REGISTER_MODEL =
-      DealershipRegisterRequest.builder()
-          .name("name")
-          .description("description")
-          .address("address")
-          .locationId(2L)
           .build();
 
   @Autowired protected MockMvc mockMvc;
@@ -67,10 +53,8 @@ public class UserControllerTest extends MvcPerformer {
 
   @Test
   void whenRegisterPrivateSeller_thenReturns201() throws Exception {
-    RegisterRequest registerRequest =
-        RegisterRequest.builder().user(VALID_USER_REGISTER_MODEL).build();
 
-    performPost(API_BASE + "/register", registerRequest)
+    performPost(API_BASE + "/register", VALID_USER_REGISTER_MODEL)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
@@ -80,13 +64,7 @@ public class UserControllerTest extends MvcPerformer {
   @Sql("/location.sql")
   void whenRegisterDealer_thenReturns201() throws Exception {
 
-    RegisterRequest registerRequest =
-        RegisterRequest.builder()
-            .user(VALID_DEALER_REGISTER_MODEL)
-            .dealership(VALID_DEALERSHIP_REGISTER_MODEL)
-            .build();
-
-    performPost(API_BASE + "/register", registerRequest)
+    performPost(API_BASE + "/register", VALID_DEALER_REGISTER_MODEL)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));

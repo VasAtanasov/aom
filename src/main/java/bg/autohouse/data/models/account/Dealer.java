@@ -10,17 +10,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@DiscriminatorValue("1")
 @Table(name = EntityConstants.DEALER)
-public class Dealership extends Account {
+public class Dealer extends Account {
 
   private static final long serialVersionUID = 5897929406117962363L;
-  private static final int DEFAULT_DEALER_OFFERS_COUNT = 50;
 
-  @Column(name = "max_offers_count")
-  private int maxOffersCount = DEFAULT_DEALER_OFFERS_COUNT;
-
-  @Column(name = "name", nullable = false, unique = true)
-  private String name;
+  @Column(name = "dealership_name", unique = true)
+  private String dealershipName;
 
   @Column(name = "description")
   private String description;

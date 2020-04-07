@@ -91,7 +91,11 @@ public enum Feature implements Textable {
   WITH_FULL_SERVICE_HISTORY("With full service history"),
   PARTICULATE_FILTER("Particulate filter"),
   NON_SMOKING_VEHICLE("Non-smoking vehicle"),
-  METALLIC("Metallic");
+  METALLIC("Metallic"),
+  CLOTH("Cloth"),
+  FULL_LEATHER("Full leather"),
+  PART_LEATHER("Part leather"),
+  VELOUR("Velour");
 
   private final String text;
 

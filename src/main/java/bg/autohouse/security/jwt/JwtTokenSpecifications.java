@@ -2,13 +2,13 @@ package bg.autohouse.security.jwt;
 
 import org.springframework.data.jpa.domain.Specification;
 
-public class JwtAuthenticationTokenSpecifications {
+public class JwtTokenSpecifications {
 
-  public static Specification<JwtAuthenticationToken> forUser(final String username) {
+  public static Specification<JwtToken> forUser(final String username) {
     return (root, query, cb) -> cb.equal(root.get(JwtAuthenticationToken_.username), username);
   }
 
-  public static Specification<JwtAuthenticationToken> withValue(final String value) {
+  public static Specification<JwtToken> withValue(final String value) {
     return (root, query, cb) -> cb.equal(root.get(JwtAuthenticationToken_.value), value);
   }
 }

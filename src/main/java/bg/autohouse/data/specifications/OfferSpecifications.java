@@ -103,13 +103,6 @@ public class OfferSpecifications {
         restrictions.add(cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.state).in(states)));
       }
 
-      if (!F.isNullOrEmpty(filter.getUpholstery())) {
-        List<Upholstery> upholsteries =
-            F.filterToList(filter.getUpholstery(), upholstery -> Assert.has(upholstery));
-        restrictions.add(
-            cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.upholstery).in(upholsteries)));
-      }
-
       restrictions.add(
           cb.between(
               root.get(Offer_.price), filter.getPrice().getFrom(), filter.getPrice().getTo()));

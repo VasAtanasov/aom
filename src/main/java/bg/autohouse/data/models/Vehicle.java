@@ -75,10 +75,6 @@ public class Vehicle extends BaseUuidEntity {
   @Enumerated(EnumType.STRING)
   private Color color;
 
-  @Column(name = "upholstery")
-  @Enumerated(EnumType.STRING)
-  private Upholstery upholstery;
-
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
       name = "vehicle_feature",

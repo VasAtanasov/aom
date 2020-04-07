@@ -3,13 +3,13 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
-import bg.autohouse.service.models.RegisterServiceModel;
+import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
-import bg.autohouse.web.models.request.RegisterRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
+import bg.autohouse.web.models.request.UserRegisterRequest;
 import bg.autohouse.web.util.RestUtil;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +38,9 @@ public class UserController extends BaseController {
       value = WebConfiguration.URL_USER_REGISTER,
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest model) {
-    RegisterServiceModel registerServiceModel = modelMapper.map(model, RegisterServiceModel.class);
+  public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest model) {
+    UserRegisterServiceModel registerServiceModel =
+        modelMapper.map(model, UserRegisterServiceModel.class);
     UserServiceModel serviceModel = userService.register(registerServiceModel);
     String locationUrl =
         WebConfiguration.URL_API_BASE

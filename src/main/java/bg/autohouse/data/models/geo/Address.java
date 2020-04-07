@@ -1,8 +1,8 @@
 package bg.autohouse.data.models.geo;
 
-import bg.autohouse.data.models.BaseLongEntity;
+import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
-import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.account.Dealer;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -16,12 +16,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = EntityConstants.ADDRESSES)
-public class Address extends BaseLongEntity {
+public class Address extends BaseUuidEntity {
 
   private static final long serialVersionUID = -2377398736911388136L;
 
   @ManyToOne
-  @JoinColumn(name = "location_id", nullable = true, updatable = true)
+  @JoinColumn(name = "location_id", nullable = false, updatable = true)
   private Location location;
 
   @Column(name = "street_name")
@@ -30,5 +30,5 @@ public class Address extends BaseLongEntity {
   @MapsId
   @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "id")
-  private User resident;
+  private Dealer resident;
 }

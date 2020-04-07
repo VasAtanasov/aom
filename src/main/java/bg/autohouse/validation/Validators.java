@@ -8,7 +8,6 @@ import bg.autohouse.validation.offer.FeatureListValidator;
 import bg.autohouse.validation.offer.FuelTypeValidator;
 import bg.autohouse.validation.offer.StateValidator;
 import bg.autohouse.validation.offer.TransmissionValidator;
-import bg.autohouse.validation.offer.UpholsteryValidator;
 import java.util.List;
 import lombok.experimental.UtilityClass;
 
@@ -44,9 +43,5 @@ public class Validators {
 
   public static boolean isValidTransmission(final String value) {
     return TransmissionValidator.validate(value);
-  }
-
-  public static boolean isValidUpholstery(final String value) {
-    return UpholsteryValidator.validate(value);
   }
 }

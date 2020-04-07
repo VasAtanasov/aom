@@ -7,7 +7,6 @@ import bg.autohouse.validation.offer.ValidFeatureList;
 import bg.autohouse.validation.offer.ValidNumber;
 import bg.autohouse.validation.offer.ValidState;
 import bg.autohouse.validation.offer.ValidTransmission;
-import bg.autohouse.validation.offer.ValidUpholstery;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -43,7 +42,6 @@ public class VehicleCreateRequest {
   @ValidTransmission private String transmission;
   @ValidDrive private String drive;
   @ValidColor private String color;
-  @ValidUpholstery private String upholstery;
 
   @ValidFeatureList @Builder.Default private List<String> features = new ArrayList<>();
 

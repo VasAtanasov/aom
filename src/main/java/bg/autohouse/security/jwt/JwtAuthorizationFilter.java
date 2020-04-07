@@ -1,6 +1,5 @@
 package bg.autohouse.security.jwt;
 
-import bg.autohouse.security.SecurityConstants;
 import bg.autohouse.service.services.UserService;
 import java.io.IOException;
 import java.util.Collection;
@@ -15,17 +14,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.util.StringUtils;
 
 @Slf4j
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
   private final UserService userService;
-  private final JwtAuthenticationTokenProvider tokenProvider;
+  private final JwtTokenProvider tokenProvider;
 
   public JwtAuthorizationFilter(
-      AuthenticationManager authManager,
-      UserService userService,
-      JwtAuthenticationTokenProvider tokenProvider) {
+      AuthenticationManager authManager, UserService userService, JwtTokenProvider tokenProvider) {
     super(authManager);
     this.userService = userService;
     this.tokenProvider = tokenProvider;
@@ -36,32 +32,28 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     try {
-      String jwt = getJwtFromRequest(request);
 
-      if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+      AuthorizationHeader authorizationHeader = new AuthorizationHeader(request);
+      final String jwt =
+          authorizationHeader.hasBearerToken() ? authorizationHeader.getBearerToken() : null;
+      log.debug("auth headers: {}, token: {}", request.getHeaderNames(), jwt);
+
+      if (authorizationHeader.hasBearerToken() && tokenProvider.validateToken(jwt)) {
 
         String userId = tokenProvider.getUserIdFromJWT(jwt);
-
+        log.debug("User ID: {}", userId);
         UserDetails userDetails = userService.loadUserById(userId);
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        log.debug("Finished pushing authentication object");
       }
     } catch (Exception ex) {
       log.error("Could not set user authentication in security context", ex);
     }
 
     filterChain.doFilter(request, response);
-  }
-
-  private String getJwtFromRequest(HttpServletRequest request) {
-    String bearerToken = request.getHeader(SecurityConstants.HEADER_STRING);
-    if (StringUtils.hasText(bearerToken)
-        && bearerToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-      return bearerToken.substring(7);
-    }
-    return null;
   }
 }

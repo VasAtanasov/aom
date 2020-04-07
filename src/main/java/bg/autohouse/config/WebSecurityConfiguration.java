@@ -2,8 +2,8 @@ package bg.autohouse.config;
 
 import bg.autohouse.security.jwt.JwtAuthenticationEntryPoint;
 import bg.autohouse.security.jwt.JwtAuthenticationFilter;
-import bg.autohouse.security.jwt.JwtAuthenticationTokenProvider;
 import bg.autohouse.security.jwt.JwtAuthorizationFilter;
+import bg.autohouse.security.jwt.JwtTokenProvider;
 import bg.autohouse.service.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   public static final String H2_CONSOLE = "/h2-console/**";
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
-  private final JwtAuthenticationTokenProvider tokenProvider;
+  private final JwtTokenProvider tokenProvider;
   private final UserService userService;
   private final PasswordEncoder encoder;
 

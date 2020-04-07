@@ -11,7 +11,6 @@ import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Transmission;
-import bg.autohouse.data.models.enums.Upholstery;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -158,19 +157,6 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Enumerated(value = EnumType.STRING)
   @Builder.Default
   private List<State> state = new ArrayList<>();
-
-  @ElementCollection(fetch = FetchType.LAZY, targetClass = Upholstery.class)
-  @JoinTable(
-      name = "filter_upholstery",
-      joinColumns =
-          @JoinColumn(
-              name = "filter_id",
-              referencedColumnName = "id",
-              foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_upholstery_filter_id")))
-  @Column(name = "upholstery")
-  @Enumerated(value = EnumType.STRING)
-  @Builder.Default
-  private List<Upholstery> upholstery = new ArrayList<>();
 
   @Column(name = "is_deleted")
   @Builder.Default

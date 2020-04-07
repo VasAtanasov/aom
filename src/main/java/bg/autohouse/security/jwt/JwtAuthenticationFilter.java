@@ -2,6 +2,7 @@ package bg.autohouse.security.jwt;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.security.SecurityConstants;
+import bg.autohouse.security.SecurityUtils;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -20,10 +21,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
-  private final JwtAuthenticationTokenProvider tokenProvider;
+  private final JwtTokenProvider tokenProvider;
 
   public JwtAuthenticationFilter(
-      AuthenticationManager authenticationManager, JwtAuthenticationTokenProvider tokenProvider) {
+      AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider) {
     this.authenticationManager = authenticationManager;
     this.tokenProvider = tokenProvider;
     this.setFilterProcessesUrl("/api/users/login");
@@ -52,9 +53,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth)
       throws IOException, ServletException {
 
-    User user = ((User) auth.getPrincipal());
-    // user.getAuthorities();
-    String token = tokenProvider.generateToken(user);
+    User user = SecurityUtils.extractFrom(auth);
+
+    JwtTokenCreateRequest createRequest =
+        new JwtTokenCreateRequest(JwtTokenType.VERIFICATION, user);
+
+    String token = tokenProvider.createJwt(createRequest);
 
     res.getWriter()
         .append(SecurityConstants.HEADER_STRING + ": " + SecurityConstants.TOKEN_PREFIX + token);

@@ -1,7 +1,8 @@
 package bg.autohouse.security.jwt;
 
-public enum JwtAuthenticationTokenType {
+public enum JwtTokenType {
+  VERIFICATION,
   REGISTRATION,
   VALIDATION,
-  RESET
+  RESET,
 }

@@ -22,11 +22,5 @@ public class UserRegisterRequest {
 
   private String phoneNumber;
 
-  @NotBlank(message = "First name is required field.")
-  private String firstName;
-
-  @NotBlank(message = "Last name is required field.")
-  private String lastName;
-
   @ValidSeller private String seller;
 }

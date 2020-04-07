@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.models.media.Image;
 import java.util.ArrayList;
 import java.util.Date;
@@ -61,6 +62,10 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
 
   @Column(name = "is_expired")
   private boolean isExpired = false;
+
+  @ManyToOne
+  @JoinColumn(name = "location_id", nullable = false, updatable = true)
+  private Location location;
 
   @Transient private Integer previousPrice;
 
