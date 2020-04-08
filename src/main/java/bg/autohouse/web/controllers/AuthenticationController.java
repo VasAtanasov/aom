@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(WebConfiguration.URL_USER_BASE)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class UserController extends BaseController {
+public class AuthenticationController extends BaseController {
 
   private final UserService userService;
   private final ModelMapperWrapper modelMapper;

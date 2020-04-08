@@ -25,6 +25,4 @@ public interface UserRepository
   Optional<User> findById(String id);
 
   boolean existsByUsernameIgnoreCase(String username);
-
-  boolean existsByPhoneNumberIgnoreCase(String phoneNumber);
 }

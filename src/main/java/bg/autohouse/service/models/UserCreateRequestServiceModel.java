@@ -11,9 +11,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserServiceModel {
-  private String id;
+public class UserCreateRequestServiceModel {
   private String username;
-  private String displayedName;
-  private String seller;
+  private String password;
 }

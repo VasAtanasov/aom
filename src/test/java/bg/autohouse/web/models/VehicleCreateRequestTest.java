@@ -192,23 +192,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .seats(10)
                 .doors(4)
                 .state(State.NEW.name())
-                .bodyStyle(BodyStyle.CONVERTIBLE.name())
-                .transmission(Transmission.AUTOMATIC.name())
-                .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
-                .features(validFeatures)
-                .build(),
-            "upholstery",
-            ValidationMessages.INVALID_UPHOLSTERY),
-        Arguments.of(
-            VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
-                .engine(validEngine)
-                .mileage(10)
-                .seats(10)
-                .doors(4)
-                .state(State.NEW.name())
                 .bodyStyle(INVALID_VALUE)
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())

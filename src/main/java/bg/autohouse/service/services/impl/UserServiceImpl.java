@@ -4,6 +4,7 @@ import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.UserRepository;
+import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.security.jwt.JwtToken;
@@ -20,6 +21,7 @@ import bg.autohouse.util.Assert;
 import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.UserDetailsUpdateRequest;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final UserRequestRepository userRequestRepository;
   private final ModelMapperWrapper modelMapper;
   private final PasswordEncoder encoder;
   private final JwtTokenProvider tokenProvider;
@@ -74,10 +77,29 @@ public class UserServiceImpl implements UserService {
     return userRepository.existsByUsernameIgnoreCase(username);
   }
 
-  @Override
-  @Transactional(readOnly = true)
-  public boolean existsByPhoneNumber(String phoneNumber) {
-    return userRepository.existsByPhoneNumberIgnoreCase(phoneNumber);
+  // @Override
+  public String generateUserVerifier(UserRegisterServiceModel model) {
+    Assert.notNull(model, "Model is required");
+
+    boolean exists = userRequestRepository.existsByUsernameIgnoreCase(model.getUsername());
+    final String code = String.valueOf(100000 + new SecureRandom().nextInt(999999));
+
+    // phoneNumber = PhoneNumberUtil.convertPhoneNumber(phoneNumber);
+    // if (displayName != null) {
+    //   UserCreateRequest userCreateRequest =
+    //       userCreateRequestRepository.findByPhoneNumber(phoneNumber);
+    //   if (userCreateRequest == null) {
+    //     userCreateRequest =
+    //         new UserCreateRequest(phoneNumber, displayName, password, Instant.now());
+    //   } else {
+    //     userCreateRequest.setDisplayName(displayName);
+    //     userCreateRequest.setCreationTime(Instant.now());
+    //   }
+    //   userCreateRequestRepository.save(userCreateRequest);
+    // }
+    // VerificationTokenCode token = passwordTokenService.generateShortLivedOTP(phoneNumber);
+    // return token.getCode();
+    return null;
   }
 
   @Override
@@ -114,7 +136,7 @@ public class UserServiceImpl implements UserService {
     log.info("Token value: " + token.getValue());
     log.info("User id: " + user.getId());
 
-    emailService.verifyEmail(user.getUsername(), token.getValue());
+    // emailService.verifyEmail(user.getUsername(), token.getValue());
 
     return modelMapper.map(user, UserServiceModel.class);
   }

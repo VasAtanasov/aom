@@ -12,8 +12,6 @@ public interface UserService extends UserDetailsService {
 
   boolean existsByUsername(String username);
 
-  boolean existsByPhoneNumber(String phoneNumber);
-
   UserServiceModel register(UserRegisterServiceModel model);
 
   UserServiceModel updateUser(String userId, UserDetailsUpdateRequest user, User loggedUser);

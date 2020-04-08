@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.MvcPerformer;
-import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @TestPropertySource("classpath:test.properties")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest extends MvcPerformer {
+public class AuthenticationControllerTest extends MvcPerformer {
   private static final String API_BASE = "/api/users";
 
   private static final UserRegisterRequest VALID_USER_REGISTER_MODEL =
@@ -31,17 +29,6 @@ public class UserControllerTest extends MvcPerformer {
           .username("username@mail.com")
           .password("password")
           .confirmPassword("password")
-          .phoneNumber("phoneNumber1")
-          .seller(SellerType.PRIVATE.name())
-          .build();
-
-  private static final UserRegisterRequest VALID_DEALER_REGISTER_MODEL =
-      UserRegisterRequest.builder()
-          .username("dealer@mail.com")
-          .password("password")
-          .confirmPassword("password")
-          .phoneNumber("phoneNumber2")
-          .seller(SellerType.DEALER.name())
           .build();
 
   @Autowired protected MockMvc mockMvc;
@@ -55,16 +42,6 @@ public class UserControllerTest extends MvcPerformer {
   void whenRegisterPrivateSeller_thenReturns201() throws Exception {
 
     performPost(API_BASE + "/register", VALID_USER_REGISTER_MODEL)
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.success", is(true)))
-        .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
-  }
-
-  @Test
-  @Sql("/location.sql")
-  void whenRegisterDealer_thenReturns201() throws Exception {
-
-    performPost(API_BASE + "/register", VALID_DEALER_REGISTER_MODEL)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
