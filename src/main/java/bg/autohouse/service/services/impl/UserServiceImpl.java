@@ -2,7 +2,7 @@ package bg.autohouse.service.services.impl;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
-import bg.autohouse.data.repositories.AddressRepository;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
@@ -42,7 +42,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
-  private final AddressRepository addressRepository;
   private final ModelMapperWrapper modelMapper;
   private final PasswordEncoder encoder;
   private final JwtTokenProvider tokenProvider;
@@ -70,31 +69,29 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean existsByUsername(String username) {
     return userRepository.existsByUsernameIgnoreCase(username);
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean existsByPhoneNumber(String phoneNumber) {
     return userRepository.existsByPhoneNumberIgnoreCase(phoneNumber);
   }
 
   @Override
   public UserServiceModel register(UserRegisterServiceModel model) {
-    if (Assert.isEmpty(model.getPhoneNumber()) && Assert.isEmpty(model.getUsername())) {
-      throw new UsernameNotFoundException("User phone number or email address is required");
-    }
+    Assert.notNull(model, "Model object is required");
+    Assert.notNull(model.getUsername(), "User email address is required");
 
-    log.info("about to try use phone & email : {}", model.getPhoneNumber(), model.getUsername());
+    log.info("about to try to use email : {}", model.getUsername());
 
-    String phoneNumber = model.getPhoneNumber();
-    String emailAddress = model.getUsername();
+    String email = model.getUsername();
     long start = System.nanoTime();
-    boolean userExists =
-        (Assert.has(phoneNumber) && existsByPhoneNumber(phoneNumber))
-            || (Assert.has(emailAddress) && existsByUsername(emailAddress));
+    boolean userExists = Assert.has(email) && existsByUsername(email);
     long time = System.nanoTime() - start;
-    log.info("User exists check took {} nanosecs", time);
+    log.info("User exists check took {} nano seconds", time);
 
     if (userExists) {
       throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
@@ -106,6 +103,7 @@ public class UserServiceImpl implements UserService {
     user.setPassword(encoder.encode(model.getPassword()));
     log.info("Saving user...");
     user.setRoles(getInheritedRolesFromRole(Role.USER));
+    user.setSellerType(SellerType.PRIVATE);
     userRepository.save(user);
 
     JwtTokenCreateRequest request = new JwtTokenCreateRequest(JwtTokenType.REGISTRATION, user);
@@ -116,8 +114,7 @@ public class UserServiceImpl implements UserService {
     log.info("Token value: " + token.getValue());
     log.info("User id: " + user.getId());
 
-    // TODO uncomment to when email enabled
-    // emailService.verifyEmail(user.getUsername(), token.getValue());
+    emailService.verifyEmail(user.getUsername(), token.getValue());
 
     return modelMapper.map(user, UserServiceModel.class);
   }

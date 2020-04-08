@@ -1,6 +1,5 @@
 package bg.autohouse.web.models.request;
 
-import bg.autohouse.validation.user.ValidSeller;
 import bg.autohouse.web.validations.annotations.MatchingFieldsConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -20,7 +19,5 @@ public class UserRegisterRequest {
 
   private String confirmPassword;
 
-  private String phoneNumber;
-
-  @ValidSeller private String seller;
+  private String displayedName;
 }

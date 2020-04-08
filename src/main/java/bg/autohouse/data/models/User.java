@@ -30,9 +30,6 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "phone_number", nullable = true, length = 20, unique = true)
-  private String phoneNumber;
-
   // TODO change to false when email confirmation applied.
   @Column private boolean enabled = true;
 

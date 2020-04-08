@@ -3,9 +3,9 @@ package bg.autohouse.util;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Supplier;
 import lombok.experimental.UtilityClass;
 
-/** Created by rafael-pestano on 10/06/2014. utility class for assertions */
 @UtilityClass
 public class Assert implements Serializable {
 
@@ -93,5 +93,41 @@ public class Assert implements Serializable {
 
   public static boolean isEmpty(Map<?, ?> map) {
     return !has(map);
+  }
+
+  /**
+   * Assert that an object is not {@code null}.
+   *
+   * <pre class="code">Assert.notNull(clazz, "The class must not be null");</pre>
+   *
+   * @param object the object to check
+   * @param message the exception message to use if the assertion fails
+   * @throws IllegalArgumentException if the object is {@code null}
+   */
+  public static void notNull(Object object, String message) {
+    if (isEmpty(object)) {
+      throw new IllegalArgumentException(message);
+    }
+  }
+
+  /**
+   * Assert that an object is not {@code null}.
+   *
+   * <pre class="code">
+   * Assert.notNull(clazz, () -&gt; "The class '" + clazz.getName() + "' must not be null");
+   * </pre>
+   *
+   * @param object the object to check
+   * @param messageSupplier a supplier for the exception message to use if the assertion fails
+   * @throws IllegalArgumentException if the object is {@code null}
+   */
+  public static void notNull(Object object, Supplier<String> messageSupplier) {
+    if (isEmpty(object)) {
+      throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+    }
+  }
+
+  private static String nullSafeGet(Supplier<String> messageSupplier) {
+    return (messageSupplier != null ? messageSupplier.get() : null);
   }
 }

@@ -37,4 +37,6 @@ public abstract class Account extends BaseUuidEntity {
 
   @Column(name = "max_offers_count")
   private int maxOffersCount;
+
+  @Embedded private ContactDetails contactDetails;
 }

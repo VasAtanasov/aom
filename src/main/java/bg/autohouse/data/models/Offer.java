@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.account.ContactDetails;
 import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.models.media.Image;
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @ManyToOne
   @JoinColumn(name = "location_id", nullable = false, updatable = true)
   private Location location;
+
+  @Embedded private ContactDetails contactDetails;
 
   @Transient private Integer previousPrice;
 

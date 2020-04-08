@@ -7,17 +7,23 @@ import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.OperationStatus;
+import bg.autohouse.web.enums.RequestOperationName;
 import bg.autohouse.web.enums.RestMessage;
+import bg.autohouse.web.models.request.LoginOrRegisterRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
+import bg.autohouse.web.models.response.OperationStatusResponse;
 import bg.autohouse.web.util.RestUtil;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,6 +41,27 @@ public class UserController extends BaseController {
   }
 
   @PostMapping(
+      value = WebConfiguration.URL_USER_LOGIN_OR_REGISTER,
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> loginOrRegister(@Valid @RequestBody LoginOrRegisterRequest request) {
+
+    OperationStatusResponse.OperationStatusResponseBuilder statusResponse =
+        OperationStatusResponse.builder()
+            .operationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+
+    boolean existByUsername = userService.existsByUsername(request.getUsername());
+
+    if (existByUsername) {
+      statusResponse.operationResult(OperationStatus.LOGIN.name());
+    } else {
+      statusResponse.operationResult(OperationStatus.REGISTER.name());
+    }
+
+    return ResponseEntity.ok(statusResponse.build());
+  }
+
+  @PostMapping(
       value = WebConfiguration.URL_USER_REGISTER,
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
@@ -48,5 +75,26 @@ public class UserController extends BaseController {
             + WebConfiguration.URL_USER_REGISTER;
     return RestUtil.createSuccessResponse(
         serviceModel, RestMessage.USER_REGISTRATION_SUCCESSFUL, locationUrl);
+  }
+
+  @GetMapping(
+      value = WebConfiguration.URL_USER_REGISTER_EMAIL_VERIFICATION,
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> verifyEmailToken(@RequestParam(value = "token") String token) {
+
+    OperationStatusResponse statusResponse =
+        OperationStatusResponse.builder()
+            .operationName(RequestOperationName.VERIFY_EMAIL.name())
+            .build();
+
+    boolean isVerified = userService.verifyEmailToken(token);
+
+    if (isVerified) {
+      statusResponse.setOperationResult(OperationStatus.SUCCESS.name());
+    } else {
+      statusResponse.setOperationResult(OperationStatus.ERROR.name());
+    }
+
+    return RestUtil.okayResponseWithData(RestMessage.USER_REGISTRATION_VERIFIED, statusResponse);
   }
 }

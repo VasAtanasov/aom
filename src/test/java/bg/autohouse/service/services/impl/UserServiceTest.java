@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.*;
 
 import bg.autohouse.SingletonModelMapper;
-import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.AddressRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
@@ -23,12 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserServiceTest {
   private static final UserRegisterServiceModel VALID_REGISTER_MODEL =
-      UserRegisterServiceModel.builder()
-          .username("username")
-          .password("password")
-          .phoneNumber("phoneNumber")
-          .seller(SellerType.PRIVATE.name())
-          .build();
+      UserRegisterServiceModel.builder().username("username").password("password").build();
 
   private UserRepository userRepository;
   private PasswordEncoder encoder;
