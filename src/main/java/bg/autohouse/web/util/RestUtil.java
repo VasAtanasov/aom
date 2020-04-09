@@ -81,6 +81,14 @@ public class RestUtil {
     return new ResponseEntity<>(response, OK);
   }
 
+  public static ResponseEntity<ResponseWrapper> okayResponseWithData(Object data) {
+
+    ResponseWrapper response =
+        ResponseWrapper.builder().success(Boolean.TRUE).data(data).status(OK.value()).build();
+
+    return new ResponseEntity<>(response, OK);
+  }
+
   public static ResponseEntity<ResponseWrapper> createSuccessResponse(
       Object data, RestMessage message, String path) {
 

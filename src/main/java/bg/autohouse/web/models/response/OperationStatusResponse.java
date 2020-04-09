@@ -15,9 +15,9 @@ import lombok.Setter;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OperationStatusResponse {
-  @JsonProperty("message")
-  private String operationResult;
+  @JsonProperty("operation")
+  private String operation;
 
-  @JsonProperty("message")
-  private String operationName;
+  @JsonProperty("result")
+  private String result;
 }

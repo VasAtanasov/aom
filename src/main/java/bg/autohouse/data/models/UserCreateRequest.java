@@ -2,6 +2,7 @@ package bg.autohouse.data.models;
 
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = EntityConstants.USERS_CREATE_REQUEST)
 public class UserCreateRequest extends BaseUuidEntity {
   private static final long serialVersionUID = -4417558961136176201L;

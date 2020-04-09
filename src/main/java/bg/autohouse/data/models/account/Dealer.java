@@ -1,6 +1,5 @@
 package bg.autohouse.data.models.account;
 
-import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.geo.Address;
 import javax.persistence.*;
 import lombok.*;
@@ -11,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @DiscriminatorValue("1")
-@Table(name = EntityConstants.DEALER)
 public class Dealer extends Account {
 
   private static final long serialVersionUID = 5897929406117962363L;

@@ -14,6 +14,4 @@ import lombok.Setter;
 public class UserServiceModel {
   private String id;
   private String username;
-  private String displayedName;
-  private String seller;
 }

@@ -75,6 +75,16 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
   }
 
   @Override
+  public String getUsernameFromJWT(String token) {
+    return extractFromToken(JwtTokenProvider.USER_USERNAME_KEY, token);
+  }
+
+  @Override
+  public String getTokenTypeFromJWT(String token) {
+    return extractFromToken(JwtTokenProvider.TYPE_KEY, token);
+  }
+
+  @Override
   public List<String> getRolesFromJwtToken(String token) {
     String joinedRoles = extractClaims(token).get(SYSTEM_ROLE_KEY, String.class);
     return Assert.has(joinedRoles) ? Arrays.asList(joinedRoles.split(",")) : new ArrayList<>();

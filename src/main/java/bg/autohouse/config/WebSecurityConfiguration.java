@@ -50,7 +50,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_GET_URLS =
       new String[] {
-        "/api/users/email-verification", "/api/vehicles/state", "/api/vehicles/makers/**"
+        "/api//users/register/verify",
+        "/api/users/email-verification",
+        "/api/vehicles/state",
+        "/api/vehicles/makers/**"
       };
 
   public static final String H2_CONSOLE = "/h2-console/**";

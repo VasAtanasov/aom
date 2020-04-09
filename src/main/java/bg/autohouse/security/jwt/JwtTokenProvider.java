@@ -10,6 +10,10 @@ public interface JwtTokenProvider {
 
   String getUserIdFromJWT(String token);
 
+  String getUsernameFromJWT(String token);
+
+  String getTokenTypeFromJWT(String token);
+
   boolean validateToken(String authToken);
 
   boolean hasTokenExpired(String token);

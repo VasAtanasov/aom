@@ -3,8 +3,10 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
+import bg.autohouse.security.jwt.JwtTokenProvider;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
+import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.OperationStatus;
@@ -35,7 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController extends BaseController {
 
   private final UserService userService;
+  private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
+  private final JwtTokenProvider tokenProvider;
 
   @PostMapping(WebConfiguration.URL_USER_LOGIN)
   public void theFakeLogin(@RequestBody UserLoginRequest loginRequest) {
@@ -48,21 +52,13 @@ public class AuthenticationController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> loginOrRegister(@Valid @RequestBody LoginOrRegisterRequest request) {
+    boolean exists = ifExists(request.getUsername());
 
-    OperationStatusResponse.OperationStatusResponseBuilder statusResponse =
+    return RestUtil.okayResponseWithData(
         OperationStatusResponse.builder()
-            .operationName(RequestOperationName.LOGIN_OR_REGISTER.name());
-
-    boolean existByUsername = userService.existsByUsername(request.getUsername());
-
-    if (existByUsername) {
-      statusResponse.operationResult(OperationStatus.LOGIN.name());
-    } else {
-      statusResponse.operationResult(OperationStatus.REGISTER.name());
-    }
-
-    OperationStatusResponse response = statusResponse.build();
-    return RestUtil.okayResponseWithData(RestMessage.REQUEST_SUCCESS, OperationStatus.REGISTER);
+            .operation(RequestOperationName.LOGIN_OR_REGISTER.name())
+            .result(exists ? OperationStatus.LOGIN.name() : OperationStatus.REGISTER.name())
+            .build());
   }
 
   @PostMapping(
@@ -78,15 +74,12 @@ public class AuthenticationController extends BaseController {
       return RestUtil.errorResponse(HttpStatus.CONFLICT, RestMessage.USER_ALREADY_EXISTS);
     }
 
-    log.info("Creating a verifier for a new user with email ={}", model.getPassword());
+    log.info("Creating a verifier for a new user with email ={}", model.getUsername());
 
-    UserServiceModel serviceModel = userService.register(model);
-    String locationUrl =
-        WebConfiguration.URL_API_BASE
-            + WebConfiguration.URL_USER_BASE
-            + WebConfiguration.URL_USER_REGISTER;
-    return RestUtil.createSuccessResponse(
-        serviceModel, RestMessage.USER_REGISTRATION_SUCCESSFUL, locationUrl);
+    String token = userService.generateUserRegistrationVerifier(model);
+    log.info("Sending verification email to: {} with value: {}", model.getUsername(), token);
+    // TODO send to email
+    return RestUtil.messageOkayResponse(RestMessage.REGISTRATION_VERIFICATION_TOKEN_SENT);
   }
 
   @GetMapping(
@@ -94,20 +87,20 @@ public class AuthenticationController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> verifyRegistration(@RequestParam(value = "token") String token) {
 
-    OperationStatusResponse statusResponse =
-        OperationStatusResponse.builder()
-            .operationName(RequestOperationName.VERIFY_EMAIL.name())
-            .build();
-
-    boolean isVerified = userService.verifyEmailToken(token);
+    boolean isVerified = passwordService.verifyEmailToken(token);
 
     if (isVerified) {
-      statusResponse.setOperationResult(OperationStatus.SUCCESS.name());
+      String username = tokenProvider.getUsernameFromJWT(token);
+      log.info("User code verified, now creating user with email={}", username);
+      UserRegisterServiceModel registerServiceModel = userService.loadUserCreateRequest(username);
+      UserServiceModel user = userService.register(registerServiceModel);
+      passwordService.invalidateRegistrationToken(user.getUsername());
+      return RestUtil.messageOkayResponse(RestMessage.USER_REGISTRATION_VERIFIED);
     } else {
-      statusResponse.setOperationResult(OperationStatus.ERROR.name());
+      log.info("Token verification for new user failed");
+      return RestUtil.errorResponse(
+          HttpStatus.UNAUTHORIZED, RestMessage.INVALID_REGISTRATION_TOKEN);
     }
-
-    return RestUtil.okayResponseWithData(RestMessage.USER_REGISTRATION_VERIFIED, statusResponse);
   }
 
   private boolean ifExists(String username) {

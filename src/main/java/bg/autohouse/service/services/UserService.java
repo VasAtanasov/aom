@@ -12,15 +12,13 @@ public interface UserService extends UserDetailsService {
 
   boolean existsByUsername(String username);
 
+  String generateUserRegistrationVerifier(UserRegisterServiceModel model);
+
   UserServiceModel register(UserRegisterServiceModel model);
 
   UserServiceModel updateUser(String userId, UserDetailsUpdateRequest user, User loggedUser);
 
-  boolean verifyEmailToken(String token);
-
-  boolean requestPasswordReset(String username);
-
-  boolean resetPassword(String token, String password);
-
   boolean userExist(String username);
+
+  UserRegisterServiceModel loadUserCreateRequest(String username);
 }

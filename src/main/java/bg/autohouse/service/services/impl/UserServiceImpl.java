@@ -1,27 +1,22 @@
 package bg.autohouse.service.services.impl;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.models.enums.Role;
-import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.security.jwt.JwtToken;
-import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenProvider;
 import bg.autohouse.security.jwt.JwtTokenRepository;
-import bg.autohouse.security.jwt.JwtTokenSpecifications;
-import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
-import bg.autohouse.service.services.EmailService;
+import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.Assert;
-import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.UserDetailsUpdateRequest;
-import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -45,11 +40,11 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final UserRequestRepository userRequestRepository;
+  private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
   private final PasswordEncoder encoder;
   private final JwtTokenProvider tokenProvider;
   private final JwtTokenRepository tokenRepository;
-  private final EmailService emailService;
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
@@ -77,29 +72,19 @@ public class UserServiceImpl implements UserService {
     return userRepository.existsByUsernameIgnoreCase(username);
   }
 
-  // @Override
-  public String generateUserVerifier(UserRegisterServiceModel model) {
+  @Override
+  public String generateUserRegistrationVerifier(UserRegisterServiceModel model) {
     Assert.notNull(model, "Model is required");
 
-    boolean exists = userRequestRepository.existsByUsernameIgnoreCase(model.getUsername());
-    final String code = String.valueOf(100000 + new SecureRandom().nextInt(999999));
+    UserCreateRequest createRequest =
+        userRequestRepository
+            .findByUsername(model.getUsername())
+            .orElseGet(() -> modelMapper.map(model, UserCreateRequest.class));
 
-    // phoneNumber = PhoneNumberUtil.convertPhoneNumber(phoneNumber);
-    // if (displayName != null) {
-    //   UserCreateRequest userCreateRequest =
-    //       userCreateRequestRepository.findByPhoneNumber(phoneNumber);
-    //   if (userCreateRequest == null) {
-    //     userCreateRequest =
-    //         new UserCreateRequest(phoneNumber, displayName, password, Instant.now());
-    //   } else {
-    //     userCreateRequest.setDisplayName(displayName);
-    //     userCreateRequest.setCreationTime(Instant.now());
-    //   }
-    //   userCreateRequestRepository.save(userCreateRequest);
-    // }
-    // VerificationTokenCode token = passwordTokenService.generateShortLivedOTP(phoneNumber);
-    // return token.getCode();
-    return null;
+    userRequestRepository.save(createRequest);
+    JwtToken token = passwordService.generateRegistrationToken(model.getUsername());
+
+    return token.getValue();
   }
 
   @Override
@@ -125,18 +110,7 @@ public class UserServiceImpl implements UserService {
     user.setPassword(encoder.encode(model.getPassword()));
     log.info("Saving user...");
     user.setRoles(getInheritedRolesFromRole(Role.USER));
-    user.setSellerType(SellerType.PRIVATE);
     userRepository.save(user);
-
-    JwtTokenCreateRequest request = new JwtTokenCreateRequest(JwtTokenType.REGISTRATION, user);
-    JwtToken token = tokenProvider.createJwtEntity(request);
-
-    log.info("Saving token...");
-    tokenRepository.save(token);
-    log.info("Token value: " + token.getValue());
-    log.info("User id: " + user.getId());
-
-    // emailService.verifyEmail(user.getUsername(), token.getValue());
 
     return modelMapper.map(user, UserServiceModel.class);
   }
@@ -191,129 +165,25 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public boolean verifyEmailToken(String token) {
-
-    if (!Assert.has(token)) {
-      return false;
-    }
-
-    if (tokenProvider.hasTokenExpired(token)) {
-      return false;
-    }
-
-    if (!tokenProvider.validateToken(token)) {
-      return false;
-    }
-
-    String userId = tokenProvider.getUserIdFromJWT(token);
-
-    User user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(
-                () ->
-                    new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
-
-    JwtToken tokenEntity =
-        tokenRepository
-            .findOne(
-                JwtTokenSpecifications.forUser(user.getUsername())
-                    .and(JwtTokenSpecifications.withValue(token)))
-            .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
-
-    if (!EnumUtils.has(tokenEntity.getType(), JwtTokenType.class)
-        && tokenEntity.getType().equals(JwtTokenType.REGISTRATION)) {
-      return false;
-    }
-
-    user.setEnabled(true);
-    userRepository.save(user);
-    tokenRepository.delete(tokenEntity);
-
-    return true;
-  }
-
-  @Override
-  public boolean requestPasswordReset(String username) {
-
-    if (!Assert.has(username)) {
-      return false;
-    }
-
-    User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
-
-    if (user == null) return false;
-
-    if (!user.isEnabled()) {
-      log.error("User registration not verified.");
-      return false;
-    }
-
-    JwtTokenCreateRequest request = new JwtTokenCreateRequest(JwtTokenType.RESET, user);
-    JwtToken passwordResetToken = tokenProvider.createJwtEntity(request);
-
-    log.info("Password reset token: " + passwordResetToken.getValue());
-    tokenRepository.save(passwordResetToken);
-
-    // TODO uncomment to when email enabled
-    // emailService.sendPasswordResetRequest(
-    //     user.getFirstName(), user.getUsername()), passwordResetToken.getValue());
-
-    return true;
-  }
-
-  @Override
-  public boolean resetPassword(String token, String password) {
-
-    if (!Assert.has(token) && !Assert.has(password)) {
-      return false;
-    }
-
-    if (tokenProvider.hasTokenExpired(token)) {
-      return false;
-    }
-
-    if (!tokenProvider.validateToken(token)) {
-      return false;
-    }
-
-    String userId = tokenProvider.getUserIdFromJWT(token);
-
-    User user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(
-                () ->
-                    new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
-
-    JwtToken tokenEntity =
-        tokenRepository
-            .findOne(
-                JwtTokenSpecifications.forUser(user.getUsername())
-                    .and(JwtTokenSpecifications.withValue(token)))
-            .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
-
-    if (!EnumUtils.has(tokenEntity.getType(), JwtTokenType.class)
-        && tokenEntity.getType().equals(JwtTokenType.RESET)) {
-      return false;
-    }
-
-    user.setPassword(encoder.encode(password));
-    userRepository.save(user);
-    tokenRepository.delete(tokenEntity);
-
-    return true;
-  }
-
-  private Set<Role> getInheritedRolesFromRole(Role role) {
-    List<Role> allRoles = Arrays.stream(Role.values()).collect(Collectors.toList());
-    int index = allRoles.indexOf(role);
-    return new HashSet<>(allRoles.subList(index, allRoles.size()));
+  public UserRegisterServiceModel loadUserCreateRequest(String username) {
+    return userRequestRepository
+        .findByUsername(username)
+        .map(request -> modelMapper.map(request, UserRegisterServiceModel.class))
+        .orElseThrow(
+            () ->
+                new UsernameNotFoundException(
+                    "No user registration request exists by username: " + username));
   }
 
   @Override
   @Transactional(readOnly = true)
   public boolean userExist(String username) {
     return userRepository.existsByUsernameIgnoreCase(username);
+  }
+
+  private Set<Role> getInheritedRolesFromRole(Role role) {
+    List<Role> allRoles = Arrays.stream(Role.values()).collect(Collectors.toList());
+    int index = allRoles.indexOf(role);
+    return new HashSet<>(allRoles.subList(index, allRoles.size()));
   }
 }
