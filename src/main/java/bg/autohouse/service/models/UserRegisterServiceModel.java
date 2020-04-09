@@ -14,5 +14,4 @@ import lombok.Setter;
 public class UserRegisterServiceModel {
   private String username;
   private String password;
-  private String displayedName;
 }

@@ -310,4 +310,10 @@ public class UserServiceImpl implements UserService {
     int index = allRoles.indexOf(role);
     return new HashSet<>(allRoles.subList(index, allRoles.size()));
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean userExist(String username) {
+    return userRepository.existsByUsernameIgnoreCase(username);
+  }
 }

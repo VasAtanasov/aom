@@ -1,16 +1,14 @@
 package bg.autohouse.web.controllers;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.MvcPerformer;
+import bg.autohouse.web.models.request.LoginOrRegisterRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,11 +37,12 @@ public class AuthenticationControllerTest extends MvcPerformer {
   }
 
   @Test
-  void whenRegisterPrivateSeller_thenReturns201() throws Exception {
+  void when_loginOrRegister_withNonExistingUsername_thenReturns200() throws Exception {
+    LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
 
-    performPost(API_BASE + "/register", VALID_USER_REGISTER_MODEL)
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.success", is(true)))
-        .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
+    performPost(API_BASE + "/register/login-or-register", request).andExpect(status().isOk());
+    // .andExpect(jsonPath("$.operationName", is(OperationStatus.REGISTER.name())))
+    // .andExpect(
+    //     jsonPath("$.operationResult", is(RequestOperationName.LOGIN_OR_REGISTER.name())));
   }
 }

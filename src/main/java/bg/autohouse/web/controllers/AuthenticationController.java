@@ -17,7 +17,9 @@ import bg.autohouse.web.models.response.OperationStatusResponse;
 import bg.autohouse.web.util.RestUtil;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping(WebConfiguration.URL_USER_BASE)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -48,7 +51,7 @@ public class AuthenticationController extends BaseController {
 
     OperationStatusResponse.OperationStatusResponseBuilder statusResponse =
         OperationStatusResponse.builder()
-            .operationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+            .operationName(RequestOperationName.LOGIN_OR_REGISTER.name());
 
     boolean existByUsername = userService.existsByUsername(request.getUsername());
 
@@ -58,17 +61,26 @@ public class AuthenticationController extends BaseController {
       statusResponse.operationResult(OperationStatus.REGISTER.name());
     }
 
-    return ResponseEntity.ok(statusResponse.build());
+    OperationStatusResponse response = statusResponse.build();
+    return RestUtil.okayResponseWithData(RestMessage.REQUEST_SUCCESS, OperationStatus.REGISTER);
   }
 
   @PostMapping(
       value = WebConfiguration.URL_USER_REGISTER,
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest model) {
-    UserRegisterServiceModel registerServiceModel =
-        modelMapper.map(model, UserRegisterServiceModel.class);
-    UserServiceModel serviceModel = userService.register(registerServiceModel);
+  public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request) {
+    UserRegisterServiceModel model = modelMapper.map(request, UserRegisterServiceModel.class);
+
+    if (ifExists(model.getUsername())) {
+      log.info(
+          "Creating a verifier for user with email ={}, user already exists.", model.getUsername());
+      return RestUtil.errorResponse(HttpStatus.CONFLICT, RestMessage.USER_ALREADY_EXISTS);
+    }
+
+    log.info("Creating a verifier for a new user with email ={}", model.getPassword());
+
+    UserServiceModel serviceModel = userService.register(model);
     String locationUrl =
         WebConfiguration.URL_API_BASE
             + WebConfiguration.URL_USER_BASE
@@ -80,7 +92,7 @@ public class AuthenticationController extends BaseController {
   @GetMapping(
       value = WebConfiguration.URL_USER_REGISTER_EMAIL_VERIFICATION,
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> verifyEmailToken(@RequestParam(value = "token") String token) {
+  public ResponseEntity<?> verifyRegistration(@RequestParam(value = "token") String token) {
 
     OperationStatusResponse statusResponse =
         OperationStatusResponse.builder()
@@ -96,5 +108,9 @@ public class AuthenticationController extends BaseController {
     }
 
     return RestUtil.okayResponseWithData(RestMessage.USER_REGISTRATION_VERIFIED, statusResponse);
+  }
+
+  private boolean ifExists(String username) {
+    return userService.userExist(username);
   }
 }

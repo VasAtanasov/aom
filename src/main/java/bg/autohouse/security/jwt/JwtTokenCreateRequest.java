@@ -37,6 +37,11 @@ public class JwtTokenCreateRequest {
     claims.put(JwtTokenProvider.SYSTEM_ROLE_KEY, roles);
   }
 
+  public JwtTokenCreateRequest(JwtTokenType tokenType, String username) {
+    this(tokenType);
+    claims.put(JwtTokenProvider.USER_USERNAME_KEY, username);
+  }
+
   public void addClaim(String key, String value) {
     claims.put(key, value);
   }
