@@ -3,6 +3,7 @@ package bg.autohouse.security.jwt;
 import bg.autohouse.data.models.User;
 import bg.autohouse.security.SecurityConstants;
 import bg.autohouse.security.SecurityUtils;
+import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -22,11 +23,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider tokenProvider;
+  private final AsyncUserLogger userLogger;
 
   public JwtAuthenticationFilter(
-      AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider) {
+      AuthenticationManager authenticationManager,
+      JwtTokenProvider tokenProvider,
+      AsyncUserLogger userLogger) {
     this.authenticationManager = authenticationManager;
     this.tokenProvider = tokenProvider;
+    this.userLogger = userLogger;
     this.setFilterProcessesUrl("/api/users/login");
   }
 
@@ -57,8 +62,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     JwtTokenCreateRequest createRequest =
         new JwtTokenCreateRequest(JwtTokenType.VERIFICATION, user);
-
     String token = tokenProvider.createJwt(createRequest);
+    userLogger.logUserLogin(user.getId());
 
     res.getWriter()
         .append(SecurityConstants.HEADER_STRING + ": " + SecurityConstants.TOKEN_PREFIX + token);

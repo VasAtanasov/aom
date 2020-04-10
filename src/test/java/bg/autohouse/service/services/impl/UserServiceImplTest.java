@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +28,13 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("test")
 @TestPropertySource("classpath:test.properties")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class UserServiceTest {
+public class UserServiceImplTest {
   private static final UserRegisterServiceModel VALID_REGISTER_MODEL =
-      UserRegisterServiceModel.builder().username("username@mail.com").password("password").build();
+      UserRegisterServiceModel.builder()
+          .username("username@mail.com")
+          .password("passwordIsVeryStrong")
+          .build();
+
   private static final long ZERO = 0L;
 
   @Autowired private UserService userService;
@@ -37,6 +42,7 @@ public class UserServiceTest {
   @Autowired private JwtTokenRepository tokenRepository;
   @Autowired private PasswordService passwordService;
   @Autowired private UserRepository userRepository;
+  @Autowired private PasswordEncoder passwordEncoder;
 
   @Test
   void when_generateUserRegistrationVerifier_shouldReturnToken() {
@@ -98,5 +104,22 @@ public class UserServiceTest {
     assertThat(thrown)
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("User email address is required");
+  }
+
+  @Test // TODO test for few thousand password encryptions
+  void when_generateUserRegistrationVerifier_withEncryptedPassword() {
+    String encryptedPassword = passwordEncoder.encode("password");
+
+    final UserRegisterServiceModel registerServiceModel =
+        UserRegisterServiceModel.builder()
+            .username("username@mail.com")
+            .password(encryptedPassword)
+            .build();
+
+    UserServiceModel registeredUser = userService.register(registerServiceModel);
+
+    User user = userRepository.findById(registeredUser.getId()).get();
+
+    assertThat(encryptedPassword).isEqualTo(user.getPassword());
   }
 }

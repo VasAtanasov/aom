@@ -3,15 +3,15 @@ package bg.autohouse.service.services.impl;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.models.enums.Role;
+import bg.autohouse.data.models.enums.UserLogType;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.security.jwt.JwtToken;
-import bg.autohouse.security.jwt.JwtTokenProvider;
-import bg.autohouse.security.jwt.JwtTokenRepository;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
+import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.Assert;
@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
   private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
   private final PasswordEncoder encoder;
-  private final JwtTokenProvider tokenProvider;
-  private final JwtTokenRepository tokenRepository;
+  private final AsyncUserLogger asyncUserService;
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
@@ -76,18 +75,24 @@ public class UserServiceImpl implements UserService {
   public String generateUserRegistrationVerifier(UserRegisterServiceModel model) {
     Assert.notNull(model, "Model is required");
 
-    UserCreateRequest createRequest =
-        userRequestRepository
-            .findByUsername(model.getUsername())
-            .orElseGet(() -> modelMapper.map(model, UserCreateRequest.class));
+    if (existsByUsername(model.getUsername())) {
+      throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
+    }
+    // TODO decide to save password in request or not
+    if (!userRequestRepository.existsByUsernameIgnoreCase(model.getUsername())) {
+      UserCreateRequest request = modelMapper.map(model, UserCreateRequest.class);
+      log.info("Hashing password...");
+      request.setPassword(encoder.encode(model.getPassword()));
+      userRequestRepository.save(request);
+    }
 
-    userRequestRepository.save(createRequest);
     JwtToken token = passwordService.generateRegistrationToken(model.getUsername());
 
     return token.getValue();
   }
 
   @Override
+  @Transactional
   public UserServiceModel register(UserRegisterServiceModel model) {
     Assert.notNull(model, "Model object is required");
     Assert.notNull(model.getUsername(), "User email address is required");
@@ -105,13 +110,19 @@ public class UserServiceImpl implements UserService {
     }
 
     User user = modelMapper.map(model, User.class);
+    // TODO How to decode password
+    if (encoder != null) {
+      // log.info("Hashing password...");
+      // user.setPassword(encoder.encode(model.getPassword()));
+    } else {
+      log.warn("PasswordEncoder not set, skipping password encryption...");
+    }
 
-    log.info("Hashing password...");
-    user.setPassword(encoder.encode(model.getPassword()));
     log.info("Saving user...");
     user.setRoles(getInheritedRolesFromRole(Role.USER));
-    userRepository.save(user);
-
+    userRepository.saveAndFlush(user);
+    asyncUserService.recordUserLog(
+        user.getId(), UserLogType.CREATED_IN_DB, "User registration created");
     return modelMapper.map(user, UserServiceModel.class);
   }
 

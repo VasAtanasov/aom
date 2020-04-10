@@ -4,6 +4,7 @@ import bg.autohouse.security.jwt.JwtAuthenticationEntryPoint;
 import bg.autohouse.security.jwt.JwtAuthenticationFilter;
 import bg.autohouse.security.jwt.JwtAuthorizationFilter;
 import bg.autohouse.security.jwt.JwtTokenProvider;
+import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   private final JwtTokenProvider tokenProvider;
   private final UserService userService;
   private final PasswordEncoder encoder;
+  private final AsyncUserLogger userLogger;
 
   @Override
   protected void configure(AuthenticationManagerBuilder authBuilder) throws Exception {
@@ -99,7 +101,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   protected JwtAuthenticationFilter getAuthenticationFilter() throws Exception {
     final JwtAuthenticationFilter filter =
-        new JwtAuthenticationFilter(authenticationManager(), tokenProvider);
+        new JwtAuthenticationFilter(authenticationManager(), tokenProvider, userLogger);
     return filter;
   }
 }

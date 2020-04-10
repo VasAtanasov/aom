@@ -21,6 +21,7 @@ public class EntityConstants {
   public static final String OFFERS = PREFIX + "offers";
   public static final String VEHICLES = PREFIX + "vehicles";
   public static final String USERS = PREFIX + "users";
+  public static final String USER_LOGS = PREFIX + "user_logs";
   public static final String USERS_CREATE_REQUEST = PREFIX + "user_create_requests";
   public static final String DEALER = PREFIX + "dealer_accounts";
   public static final String PRIVATE = PREFIX + "private_accounts";
