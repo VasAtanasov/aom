@@ -92,8 +92,7 @@ public class AuthenticationController extends BaseController {
     if (isVerified) {
       String username = tokenProvider.getUsernameFromJWT(token);
       log.info("User code verified, now creating user with email={}", username);
-      UserRegisterServiceModel registerServiceModel = userService.loadUserCreateRequest(username);
-      UserServiceModel user = userService.register(registerServiceModel);
+      UserServiceModel user = userService.completeRegistration(username);
       passwordService.invalidateRegistrationToken(user.getUsername());
       return RestUtil.messageOkayResponse(RestMessage.USER_REGISTRATION_VERIFIED);
     } else {

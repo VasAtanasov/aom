@@ -78,9 +78,12 @@ public class UserServiceImpl implements UserService {
     if (existsByUsername(model.getUsername())) {
       throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
     }
-    // TODO decide to save password in request or not
-    if (!userRequestRepository.existsByUsernameIgnoreCase(model.getUsername())) {
-      UserCreateRequest request = modelMapper.map(model, UserCreateRequest.class);
+
+    UserCreateRequest request =
+        userRequestRepository.findByUsernameAndIsVerifiedIsFalse(model.getUsername()).orElse(null);
+
+    if (request == null) {
+      request = modelMapper.map(model, UserCreateRequest.class);
       log.info("Hashing password...");
       request.setPassword(encoder.encode(model.getPassword()));
       userRequestRepository.save(request);
@@ -93,13 +96,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public UserServiceModel register(UserRegisterServiceModel model) {
-    Assert.notNull(model, "Model object is required");
-    Assert.notNull(model.getUsername(), "User email address is required");
+  public UserServiceModel completeRegistration(String username) {
+    Assert.notNull(username, "User email address is required");
 
-    log.info("about to try to use email : {}", model.getUsername());
+    UserCreateRequest request =
+        userRequestRepository
+            .findByUsernameAndIsVerifiedIsFalse(username)
+            .orElseThrow(() -> new UsernameNotFoundException("No registration request found"));
 
-    String email = model.getUsername();
+    log.info("about to try to use email : {}", request.getUsername());
+
+    String email = request.getUsername();
     long start = System.nanoTime();
     boolean userExists = Assert.has(email) && existsByUsername(email);
     long time = System.nanoTime() - start;
@@ -109,20 +116,15 @@ public class UserServiceImpl implements UserService {
       throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
     }
 
-    User user = modelMapper.map(model, User.class);
-    // TODO How to decode password
-    if (encoder != null) {
-      // log.info("Hashing password...");
-      // user.setPassword(encoder.encode(model.getPassword()));
-    } else {
-      log.warn("PasswordEncoder not set, skipping password encryption...");
-    }
-
-    log.info("Saving user...");
+    User user = modelMapper.map(request, User.class);
+    user.setId(null);
+    log.info("Saving user entity...");
     user.setRoles(getInheritedRolesFromRole(Role.USER));
     userRepository.saveAndFlush(user);
     asyncUserService.recordUserLog(
         user.getId(), UserLogType.CREATED_IN_DB, "User registration created");
+    request.verify();
+    userRequestRepository.save(request);
     return modelMapper.map(user, UserServiceModel.class);
   }
 
@@ -176,20 +178,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserRegisterServiceModel loadUserCreateRequest(String username) {
-    return userRequestRepository
-        .findByUsername(username)
-        .map(request -> modelMapper.map(request, UserRegisterServiceModel.class))
-        .orElseThrow(
-            () ->
-                new UsernameNotFoundException(
-                    "No user registration request exists by username: " + username));
+  @Transactional(readOnly = true)
+  public boolean userExist(String username) {
+    return userRepository.existsByUsernameIgnoreCase(username);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public boolean userExist(String username) {
-    return userRepository.existsByUsernameIgnoreCase(username);
+  public boolean requestExists(String username) {
+    return userRequestRepository.existsByUsernameIgnoreCase(username);
   }
 
   private Set<Role> getInheritedRolesFromRole(Role role) {

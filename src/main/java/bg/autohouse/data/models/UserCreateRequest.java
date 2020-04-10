@@ -22,4 +22,13 @@ public class UserCreateRequest extends BaseUuidEntity {
 
   @Column(name = "password", nullable = false)
   private String password;
+
+  @Column(name = "is_verified", nullable = false)
+  @Builder.Default
+  private boolean isVerified = false;
+
+  @Transient
+  public void verify() {
+    isVerified = true;
+  }
 }

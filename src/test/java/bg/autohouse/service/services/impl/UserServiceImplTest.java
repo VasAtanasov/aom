@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +42,6 @@ public class UserServiceImplTest {
   @Autowired private JwtTokenRepository tokenRepository;
   @Autowired private PasswordService passwordService;
   @Autowired private UserRepository userRepository;
-  @Autowired private PasswordEncoder passwordEncoder;
 
   @Test
   void when_generateUserRegistrationVerifier_shouldReturnToken() {
@@ -67,7 +66,18 @@ public class UserServiceImplTest {
 
   @Test
   void when_register_withValidModel_shouldRegister() {
-    UserServiceModel registeredUser = userService.register(VALID_REGISTER_MODEL);
+    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+
+    UserCreateRequest request =
+        userRequestRepository
+            .findByUsernameAndIsVerifiedIsFalse(VALID_REGISTER_MODEL.getUsername())
+            .orElse(null);
+
+    assertThat(request).isNotNull();
+
+    UserServiceModel registeredUser =
+        userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
+
     assertThat(userRepository.count()).isGreaterThan(ZERO);
 
     User user = userRepository.findById(registeredUser.getId()).orElse(null);
@@ -76,11 +86,16 @@ public class UserServiceImplTest {
 
   @Test
   void when_generateUserRegistrationVerifier_withExistingUser_shouldThrow() {
-    UserServiceModel registeredUser = userService.register(VALID_REGISTER_MODEL);
+    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+
+    UserServiceModel registeredUser =
+        userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
+
     assertThat(userRepository.count()).isGreaterThan(ZERO);
     assertThat(registeredUser).isNotNull();
 
-    Throwable thrown = catchThrowable(() -> userService.register(VALID_REGISTER_MODEL));
+    Throwable thrown =
+        catchThrowable(() -> userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL));
 
     assertThat(thrown)
         .isInstanceOf(ResourceAlreadyExistsException.class)
@@ -89,37 +104,19 @@ public class UserServiceImplTest {
 
   @Test
   void when_generateUserRegistrationVerifier_null_shouldThrow() {
-    Throwable thrown = catchThrowable(() -> userService.register(null));
+    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
 
-    assertThat(thrown)
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Model object is required");
-  }
-
-  void when_generateUserRegistrationVerifier_nullUsername_shouldThrow() {
-    Throwable thrown =
-        catchThrowable(
-            () -> userService.register(UserRegisterServiceModel.builder().username(null).build()));
+    Throwable thrown = catchThrowable(() -> userService.completeRegistration(null));
 
     assertThat(thrown)
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("User email address is required");
   }
 
-  @Test // TODO test for few thousand password encryptions
-  void when_generateUserRegistrationVerifier_withEncryptedPassword() {
-    String encryptedPassword = passwordEncoder.encode("password");
+  @Test
+  void when_generateUserRegistrationVerifier_nullUsername_shouldThrow() {
+    Throwable thrown = catchThrowable(() -> userService.generateUserRegistrationVerifier(null));
 
-    final UserRegisterServiceModel registerServiceModel =
-        UserRegisterServiceModel.builder()
-            .username("username@mail.com")
-            .password(encryptedPassword)
-            .build();
-
-    UserServiceModel registeredUser = userService.register(registerServiceModel);
-
-    User user = userRepository.findById(registeredUser.getId()).get();
-
-    assertThat(encryptedPassword).isEqualTo(user.getPassword());
+    assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessage("Model is required");
   }
 }

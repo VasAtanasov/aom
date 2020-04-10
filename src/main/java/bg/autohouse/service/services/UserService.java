@@ -14,11 +14,11 @@ public interface UserService extends UserDetailsService {
 
   String generateUserRegistrationVerifier(UserRegisterServiceModel model);
 
-  UserServiceModel register(UserRegisterServiceModel model);
+  UserServiceModel completeRegistration(String username);
 
   UserServiceModel updateUser(String userId, UserDetailsUpdateRequest user, User loggedUser);
 
   boolean userExist(String username);
 
-  UserRegisterServiceModel loadUserCreateRequest(String username);
+  boolean requestExists(String username);
 }

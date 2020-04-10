@@ -56,6 +56,18 @@ public class AuthenticationControllerTest extends MvcPerformer {
   }
 
   @Test
+  void when_loginOrRegister_withExistingUsername_thenReturns200() throws Exception {
+    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+    userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
+    LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
+
+    performPost(API_BASE + "/register/login-or-register", request)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.operation", is(RequestOperationName.LOGIN_OR_REGISTER.name())))
+        .andExpect(jsonPath("$.data.result", is(OperationStatus.LOGIN.name())));
+  }
+
+  @Test
   void when_register_withValidModel_thenReturns200() throws Exception {
     performPost(API_BASE + "/register", VALID_USER_REGISTER_MODEL)
         .andExpect(status().isOk())
@@ -65,7 +77,8 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
   @Test
   void when_register_withExistingUser_thenReturns409() throws Exception {
-    userService.register(VALID_REGISTER_MODEL);
+    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+    userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
 
     performPost(API_BASE + "/register", VALID_USER_REGISTER_MODEL)
         .andExpect(status().isConflict())
@@ -79,5 +92,22 @@ public class AuthenticationControllerTest extends MvcPerformer {
     performGet(API_BASE + "/register/verify?token=" + token)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", is(RestMessage.USER_REGISTRATION_VERIFIED.name())));
+  }
+
+  @Test
+  void when_register_withInvalidBody_thenReturns400() throws Exception {
+    UserRegisterRequest invalidModel =
+        UserRegisterRequest.builder()
+            .username(null)
+            .password("password")
+            .confirmPassword("password")
+            .build();
+
+    performPost(API_BASE + "/register", invalidModel).andExpect(status().isBadRequest());
+  }
+
+  @Test
+  void when_verifyRegistration_withInvalidToke_thenReturns401() throws Exception {
+    performGet(API_BASE + "/register?toke=invalidToken").andExpect(status().isUnauthorized());
   }
 }

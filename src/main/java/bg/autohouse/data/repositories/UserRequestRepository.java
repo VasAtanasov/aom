@@ -10,4 +10,6 @@ public interface UserRequestRepository extends JpaRepository<UserCreateRequest, 
   boolean existsByUsernameIgnoreCase(String username);
 
   Optional<UserCreateRequest> findByUsername(String username);
+
+  Optional<UserCreateRequest> findByUsernameAndIsVerifiedIsFalse(String username);
 }

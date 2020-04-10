@@ -47,6 +47,6 @@ public class JwtTokenProviderTest {
   void whenFindToken_existingUser_ShouldReturnNonNull() {
     JwtToken tokenEntity =
         tokenRepository.findOne(JwtTokenSpecifications.forUser("vas")).orElse(null);
-    assertThat(tokenEntity).isNotNull();
+    assertThat(tokenEntity).isNull();
   }
 }
