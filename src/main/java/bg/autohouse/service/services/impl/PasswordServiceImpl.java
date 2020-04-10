@@ -36,15 +36,24 @@ public class PasswordServiceImpl implements PasswordService {
   @Override
   public JwtToken generateRegistrationToken(String username) {
     Assert.notNull(username, "User name is required for token creation");
+    return generateTokenOfType(username, JwtTokenType.REGISTRATION);
+  }
+
+  @Override
+  public JwtToken generatePasswordResetToken(String username) {
+    Assert.notNull(username, "User name is required for token creation");
+    return generateTokenOfType(username, JwtTokenType.RESET);
+  }
+
+  private JwtToken generateTokenOfType(String username, JwtTokenType tokenType) {
+    Assert.notNull(username, "User name is required for token creation");
+    Assert.notNull(tokenType, "Token type is required for token creation");
 
     JwtToken token =
-        tokenRepository
-            .findOne(forUser(username).and(withType(JwtTokenType.REGISTRATION)))
-            .orElse(null);
+        tokenRepository.findOne(forUser(username).and(withType(tokenType))).orElse(null);
 
     if (token == null) {
-      JwtTokenCreateRequest request =
-          new JwtTokenCreateRequest(JwtTokenType.REGISTRATION, username);
+      JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
       token = tokenProvider.createJwtEntity(request);
       return tokenRepository.save(token);
     }
@@ -55,8 +64,7 @@ public class PasswordServiceImpl implements PasswordService {
           new Date(),
           token.getExpirationTime().toString());
 
-      JwtTokenCreateRequest request =
-          new JwtTokenCreateRequest(JwtTokenType.REGISTRATION, username);
+      JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
       token = tokenProvider.createJwtEntity(request);
       tokenRepository.delete(token);
       tokenRepository.save(token);
@@ -99,43 +107,21 @@ public class PasswordServiceImpl implements PasswordService {
 
   @Override
   public void invalidateRegistrationToken(String username) {
+    invalidateToken(username, JwtTokenType.REGISTRATION);
+  }
+
+  @Override
+  public void invalidateResetToken(String username) {
+    invalidateToken(username, JwtTokenType.RESET);
+  }
+
+  private void invalidateToken(String username, JwtTokenType tokenType) {
     JwtToken tokenEntity =
-        tokenRepository
-            .findOne(forUser(username).and(withType(JwtTokenType.REGISTRATION)))
-            .orElse(null);
+        tokenRepository.findOne(forUser(username).and(withType(tokenType))).orElse(null);
 
     if (tokenEntity != null) {
       tokenRepository.delete(tokenEntity);
     }
-  }
-
-  @Override
-  public boolean requestPasswordReset(String username) {
-
-    if (!Assert.has(username)) {
-      return false;
-    }
-
-    User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
-
-    if (user == null) return false;
-
-    if (!user.isEnabled()) {
-      log.error("User registration not verified.");
-      return false;
-    }
-
-    JwtTokenCreateRequest request = new JwtTokenCreateRequest(JwtTokenType.RESET, user);
-    JwtToken passwordResetToken = tokenProvider.createJwtEntity(request);
-
-    log.info("Password reset token: " + passwordResetToken.getValue());
-    tokenRepository.save(passwordResetToken);
-
-    // TODO uncomment to when email enabled
-    // emailService.sendPasswordResetRequest(
-    //     user.getFirstName(), user.getUsername()), passwordResetToken.getValue());
-
-    return true;
   }
 
   @Override

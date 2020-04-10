@@ -32,6 +32,8 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_USER_HOME = "/home";
   public static final String URL_USER_PROFILE = "/profile";
 
+  public static final String URL_PASSWORD_RESET_REQUEST = "/password-reset-request";
+
   public static final String URL_VEHICLES = "/vehicles";
   public static final String URL_MAKERS = URL_VEHICLES + "/makers";
   public static final String URL_MODELS = URL_VEHICLES + "/models";

@@ -45,7 +45,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/api//users/register",
         "/api//users/register/login-or-register",
         "/api/users/password-reset-request",
-        "/api/users/password-reset",
+        "/api/users/password-reset-complete",
         "/api/vehicles/offers/search"
       };
 

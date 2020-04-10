@@ -128,6 +128,18 @@ public class UserServiceImpl implements UserService {
     return modelMapper.map(user, UserServiceModel.class);
   }
 
+  @Override
+  public String generatePasswordResetVerifier(String username) {
+    Assert.notNull(username, "Username is required");
+
+    if (!existsByUsername(username)) {
+      throw new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID);
+    }
+
+    // TODO complete password reset
+    return null;
+  }
+
   // @Override
   // public DealershipServiceModel registerDealer(String userId, DealershipServiceModel dealer) {
 

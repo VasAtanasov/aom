@@ -13,6 +13,7 @@ import bg.autohouse.web.enums.OperationStatus;
 import bg.autohouse.web.enums.RequestOperationName;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.LoginOrRegisterRequest;
+import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import bg.autohouse.web.models.response.OperationStatusResponse;
@@ -100,6 +101,25 @@ public class AuthenticationController extends BaseController {
       return RestUtil.errorResponse(
           HttpStatus.UNAUTHORIZED, RestMessage.INVALID_REGISTRATION_TOKEN);
     }
+  }
+
+  @PostMapping(
+      value = WebConfiguration.URL_PASSWORD_RESET_REQUEST,
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> requestReset(@RequestBody PasswordResetRequest resetRequest) {
+
+    if (!ifExists(resetRequest.getUsername())) {
+      log.info("Invalid user of passed username: {}", resetRequest.getUsername());
+      return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.INVALID_USERNAME);
+    }
+
+    log.info("Creating a verifier for password reset with email ={}", resetRequest.getUsername());
+
+    String token = userService.generatePasswordResetVerifier(resetRequest.getUsername());
+    log.info("Sending verification email to: {} with value: {}", resetRequest.getUsername(), token);
+    // TODO send to email
+    return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT);
   }
 
   private boolean ifExists(String username) {

@@ -21,4 +21,6 @@ public interface UserService extends UserDetailsService {
   boolean userExist(String username);
 
   boolean requestExists(String username);
+
+  String generatePasswordResetVerifier(String username);
 }
