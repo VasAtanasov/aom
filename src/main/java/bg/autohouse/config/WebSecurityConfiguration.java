@@ -42,17 +42,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private static final String[] PUBLIC_POST_URLS =
       new String[] {
-        "/api//users/register",
-        "/api//users/register/login-or-register",
-        "/api/users/password-reset-request",
-        "/api/users/password-reset-complete",
+        "/api/auth/register",
+        "/api/auth/register/login-or-register",
+        "/api/auth/password-reset-request",
+        "/api/auth/password-reset-complete",
         "/api/vehicles/offers/search"
       };
 
   private static final String[] PUBLIC_GET_URLS =
       new String[] {
-        "/api//users/register/verify",
-        "/api/users/email-verification",
+        "/api/auth/register/verify",
+        "/api/auth/email-verification",
         "/api/vehicles/state",
         "/api/vehicles/makers/**"
       };

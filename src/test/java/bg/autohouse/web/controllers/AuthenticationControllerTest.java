@@ -16,6 +16,8 @@ import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,9 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestPropertySource("classpath:test.properties")
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthenticationControllerTest extends MvcPerformer {
-  private static final String API_BASE = "/api/users";
+  private static final String API_BASE = "/api/auth";
   private static final UserRegisterServiceModel VALID_REGISTER_MODEL =
       UserRegisterServiceModel.builder().username("username@mail.com").password("password").build();
   private static final UserRegisterRequest VALID_USER_REGISTER_MODEL =

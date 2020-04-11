@@ -1,6 +1,8 @@
 package bg.autohouse.security.jwt;
 
 import bg.autohouse.service.services.UserService;
+import bg.autohouse.util.Assert;
+import bg.autohouse.util.EnumUtils;
 import java.io.IOException;
 import java.util.Collection;
 import javax.servlet.FilterChain;
@@ -36,9 +38,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
       AuthorizationHeader authorizationHeader = new AuthorizationHeader(request);
       final String jwt =
           authorizationHeader.hasBearerToken() ? authorizationHeader.getBearerToken() : null;
+
       log.debug("auth headers: {}, token: {}", request.getHeaderNames(), jwt);
 
-      if (authorizationHeader.hasBearerToken() && tokenProvider.validateToken(jwt)) {
+      if (authorizationHeader.hasBearerToken()
+          && tokenProvider.validateToken(jwt)
+          && isValidTokenType(jwt)) {
 
         String userId = tokenProvider.getUserIdFromJWT(jwt);
         log.debug("User ID: {}", userId);
@@ -55,5 +60,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     filterChain.doFilter(request, response);
+  }
+
+  private boolean isValidTokenType(String jwt) {
+    if (!Assert.has(jwt)) return false;
+    final String tokenTypeString = tokenProvider.getTokenTypeFromJWT(jwt);
+    if (!Assert.has(tokenTypeString)) return false;
+    JwtTokenType tokenType = EnumUtils.fromString(tokenTypeString, JwtTokenType.class).orElse(null);
+    if (!Assert.has(tokenType)) return false;
+    return JwtTokenType.VERIFICATION.equals(tokenType);
   }
 }

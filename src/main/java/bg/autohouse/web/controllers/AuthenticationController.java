@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping(WebConfiguration.URL_USER_BASE)
+@RequestMapping(WebConfiguration.URL_USER_AUTH)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AuthenticationController extends BaseController {
 
