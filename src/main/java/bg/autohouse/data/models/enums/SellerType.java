@@ -9,7 +9,8 @@ import lombok.Getter;
 @CheckboxCriteria
 public enum SellerType implements Textable {
   PRIVATE("Private"),
-  DEALER("Dealer");
+  DEALER("Dealer"),
+  NOT_SET("Not set");
 
   private final String text;
 

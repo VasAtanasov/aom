@@ -3,7 +3,6 @@ package bg.autohouse.service.services.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
-import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.repositories.UserRepository;
@@ -122,11 +121,14 @@ public class UserServiceImplTest {
 
   @Test
   void when_resetPassword_withValidToken_shouldReset() {
-    String token = userService.generatePasswordResetVerifier(DatabaseSeeder.USERNAME);
+    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+    userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
+
+    String token = userService.generatePasswordResetVerifier(VALID_REGISTER_MODEL.getUsername());
 
     boolean iseReset = passwordService.resetPassword(token, "12345");
 
-    User user = userRepository.findByUsernameIgnoreCase(DatabaseSeeder.USERNAME).get();
+    User user = userRepository.findByUsernameIgnoreCase(VALID_REGISTER_MODEL.getUsername()).get();
     boolean passwordsMatch = encoder.matches("12345", user.getPassword());
 
     assertThat(iseReset).isTrue();

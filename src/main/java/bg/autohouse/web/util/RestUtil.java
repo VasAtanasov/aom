@@ -100,6 +100,7 @@ public class RestUtil {
             .success(Boolean.TRUE)
             .message(String.valueOf(message))
             .status(CREATED.value())
+            .data(data)
             .build();
 
     return ResponseEntity.created(location).body(response);

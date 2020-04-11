@@ -9,8 +9,6 @@ import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.web.models.request.FilterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -19,13 +17,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+// @Sql("/data.sql")
+@Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Transactional
-// @Sql("/data.sql")
 @TestPropertySource("classpath:test.properties")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SearchControllerTest extends MvcPerformer {
   static final String API_BASE = "/api/vehicles";
   static final String SEARCH_URL = API_BASE + "/offers/search";

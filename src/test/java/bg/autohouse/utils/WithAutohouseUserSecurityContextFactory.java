@@ -31,7 +31,7 @@ public class WithAutohouseUserSecurityContextFactory
             .findByUsernameIgnoreCase(customUser.value())
             .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.NO_SUCH_USERNAME));
     Authentication auth =
-        new UsernamePasswordAuthenticationToken(user, "123", user.getAuthorities());
+        new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
     context.setAuthentication(auth);
     return context;
   }

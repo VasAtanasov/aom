@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.MvcPerformer;
-import bg.autohouse.common.Constants;
+import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.utils.WithAutohouseUser;
 import bg.autohouse.validation.ValidationMessages;
@@ -91,21 +91,19 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser("vas")
+  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withValidBody_shouldReturn201() throws Exception {
-
-    String expectedMessage = String.format(Constants.MODEL_CREATE_SUCCESS, "New Model", "Acura");
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("New Model", 1L);
     performPost(API_BASE + "/makers/1", createRequestModel)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
-        .andExpect(jsonPath("$.message", is(expectedMessage)))
+        .andExpect(jsonPath("$.message", is(RestMessage.MAKER_MODEL_CREATED.name())))
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())));
   }
 
   @Test
-  @WithAutohouseUser("vas")
+  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", 1L);
@@ -119,7 +117,7 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser("vas")
+  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1L);
@@ -134,7 +132,7 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser("vas")
+  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withNullId_shouldReturn400() throws Exception {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", null);
@@ -149,7 +147,7 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser("vas")
+  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_witInvalidTypeId_shouldReturn400() throws Exception {
 
     String createModelJson = "{\"name\":\"A4\",\"makerId\":\"invalid_id\"}";
@@ -162,16 +160,15 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser("vas")
+  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateMaker_withValidBody_shouldReturn201() throws Exception {
     final String MAKER_NAME = "New Maker";
 
-    String expectedMessage = String.format(Constants.MAKER_CREATE_SUCCESS, MAKER_NAME);
     MakerCreateRequestModel createRequestModel = MakerCreateRequestModel.of(MAKER_NAME);
     performPost(API_BASE + "/makers", createRequestModel)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
-        .andExpect(jsonPath("$.message", is(expectedMessage)))
+        .andExpect(jsonPath("$.message", is(RestMessage.MAKER_CREATED.name())))
         .andExpect(jsonPath("$.status", is(HttpStatus.CREATED.value())))
         .andExpect(jsonPath("$.data.maker.name", is(MAKER_NAME)));
   }
