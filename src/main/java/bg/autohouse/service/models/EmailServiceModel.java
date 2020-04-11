@@ -17,6 +17,6 @@ public class EmailServiceModel {
   private String fromName;
   private String fromAddress;
   private String subject;
-  private String content;
+  private String textContent;
   private String htmlContent;
 }

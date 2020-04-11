@@ -9,7 +9,6 @@ import bg.autohouse.security.jwt.JwtToken;
 import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenProvider;
 import bg.autohouse.security.jwt.JwtTokenRepository;
-import bg.autohouse.security.jwt.JwtTokenSpecifications;
 import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.util.Assert;
@@ -126,7 +125,6 @@ public class PasswordServiceImpl implements PasswordService {
 
   @Override
   public boolean resetPassword(String token, String password) {
-
     if (!Assert.has(token) && !Assert.has(password)) {
       return false;
     }
@@ -139,20 +137,26 @@ public class PasswordServiceImpl implements PasswordService {
       return false;
     }
 
-    String userId = tokenProvider.getUserIdFromJWT(token);
+    String username = tokenProvider.getUsernameFromJWT(token);
+    String tokenTypeString = tokenProvider.getTokenTypeFromJWT(token);
+
+    if (!Assert.has(username) || !Assert.has(tokenTypeString)) return false;
+
+    JwtTokenType tokenType = EnumUtils.fromString(tokenTypeString, JwtTokenType.class).orElse(null);
+
+    if (!Assert.has(tokenType)) return false;
 
     User user =
         userRepository
-            .findById(userId)
+            .findByUsernameIgnoreCase(username)
             .orElseThrow(
                 () ->
-                    new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+                    new UsernameNotFoundException(
+                        ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_USERNAME));
 
     JwtToken tokenEntity =
         tokenRepository
-            .findOne(
-                JwtTokenSpecifications.forUser(user.getUsername())
-                    .and(JwtTokenSpecifications.withValue(token)))
+            .findOne(forUser(user.getUsername()).and(withValue(token).and(withType(tokenType))))
             .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
 
     if (!EnumUtils.has(tokenEntity.getType(), JwtTokenType.class)
@@ -162,6 +166,7 @@ public class PasswordServiceImpl implements PasswordService {
 
     user.setPassword(encoder.encode(password));
     userRepository.save(user);
+
     tokenRepository.delete(tokenEntity);
 
     return true;

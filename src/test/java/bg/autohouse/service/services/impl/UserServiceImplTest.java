@@ -3,6 +3,7 @@ package bg.autohouse.service.services.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
+import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.repositories.UserRepository;
@@ -16,18 +17,16 @@ import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @TestPropertySource("classpath:test.properties")
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class UserServiceImplTest {
   private static final UserRegisterServiceModel VALID_REGISTER_MODEL =
       UserRegisterServiceModel.builder()
@@ -42,6 +41,7 @@ public class UserServiceImplTest {
   @Autowired private JwtTokenRepository tokenRepository;
   @Autowired private PasswordService passwordService;
   @Autowired private UserRepository userRepository;
+  @Autowired private PasswordEncoder encoder;
 
   @Test
   void when_generateUserRegistrationVerifier_shouldReturnToken() {
@@ -118,5 +118,18 @@ public class UserServiceImplTest {
     Throwable thrown = catchThrowable(() -> userService.generateUserRegistrationVerifier(null));
 
     assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessage("Model is required");
+  }
+
+  @Test
+  void when_resetPassword_withValidToken_shouldReset() {
+    String token = userService.generatePasswordResetVerifier(DatabaseSeeder.USERNAME);
+
+    boolean iseReset = passwordService.resetPassword(token, "12345");
+
+    User user = userRepository.findByUsernameIgnoreCase(DatabaseSeeder.USERNAME).get();
+    boolean passwordsMatch = encoder.matches("12345", user.getPassword());
+
+    assertThat(iseReset).isTrue();
+    assertThat(passwordsMatch).isTrue();
   }
 }

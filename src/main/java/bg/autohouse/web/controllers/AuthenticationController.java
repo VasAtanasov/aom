@@ -13,6 +13,7 @@ import bg.autohouse.web.enums.OperationStatus;
 import bg.autohouse.web.enums.RequestOperationName;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.LoginOrRegisterRequest;
+import bg.autohouse.web.models.request.PasswordReset;
 import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
@@ -122,9 +123,21 @@ public class AuthenticationController extends BaseController {
     return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT);
   }
 
-  public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest resetRequest) {
+  @PostMapping(
+      value = WebConfiguration.URL_PASSWORD_RESET_COMPLETE,
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> resetPassword(@RequestBody PasswordReset passwordResetModel) {
+    boolean isVerified = passwordService.verifyEmailToken(passwordResetModel.getToken());
 
-    return null;
+    if (!isVerified) {
+      log.info("Token verification for password reset failed");
+      return RestUtil.errorResponse(HttpStatus.UNAUTHORIZED, RestMessage.INVALID_TOKEN);
+    }
+
+    log.info("User code verified, now resetting user password");
+    passwordService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword());
+    return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
   }
 
   private boolean ifExists(String username) {

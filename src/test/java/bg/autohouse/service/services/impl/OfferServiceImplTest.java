@@ -21,13 +21,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ActiveProfiles("test")
-@Sql("/data.sql")
+// @Sql("/data.sql")
 @Transactional
 @TestPropertySource("classpath:test.properties")
 public class OfferServiceImplTest {
@@ -53,7 +52,6 @@ public class OfferServiceImplTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenSearchOffers_withValidMakerId_shouldMapCorrect() {
     FilterRequest filterRequest = FilterRequest.builder().makerId(1L).build();
 

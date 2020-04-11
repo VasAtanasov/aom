@@ -43,8 +43,8 @@ public class MailProperties {
 
   public Properties getJavaMailProperties() {
     final Properties properties = new Properties();
-    properties.setProperty("mail.smtp.connectiontimeout", "1000");
-    properties.setProperty("mail.smtp.timeout", "5000");
+    properties.setProperty("mail.smtp.connectiontimeout", "100000");
+    properties.setProperty("mail.smtp.timeout", "50000");
     properties.setProperty("mail.transport.protocol", "smtp");
     properties.setProperty("mail.smtp.auth", "true");
     properties.setProperty("mail.smtp.starttls.enable", "true");

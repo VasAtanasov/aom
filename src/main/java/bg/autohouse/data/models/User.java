@@ -30,7 +30,6 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
-  // TODO change to false when email confirmation applied.
   @Column private boolean enabled = true;
 
   @Column(name = "seller_type")

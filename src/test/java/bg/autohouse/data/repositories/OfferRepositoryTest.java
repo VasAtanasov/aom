@@ -25,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -40,7 +39,7 @@ public class OfferRepositoryTest {
   @Autowired private OfferRepository offerRepository;
 
   @Test
-  @Sql("/data.sql")
+  // @Sql("/data.sql")
   void whenFindLatestOffers_shouldReturnCollection() {
 
     Stream<Offer> offers = offerRepository.findLatestOffers(DEFAULT_PAGEABLE);
@@ -51,7 +50,6 @@ public class OfferRepositoryTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenOfferFilter_byFuelType_shouldReturnCollection() {
     Filter filter = Filter.builder().fuelType(FuelType.GASOLINE).build();
 
@@ -64,7 +62,6 @@ public class OfferRepositoryTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenOfferFilter_byBodyStyle_shouldReturnCollection() {
     Filter filter = Filter.builder().bodyStyle(BodyStyle.SUV).build();
 
@@ -76,7 +73,6 @@ public class OfferRepositoryTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenOfferFilter_byMaker_shouldReturnCollection() {
     Maker maker = Maker.builder().id(23L).name("Cupra").build();
     Filter filter = Filter.builder().maker(maker).build();
@@ -89,7 +85,6 @@ public class OfferRepositoryTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenOfferFilter_byState_shouldReturnCollection() {
     List<State> state = Arrays.asList(State.NEW, State.USED);
     Filter filter = Filter.builder().state(state).build();
@@ -102,7 +97,6 @@ public class OfferRepositoryTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenFilterOffer_pageable_shouldReturnCollection() {
     List<State> state = Arrays.asList(State.NEW, State.USED);
     Filter filter = Filter.builder().state(state).build();
@@ -117,7 +111,6 @@ public class OfferRepositoryTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenOfferFilter_bySeller_shouldReturnCollection() {
     List<SellerType> sellerTypes = Arrays.asList(SellerType.DEALER);
     Filter filter = Filter.builder().sellerTypes(sellerTypes).build();
@@ -130,7 +123,6 @@ public class OfferRepositoryTest {
   }
 
   @Test
-  @Sql("/data.sql")
   void whenOfferFilter_byFeatureWithNullValues_shouldReturnSameCollectionWithoutNulls() {
     List<Feature> features = Arrays.asList(Feature.CD_PLAYER);
     List<Feature> featuresWithNulls = Arrays.asList(Feature.CD_PLAYER, null, null);
