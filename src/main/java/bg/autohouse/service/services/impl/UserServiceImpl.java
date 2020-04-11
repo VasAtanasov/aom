@@ -90,7 +90,6 @@ public class UserServiceImpl implements UserService {
     }
 
     JwtToken token = passwordService.generateRegistrationToken(model.getUsername());
-
     return token.getValue();
   }
 
@@ -136,8 +135,8 @@ public class UserServiceImpl implements UserService {
       throw new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID);
     }
 
-    // TODO complete password reset
-    return null;
+    JwtToken token = passwordService.generatePasswordResetToken(username);
+    return token.getValue();
   }
 
   // @Override

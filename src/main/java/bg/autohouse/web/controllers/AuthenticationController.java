@@ -107,7 +107,7 @@ public class AuthenticationController extends BaseController {
       value = WebConfiguration.URL_PASSWORD_RESET_REQUEST,
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> requestReset(@RequestBody PasswordResetRequest resetRequest) {
+  public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest resetRequest) {
 
     if (!ifExists(resetRequest.getUsername())) {
       log.info("Invalid user of passed username: {}", resetRequest.getUsername());
@@ -120,6 +120,11 @@ public class AuthenticationController extends BaseController {
     log.info("Sending verification email to: {} with value: {}", resetRequest.getUsername(), token);
     // TODO send to email
     return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT);
+  }
+
+  public ResponseEntity<?> resetPassword(@RequestBody PasswordResetRequest resetRequest) {
+
+    return null;
   }
 
   private boolean ifExists(String username) {

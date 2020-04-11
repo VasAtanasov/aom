@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
 @Service
 @Slf4j
@@ -18,6 +19,7 @@ public class EmailServiceImpl implements EmailService {
   private static final String BASE_URL = "http://localhost:8007/api";
 
   private final JavaMailSender javaMailSender;
+  private final TemplateEngine templateEngine;
 
   // The subject line for the email.
   final String SUBJECT = "One last step to complete your registration.";

@@ -60,7 +60,7 @@ public class PasswordServiceImpl implements PasswordService {
 
     if (tokenProvider.hasTokenExpired(token.getValue())) {
       log.info(
-          "found at token, but it's stale, time now = {}, expiry time = {}",
+          "Found at token, but it's stale, time now = {}, expiry time = {}",
           new Date(),
           token.getExpirationTime().toString());
 
