@@ -72,6 +72,18 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public boolean userExist(String username) {
+    return userRepository.existsByUsernameIgnoreCase(username);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean requestExists(String username) {
+    return userRequestRepository.existsByUsernameIgnoreCase(username);
+  }
+
+  @Override
   public String generateUserRegistrationVerifier(UserRegisterServiceModel model) {
     Assert.notNull(model, "Model is required");
 
@@ -139,34 +151,6 @@ public class UserServiceImpl implements UserService {
     return token.getValue();
   }
 
-  // @Override
-  // public DealershipServiceModel registerDealer(String userId, DealershipServiceModel dealer) {
-
-  // if (existsByDealershipName(dealer.getName())) {
-  //   throw new ResourceAlreadyExistsException(
-  //       String.format(ExceptionsMessages.DEALERSHIP_ALREADY_EXISTS, dealer.getName()));
-  // }
-  // Address address =
-  //     addressRepository
-  //         .findById(dealer.getLocationId())
-  //         .orElseThrow(() -> new NotFoundException(ExceptionsMessages.INVALID_LOCATION));
-  // User user =
-  //     userRepository
-  //         .findById(userId)
-  //         .orElseThrow(
-  //             () ->
-  //                 new
-  // UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
-
-  // Dealership dealership = modelMapper.map(dealer, Dealership.class);
-  // dealership.setDealer(user);
-  // dealershipRepository.save(dealership);
-  // log.info("Saved dealership with name: {}", dealership.getName());
-  // return modelMapper.map(dealership, DealershipServiceModel.class);
-
-  //   return null;
-  // }
-
   @Override
   public UserServiceModel updateUser(
       String userId, UserDetailsUpdateRequest user, User loggedUser) {
@@ -186,18 +170,6 @@ public class UserServiceImpl implements UserService {
     userRepository.save(userEntity);
 
     return modelMapper.map(userEntity, UserServiceModel.class);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public boolean userExist(String username) {
-    return userRepository.existsByUsernameIgnoreCase(username);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public boolean requestExists(String username) {
-    return userRequestRepository.existsByUsernameIgnoreCase(username);
   }
 
   private Set<Role> getInheritedRolesFromRole(Role role) {

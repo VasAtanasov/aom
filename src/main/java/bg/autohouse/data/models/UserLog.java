@@ -1,5 +1,6 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.enums.ActionLogType;
 import bg.autohouse.data.models.enums.UserLogType;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = EntityConstants.USER_LOGS)
-public class UserLog extends BaseUuidEntity {
+public class UserLog extends BaseUuidEntity implements ActionLog {
 
   private static final long serialVersionUID = -7221643764722581633L;
 
@@ -26,4 +27,9 @@ public class UserLog extends BaseUuidEntity {
 
   @Column(name = "description", length = 255)
   private String description;
+
+  @Override
+  public ActionLogType getActionLogType() {
+    return ActionLogType.USER_LOG;
+  }
 }

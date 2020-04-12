@@ -30,11 +30,15 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column private boolean enabled = true;
+  @Column(name = "enabled")
+  private boolean enabled = true;
+
+  @Column(name = "has_account")
+  private boolean hasAccount = false;
 
   @Column(name = "seller_type")
   @Enumerated(EnumType.STRING)
-  private SellerType sellerType;
+  private SellerType sellerType = null;
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(
