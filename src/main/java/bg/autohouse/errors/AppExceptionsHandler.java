@@ -25,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -68,8 +69,7 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
           .put(HttpMediaTypeNotSupportedException.class, HttpStatus.UNSUPPORTED_MEDIA_TYPE)
           .put(ResourceAlreadyExistsException.class, HttpStatus.CONFLICT)
           .put(OptimisticLockingFailureException.class, HttpStatus.CONFLICT)
-          // TODO when add spring security
-          // .put(AccessDeniedException.class, HttpStatus.FORBIDDEN)
+          .put(AccessDeniedException.class, HttpStatus.FORBIDDEN)
           .put(IllegalStateException.class, HttpStatus.INTERNAL_SERVER_ERROR)
           .build();
 
@@ -269,11 +269,11 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(value = {Throwable.class})
   public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
 
-    logger.error("Global error handler exception: ", ex);
+    logger.error("Global error handler exception: ");
     final HttpStatus httpStatus = getHttpStatusCode(ex);
 
     final ResponseWrapper response =
-        exposeApiResponseErrorModelWithMessage(ex, httpStatus, "Something went wrong.");
+        exposeApiResponseErrorModelWithMessage(ex, httpStatus, ex.getMessage());
 
     return handleExceptionInternal(ex, response, new HttpHeaders(), httpStatus, request);
   }

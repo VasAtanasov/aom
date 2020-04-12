@@ -51,7 +51,7 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         return Duration.ofMinutes(7L).toMillis();
       case RESET:
       case VALIDATION:
-        return Duration.ofMinutes(5).toMillis();
+        return Duration.ofMinutes(5L).toMillis();
       case VERIFICATION:
         return securityProperties.getExpirationTime(); // now long lived
       default:
