@@ -2,6 +2,7 @@ package bg.autohouse.web.models.response.user;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
+import bg.autohouse.util.Assert;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -41,7 +42,7 @@ public class AuthorizedUserResponseModel {
   public AuthorizedUserResponseModel(User user, String token) {
     this.username = user.getUsername();
     this.hasAccount = user.isHasAccount();
-    this.sellerType = user.getSellerType().name();
+    this.sellerType = Assert.has(user.getSellerType()) ? user.getSellerType().name() : null;
     this.roles = new ArrayList<>(user.getRoles());
     this.role = user.getRoles().stream().max(SYSTEM_ROLE_COMPARATOR).map(r -> r.name()).orElse("");
     this.token = token;

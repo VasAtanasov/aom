@@ -2,13 +2,14 @@ package bg.autohouse.service.services.impl;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
+import bg.autohouse.data.models.VerificationTokenCode;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.UserLogType;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
+import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
-import bg.autohouse.security.jwt.JwtToken;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.AsyncUserLogger;
@@ -50,8 +51,7 @@ public class UserServiceImpl implements UserService {
   public UserDetails loadUserById(String id) {
     return userRepository
         .findById(id)
-        .orElseThrow(
-            () -> new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+        .orElseThrow(() -> new NotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
   }
 
   @Override
@@ -67,12 +67,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(readOnly = true)
-  public boolean existsByUsername(String username) {
-    return userRepository.existsByUsernameIgnoreCase(username);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
   public boolean userExist(String username) {
     return userRepository.existsByUsernameIgnoreCase(username);
   }
@@ -84,10 +78,16 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public User findByUsername(String username) {
+    return userRepository.findByUsernameIgnoreCase(username).orElse(null);
+  }
+
+  @Override
   public String generateUserRegistrationVerifier(UserRegisterServiceModel model) {
     Assert.notNull(model, "Model is required");
 
-    if (existsByUsername(model.getUsername())) {
+    if (userExist(model.getUsername())) {
       throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
     }
 
@@ -101,8 +101,8 @@ public class UserServiceImpl implements UserService {
       userRequestRepository.save(request);
     }
 
-    JwtToken token = passwordService.generateRegistrationToken(model.getUsername());
-    return token.getValue();
+    VerificationTokenCode token = passwordService.generateShortLivedOTP(model.getUsername());
+    return token.getCode();
   }
 
   @Override
@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
     String email = request.getUsername();
     long start = System.nanoTime();
-    boolean userExists = Assert.has(email) && existsByUsername(email);
+    boolean userExists = Assert.has(email) && userExist(email);
     long time = System.nanoTime() - start;
     log.info("User exists check took {} nano seconds", time);
 
@@ -140,15 +140,16 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public String generatePasswordResetVerifier(String username) {
+  @Transactional
+  public String regenerateUserVerifier(String username) {
     Assert.notNull(username, "Username is required");
 
-    if (!existsByUsername(username)) {
-      throw new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID);
+    if (!userExist(username)) {
+      throw new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_USERNAME);
     }
 
-    JwtToken token = passwordService.generatePasswordResetToken(username);
-    return token.getValue();
+    VerificationTokenCode newTokenCode = passwordService.generateShortLivedOTP(username);
+    return newTokenCode.getCode();
   }
 
   @Override
@@ -176,11 +177,5 @@ public class UserServiceImpl implements UserService {
     List<Role> allRoles = Arrays.stream(Role.values()).collect(Collectors.toList());
     int index = allRoles.indexOf(role);
     return new HashSet<>(allRoles.subList(index, allRoles.size()));
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public User findByUsername(String username) {
-    return userRepository.findByUsernameIgnoreCase(username).orElse(null);
   }
 }

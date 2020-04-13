@@ -11,6 +11,8 @@ public interface JwtTokenService {
 
   String getUserIdFromJWT(String token);
 
+  String getJwtUidFromJWT(String token);
+
   String getUsernameFromJWT(String token);
 
   String getTokenTypeFromJWT(String token);
@@ -22,6 +24,8 @@ public interface JwtTokenService {
   boolean isJwtTokenValid(String token);
 
   boolean isJwtTokenExpired(String token);
+
+  boolean isValidTokenType(String token, JwtTokenType auth);
 
   // String refreshToken(String oldToken, JwtTokenType jwtType);
 }

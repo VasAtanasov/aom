@@ -15,4 +15,6 @@ public interface JwtTokenRepository
   void deleteAllExpiredSince(Date now);
 
   Optional<JwtToken> findByValue(String value);
+
+  Optional<JwtToken> findByTokenUid(String tokenUid);
 }

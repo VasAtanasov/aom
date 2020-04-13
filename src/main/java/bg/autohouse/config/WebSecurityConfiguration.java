@@ -43,8 +43,9 @@ public class WebSecurityConfiguration {
 
   private static final String[] PUBLIC_POST_URLS =
       new String[] {
+        "/api/auth/login",
         "/api/auth/register",
-        "/api/auth/register/login-or-register",
+        "/api/auth/login-or-register",
         "/api/auth/password-reset-request",
         "/api/auth/password-reset-complete",
         "/api/vehicles/offers/search"
@@ -69,13 +70,6 @@ public class WebSecurityConfiguration {
     return new JwtAuthenticationFilter();
   }
 
-  // @Bean
-  // public FilterRegistrationBean registration(JwtAuthenticationFilter filter) {
-  //   FilterRegistrationBean registration = new FilterRegistrationBean(filter);
-  //   registration.setEnabled(false);
-  //   return registration;
-  // }
-
   @Configuration
   public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
@@ -94,14 +88,13 @@ public class WebSecurityConfiguration {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-      http.cors()
-          .and()
-          .csrf()
-          .disable()
-          .exceptionHandling()
-          .authenticationEntryPoint(unauthorizedHandler)
-          .and()
-          .authorizeRequests()
+      http.cors().and().csrf().disable();
+
+      http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+      http.exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
+
+      http.authorizeRequests()
           .antMatchers(HttpMethod.POST, PUBLIC_POST_URLS)
           .permitAll()
           .antMatchers(HttpMethod.GET, PUBLIC_GET_URLS)
@@ -111,12 +104,10 @@ public class WebSecurityConfiguration {
           .antMatchers(COMMON_PATTERNS)
           .permitAll()
           .anyRequest()
-          .authenticated()
-          .and()
-          .addFilterBefore(
-              jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-          .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+          .authenticated();
+
+      http.addFilterBefore(
+          jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
       http.headers().frameOptions().disable();
     }

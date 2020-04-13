@@ -27,7 +27,7 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_USER_AUTH = "/auth";
   public static final String URL_USER_REGISTER = "/register";
   public static final String URL_USER_REGISTER_EMAIL_VERIFICATION = URL_USER_REGISTER + "/verify";
-  public static final String URL_USER_LOGIN_OR_REGISTER = URL_USER_REGISTER + "/login-or-register";
+  public static final String URL_USER_LOGIN_OR_REGISTER = "/login-or-register";
   public static final String URL_USER_LOGIN = "/login";
   public static final String URL_USER_LOGOUT = "/logout";
   public static final String URL_USER_HOME = "/home";
@@ -35,6 +35,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
   public static final String URL_PASSWORD_RESET_REQUEST = "/password-reset-request";
   public static final String URL_PASSWORD_RESET_COMPLETE = "/password-reset-complete";
+  public static final String URL_PASSWORD_RESET_VALIDATE = "/reset-password-validate";
 
   public static final String URL_VEHICLES = "/vehicles";
   public static final String URL_MAKERS = URL_VEHICLES + "/makers";

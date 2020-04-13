@@ -33,11 +33,6 @@ public class JwtTokenCreateRequest {
             .collect(Collectors.joining(",")));
   }
 
-  public JwtTokenCreateRequest(JwtTokenType tokenType, String username) {
-    this(tokenType);
-    claims.put(JwtTokenService.USER_USERNAME_KEY, username);
-  }
-
   public void addClaim(String key, String value) {
     claims.put(key, value);
   }

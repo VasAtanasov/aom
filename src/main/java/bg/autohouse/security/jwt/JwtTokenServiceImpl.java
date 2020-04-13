@@ -2,6 +2,7 @@ package bg.autohouse.security.jwt;
 
 import bg.autohouse.config.properties.SecurityConfigurationProperties;
 import bg.autohouse.util.Assert;
+import bg.autohouse.util.EnumUtils;
 import io.jsonwebtoken.*;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,37 +49,36 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   private long convertTypeToExpiryMillis(JwtTokenType jwtType) {
 
     switch (jwtType) {
-      case REGISTRATION:
-        return Duration.ofMinutes(5L).toMillis();
-      case RESET:
-      case VALIDATION:
-      case VERIFICATION:
-        return Duration.ofMinutes(10L).toMillis();
-      case AUTH:
-        return securityProperties.getExpirationTime(); // now long lived
+      case API_CLIENT:
+        return securityProperties.getExpirationTime();
       default:
-        return 1L;
+        return Duration.ofMinutes(5L).toMillis();
     }
   }
 
   @Override
   public String getUserIdFromJWT(String token) {
-    return extractFromToken(JwtTokenService.USER_UID_KEY, token);
+    return (String) getClaimFromToken(token, claims -> claims.get(USER_UID_KEY));
+  }
+
+  @Override
+  public String getJwtUidFromJWT(String token) {
+    return (String) getClaimFromToken(token, claims -> claims.get(JWT_UID));
   }
 
   @Override
   public String getUsernameFromJWT(String token) {
-    return extractFromToken(JwtTokenService.USER_USERNAME_KEY, token);
+    return (String) getClaimFromToken(token, claims -> claims.get(USER_USERNAME_KEY));
   }
 
   @Override
   public String getTokenTypeFromJWT(String token) {
-    return extractFromToken(JwtTokenService.JWT_TYPE_KEY, token);
+    return (String) getClaimFromToken(token, claims -> claims.get(JWT_TYPE_KEY));
   }
 
   @Override
   public List<String> getRolesFromJwtToken(String token) {
-    String joinedRoles = extractClaims(token).get(ROLE_KEY, String.class);
+    String joinedRoles = (String) getClaimFromToken(token, claims -> claims.get(ROLE_KEY));
     return Assert.has(joinedRoles) ? Arrays.asList(joinedRoles.split(",")) : new ArrayList<>();
   }
 
@@ -112,6 +113,34 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
   }
 
+  @Override
+  public boolean isValidTokenType(String token, JwtTokenType expectType) {
+    if (!Assert.has(token)) return false;
+    if (!Assert.has(expectType)) return false;
+    final String tokenTypeString = getTokenTypeFromJWT(token);
+    if (!Assert.has(tokenTypeString)) return false;
+    JwtTokenType tokenType = EnumUtils.fromString(tokenTypeString, JwtTokenType.class).orElse(null);
+    if (!Assert.has(expectType)) return false;
+    return expectType.equals(tokenType);
+  }
+
+  private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+    try {
+      final Claims claims = extractClaims(token);
+      return claimsResolver.apply(claims);
+    } catch (Exception e) {
+      log.error("Failed to get claim from token");
+      return null;
+    }
+  }
+
+  private Claims extractClaims(String token) {
+    return Jwts.parser()
+        .setSigningKey(securityProperties.getJwtSecret())
+        .parseClaimsJws(token)
+        .getBody();
+  }
+
   // @Override
   // public String refreshToken(String oldToken, JwtTokenType jwtType) {
   //   boolean isTokenStillValid = false;
@@ -140,27 +169,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
   //   return newToken;
   // }
-
-  private String extractFromToken(String key, String token) {
-    try {
-      Claims claims =
-          Jwts.parser()
-              .setSigningKey(securityProperties.getJwtSecret())
-              .parseClaimsJws(token)
-              .getBody();
-      return claims.get(key, String.class);
-    } catch (Exception e) {
-      log.error("Failed to get {} from jwt token: {}", key, e.getMessage());
-      return null;
-    }
-  }
-
-  private Claims extractClaims(String token) {
-    return Jwts.parser()
-        .setSigningKey(securityProperties.getJwtSecret())
-        .parseClaimsJws(token)
-        .getBody();
-  }
 
   // private Jws<Claims> parseToken(String token) {
   //   try {

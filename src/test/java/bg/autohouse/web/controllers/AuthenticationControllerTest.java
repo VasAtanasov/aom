@@ -11,7 +11,6 @@ import bg.autohouse.web.enums.OperationStatus;
 import bg.autohouse.web.enums.RequestOperationName;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.LoginOrRegisterRequest;
-import bg.autohouse.web.models.request.PasswordReset;
 import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import org.junit.jupiter.api.Test;
@@ -128,15 +127,15 @@ public class AuthenticationControllerTest extends MvcPerformer {
             jsonPath("$.message", is(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT.name())));
   }
 
-  @Test
-  void when_resetPassword_validToken_shouldReturn200() throws Exception {
-    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
-    userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
-    String token = userService.generatePasswordResetVerifier(VALID_REGISTER_MODEL.getUsername());
-    PasswordReset passwordReset = PasswordReset.of(token, "12345");
+  // @Test
+  // void when_resetPassword_validToken_shouldReturn200() throws Exception {
+  //   userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+  //   userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
+  //   String token = userService.generatePasswordResetVerifier(VALID_REGISTER_MODEL.getUsername());
+  //   PasswordReset passwordReset = PasswordReset.of(token, "12345");
 
-    performPost(API_BASE + "/password-reset-complete", passwordReset)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.message", is(RestMessage.PASSWORD_RESET_SUCCESSFUL.name())));
-  }
+  //   performPost(API_BASE + "/password-reset-complete", passwordReset)
+  //       .andExpect(status().isOk())
+  //       .andExpect(jsonPath("$.message", is(RestMessage.PASSWORD_RESET_SUCCESSFUL.name())));
+  // }
 }

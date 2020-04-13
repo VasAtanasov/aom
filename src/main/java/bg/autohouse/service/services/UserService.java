@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
   UserDetails loadUserById(String id);
 
-  boolean existsByUsername(String username);
-
   String generateUserRegistrationVerifier(UserRegisterServiceModel model);
 
   UserServiceModel completeRegistration(String username);
@@ -22,7 +20,7 @@ public interface UserService extends UserDetailsService {
 
   boolean requestExists(String username);
 
-  String generatePasswordResetVerifier(String username);
+  String regenerateUserVerifier(String username);
 
   User findByUsername(String username);
 }

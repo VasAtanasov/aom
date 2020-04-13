@@ -15,15 +15,16 @@ Accept: application/bg.autohouse.api-v1+json
 POST  {{host}}/makers HTTP/1.1
 Accept:  application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
+# Authorization: Bearer eyJraWQiOiI4ODYwNzE5ZC01MzE1LTQyOTYtODY2NS1iMjA5MTJjZWE0NjkiLCJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiVVNFUiIsIlVTRVJfVVNFUk5BTUUiOiJzaW1wbGVfdXNlckBtYWlsLmNvbSIsIkpXVF9VSUQiOiI5MmU0Y2RjZi1mN2VmLTQwMjEtOGI5OC02ZWY1Y2I2ZmI0MDAiLCJKV1RfVFlQRSI6IkFVVEgiLCJVU0VSX1VJRCAiOiIzMTRkNGIxNC01NzBiLTRlYTQtYjNjMS0xMjdhMzQ4MzVhZWMiLCJleHAiOjE1ODc2MjgwMDcsImlhdCI6MTU4Njc2NDAwN30.R1NSeByN3DHjevKcX56WomrUqR3prjVUctdRSpASwHkd9TT9M4uCikdOd1B12uwKAY9NrX6cSngahktxuUHbAg
+Authorization: Bearer eyJraWQiOiI4ODYwNzE5ZC01MzE1LTQyOTYtODY2NS1iMjA5MTJjZWE0NjkiLCJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiQURNSU4sVVNFUixST09ULE1PREVSQVRPUiIsIlVTRVJfVVNFUk5BTUUiOiJ2YXNAbWFpbC5jb20iLCJKV1RfVUlEIjoiMjk4NjAzZWEtMWYxYS00ODczLTgzZmMtOTEwMmFhZGE1OWIxIiwiSldUX1RZUEUiOiJBVVRIIiwiVVNFUl9VSUQgIjoiNWM0YjljYmUtZDI4Zi00NTAxLWIyOWMtMGY2ZGEzNDkyZTA5IiwiZXhwIjoxNTg3NjI4MDM5LCJpYXQiOjE1ODY3NjQwMzl9.fcuvzke4--I-7oHX3VDu0RDYD2JvYHKEy8dZrOeazNzsKaBoCo369P0OEqco6Co6b8ney3koJIEdT86ZrRbBIA
 
 {
-  "name": "New Maker axcxcsdasd"
+  "name": "New Maker zfdfx"
 }
 
 ###
 
 GET  {{host}}/makers/1 HTTP/1.1
-Authorization: Bearer eyJraWQiOiI5NmQ4YTU1NC04NjM1LTQwMTktYTUzZC1mNGQ4NWY5MzE2NTMiLCJhbGciOiJIUzUxMiJ9.eyJVU0VSX1VTRVJOQU1FIjoidmFzQG1haWwuY29tIiwiZXhwIjoxNTg3NTQ0MzMxLCJUWVBFIjoiVkVSSUZJQ0FUSU9OIiwiaWF0IjoxNTg2NjgwMzMxfQ.NUn040UIApgstCVBUFlg1n5FiBWpV0-uzG8vHfZXwFehKln7U0l6ck_BXY-cDc37_8deMImCOlZS1XTF-cFRyw
 
 
 ###
@@ -31,7 +32,7 @@ Authorization: Bearer eyJraWQiOiI5NmQ4YTU1NC04NjM1LTQwMTktYTUzZC1mNGQ4NWY5MzE2NT
 POST {{host}}/makers/1 HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
-Authorization: Bearer eyJraWQiOiI3ZjAxZjE2Mi0yNTVkLTQwNjQtYTI5NC04NGM2MzIyM2MxZmQiLCJhbGciOiJIUzUxMiJ9.eyJVU0VSX1VTRVJOQU1FIjoic2ltcGxlX3VzZXJAbWFpbC5jb20iLCJVU0VSX1VJRCI6ImZjYzZiNGFlLWVlNTAtNDA0My1hNjE2LWU1ODE0ZTk2Yjg4OCIsImV4cCI6MTU4NzUzMzMxOSwiVFlQRSI6IlZFUklGSUNBVElPTiIsImlhdCI6MTU4NjY2OTMxOSwiU1lTVEVNX1JPTEVfS0VZIjoiVVNFUiJ9.PaIWPMkl3l2rHfB_qIAlJlNLsO3jAjCIR56FaVgJKtK9oEI9iD3fWvSrGRPKeEA4PXhYOarZqQHy0GjfHnbpbA
+Authorization: Bearer eyJraWQiOiJjNTFkMDI4MC1jOTY2LTRlYzAtODY2Mi04YzEzNDk3NDZiOTIiLCJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiTU9ERVJBVE9SLFJPT1QsQURNSU4sVVNFUiIsIlVTRVJfVVNFUk5BTUUiOiJ2YXNAbWFpbC5jb20iLCJKV1RfVUlEIjoiNjVhMjhmMDQtMDQ3OC00NWE0LTg4MGMtOWE4MGI0MTBhYjNhIiwiSldUX1RZUEUiOiJBVVRIIiwiVVNFUl9VSUQgIjoiNWM0YjljYmUtZDI4Zi00NTAxLWIyOWMtMGY2ZGEzNDkyZTA5IiwiZXhwIjoxNTg3NjI3NzU4LCJpYXQiOjE1ODY3NjM3NTh9.8pkmpNE7qtj1Rb8YBOXf4VNwq4crpfq0Ao-79Xj_ORfuwnrpmLqDFFSFMEB4nifEAuY8eDUEibPB0qFyaQ24PQ
 
 {
   "name": "Naadsfdfdasddxzxa",
@@ -59,14 +60,13 @@ Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-  "username": "email@emai.com",
+  "username": "test@emai.com",
   "password": "123456",
   "confirmPassword": "123456"
 }
 
 ###
-GET {{auth}}/register/verify?token=eyJraWQiOiI4YzE0Y2JlZS0zZDkzLTQwMjUtOWIzZC1jYzI5YzEyZDE2ZTUiLCJhbGciOiJIUzUxMiJ9.eyJVU0VSX1VTRVJOQU1FIjoiZW1haWxAZW1haS5jb20iLCJleHAiOjE1ODY1MDI2NTQsIlRZUEUiOiJSRUdJU1RSQVRJT04iLCJpYXQiOjE1ODY1MDIyMzR9.dCyeWlDQ389qqoiHUI1zDbV70eYVTh-jcRiO4ThDlflANfb7xs3R00lhkw_r89lYruYAVChrNHtO5o7u4w63ew
-Accept: application/bg.autohouse.api-v1+json
+GET {{auth}}/register/verify?code=263580&username=test@emai.com
 
 
 ###
@@ -75,7 +75,7 @@ POST {{auth}}/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "simple_user@mail.com",
+    "username": "test@mail.com",
     "password": "123"
 }
 
@@ -85,7 +85,7 @@ Content-Type: application/json
 POST {{users}}/account/private HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
-Authorization: Bearer eyJraWQiOiI5NmQ4YTU1NC04NjM1LTQwMTktYTUzZC1mNGQ4NWY5MzE2NTMiLCJhbGciOiJIUzUxMiJ9.eyJVU0VSX1VTRVJOQU1FIjoidmFzQG1haWwuY29tIiwiZXhwIjoxNTg3NTQ0MzMxLCJUWVBFIjoiVkVSSUZJQ0FUSU9OIiwiaWF0IjoxNTg2NjgwMzMxfQ.NUn040UIApgstCVBUFlg1n5FiBWpV0-uzG8vHfZXwFehKln7U0l6ck_BXY-cDc37_8deMImCOlZS1XTF-cFRyw
+Authorization: Bearer eyJraWQiOiI3OGMwYjdkNi01NGRhLTRhZWEtOGZiYy03MDYxMmRlYjNhMGIiLCJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiVVNFUixST09ULE1PREVSQVRPUixBRE1JTiIsIlVTRVJfVVNFUk5BTUUiOiJ2YXNAbWFpbC5jb20iLCJKV1RfVUlEIjoiNTA3ZWYxZmYtNWMxZi00MDc2LWE3OWUtODZkYzBkYmU2MzFjIiwiSldUX1RZUEUiOiJBUElfQ0xJRU5UIiwiVVNFUl9VSUQgIjoiNWM0YjljYmUtZDI4Zi00NTAxLWIyOWMtMGY2ZGEzNDkyZTA5IiwiZXhwIjoxNTg3NjMzMDkwLCJpYXQiOjE1ODY3NjkwOTB9.arFvrju_NvE2OffnS93rkkw2pLZ5kX7AxiHg98HHIdBoCAcqXzvFPcqwwuA7LbUpzPAjXn6isqT_EA3F0j5Kfw
 
 
 {
@@ -102,9 +102,36 @@ Authorization: Bearer eyJraWQiOiI5NmQ4YTU1NC04NjM1LTQwMTktYTUzZC1mNGQ4NWY5MzE2NT
 ###
 
 POST {{auth}}/login HTTP/1.1
-Content-Type: application/json
+Content-Type: application/bg.autohouse.api-v1+json
 
 {
     "username": "vas@mail.com",
     "password": "123"
+}
+
+###
+
+POST {{auth}}/login HTTP/1.1
+Content-Type: application/bg.autohouse.api-v1+json
+
+{
+    "username": "simple_user@mail.com",
+    "password": "123"
+}
+###
+
+POST {{auth}}/password-reset-request HTTP/1.1
+Content-Type: application/bg.autohouse.api-v1+json
+
+{
+  "username": "vas@mail.com"
+}
+
+###
+
+POST {{auth}}/password-reset-complete?code=981750&username=vas@mail.com&password=12345567
+Content-Type: application/bg.autohouse.api-v1+json
+
+{
+  "username": "vas@mail.com"
 }

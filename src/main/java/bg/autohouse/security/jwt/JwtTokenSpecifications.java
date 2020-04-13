@@ -8,6 +8,10 @@ public class JwtTokenSpecifications {
     return (root, query, cb) -> cb.equal(root.get(JwtToken_.username), username);
   }
 
+  public static Specification<JwtToken> withTokenUid(final String tokenUid) {
+    return (root, query, cb) -> cb.equal(root.get(JwtToken_.tokenUid), tokenUid);
+  }
+
   public static Specification<JwtToken> withValue(final String value) {
     return (root, query, cb) -> cb.equal(root.get(JwtToken_.value), value);
   }

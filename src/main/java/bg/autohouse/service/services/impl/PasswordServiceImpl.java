@@ -1,17 +1,21 @@
 package bg.autohouse.service.services.impl;
 
-import static bg.autohouse.security.jwt.JwtTokenSpecifications.*;
-
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.UserLog;
+import bg.autohouse.data.models.VerificationTokenCode;
+import bg.autohouse.data.models.enums.UserLogType;
+import bg.autohouse.data.repositories.UserLogRepository;
 import bg.autohouse.data.repositories.UserRepository;
+import bg.autohouse.data.repositories.VerificationTokenCodeRepository;
 import bg.autohouse.errors.ExceptionsMessages;
-import bg.autohouse.security.jwt.JwtToken;
-import bg.autohouse.security.jwt.JwtTokenRepository;
-import bg.autohouse.security.jwt.JwtTokenService;
-import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.util.Assert;
-import bg.autohouse.util.EnumUtils;
+import bg.autohouse.util.StringGenericUtils;
+import bg.autohouse.util.TimeUtils;
+import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.Date;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class PasswordServiceImpl implements PasswordService {
-  private final JwtTokenService tokenService;
-  private final JwtTokenRepository tokenRepository;
+  private static final int TOKEN_LIFE_SPAN_MINUTES = 5;
+
+  private final VerificationTokenCodeRepository verificationTokenCodeRepository;
+  private final UserLogRepository userLogRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder encoder;
 
@@ -40,118 +46,96 @@ public class PasswordServiceImpl implements PasswordService {
   }
 
   @Override
-  public JwtToken generateRegistrationToken(String username) {
-    Assert.notNull(username, "User name is required for token creation");
-    return generateTokenOfType(username, JwtTokenType.REGISTRATION);
+  public boolean isExpired(VerificationTokenCode tokenCode) {
+    return TimeUtils.now().after(tokenCode.getExpiryDateTime());
   }
 
   @Override
-  public JwtToken generatePasswordResetToken(String username) {
-    Assert.notNull(username, "User name is required for token creation");
-    return generateTokenOfType(username, JwtTokenType.RESET);
-  }
+  @Transactional
+  public VerificationTokenCode generateShortLivedOTP(String username) {
+    Assert.notNull(username, ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_USERNAME);
 
-  private JwtToken generateTokenOfType(String username, JwtTokenType tokenType) {
-    Assert.notNull(username, "User name is required for token creation");
-    Assert.notNull(tokenType, "Token type is required for token creation");
+    VerificationTokenCode token = verificationTokenCodeRepository.findByUsername(username);
+    final String code = String.valueOf(100000 + new SecureRandom().nextInt(999999));
 
-    JwtToken token =
-        tokenRepository.findOne(forUser(username).and(withType(tokenType))).orElse(null);
+    if (token == null) {
+      token = new VerificationTokenCode(username, code, null);
 
-    // if (token == null) {
-    //   JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
-    //   token = tokenService.createJwtEntity(request);
-    //   return tokenRepository.save(token);
-    // }
+      Date now = TimeUtils.now();
+      long defaultExpiration = Duration.ofMinutes(TOKEN_LIFE_SPAN_MINUTES).toMillis();
+      token.setExpiryDateTime(TimeUtils.dateOf(now.getTime() + defaultExpiration));
+      return verificationTokenCodeRepository.save(token);
+    }
 
-    // if (tokenService.hasTokenExpired(token.getValue())) {
-    //   log.info(
-    //       "Found at token, but it's stale, time now = {}, expiry time = {}",
-    //       new Date(),
-    //       token.getExpirationTime().toString());
+    if (isExpired(token)) {
+      // an OTP exists but it is stale
+      log.info(
+          "found an OTP, but it's stale, time now = {}, expiry time = {}",
+          TimeUtils.now(),
+          token.getExpiryDateTime().toString());
+      VerificationTokenCode newToken = new VerificationTokenCode(username, code, null);
+      Date now = TimeUtils.now();
+      long defaultExpiration = Duration.ofMinutes(TOKEN_LIFE_SPAN_MINUTES).toMillis();
+      newToken.setExpiryDateTime(TimeUtils.dateOf(now.getTime() + defaultExpiration));
 
-    //   JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
-    //   token = tokenService.createJwtEntity(request);
-    //   tokenRepository.delete(token);
-    //   tokenRepository.save(token);
-    // }
+      verificationTokenCodeRepository.delete(token);
+      verificationTokenCodeRepository.save(newToken);
+      return newToken;
+    }
 
     return token;
   }
 
   @Override
-  public boolean verifyEmailToken(String token) {
+  @Transactional
+  public boolean isShortLivedOtpValid(String username, String code) {
+    if (username == null || code == null) return false;
 
-    if (!Assert.has(token)) return false;
+    log.info("checking for token by username: {}", username);
 
-    // log.info("checking token expiry ...");
-    // if (tokenService.hasTokenExpired(token)) return false;
+    VerificationTokenCode token =
+        verificationTokenCodeRepository.findByUsernameAndCode(username, code);
 
-    // if (!tokenService.validateToken(token)) return false;
+    if (token == null) return false;
 
-    String username = tokenService.getUsernameFromJWT(token);
-    String tokenTypeString = tokenService.getTokenTypeFromJWT(token);
+    log.info("checking token expiry ...");
 
-    if (!Assert.has(username) || !Assert.has(tokenTypeString)) return false;
+    if (isExpired(token)) return false;
 
-    JwtTokenType tokenType = EnumUtils.fromString(tokenTypeString, JwtTokenType.class).orElse(null);
+    log.info("checking codes: {}, {}", code, token.getCode());
+    boolean valid = code.equals(token.getCode());
+    if (!valid) token.incrementTokenAttempts();
 
-    if (!Assert.has(tokenType)) return false;
-
-    JwtToken tokenEntity =
-        tokenRepository
-            .findOne(forUser(username).and(withType(tokenType).and(withValue(token))))
-            .orElse(null);
-
-    if (!Assert.has(tokenEntity)) return false;
-
-    log.info("checking codes: {}, {}", token, tokenEntity.getValue());
-    boolean valid = token.equals(tokenEntity.getValue());
     log.info("returning {}", valid);
     return valid;
   }
 
   @Override
-  public void invalidateRegistrationToken(String username) {
-    invalidateToken(username, JwtTokenType.REGISTRATION);
+  @Transactional
+  public boolean changeUserPassword(String userId, String oldPassword, String newPassword) {
+    Objects.requireNonNull(userId);
+    Objects.requireNonNull(oldPassword);
+    Objects.requireNonNull(newPassword);
+
+    User user = userRepository.findById(userId).orElse(null);
+
+    if (!Assert.has(user)) return false;
+
+    if (!encoder.matches(oldPassword, user.getPassword())) return false;
+
+    String encodedPassword = encoder.encode(newPassword);
+    user.setPassword(encodedPassword);
+    userRepository.save(user);
+
+    userLogRepository.save(new UserLog(user.getId(), UserLogType.USER_CHANGED_PASSWORD, null));
+    return true;
   }
 
   @Override
-  public void invalidateResetToken(String username) {
-    invalidateToken(username, JwtTokenType.RESET);
-  }
-
-  private void invalidateToken(String username, JwtTokenType tokenType) {
-    JwtToken tokenEntity =
-        tokenRepository.findOne(forUser(username).and(withType(tokenType))).orElse(null);
-
-    if (tokenEntity != null) {
-      tokenRepository.delete(tokenEntity);
-    }
-  }
-
-  @Override
-  public boolean resetPassword(String token, String password) {
-    if (!Assert.has(token) && !Assert.has(password)) {
+  public boolean resetPassword(String username, String code, String password) {
+    if (!Assert.has(code) || !Assert.has(password) || !Assert.has(username)) {
       return false;
     }
-
-    // if (tokenService.hasTokenExpired(token)) {
-    //   return false;
-    // }
-
-    // if (!tokenService.validateToken(token)) {
-    //   return false;
-    // }
-
-    String username = tokenService.getUsernameFromJWT(token);
-    String tokenTypeString = tokenService.getTokenTypeFromJWT(token);
-
-    if (!Assert.has(username) || !Assert.has(tokenTypeString)) return false;
-
-    JwtTokenType tokenType = EnumUtils.fromString(tokenTypeString, JwtTokenType.class).orElse(null);
-
-    if (!Assert.has(tokenType)) return false;
 
     User user =
         userRepository
@@ -161,21 +145,33 @@ public class PasswordServiceImpl implements PasswordService {
                     new UsernameNotFoundException(
                         ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_USERNAME));
 
-    JwtToken tokenEntity =
-        tokenRepository
-            .findOne(forUser(user.getUsername()).and(withValue(token).and(withType(tokenType))))
-            .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.INVALID_TOKEN));
-
-    if (!EnumUtils.has(tokenEntity.getType(), JwtTokenType.class)
-        && tokenEntity.getType().equals(JwtTokenType.RESET)) {
-      return false;
-    }
-
     user.setPassword(encoder.encode(password));
     userRepository.save(user);
-
-    tokenRepository.delete(tokenEntity);
+    expireVerificationCode(user.getId());
 
     return true;
+  }
+
+  @Override
+  @Transactional
+  public void expireVerificationCode(String userId) {
+    Objects.requireNonNull(userId);
+
+    User user = userRepository.findById(userId).orElse(null);
+
+    if (user == null) return;
+
+    VerificationTokenCode token =
+        verificationTokenCodeRepository.findByUsername(user.getUsername());
+
+    if (token != null) {
+      token.setExpiryDateTime(TimeUtils.now());
+      verificationTokenCodeRepository.save(token);
+    }
+  }
+
+  @Override
+  public String generateRandomPassword() {
+    return StringGenericUtils.nextPassword(12);
   }
 }

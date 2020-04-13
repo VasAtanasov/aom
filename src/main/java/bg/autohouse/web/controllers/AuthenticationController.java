@@ -6,6 +6,8 @@ import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.security.SecurityConstants;
+import bg.autohouse.security.authentication.LoggedUser;
+import bg.autohouse.security.jwt.AuthorizationHeader;
 import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenService;
 import bg.autohouse.security.jwt.JwtTokenType;
@@ -19,7 +21,6 @@ import bg.autohouse.web.enums.OperationStatus;
 import bg.autohouse.web.enums.RequestOperationName;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.LoginOrRegisterRequest;
-import bg.autohouse.web.models.request.PasswordReset;
 import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
@@ -27,6 +28,7 @@ import bg.autohouse.web.models.response.OperationStatusResponse;
 import bg.autohouse.web.models.response.user.AuthorizedUserResponseModel;
 import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -51,11 +53,13 @@ public class AuthenticationController extends BaseController {
   private final UserService userService;
   private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
-  private final JwtTokenService tokenService;
   private final AsyncUserLogger userLogger;
   private final JwtTokenService jwtService;
 
-  @PostMapping(WebConfiguration.URL_USER_LOGIN)
+  @PostMapping(
+      value = WebConfiguration.URL_USER_LOGIN,
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> login(
       @Valid @RequestBody UserLoginRequest loginRequest, HttpServletResponse res)
       throws IOException {
@@ -69,20 +73,31 @@ public class AuthenticationController extends BaseController {
       return RestUtil.errorResponse(RestMessage.INVALID_CREDENTIALS);
     }
 
-    JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.AUTH, user);
+    JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
     String token = jwtService.createJwt(tokenRequest);
     log.info("generate a jwt token, on server is: {}", token);
 
     AuthorizedUserResponseModel response =
         AuthorizedUserResponseModel.builder().user(user).token(token).build();
-    // TODO add jwt token to database
-    res.getWriter()
-        .append(SecurityConstants.HEADER_STRING + ": " + SecurityConstants.TOKEN_PREFIX + token);
+
     res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
     res.addHeader("UserID", user.getId());
 
     userLogger.logUserLogin(user.getId());
-    return RestUtil.okayResponseWithData(RestMessage.USER_LOGGED_IN, response);
+    return RestUtil.okayResponseWithData(RestMessage.LOGIN_SUCCESSFUL, response);
+  }
+
+  @GetMapping
+  public ResponseEntity<?> logout(HttpServletRequest request, @LoggedUser User user) {
+
+    AuthorizationHeader authHeader = new AuthorizationHeader(request);
+    String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
+
+    if (token == null) return RestUtil.errorResponse(RestMessage.INVALID_TOKEN);
+
+    // TODO add token to block-list
+
+    return ResponseEntity.ok().build();
   }
 
   @PostMapping(
@@ -117,21 +132,25 @@ public class AuthenticationController extends BaseController {
     String token = userService.generateUserRegistrationVerifier(model);
     log.info("Sending verification email to: {} with value: {}", model.getUsername(), token);
     // TODO send to email
-    return RestUtil.messageOkayResponse(RestMessage.REGISTRATION_VERIFICATION_TOKEN_SENT);
+    return RestUtil.okayResponseWithData(
+        RestMessage.REGISTRATION_VERIFICATION_TOKEN_SENT, toMap("code", token));
   }
 
   @GetMapping(
       value = WebConfiguration.URL_USER_REGISTER_EMAIL_VERIFICATION,
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> verifyRegistration(@RequestParam(value = "token") String token) {
+  public ResponseEntity<?> verifyRegistration(
+      @RequestParam(value = "username") String username,
+      @RequestParam(value = "code") String code) {
 
-    boolean isVerified = passwordService.verifyEmailToken(token);
+    boolean isVerified = passwordService.isShortLivedOtpValid(username, code);
 
     if (isVerified) {
-      String username = tokenService.getUsernameFromJWT(token);
       log.info("User code verified, now creating user with email={}", username);
       UserServiceModel user = userService.completeRegistration(username);
-      passwordService.invalidateRegistrationToken(user.getUsername());
+
+      passwordService.expireVerificationCode(user.getId());
+
       return RestUtil.messageOkayResponse(RestMessage.USER_REGISTRATION_VERIFIED);
     } else {
       log.info("Token verification for new user failed");
@@ -153,28 +172,47 @@ public class AuthenticationController extends BaseController {
 
     log.info("Creating a verifier for password reset with email ={}", resetRequest.getUsername());
 
-    String token = userService.generatePasswordResetVerifier(resetRequest.getUsername());
+    String token = userService.regenerateUserVerifier(resetRequest.getUsername());
     log.info("Sending verification email to: {} with value: {}", resetRequest.getUsername(), token);
     // TODO send to email
     return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT);
+  }
+
+  @GetMapping(value = WebConfiguration.URL_PASSWORD_RESET_VALIDATE)
+  public ResponseEntity<?> validateOtp(
+      @RequestParam("username") String username, @RequestParam(value = "code") String code) {
+
+    boolean isValidOtp = passwordService.isShortLivedOtpValid(username, code);
+
+    if (isValidOtp) {
+      return RestUtil.messageOkayResponse(RestMessage.OTP_VALID);
+    }
+
+    return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.OTP_INVALID);
   }
 
   @PostMapping(
       value = WebConfiguration.URL_PASSWORD_RESET_COMPLETE,
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> resetPassword(@RequestBody PasswordReset passwordResetModel) {
-    boolean isVerified = passwordService.verifyEmailToken(passwordResetModel.getToken());
+  public ResponseEntity<?> resetPassword(
+      @RequestParam("username") String username,
+      @RequestParam("password") String newPassword,
+      @RequestParam("code") String code) {
+
+    boolean isVerified = passwordService.isShortLivedOtpValid(username, code);
 
     if (!isVerified) {
       log.info("Token verification for password reset failed");
-      return RestUtil.errorResponse(HttpStatus.UNAUTHORIZED, RestMessage.INVALID_TOKEN);
+      return RestUtil.errorResponse(HttpStatus.UNAUTHORIZED, RestMessage.OTP_INVALID);
     }
 
     log.info("User code verified, now resetting user password");
-    passwordService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword());
+    passwordService.resetPassword(username, code, newPassword);
     return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
   }
+
+  // TODO add refresh token
 
   private boolean ifExists(String username) {
     return userService.userExist(username);

@@ -20,7 +20,10 @@ import lombok.*;
 @Table(
     name = EntityConstants.TOKENS,
     indexes = {
-      @Index(name = "idx_token_username_type", columnList = "username, type", unique = false)
+      @Index(
+          name = "idx_token_username_token_uid",
+          columnList = "username, token_uid",
+          unique = false)
     })
 @NamedQuery(
     name = JwtToken.DELETE_TOKEN,
@@ -48,7 +51,4 @@ public class JwtToken extends BaseLongEntity {
 
   @Column(name = "expiration_time", nullable = false, updatable = false)
   private Date expirationTime;
-
-  @Column(name = "revoked")
-  private boolean revoked = false;
 }
