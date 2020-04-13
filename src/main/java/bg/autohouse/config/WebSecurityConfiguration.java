@@ -2,14 +2,14 @@ package bg.autohouse.config;
 
 import bg.autohouse.security.jwt.JwtAuthenticationEntryPoint;
 import bg.autohouse.security.jwt.JwtAuthenticationFilter;
-import bg.autohouse.security.jwt.JwtAuthorizationFilter;
-import bg.autohouse.security.jwt.JwtTokenProvider;
-import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,12 +17,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration {
   private static final String[] COMMON_PATTERNS =
       new String[] {
         "/",
@@ -58,50 +59,66 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
       };
 
   public static final String H2_CONSOLE = "/h2-console/**";
+
   private final JwtAuthenticationEntryPoint unauthorizedHandler;
-  private final JwtTokenProvider tokenProvider;
   private final UserService userService;
   private final PasswordEncoder encoder;
-  private final AsyncUserLogger userLogger;
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder authBuilder) throws Exception {
-    authBuilder.userDetailsService(userService).passwordEncoder(encoder);
+  @Bean
+  public JwtAuthenticationFilter jwtAuthenticationTokenFilter() {
+    return new JwtAuthenticationFilter();
   }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  // @Bean
+  // public FilterRegistrationBean registration(JwtAuthenticationFilter filter) {
+  //   FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+  //   registration.setEnabled(false);
+  //   return registration;
+  // }
 
-    http.cors()
-        .and()
-        .csrf()
-        .disable()
-        .exceptionHandling()
-        .authenticationEntryPoint(unauthorizedHandler)
-        .and()
-        .authorizeRequests()
-        .antMatchers(HttpMethod.POST, PUBLIC_POST_URLS)
-        .permitAll()
-        .antMatchers(HttpMethod.GET, PUBLIC_GET_URLS)
-        .permitAll()
-        .antMatchers(H2_CONSOLE)
-        .permitAll()
-        .antMatchers(COMMON_PATTERNS)
-        .permitAll()
-        .anyRequest()
-        .authenticated()
-        .and()
-        .addFilter(getAuthenticationFilter())
-        .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService, tokenProvider))
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+  @Configuration
+  public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-    http.headers().frameOptions().disable();
-  }
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+      return super.authenticationManagerBean();
+    }
 
-  protected JwtAuthenticationFilter getAuthenticationFilter() throws Exception {
-    final JwtAuthenticationFilter filter =
-        new JwtAuthenticationFilter(authenticationManager(), tokenProvider, userLogger);
-    return filter;
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
+        throws Exception {
+      authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(encoder);
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+      http.cors()
+          .and()
+          .csrf()
+          .disable()
+          .exceptionHandling()
+          .authenticationEntryPoint(unauthorizedHandler)
+          .and()
+          .authorizeRequests()
+          .antMatchers(HttpMethod.POST, PUBLIC_POST_URLS)
+          .permitAll()
+          .antMatchers(HttpMethod.GET, PUBLIC_GET_URLS)
+          .permitAll()
+          .antMatchers(H2_CONSOLE)
+          .permitAll()
+          .antMatchers(COMMON_PATTERNS)
+          .permitAll()
+          .anyRequest()
+          .authenticated()
+          .and()
+          .addFilterBefore(
+              jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+          .sessionManagement()
+          .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+      http.headers().frameOptions().disable();
+    }
   }
 }

@@ -177,4 +177,10 @@ public class UserServiceImpl implements UserService {
     int index = allRoles.indexOf(role);
     return new HashSet<>(allRoles.subList(index, allRoles.size()));
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public User findByUsername(String username) {
+    return userRepository.findByUsernameIgnoreCase(username).orElse(null);
+  }
 }

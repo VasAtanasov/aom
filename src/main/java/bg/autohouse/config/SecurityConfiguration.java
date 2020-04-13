@@ -2,12 +2,12 @@ package bg.autohouse.config;
 
 import bg.autohouse.common.Constants;
 import bg.autohouse.config.properties.SecurityConfigurationProperties;
-import bg.autohouse.security.authentication.AutohousePasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -22,7 +22,7 @@ public class SecurityConfiguration {
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return new AutohousePasswordEncoder();
+    return new BCryptPasswordEncoder();
   }
 
   @Bean

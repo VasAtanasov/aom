@@ -3,9 +3,15 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
-import bg.autohouse.security.jwt.JwtTokenProvider;
+import bg.autohouse.data.models.User;
+import bg.autohouse.errors.NoSuchUserException;
+import bg.autohouse.security.SecurityConstants;
+import bg.autohouse.security.jwt.JwtTokenCreateRequest;
+import bg.autohouse.security.jwt.JwtTokenService;
+import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
+import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ModelMapperWrapper;
@@ -18,13 +24,17 @@ import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import bg.autohouse.web.models.response.OperationStatusResponse;
+import bg.autohouse.web.models.response.user.AuthorizedUserResponseModel;
 import bg.autohouse.web.util.RestUtil;
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,12 +51,38 @@ public class AuthenticationController extends BaseController {
   private final UserService userService;
   private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
-  private final JwtTokenProvider tokenProvider;
+  private final JwtTokenService tokenService;
+  private final AsyncUserLogger userLogger;
+  private final JwtTokenService jwtService;
 
   @PostMapping(WebConfiguration.URL_USER_LOGIN)
-  public void theFakeLogin(@RequestBody UserLoginRequest loginRequest) {
-    throw new IllegalStateException(
-        "This method should not be called. This method is implemented by Spring Security");
+  public ResponseEntity<?> login(
+      @Valid @RequestBody UserLoginRequest loginRequest, HttpServletResponse res)
+      throws IOException {
+
+    User user = findExistingUser(loginRequest.getUsername());
+
+    boolean isValidCredentials =
+        passwordService.validateCredentials(loginRequest.getUsername(), loginRequest.getPassword());
+
+    if (!isValidCredentials) {
+      return RestUtil.errorResponse(RestMessage.INVALID_CREDENTIALS);
+    }
+
+    JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.AUTH, user);
+    String token = jwtService.createJwt(tokenRequest);
+    log.info("generate a jwt token, on server is: {}", token);
+
+    AuthorizedUserResponseModel response =
+        AuthorizedUserResponseModel.builder().user(user).token(token).build();
+    // TODO add jwt token to database
+    res.getWriter()
+        .append(SecurityConstants.HEADER_STRING + ": " + SecurityConstants.TOKEN_PREFIX + token);
+    res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+    res.addHeader("UserID", user.getId());
+
+    userLogger.logUserLogin(user.getId());
+    return RestUtil.okayResponseWithData(RestMessage.USER_LOGGED_IN, response);
   }
 
   @PostMapping(
@@ -92,7 +128,7 @@ public class AuthenticationController extends BaseController {
     boolean isVerified = passwordService.verifyEmailToken(token);
 
     if (isVerified) {
-      String username = tokenProvider.getUsernameFromJWT(token);
+      String username = tokenService.getUsernameFromJWT(token);
       log.info("User code verified, now creating user with email={}", username);
       UserServiceModel user = userService.completeRegistration(username);
       passwordService.invalidateRegistrationToken(user.getUsername());
@@ -142,5 +178,18 @@ public class AuthenticationController extends BaseController {
 
   private boolean ifExists(String username) {
     return userService.userExist(username);
+  }
+
+  private User findExistingUser(String username) {
+    User user = userService.findByUsername(username);
+    if (user == null) {
+      throw new NoSuchUserException("No user with email: " + username);
+    }
+    return user;
+  }
+
+  @ExceptionHandler(NoSuchUserException.class)
+  public ResponseEntity<?> noSuchUserResponse() {
+    return RestUtil.errorResponse(RestMessage.INVALID_USERNAME);
   }
 }

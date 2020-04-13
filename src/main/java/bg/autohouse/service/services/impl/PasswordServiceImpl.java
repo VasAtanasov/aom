@@ -6,14 +6,12 @@ import bg.autohouse.data.models.User;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.security.jwt.JwtToken;
-import bg.autohouse.security.jwt.JwtTokenCreateRequest;
-import bg.autohouse.security.jwt.JwtTokenProvider;
 import bg.autohouse.security.jwt.JwtTokenRepository;
+import bg.autohouse.security.jwt.JwtTokenService;
 import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.EnumUtils;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +25,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class PasswordServiceImpl implements PasswordService {
-  private final JwtTokenProvider tokenProvider;
+  private final JwtTokenService tokenService;
   private final JwtTokenRepository tokenRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder encoder;
+
+  @Override
+  public boolean validateCredentials(String username, String password) {
+    User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
+    if (user == null || !encoder.matches(password, user.getPassword())) {
+      return false;
+    }
+    return true;
+  }
 
   @Override
   public JwtToken generateRegistrationToken(String username) {
@@ -51,23 +58,23 @@ public class PasswordServiceImpl implements PasswordService {
     JwtToken token =
         tokenRepository.findOne(forUser(username).and(withType(tokenType))).orElse(null);
 
-    if (token == null) {
-      JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
-      token = tokenProvider.createJwtEntity(request);
-      return tokenRepository.save(token);
-    }
+    // if (token == null) {
+    //   JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
+    //   token = tokenService.createJwtEntity(request);
+    //   return tokenRepository.save(token);
+    // }
 
-    if (tokenProvider.hasTokenExpired(token.getValue())) {
-      log.info(
-          "Found at token, but it's stale, time now = {}, expiry time = {}",
-          new Date(),
-          token.getExpirationTime().toString());
+    // if (tokenService.hasTokenExpired(token.getValue())) {
+    //   log.info(
+    //       "Found at token, but it's stale, time now = {}, expiry time = {}",
+    //       new Date(),
+    //       token.getExpirationTime().toString());
 
-      JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
-      token = tokenProvider.createJwtEntity(request);
-      tokenRepository.delete(token);
-      tokenRepository.save(token);
-    }
+    //   JwtTokenCreateRequest request = new JwtTokenCreateRequest(tokenType, username);
+    //   token = tokenService.createJwtEntity(request);
+    //   tokenRepository.delete(token);
+    //   tokenRepository.save(token);
+    // }
 
     return token;
   }
@@ -77,13 +84,13 @@ public class PasswordServiceImpl implements PasswordService {
 
     if (!Assert.has(token)) return false;
 
-    log.info("checking token expiry ...");
-    if (tokenProvider.hasTokenExpired(token)) return false;
+    // log.info("checking token expiry ...");
+    // if (tokenService.hasTokenExpired(token)) return false;
 
-    if (!tokenProvider.validateToken(token)) return false;
+    // if (!tokenService.validateToken(token)) return false;
 
-    String username = tokenProvider.getUsernameFromJWT(token);
-    String tokenTypeString = tokenProvider.getTokenTypeFromJWT(token);
+    String username = tokenService.getUsernameFromJWT(token);
+    String tokenTypeString = tokenService.getTokenTypeFromJWT(token);
 
     if (!Assert.has(username) || !Assert.has(tokenTypeString)) return false;
 
@@ -129,16 +136,16 @@ public class PasswordServiceImpl implements PasswordService {
       return false;
     }
 
-    if (tokenProvider.hasTokenExpired(token)) {
-      return false;
-    }
+    // if (tokenService.hasTokenExpired(token)) {
+    //   return false;
+    // }
 
-    if (!tokenProvider.validateToken(token)) {
-      return false;
-    }
+    // if (!tokenService.validateToken(token)) {
+    //   return false;
+    // }
 
-    String username = tokenProvider.getUsernameFromJWT(token);
-    String tokenTypeString = tokenProvider.getTokenTypeFromJWT(token);
+    String username = tokenService.getUsernameFromJWT(token);
+    String tokenTypeString = tokenService.getTokenTypeFromJWT(token);
 
     if (!Assert.has(username) || !Assert.has(tokenTypeString)) return false;
 

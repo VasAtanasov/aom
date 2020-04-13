@@ -1,6 +1,7 @@
 package bg.autohouse.security.jwt;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.util.UIDGenerator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,30 +17,25 @@ public class JwtTokenCreateRequest {
 
   public JwtTokenCreateRequest(JwtTokenType tokenType) {
     this.tokenType = tokenType;
-    claims.put(JwtTokenProvider.TYPE_KEY, tokenType);
+    String tokenUid = UIDGenerator.generateId();
+    claims.put(JwtTokenService.JWT_TYPE_KEY, tokenType);
+    claims.put(JwtTokenService.JWT_UID, tokenUid);
   }
 
   public JwtTokenCreateRequest(JwtTokenType tokenType, User user) {
-    this(
-        tokenType,
-        user.getId(),
-        user.getUsername(),
+    this(tokenType);
+    claims.put(JwtTokenService.USER_UID_KEY, user.getId());
+    claims.put(JwtTokenService.USER_USERNAME_KEY, user.getUsername());
+    claims.put(
+        JwtTokenService.ROLE_KEY,
         user.getAuthorities().stream()
             .map(role -> role.toString())
             .collect(Collectors.joining(",")));
   }
 
-  public JwtTokenCreateRequest(
-      JwtTokenType tokenType, String userId, String username, String roles) {
-    this(tokenType);
-    claims.put(JwtTokenProvider.USER_UID_KEY, userId);
-    claims.put(JwtTokenProvider.USER_USERNAME_KEY, username);
-    claims.put(JwtTokenProvider.SYSTEM_ROLE_KEY, roles);
-  }
-
   public JwtTokenCreateRequest(JwtTokenType tokenType, String username) {
     this(tokenType);
-    claims.put(JwtTokenProvider.USER_USERNAME_KEY, username);
+    claims.put(JwtTokenService.USER_USERNAME_KEY, username);
   }
 
   public void addClaim(String key, String value) {

@@ -1,6 +1,6 @@
 package bg.autohouse.security.jwt;
 
-import bg.autohouse.data.models.BaseUuidEntity;
+import bg.autohouse.data.models.BaseLongEntity;
 import bg.autohouse.data.models.EntityConstants;
 import java.util.Date;
 import javax.persistence.Column;
@@ -19,11 +19,13 @@ import lombok.*;
 @Entity
 @Table(
     name = EntityConstants.TOKENS,
-    indexes = {@Index(name = "idx_token_id_username", columnList = "username, id", unique = false)})
+    indexes = {
+      @Index(name = "idx_token_username_type", columnList = "username, type", unique = false)
+    })
 @NamedQuery(
     name = JwtToken.DELETE_TOKEN,
     query = "DELETE FROM JwtToken t where t.expirationTime <= :now")
-public class JwtToken extends BaseUuidEntity {
+public class JwtToken extends BaseLongEntity {
 
   public static final String DELETE_TOKEN = "JwtToken.deleteAllExpiredSince";
   private static final long serialVersionUID = -3553731653107716142L;
@@ -31,16 +33,22 @@ public class JwtToken extends BaseUuidEntity {
   @Column(name = "value", nullable = false, updatable = false, columnDefinition = "TEXT")
   private String value;
 
+  @Column(name = "token_uid", nullable = false, updatable = false)
+  private String tokenUid;
+
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", nullable = false)
+  @Column(name = "type", nullable = false, updatable = false)
   private JwtTokenType type;
 
-  @Column(name = "username", nullable = false)
+  @Column(name = "username", nullable = false, updatable = false)
   private String username;
 
-  @Column(name = "user_id")
+  @Column(name = "user_id", updatable = false)
   private String userId;
 
-  @Column(name = "expiration_time")
+  @Column(name = "expiration_time", nullable = false, updatable = false)
   private Date expirationTime;
+
+  @Column(name = "revoked")
+  private boolean revoked = false;
 }

@@ -14,4 +14,6 @@ public interface PasswordService {
   void invalidateRegistrationToken(String username);
 
   void invalidateResetToken(String username);
+
+  boolean validateCredentials(String username, String password);
 }
