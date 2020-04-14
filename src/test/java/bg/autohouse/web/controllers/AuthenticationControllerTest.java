@@ -14,6 +14,7 @@ import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.LoginOrRegisterRequest;
 import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -44,6 +45,8 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
   @Autowired protected MockMvc mockMvc;
   @Autowired private UserService userService;
+
+  @Autowired private ObjectMapper objectMapper;
 
   @Override
   public MockMvc getMockMvc() {
@@ -186,4 +189,41 @@ public class AuthenticationControllerTest extends MvcPerformer {
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
   }
+
+  //   @Test
+  // public void should_get_the_preset_shop_list() throws Exception {
+  //     MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get("/api/shops")
+  //             .contentType(MediaType.APPLICATION_JSON))
+  //             .andExpect(status().isOk())
+  //             .andReturn();
+  //     List<ShopResponse> shops = this.objectMapper.readValue(
+  //             mvcResult.getResponse().getContentAsByteArray(),
+  //             new TypeReference<List<ShopResponse>>(){});
+  //     assertEquals(1, shops.size());
+
+  //     ShopResponse shop = shops.get(0);
+  //     assertEquals(shopName, shop.getName());
+
+  // }
+
+  // --
+  // ResultActions resultActions = mvc.perform(get("/some/endpoint"))
+  //         .andDo(print())
+  //         .andExpect(status().isOk());
+
+  // MvcResult result = resultActions.andReturn();
+  // String contentAsString = result.getResponse().getContentAsString();
+
+  // SomeCustomResponse response = objectMapper.readValue(contentAsString,
+  // SomeCustomResponse.class);
+
+  // public static <T> Object convertJSONStringToObject(String json, Class<T> objectClass)
+  //     throws IOException {
+  //   ObjectMapper mapper = new ObjectMapper();
+  //   mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+  //   JavaTimeModule module = new JavaTimeModule();
+  //   mapper.registerModule(module);
+  //   return mapper.readValue(json, objectClass);
+  // }
 }
