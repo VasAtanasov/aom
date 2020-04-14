@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.MvcPerformer;
+import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.web.enums.OperationStatus;
@@ -53,7 +54,7 @@ public class AuthenticationControllerTest extends MvcPerformer {
   void when_loginOrRegister_withNonExistingUsername_thenReturns200() throws Exception {
     LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
 
-    performPost(API_BASE + "/register/login-or-register", request)
+    performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.operation", is(RequestOperationName.LOGIN_OR_REGISTER.name())))
         .andExpect(jsonPath("$.data.result", is(OperationStatus.REGISTER.name())));
@@ -65,7 +66,7 @@ public class AuthenticationControllerTest extends MvcPerformer {
     userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
     LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
 
-    performPost(API_BASE + "/register/login-or-register", request)
+    performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.operation", is(RequestOperationName.LOGIN_OR_REGISTER.name())))
         .andExpect(jsonPath("$.data.result", is(OperationStatus.LOGIN.name())));
@@ -91,9 +92,14 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
   @Test
   void when_verifyRegistration_withValidToken_thenReturns200() throws Exception {
-    String token = userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+    String code = userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
 
-    performGet(API_BASE + "/register/verify?token=" + token)
+    performGet(
+            API_BASE
+                + "/register/verify?code="
+                + code
+                + "&username="
+                + VALID_USER_REGISTER_MODEL.getUsername())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", is(RestMessage.USER_REGISTRATION_VERIFIED.name())));
   }
@@ -112,7 +118,13 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
   @Test
   void when_verifyRegistration_withInvalidToke_thenReturns401() throws Exception {
-    performGet(API_BASE + "/register?toke=invalidToken").andExpect(status().isUnauthorized());
+    performGet(
+            API_BASE
+                + "/register/verify?code="
+                + "invalid_code"
+                + "&username="
+                + VALID_USER_REGISTER_MODEL.getUsername())
+        .andExpect(status().isUnauthorized());
   }
 
   @Test
@@ -127,15 +139,51 @@ public class AuthenticationControllerTest extends MvcPerformer {
             jsonPath("$.message", is(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT.name())));
   }
 
-  // @Test
-  // void when_resetPassword_validToken_shouldReturn200() throws Exception {
-  //   userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
-  //   userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
-  //   String token = userService.generatePasswordResetVerifier(VALID_REGISTER_MODEL.getUsername());
-  //   PasswordReset passwordReset = PasswordReset.of(token, "12345");
+  @Test
+  void when_resetPassword_validToken_shouldReturn200() throws Exception {
+    String code = userService.regenerateUserVerifier(DatabaseSeeder.USERNAME);
 
-  //   performPost(API_BASE + "/password-reset-complete", passwordReset)
-  //       .andExpect(status().isOk())
-  //       .andExpect(jsonPath("$.message", is(RestMessage.PASSWORD_RESET_SUCCESSFUL.name())));
-  // }
+    performGet(
+            API_BASE
+                + "/password-reset-complete?username="
+                + DatabaseSeeder.USERNAME
+                + "&code="
+                + code
+                + "&password=12345")
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(RestMessage.PASSWORD_RESET_SUCCESSFUL.name())));
+  }
+
+  @Test
+  void when_validateOtp_validToken_shouldReturn200() throws Exception {
+    String code = userService.regenerateUserVerifier(DatabaseSeeder.USERNAME);
+
+    performGet(
+            API_BASE
+                + "/reset-password-validate?username="
+                + DatabaseSeeder.USERNAME
+                + "&code="
+                + code)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(RestMessage.OTP_VALID.name())));
+  }
+
+  @Test
+  void when_validateOtp_invalidToken_shouldReturn400() throws Exception {
+    performGet(
+            API_BASE
+                + "/reset-password-validate?username="
+                + DatabaseSeeder.USERNAME
+                + "&code="
+                + "invalid_code")
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.OTP_INVALID.name())));
+  }
+
+  @Test
+  void when_validateToken_invalidToken_shouldReturn400() throws Exception {
+    performGet(API_BASE + "/token/validate?token=" + "invalid_code")
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
+  }
 }

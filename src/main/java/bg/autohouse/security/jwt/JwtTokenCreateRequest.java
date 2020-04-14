@@ -1,6 +1,7 @@
 package bg.autohouse.security.jwt;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.util.UIDGenerator;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +29,14 @@ public class JwtTokenCreateRequest {
     claims.put(JwtTokenService.USER_USERNAME_KEY, user.getUsername());
     claims.put(
         JwtTokenService.ROLE_KEY,
-        user.getAuthorities().stream()
-            .map(role -> role.toString())
-            .collect(Collectors.joining(",")));
+        user.getRoles().stream().map(Role::getAuthority).collect(Collectors.joining(",")));
+  }
+
+  public JwtTokenCreateRequest(JwtTokenType jwtType, String userId, String username, String roles) {
+    this(jwtType);
+    if (userId != null) claims.put(JwtTokenService.USER_UID_KEY, userId);
+    if (username != null) claims.put(JwtTokenService.USER_USERNAME_KEY, username);
+    if (roles != null) claims.put(JwtTokenService.ROLE_KEY, roles);
   }
 
   public void addClaim(String key, String value) {

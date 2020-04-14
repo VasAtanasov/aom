@@ -32,6 +32,8 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_USER_LOGOUT = "/logout";
   public static final String URL_USER_HOME = "/home";
   public static final String URL_USER_PROFILE = "/profile";
+  public static final String URL_TOKEN_VALIDATE = "/token/validate";
+  public static final String URL_TOKEN_REFRESH = "/token/refresh";
 
   public static final String URL_PASSWORD_RESET_REQUEST = "/password-reset-request";
   public static final String URL_PASSWORD_RESET_COMPLETE = "/password-reset-complete";

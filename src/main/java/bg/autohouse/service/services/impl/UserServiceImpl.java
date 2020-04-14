@@ -164,7 +164,7 @@ public class UserServiceImpl implements UserService {
     if (!userEntity.getUsername().equals(loggedUser.getUsername())) {
       throw new IllegalStateException(ExceptionsMessages.INVALID_UPDATE_OPERATION);
     }
-
+    // TODO update User profile
     // userEntity.setFirstName(user.getFirstName());
     // userEntity.setLastName(user.getLastName());
 

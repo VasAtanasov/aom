@@ -1,5 +1,6 @@
 package bg.autohouse.security.jwt;
 
+import java.util.Date;
 import java.util.List;
 
 public interface JwtTokenService {
@@ -19,6 +20,8 @@ public interface JwtTokenService {
 
   List<String> getRolesFromJwtToken(String token);
 
+  Date getExpirationDateFromToken(String token);
+
   String createJwt(JwtTokenCreateRequest request);
 
   boolean isJwtTokenValid(String token);
@@ -27,5 +30,9 @@ public interface JwtTokenService {
 
   boolean isValidTokenType(String token, JwtTokenType auth);
 
-  // String refreshToken(String oldToken, JwtTokenType jwtType);
+  String refreshToken(String oldToken, JwtTokenType jwtType);
+
+  boolean isBlackListed(String token);
+
+  void blackListJwt(String token);
 }

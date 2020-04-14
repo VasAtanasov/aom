@@ -6,7 +6,6 @@ import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.security.SecurityConstants;
-import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.security.jwt.AuthorizationHeader;
 import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenService;
@@ -25,6 +24,7 @@ import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
 import bg.autohouse.web.models.response.OperationStatusResponse;
+import bg.autohouse.web.models.response.ResponseWrapper;
 import bg.autohouse.web.models.response.user.AuthorizedUserResponseModel;
 import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
@@ -87,16 +87,14 @@ public class AuthenticationController extends BaseController {
     return RestUtil.okayResponseWithData(RestMessage.LOGIN_SUCCESSFUL, response);
   }
 
-  @GetMapping
-  public ResponseEntity<?> logout(HttpServletRequest request, @LoggedUser User user) {
-
+  @GetMapping(
+      value = WebConfiguration.URL_USER_LOGOUT,
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> logout(HttpServletRequest request) {
     AuthorizationHeader authHeader = new AuthorizationHeader(request);
     String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
-
     if (token == null) return RestUtil.errorResponse(RestMessage.INVALID_TOKEN);
-
-    // TODO add token to block-list
-
+    jwtService.blackListJwt(token);
     return ResponseEntity.ok().build();
   }
 
@@ -178,7 +176,9 @@ public class AuthenticationController extends BaseController {
     return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT);
   }
 
-  @GetMapping(value = WebConfiguration.URL_PASSWORD_RESET_VALIDATE)
+  @GetMapping(
+      value = WebConfiguration.URL_PASSWORD_RESET_VALIDATE,
+      produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> validateOtp(
       @RequestParam("username") String username, @RequestParam(value = "code") String code) {
 
@@ -191,10 +191,9 @@ public class AuthenticationController extends BaseController {
     return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.OTP_INVALID);
   }
 
-  @PostMapping(
+  @GetMapping(
       value = WebConfiguration.URL_PASSWORD_RESET_COMPLETE,
-      produces = {APP_V1_MEDIA_TYPE_JSON},
-      consumes = {APP_V1_MEDIA_TYPE_JSON})
+      produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> resetPassword(
       @RequestParam("username") String username,
       @RequestParam("password") String newPassword,
@@ -212,7 +211,28 @@ public class AuthenticationController extends BaseController {
     return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
   }
 
-  // TODO add refresh token
+  @GetMapping(
+      value = WebConfiguration.URL_TOKEN_VALIDATE,
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<ResponseWrapper> validateToken(@RequestParam("token") String token) {
+    boolean isJwtTokenValid = jwtService.isJwtTokenValid(token);
+    boolean isNotBlacklisted = !jwtService.isBlackListed(token);
+    if (isJwtTokenValid && isNotBlacklisted)
+      return RestUtil.messageOkayResponse(RestMessage.TOKEN_STILL_VALID);
+    return RestUtil.errorResponse(HttpStatus.EXPECTATION_FAILED, RestMessage.INVALID_TOKEN);
+  }
+
+  @GetMapping(
+      value = WebConfiguration.URL_TOKEN_REFRESH,
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<ResponseWrapper> refreshToken(@RequestParam("oldToken") String oldToken) {
+    String newToken = jwtService.refreshToken(oldToken, JwtTokenType.API_CLIENT);
+    if (newToken != null) {
+      return RestUtil.okayResponseWithData(RestMessage.LOGIN_SUCCESSFUL, newToken);
+    } else {
+      return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.TOKEN_EXPIRED);
+    }
+  }
 
   private boolean ifExists(String username) {
     return userService.userExist(username);

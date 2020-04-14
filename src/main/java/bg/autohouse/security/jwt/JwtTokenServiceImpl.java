@@ -1,8 +1,12 @@
 package bg.autohouse.security.jwt;
 
+import static bg.autohouse.security.jwt.JwtTokenSpecifications.*;
+
 import bg.autohouse.config.properties.SecurityConfigurationProperties;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.EnumUtils;
+import bg.autohouse.util.TimeUtils;
+import bg.autohouse.web.enums.RestMessage;
 import io.jsonwebtoken.*;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -12,14 +16,21 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class JwtTokenServiceImpl implements JwtTokenService {
-  @Autowired private SecurityConfigurationProperties securityProperties;
+  private static final String INVALID_TOKEN_MESSAGE = RestMessage.INVALID_TOKEN.name();
+
+  private final SecurityConfigurationProperties securityProperties;
+  private final JwtTokenRepository tokenBlackList;
   private String keyIdentifier;
 
   @PostConstruct
@@ -32,9 +43,9 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   public String createJwt(JwtTokenCreateRequest request) {
     request.setShortExpiryMillis(securityProperties.getExpirationTime());
 
-    Date now = new Date();
+    Date now = TimeUtils.now();
     long typeExpiryMillis = convertTypeToExpiryMillis(request.getTokenType());
-    Date expiryDate = new Date(now.getTime() + typeExpiryMillis);
+    Date expiryDate = TimeUtils.dateOf(now.getTime() + typeExpiryMillis);
     request.getHeaderParameters().put("kid", keyIdentifier);
 
     return Jwts.builder()
@@ -80,6 +91,11 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   public List<String> getRolesFromJwtToken(String token) {
     String joinedRoles = (String) getClaimFromToken(token, claims -> claims.get(ROLE_KEY));
     return Assert.has(joinedRoles) ? Arrays.asList(joinedRoles.split(",")) : new ArrayList<>();
+  }
+
+  @Override
+  public Date getExpirationDateFromToken(String token) {
+    return getClaimFromToken(token, Claims::getExpiration);
   }
 
   @Override
@@ -141,42 +157,73 @@ public class JwtTokenServiceImpl implements JwtTokenService {
         .getBody();
   }
 
-  // @Override
-  // public String refreshToken(String oldToken, JwtTokenType jwtType) {
-  //   boolean isTokenStillValid = false;
-  //   Date expirationTime = null;
-  //   String newToken = null;
-  //   String userId = null;
-  //   String username = null;
-  //   String roles = null;
+  @Override
+  public String refreshToken(String oldToken, JwtTokenType jwtType) {
+    boolean isTokenStillValid = false;
+    Date expirationTime = null;
+    String newToken = null;
+    String userId = null;
+    String username = null;
+    String roles = null;
 
-  //   try {
-  //     Jws<Claims> jwt = parseToken(oldToken);
-  //     userId = jwt.getBody().get(USER_UID_KEY, String.class);
-  //     username = jwt.getBody().get(USER_USERNAME_KEY, String.class);
-  //     roles = jwt.getBody().get(ROLE_KEY, String.class);
-  //     isTokenStillValid = true;
-  //   } catch (ExpiredJwtException e) {
-  //     log.error("Token validation failed. The token is expired.", e);
-  //     expirationTime = e.getClaims().getExpiration();
-  //   }
-  //   if (isTokenStillValid || expirationTime != null && expirationTime.before(new Date())) {
-  //     JwtTokenCreateRequest cjtRequest =
-  //         new JwtTokenCreateRequest(jwtType, userId, username, roles);
+    try {
+      userId = getUserIdFromJWT(oldToken);
+      username = getUsernameFromJWT(oldToken);
+      roles = (String) getClaimFromToken(oldToken, claims -> claims.get(ROLE_KEY));
+      isTokenStillValid = !isBlackListed(oldToken);
+    } catch (ExpiredJwtException e) {
+      log.error("Token validation failed. The token is expired.", e);
+      expirationTime = e.getClaims().getExpiration();
+    }
+    if (isTokenStillValid || expirationTime != null && expirationTime.before(TimeUtils.now())) {
+      JwtTokenCreateRequest cjtRequest =
+          new JwtTokenCreateRequest(jwtType, userId, username, roles);
 
-  //     newToken = createJwt(cjtRequest);
-  //   }
+      blackListJwt(oldToken);
 
-  //   return newToken;
-  // }
+      newToken = createJwt(cjtRequest);
+    }
 
-  // private Jws<Claims> parseToken(String token) {
-  //   try {
-  //     return
-  // Jwts.parser().setSigningKey(securityProperties.getJwtSecret()).parseClaimsJws(token);
-  //   } catch (Exception e) {
-  //     log.error("Failed to get user id from jwt token: {}", e.getMessage());
-  //     return null;
-  //   }
-  // }
+    return newToken;
+  }
+
+  @Override
+  public boolean isBlackListed(String token) {
+    String tokenUid = getJwtUidFromJWT(token);
+    String username = getUsernameFromJWT(token);
+    Assert.notNull(tokenUid, INVALID_TOKEN_MESSAGE);
+    Assert.notNull(username, INVALID_TOKEN_MESSAGE);
+    return tokenBlackList.findOne(forUser(username).and(withTokenUid(tokenUid))).isPresent();
+  }
+
+  @Override
+  @Transactional
+  public void blackListJwt(String token) {
+    Assert.notNull(token, String.format(INVALID_TOKEN_MESSAGE, "token"));
+
+    JwtTokenType tokenType =
+        EnumUtils.fromString(getTokenTypeFromJWT(token), JwtTokenType.class).orElse(null);
+    String tokenUid = getJwtUidFromJWT(token);
+    String userId = getUserIdFromJWT(token);
+    String username = getUsernameFromJWT(token);
+    Date expirationTime = getExpirationDateFromToken(token);
+
+    Assert.notNull(tokenType, INVALID_TOKEN_MESSAGE);
+    Assert.notNull(tokenUid, INVALID_TOKEN_MESSAGE);
+    Assert.notNull(userId, INVALID_TOKEN_MESSAGE);
+    Assert.notNull(username, INVALID_TOKEN_MESSAGE);
+    Assert.notNull(expirationTime, INVALID_TOKEN_MESSAGE);
+
+    JwtToken invalidToken =
+        JwtToken.builder()
+            .value(token)
+            .tokenUid(tokenUid)
+            .type(tokenType)
+            .username(username)
+            .userId(userId)
+            .expirationTime(expirationTime)
+            .build();
+
+    tokenBlackList.save(invalidToken);
+  }
 }

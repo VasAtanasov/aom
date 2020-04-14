@@ -39,6 +39,7 @@ public class UserControllerTest extends MvcPerformer {
     PrivateSellerAccountCreateRequest request = new PrivateSellerAccountCreateRequest();
     request.setFirstName("firstName");
     request.setLastName("lastName");
+
     performPost(API_BASE + "/account/private", request).andExpect(status().isOk());
   }
 }

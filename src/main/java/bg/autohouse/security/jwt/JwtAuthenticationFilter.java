@@ -44,9 +44,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
 
     log.debug("auth headers: {}, token: {}", request.getHeaderNames(), token);
-    // TODO add check to blocklist
+
     try {
-      if (authHeader.hasBearerToken() && jwtService.isJwtTokenValid(token)) {
+      if (authHeader.hasBearerToken()
+          && jwtService.isJwtTokenValid(token)
+          && !jwtService.isBlackListed(token)) {
 
         String userId = jwtService.getUserIdFromJWT(token);
         UserDetails userDetails = userService.loadUserById(userId);

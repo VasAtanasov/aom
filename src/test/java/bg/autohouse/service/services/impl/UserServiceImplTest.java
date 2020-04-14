@@ -9,13 +9,14 @@ import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
-import bg.autohouse.security.jwt.JwtTokenRepository;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @ActiveProfiles("test")
 @TestPropertySource("classpath:test.properties")
 public class UserServiceImplTest {
@@ -37,7 +39,6 @@ public class UserServiceImplTest {
 
   @Autowired private UserService userService;
   @Autowired private UserRequestRepository userRequestRepository;
-  @Autowired private JwtTokenRepository tokenRepository;
   @Autowired private PasswordService passwordService;
   @Autowired private UserRepository userRepository;
   @Autowired private PasswordEncoder encoder;
@@ -58,8 +59,8 @@ public class UserServiceImplTest {
   @Test
   void when_generateUserRegistrationVerifier_withValidUsername_shouldReturnModel() {
     String token = userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
-    // assertThat(passwordService.verifyEmailToken(token)).isTrue();
-    assertThat(tokenRepository.count()).isGreaterThan(ZERO);
+    assertThat(passwordService.isShortLivedOtpValid(VALID_REGISTER_MODEL.getUsername(), token))
+        .isTrue();
     assertThat(userRequestRepository.count()).isGreaterThan(ZERO);
   }
 
@@ -119,20 +120,20 @@ public class UserServiceImplTest {
     assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessage("Model is required");
   }
 
-  // @Test
-  // void when_resetPassword_withValidToken_shouldReset() {
-  //   userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
-  //   userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
+  @Test
+  void when_resetPassword_withValidToken_shouldReset() {
+    userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
+    userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
 
-  //   String token = userService.generatePasswordResetVerifier(VALID_REGISTER_MODEL.getUsername());
+    String token = userService.regenerateUserVerifier(VALID_REGISTER_MODEL.getUsername());
 
-  //   boolean iseReset = passwordService.resetPassword(token, "12345");
+    boolean iseReset =
+        passwordService.resetPassword(VALID_REGISTER_MODEL.getUsername(), token, "12345");
 
-  //   User user =
-  // userRepository.findByUsernameIgnoreCase(VALID_REGISTER_MODEL.getUsername()).get();
-  //   boolean passwordsMatch = encoder.matches("12345", user.getPassword());
+    User user = userRepository.findByUsernameIgnoreCase(VALID_REGISTER_MODEL.getUsername()).get();
+    boolean passwordsMatch = encoder.matches("12345", user.getPassword());
 
-  //   assertThat(iseReset).isTrue();
-  //   assertThat(passwordsMatch).isTrue();
-  // }
+    assertThat(iseReset).isTrue();
+    assertThat(passwordsMatch).isTrue();
+  }
 }

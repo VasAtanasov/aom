@@ -47,14 +47,16 @@ public class WebSecurityConfiguration {
         "/api/auth/register",
         "/api/auth/login-or-register",
         "/api/auth/password-reset-request",
-        "/api/auth/password-reset-complete",
         "/api/vehicles/offers/search"
       };
 
   private static final String[] PUBLIC_GET_URLS =
       new String[] {
         "/api/auth/register/verify",
-        "/api/auth/email-verification",
+        "/api/auth/reset-password-validate",
+        "/api/auth/password-reset-complete",
+        "/api/auth/token/validate",
+        "/api/auth/token/refresh",
         "/api/vehicles/state",
         "/api/vehicles/makers/**"
       };
