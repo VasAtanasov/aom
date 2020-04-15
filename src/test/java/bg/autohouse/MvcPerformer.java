@@ -4,6 +4,9 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -82,6 +85,16 @@ public abstract class MvcPerformer {
     }
   }
 
+  public static <T> T convertJSONStringToObject(String json, Class<T> objectClass)
+      throws JsonMappingException, JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    JavaTimeModule module = new JavaTimeModule();
+    mapper.registerModule(module);
+    return mapper.readValue(json, objectClass);
+  }
+
   public class HeadersBuilder {
     private Map<String, String> headers = new HashMap<>();
 
@@ -98,4 +111,19 @@ public abstract class MvcPerformer {
       return httpHeaders;
     }
   }
+
+  // public void should_get_the_preset_shop_list() throws Exception {
+  //     MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get("/api/shops")
+  //             .contentType(MediaType.APPLICATION_JSON))
+  //             .andExpect(status().isOk())
+  //             .andReturn();
+  //     List<ShopResponse> shops = this.objectMapper.readValue(
+  //             mvcResult.getResponse().getContentAsByteArray(),
+  //             new TypeReference<List<ShopResponse>>(){});
+  //     assertEquals(1, shops.size());
+
+  //     ShopResponse shop = shops.get(0);
+  //     assertEquals(shopName, shop.getName());
+
+  // }
 }

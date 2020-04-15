@@ -1,6 +1,7 @@
 package bg.autohouse.web.controllers;
 
 import static bg.autohouse.web.controllers.ResponseBodyMatchers.responseBody;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -11,23 +12,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.errors.ExceptionsMessages;
-import bg.autohouse.utils.WithAutohouseUser;
 import bg.autohouse.validation.ValidationMessages;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
+import bg.autohouse.web.models.request.UserLoginRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -39,12 +43,25 @@ import org.springframework.transaction.annotation.Transactional;
 @TestPropertySource("classpath:test.properties")
 public class MakerControllerTest extends MvcPerformer {
   static final String API_BASE = "/api/vehicles";
+  private static final UserLoginRequest LOGIN_REQUEST_ROOT =
+      UserLoginRequest.of(DatabaseSeeder.ROOT_USERNAME, "123");
 
   @Autowired private MockMvc mockMvc;
+
+  private HttpHeaders headers;
 
   @Override
   public MockMvc getMockMvc() {
     return mockMvc;
+  }
+
+  @BeforeEach
+  void initHeaders() throws Exception {
+    headers = new HttpHeaders();
+    MvcResult mvcResult = performPost("/api/auth/login", LOGIN_REQUEST_ROOT).andReturn();
+    String authHeader = mvcResult.getResponse().getHeader(HttpHeaders.AUTHORIZATION);
+    assertThat(authHeader).isNotNull();
+    headers.add(HttpHeaders.AUTHORIZATION, authHeader);
   }
 
   @Test
@@ -91,11 +108,10 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withValidBody_shouldReturn201() throws Exception {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("New Model", 1L);
-    performPost(API_BASE + "/makers/1", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.message", is(RestMessage.MAKER_MODEL_CREATED.name())))
@@ -103,12 +119,11 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", 1L);
 
-    performPost(API_BASE + "/makers/1", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
@@ -117,12 +132,11 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1L);
 
-    performPost(API_BASE + "/makers/1", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
@@ -132,12 +146,11 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_withNullId_shouldReturn400() throws Exception {
 
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", null);
 
-    performPost(API_BASE + "/makers/1", createRequestModel)
+    performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())))
@@ -147,12 +160,11 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateModel_witInvalidTypeId_shouldReturn400() throws Exception {
 
     String createModelJson = "{\"name\":\"A4\",\"makerId\":\"invalid_id\"}";
 
-    performPost(API_BASE + "/makers/1", createModelJson)
+    performPost(API_BASE + "/makers/1", createModelJson, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.success", is(false)))
         .andExpect(jsonPath("$.message", is(ExceptionsMessages.INVALID_DATA_TYPE)))
@@ -160,12 +172,11 @@ public class MakerControllerTest extends MvcPerformer {
   }
 
   @Test
-  @WithAutohouseUser(DatabaseSeeder.ROOT_USERNAME)
   public void whenCreateMaker_withValidBody_shouldReturn201() throws Exception {
     final String MAKER_NAME = "New Maker";
 
     MakerCreateRequestModel createRequestModel = MakerCreateRequestModel.of(MAKER_NAME);
-    performPost(API_BASE + "/makers", createRequestModel)
+    performPost(API_BASE + "/makers", createRequestModel, headers)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.message", is(RestMessage.MAKER_CREATED.name())))

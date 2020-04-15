@@ -37,6 +37,20 @@ public class PasswordServiceTest {
   }
 
   @Test
+  void when_expireVerificationCode_withValidId_shouldExpire() {
+    User user = userRepository.findByUsernameIgnoreCase(VALID_USERNAME).orElse(null);
+    assertThat(user).isNotNull();
+    VerificationTokenCode verificationTokenCode =
+        passwordService.generateShortLivedOTP(VALID_USERNAME);
+
+    passwordService.expireVerificationCode(user.getId());
+
+    boolean isValid =
+        passwordService.isShortLivedOtpValid(user.getUsername(), verificationTokenCode.getCode());
+    assertThat(isValid).isFalse();
+  }
+
+  @Test
   void when_validateCredentials_withValidCredentials_isTru() {
     boolean isValidCredentials =
         passwordService.validateCredentials(VALID_USERNAME, VALID_PASSWORD);
@@ -71,19 +85,5 @@ public class PasswordServiceTest {
     boolean isReset =
         passwordService.resetPassword(VALID_USERNAME, verificationTokenCode.getCode(), "1234");
     assertThat(isReset).isTrue();
-  }
-
-  @Test
-  void when_expireVerificationCode_withValidId_shouldExpire() {
-    User user = userRepository.findByUsernameIgnoreCase(VALID_USERNAME).orElse(null);
-    assertThat(user).isNotNull();
-    VerificationTokenCode verificationTokenCode =
-        passwordService.generateShortLivedOTP(VALID_USERNAME);
-
-    passwordService.expireVerificationCode(user.getId());
-
-    boolean isValid =
-        passwordService.isShortLivedOtpValid(user.getUsername(), verificationTokenCode.getCode());
-    assertThat(isValid).isFalse();
   }
 }
