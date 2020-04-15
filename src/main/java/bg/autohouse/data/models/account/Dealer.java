@@ -17,9 +17,6 @@ public class Dealer extends Account {
   @Column(name = "dealership_name", unique = true)
   private String dealershipName;
 
-  @Column(name = "description")
-  private String description;
-
   @OneToOne(
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,

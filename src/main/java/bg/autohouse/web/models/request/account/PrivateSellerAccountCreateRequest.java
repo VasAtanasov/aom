@@ -10,4 +10,7 @@ import lombok.*;
 public class PrivateSellerAccountCreateRequest {
   private String firstName;
   private String lastName;
+  private String displayedName;
+  private String description;
+  private ContactDetailsModel contactDetails;
 }

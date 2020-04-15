@@ -1,13 +1,15 @@
 package bg.autohouse.web.controllers;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.web.enums.RestMessage;
-import bg.autohouse.web.models.request.UserChangePasswordRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
+import bg.autohouse.web.models.request.account.ContactDetailsModel;
+import bg.autohouse.web.models.request.account.PrivateSellerAccountCreateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @TestPropertySource("classpath:test.properties")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerTest extends MvcPerformer {
-  private static final String API_BASE = "/api/users";
+public class AccountControllerTest extends MvcPerformer {
+  private static final String API_BASE = "/api/accounts";
   private static final UserLoginRequest LOGIN_REQUEST_ROOT =
       UserLoginRequest.of(DatabaseSeeder.ROOT_USERNAME, "123");
 
@@ -47,42 +48,23 @@ public class UserControllerTest extends MvcPerformer {
   }
 
   @Test
-  void when_changePassword_thenReturn200() throws Exception {
-    UserChangePasswordRequest request =
-        UserChangePasswordRequest.builder()
-            .oldPassword("123")
-            .newPassword("1234")
-            .confirmPassword("1234")
+  void when_createPrivateSellerAccount_thenReturn200() throws Exception {
+    PrivateSellerAccountCreateRequest request =
+        PrivateSellerAccountCreateRequest.builder()
+            .firstName("firstName")
+            .lastName("lastName")
+            .displayedName("displayedName")
+            .description("Bla bla bla")
+            .contactDetails(
+                ContactDetailsModel.builder().phoneNumber("phoneNumber").webLink("webLink").build())
             .build();
 
-    performPost(API_BASE + "/password/update", request, headers).andExpect(status().isOk());
-  }
+    performPost(API_BASE + "/private-create", request, headers)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED.name())));
 
-  @Test
-  void when_changePassword_invalidOldPassword_thenReturn400() throws Exception {
-    UserChangePasswordRequest request =
-        UserChangePasswordRequest.builder()
-            .oldPassword("1234")
-            .newPassword("1234")
-            .confirmPassword("1234")
-            .build();
-
-    performPost(API_BASE + "/password/update", request, headers)
+    performPost(API_BASE + "/private-create", request, headers)
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_PASSWORD.name())));
-  }
-
-  @Test
-  void when_changePassword_missingOldPassword_thenReturn400() throws Exception {
-    UserChangePasswordRequest request =
-        UserChangePasswordRequest.builder()
-            .oldPassword(null)
-            .newPassword("1234")
-            .confirmPassword("1234")
-            .build();
-
-    performPost(API_BASE + "/password/update", request, headers)
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())));
+        .andExpect(jsonPath("$.message", is(RestMessage.USER_ALREADY_HAS_ACCOUNT.name())));
   }
 }

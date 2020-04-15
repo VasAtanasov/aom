@@ -201,10 +201,4 @@ public class AuthenticationControllerTest extends MvcPerformer {
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
   }
-
-  // --
-  // ResultActions resultActions = mvc.perform(get("/some/endpoint"))
-  //         .andDo(print())
-  //         .andExpect(status().isOk());
-
 }

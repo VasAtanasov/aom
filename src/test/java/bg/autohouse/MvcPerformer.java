@@ -4,6 +4,7 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
+import bg.autohouse.web.models.request.UserLoginRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -17,6 +18,7 @@ import java.util.function.Function;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -110,6 +112,14 @@ public abstract class MvcPerformer {
       }
       return httpHeaders;
     }
+  }
+
+  public HttpHeaders getAuthHeadersFor(UserLoginRequest loginRequest) throws Exception {
+    MvcResult mvcResult = performPost("/api/auth/login", loginRequest).andReturn();
+    String authHeader = mvcResult.getResponse().getHeader(HttpHeaders.AUTHORIZATION);
+    HttpHeaders headers = new HttpHeaders();
+    if (authHeader != null) headers.add(HttpHeaders.AUTHORIZATION, authHeader);
+    return headers;
   }
 
   // public void should_get_the_preset_shop_list() throws Exception {

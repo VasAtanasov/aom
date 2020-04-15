@@ -38,6 +38,9 @@ public abstract class Account extends BaseUuidEntity {
   @Column(name = "max_offers_count")
   private int maxOffersCount;
 
+  @Column(name = "description")
+  private String description;
+
   @Embedded private ContactDetails contactDetails;
 
   @Column(name = "enabled", nullable = false)

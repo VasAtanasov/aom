@@ -1,18 +1,84 @@
 package bg.autohouse.service.services.impl;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.account.AccountLog;
+import bg.autohouse.data.models.account.Private;
+import bg.autohouse.data.models.enums.AccountLogType;
+import bg.autohouse.data.repositories.AccountLogRepository;
+import bg.autohouse.data.repositories.AccountRepository;
+import bg.autohouse.data.repositories.UserRepository;
+import bg.autohouse.errors.ExceptionsMessages;
+import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.service.models.PrivateSellerAccountServiceModel;
 import bg.autohouse.service.services.AccountService;
+import bg.autohouse.util.Assert;
+import bg.autohouse.util.ModelMapperWrapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AccountServiceImpl implements AccountService {
+  enum AccountType {
+    PRIVATE_ACCOUNT,
+    DEALER_ACCOUNT;
+  }
+
+  private static final int MAX_PRIVATE_ACCOUNT_OFFERS = 5;
+  // private static final int MAX_DEALER_ACCOUNT_OFFERS = 200;
+
+  private final AccountRepository accountRepository;
+  private final UserRepository userRepository;
+  private final AccountLogRepository accountLogRepository;
+  private final ModelMapperWrapper modelMapper;
 
   @Override
-  public void createPrivateSellerAccount(PrivateSellerAccountServiceModel model, User owner) {
-    // TODO Auto-generated method stub
-
+  @Transactional(readOnly = true)
+  public boolean isHasAccount(String id) {
+    return accountRepository.existsByOwnerId(id);
   }
+
+  @Override
+  @Transactional
+  public void createPrivateSellerAccount(PrivateSellerAccountServiceModel model, String ownerId) {
+    Assert.notNull(model, "No account model found");
+    Assert.notNull(ownerId, "Account owner must be provided");
+
+    User owner =
+        userRepository
+            .findById(ownerId)
+            .orElseThrow(
+                () -> new NotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+
+    Private privateAccount = modelMapper.map(model, Private.class);
+    privateAccount.setMaxOffersCount(MAX_PRIVATE_ACCOUNT_OFFERS);
+    privateAccount.setOwner(owner);
+    privateAccount.setEnabled(Boolean.TRUE);
+    accountRepository.save(privateAccount);
+    owner.setHasAccount(Boolean.TRUE);
+    userRepository.save(owner);
+
+    AccountLog accountLogCreate =
+        AccountLog.builder()
+            .accountLogType(AccountLogType.ACCOUNT_CREATED)
+            .description(AccountType.PRIVATE_ACCOUNT.name())
+            .user(owner)
+            .build();
+
+    AccountLog accountLogEnable =
+        AccountLog.builder()
+            .accountLogType(AccountLogType.ACCOUNT_ENABLED)
+            .description(AccountType.PRIVATE_ACCOUNT.name())
+            .user(owner)
+            .build();
+
+    accountLogRepository.save(accountLogCreate);
+    accountLogRepository.save(accountLogEnable);
+  }
+
   // @Override
   // public DealershipServiceModel registerDealer(String userId,
   // DealershipServiceModel dealer) {

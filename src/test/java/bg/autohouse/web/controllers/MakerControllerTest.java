@@ -1,7 +1,6 @@
 package bg.autohouse.web.controllers;
 
 import static bg.autohouse.web.controllers.ResponseBodyMatchers.responseBody;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,7 +30,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -57,11 +55,7 @@ public class MakerControllerTest extends MvcPerformer {
 
   @BeforeEach
   void initHeaders() throws Exception {
-    headers = new HttpHeaders();
-    MvcResult mvcResult = performPost("/api/auth/login", LOGIN_REQUEST_ROOT).andReturn();
-    String authHeader = mvcResult.getResponse().getHeader(HttpHeaders.AUTHORIZATION);
-    assertThat(authHeader).isNotNull();
-    headers.add(HttpHeaders.AUTHORIZATION, authHeader);
+    if (headers == null) headers = getAuthHeadersFor(LOGIN_REQUEST_ROOT);
   }
 
   @Test
@@ -71,7 +65,8 @@ public class MakerControllerTest extends MvcPerformer {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.success", is(true)))
         .andExpect(jsonPath("$.message", is(RestMessage.MAKERS_GET_SUCCESSFUL.name())))
-        .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())));
+        .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
+        .andReturn();
   }
 
   @Test
