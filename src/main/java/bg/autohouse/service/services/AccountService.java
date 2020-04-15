@@ -1,9 +1,11 @@
 package bg.autohouse.service.services;
 
-import bg.autohouse.service.models.PrivateSellerAccountServiceModel;
+import bg.autohouse.service.models.AccountServiceModel;
 
 public interface AccountService {
-  void createPrivateSellerAccount(PrivateSellerAccountServiceModel model, String ownerId);
-
   boolean isHasAccount(String id);
+
+  AccountServiceModel loadAccountForUser(String userId);
+
+  void createPrivateSellerAccount(AccountServiceModel model, String ownerId);
 }

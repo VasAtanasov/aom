@@ -8,8 +8,8 @@ import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserLoginRequest;
+import bg.autohouse.web.models.request.account.AccountCreateRequest;
 import bg.autohouse.web.models.request.account.ContactDetailsModel;
-import bg.autohouse.web.models.request.account.PrivateSellerAccountCreateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +49,8 @@ public class AccountControllerTest extends MvcPerformer {
 
   @Test
   void when_createPrivateSellerAccount_thenReturn200() throws Exception {
-    PrivateSellerAccountCreateRequest request =
-        PrivateSellerAccountCreateRequest.builder()
+    AccountCreateRequest request =
+        AccountCreateRequest.builder()
             .firstName("firstName")
             .lastName("lastName")
             .displayedName("displayedName")

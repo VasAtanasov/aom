@@ -2,7 +2,7 @@ package bg.autohouse.data.models.geo;
 
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
-import bg.autohouse.data.models.account.Dealer;
+import bg.autohouse.data.models.account.Account;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -30,5 +30,5 @@ public class Address extends BaseUuidEntity {
   @MapsId
   @OneToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "id")
-  private Dealer resident;
+  private Account resident;
 }

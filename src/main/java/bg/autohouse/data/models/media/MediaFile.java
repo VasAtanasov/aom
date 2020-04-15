@@ -2,7 +2,6 @@ package bg.autohouse.data.models.media;
 
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
-import bg.autohouse.data.models.Offer;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.*;
@@ -11,20 +10,30 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = EntityConstants.IMAGES)
 @Builder
-public class Image extends BaseUuidEntity {
+@Entity
+@Table(
+    name = EntityConstants.MEDIA_FILE,
+    uniqueConstraints = {
+      @UniqueConstraint(
+          columnNames = {"bucket", "key"},
+          name = "uk_media_file_bucket_key")
+    })
+public class MediaFile extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1L;
+
+  @Column(name = "bucket", nullable = false)
+  @Setter
+  private String bucket;
+
+  @Column(name = "key", nullable = false)
+  @Setter
+  private String key;
 
   @Column(name = "thumbnail_url")
   private String thumbnailUrl;
 
   @Column(nullable = false)
   private String url;
-
-  @ManyToOne(targetEntity = Offer.class)
-  @JoinColumn(name = "offer_id", referencedColumnName = "id", nullable = false)
-  private Offer offer;
 }

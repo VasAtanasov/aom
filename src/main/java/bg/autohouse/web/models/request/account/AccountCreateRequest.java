@@ -1,4 +1,4 @@
-package bg.autohouse.service.models;
+package bg.autohouse.web.models.request.account;
 
 import lombok.*;
 
@@ -7,10 +7,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PrivateSellerAccountServiceModel {
+public class AccountCreateRequest {
   private String firstName;
   private String lastName;
   private String displayedName;
   private String description;
-  private ContactDetailsServiceModel contactDetails;
+  private ContactDetailsModel contactDetails;
 }

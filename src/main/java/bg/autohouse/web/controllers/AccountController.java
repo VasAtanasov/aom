@@ -5,11 +5,11 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
 import bg.autohouse.security.authentication.LoggedUser;
-import bg.autohouse.service.models.PrivateSellerAccountServiceModel;
+import bg.autohouse.service.models.AccountServiceModel;
 import bg.autohouse.service.services.AccountService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
-import bg.autohouse.web.models.request.account.PrivateSellerAccountCreateRequest;
+import bg.autohouse.web.models.request.account.AccountCreateRequest;
 import bg.autohouse.web.util.RestUtil;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,15 +36,14 @@ public class AccountController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createPrivateSellerAccount(
-      @Valid @RequestBody PrivateSellerAccountCreateRequest request, @LoggedUser User user) {
+      @Valid @RequestBody AccountCreateRequest request, @LoggedUser User user) {
 
     if (accountService.isHasAccount(user.getId())) {
       log.error("User already has set account");
       return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
 
-    PrivateSellerAccountServiceModel model =
-        modelMapper.map(request, PrivateSellerAccountServiceModel.class);
+    AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
 
     accountService.createPrivateSellerAccount(model, user.getId());
     return RestUtil.messageOkayResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED);
@@ -61,7 +60,8 @@ public class AccountController extends BaseController {
       return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
 
-    // TODO implement dealer account create
+    // TODO implement dealer account request
+    // TODO only admins can finish dealer's account creation
     return RestUtil.messageOkayResponse(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED);
   }
 }

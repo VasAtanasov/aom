@@ -3,6 +3,7 @@ package bg.autohouse.data.models.account;
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.geo.Address;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,13 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name = "ACCOUNT_TYPE",
-    discriminatorType = DiscriminatorType.INTEGER,
-    columnDefinition = "TINYINT(1)")
 @Table(name = EntityConstants.ACCOUNTS)
-public abstract class Account extends BaseUuidEntity {
+public class Account extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1L;
 
@@ -41,11 +37,21 @@ public abstract class Account extends BaseUuidEntity {
   @Column(name = "description")
   private String description;
 
-  @Embedded private ContactDetails contactDetails;
+  @Embedded private ContactDetails contact;
+
+  @Column(name = "display_name")
+  private String displayName;
 
   @Column(name = "enabled", nullable = false)
   private boolean enabled = false;
 
   @Column(name = "closed", nullable = false)
   private boolean closed = false;
+
+  @OneToOne(
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      mappedBy = "resident")
+  private Address address;
 }

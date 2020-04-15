@@ -53,7 +53,7 @@ public class PasswordServiceImpl implements PasswordService {
   @Override
   @Transactional
   public VerificationTokenCode generateShortLivedOTP(String username) {
-    Assert.notNull(username, ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_USERNAME);
+    Assert.notNull(username, ExceptionsMessages.USER_NOT_FOUND_USERNAME);
 
     VerificationTokenCode token = verificationTokenCodeRepository.findByUsername(username);
     final String code = String.valueOf(100000 + new SecureRandom().nextInt(999999));
@@ -141,9 +141,7 @@ public class PasswordServiceImpl implements PasswordService {
         userRepository
             .findByUsernameIgnoreCase(username)
             .orElseThrow(
-                () ->
-                    new UsernameNotFoundException(
-                        ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_USERNAME));
+                () -> new UsernameNotFoundException(ExceptionsMessages.USER_NOT_FOUND_USERNAME));
 
     user.setPassword(encoder.encode(password));
     userRepository.save(user);

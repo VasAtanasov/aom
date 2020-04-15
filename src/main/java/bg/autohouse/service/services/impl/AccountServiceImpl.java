@@ -1,15 +1,16 @@
 package bg.autohouse.service.services.impl;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.AccountLog;
-import bg.autohouse.data.models.account.Private;
 import bg.autohouse.data.models.enums.AccountLogType;
+import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.repositories.AccountLogRepository;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.NotFoundException;
-import bg.autohouse.service.models.PrivateSellerAccountServiceModel;
+import bg.autohouse.service.models.AccountServiceModel;
 import bg.autohouse.service.services.AccountService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
@@ -42,23 +43,41 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
+  public AccountServiceModel loadAccountForUser(String userId) {
+    Assert.notNull(userId, "User id is required.");
+    User user =
+        userRepository
+            .findById(userId)
+            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
+
+    if (!user.isHasAccount()) return null;
+
+    Account account =
+        accountRepository
+            .findByOwnerId(userId)
+            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.ACCOUNT_NOT_FOUND));
+
+    return modelMapper.map(account, AccountServiceModel.class);
+  }
+
+  @Override
   @Transactional
-  public void createPrivateSellerAccount(PrivateSellerAccountServiceModel model, String ownerId) {
+  public void createPrivateSellerAccount(AccountServiceModel model, String ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
 
     User owner =
         userRepository
             .findById(ownerId)
-            .orElseThrow(
-                () -> new NotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
 
-    Private privateAccount = modelMapper.map(model, Private.class);
+    Account privateAccount = modelMapper.map(model, Account.class);
     privateAccount.setMaxOffersCount(MAX_PRIVATE_ACCOUNT_OFFERS);
     privateAccount.setOwner(owner);
     privateAccount.setEnabled(Boolean.TRUE);
     accountRepository.save(privateAccount);
     owner.setHasAccount(Boolean.TRUE);
+    owner.setSellerType(SellerType.PRIVATE);
     userRepository.save(owner);
 
     AccountLog accountLogCreate =

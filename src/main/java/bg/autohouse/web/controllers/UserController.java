@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(WebConfiguration.URL_USER_BASE)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@PreAuthorize("hasRole('USER')")
 public class UserController extends BaseController {
 
   private final PasswordService passwordService;
@@ -44,4 +46,8 @@ public class UserController extends BaseController {
 
     return RestUtil.errorResponse(RestMessage.INVALID_PASSWORD);
   }
+
+  // TODO update profile image
+  // TODO update user data
+  // TODO delete user profile
 }

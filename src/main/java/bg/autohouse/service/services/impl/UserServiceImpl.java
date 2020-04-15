@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
   public UserDetails loadUserById(String id) {
     return userRepository
         .findById(id)
-        .orElseThrow(() -> new NotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+        .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
   }
 
   @Override
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
     Assert.notNull(username, "Username is required");
 
     if (!userExist(username)) {
-      throw new UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_USERNAME);
+      throw new UsernameNotFoundException(ExceptionsMessages.USER_NOT_FOUND_USERNAME);
     }
 
     VerificationTokenCode newTokenCode = passwordService.generateShortLivedOTP(username);
