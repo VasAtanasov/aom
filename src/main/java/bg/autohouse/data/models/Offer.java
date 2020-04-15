@@ -2,10 +2,7 @@ package bg.autohouse.data.models;
 
 import bg.autohouse.data.models.account.ContactDetails;
 import bg.autohouse.data.models.geo.Location;
-import bg.autohouse.data.models.media.MediaFile;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 import lombok.*;
 
@@ -34,13 +31,6 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
 
   @Column(name = "thumbnail", nullable = false)
   private String thumbnail;
-
-  @OneToMany(
-      mappedBy = "offer",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.LAZY)
-  private List<MediaFile> images = new ArrayList<>();
 
   @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer price = 0;
