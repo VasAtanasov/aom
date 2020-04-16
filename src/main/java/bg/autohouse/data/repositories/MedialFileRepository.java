@@ -13,4 +13,6 @@ public interface MedialFileRepository extends JpaRepository<MediaFile, String> {
   MediaFile findByBucketAndKey(String bucket, String key);
 
   List<MediaFile> findByBucketAndKeyIn(String bucket, List<String> keys);
+
+  boolean existsByBucketAdnKey(String bucket, String key);
 }

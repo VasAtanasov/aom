@@ -14,7 +14,7 @@ public class EntityConstants {
   public static final String MODELS = PREFIX + "models";
   public static final String ENGINES = PREFIX + "engines";
   public static final String FILTERS = PREFIX + "filters";
-  public static final String MEDIA_FILE = PREFIX + "media_file";
+  public static final String MEDIA_FILE = PREFIX + "media_files";
   public static final String LOCATIONS = PREFIX + "locations";
   public static final String PROVINCES = PREFIX + "provinces";
   public static final String ADDRESSES = PREFIX + "addresses";

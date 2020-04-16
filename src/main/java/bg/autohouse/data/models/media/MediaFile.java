@@ -10,7 +10,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(
     name = EntityConstants.MEDIA_FILE,
@@ -31,9 +30,23 @@ public class MediaFile extends BaseUuidEntity {
   @Setter
   private String key;
 
+  @Column(name = "file_name")
+  private String fileName;
+
+  @Column(name = "mime_type")
+  private String mimeType;
+
   @Column(name = "thumbnail_url")
   private String thumbnailUrl;
 
   @Column(nullable = false)
   private String url;
+
+  @Builder
+  public MediaFile(String bucket, String contentType, String key, String fileName) {
+    this.bucket = bucket;
+    this.key = key;
+    this.mimeType = contentType;
+    this.fileName = fileName;
+  }
 }

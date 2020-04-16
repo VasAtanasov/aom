@@ -36,6 +36,9 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "has_account")
   private boolean hasAccount = false;
 
+  @Column(name = "has_image")
+  private boolean hasImage = false;
+
   @Column(name = "seller_type")
   @Enumerated(EnumType.STRING)
   private SellerType sellerType = null;

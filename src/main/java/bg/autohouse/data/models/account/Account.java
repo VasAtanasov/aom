@@ -48,6 +48,9 @@ public class Account extends BaseUuidEntity {
   @Column(name = "closed", nullable = false)
   private boolean closed = false;
 
+  @Column(name = "has_image")
+  private boolean hasImage = false;
+
   @OneToOne(
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,

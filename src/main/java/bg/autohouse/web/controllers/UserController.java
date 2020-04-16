@@ -25,7 +25,26 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasRole('USER')")
 public class UserController extends BaseController {
 
+  private static final String USER_PROFILE_IMAGE_FOLDER = "user-profile-images-staging}";
+
   private final PasswordService passwordService;
+
+  // @RequestMapping(value = "/image/change", method = RequestMethod.POST)
+  // public ResponseEntity uploadProfileImage(@RequestBody MultipartFile photo, HttpServletRequest
+  // request) {
+  //     String userUid = getUserIdFromRequest(request);
+  //     String imageKey = userProfileImagesFolder + "/" + userUid;
+
+  //     log.info("storing a media file, with imageKey = {}, and mediaFunction = {}", imageKey,
+  // MediaFunction.USER_PROFILE_IMAGE);
+
+  //     String storedFileUid = mediaFileBroker.storeFile(photo, MediaFunction.USER_PROFILE_IMAGE,
+  // null, imageKey, photo.getName());
+  //     userService.updateHasImage(userUid, true);
+  //     MediaUploadResult result =
+  // MediaUploadResult.builder().mediaRecordUid(storedFileUid).build();
+  //     return ResponseEntity.ok(result);
+  // }
 
   @PostMapping(
       value = "/password/update",
