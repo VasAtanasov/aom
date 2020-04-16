@@ -1,6 +1,8 @@
 package bg.autohouse.service.services.impl;
 
 import bg.autohouse.data.models.media.MediaFile;
+import bg.autohouse.data.models.media.MediaFunction;
+import bg.autohouse.data.models.media.StorageType;
 import bg.autohouse.service.services.StorageService;
 import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
@@ -12,6 +14,7 @@ import com.dropbox.core.v2.files.WriteMode;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,15 @@ public class DropboxService implements StorageService {
   private final DbxClientV2 client;
 
   @Override
+  public StorageType getType() {
+    return StorageType.DROPBOX_BUCKET;
+  }
+
+  @Override
+  public void storeFile(MediaFunction mediaFunction, MediaFile mediaFile, InputStream inputStream)
+      throws IOException {}
+
+  @Override
   public boolean storeMedia(MediaFile record, MultipartFile file) {
     String filePath = getFilePath(record);
     log.info(
@@ -33,7 +45,6 @@ public class DropboxService implements StorageService {
     FileMetadata metadata = uploadFile(file, filePath);
 
     if (metadata != null) {
-      record.setRev(metadata.getRev());
       record.setContentHash(metadata.getContentHash());
       record.setSize(metadata.getSize());
     }
@@ -101,5 +112,23 @@ public class DropboxService implements StorageService {
   private static void printProgress(long uploaded, long size) {
     System.out.printf(
         "Uploaded %12d / %12d bytes (%5.2f%%)\n", uploaded, size, 100 * (uploaded / (double) size));
+  }
+
+  @Override
+  public void retrieveFile(MediaFile record, OutputStream outputStream) throws IOException {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void removeFromStorage(MediaFile record) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public boolean isConfigured() {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

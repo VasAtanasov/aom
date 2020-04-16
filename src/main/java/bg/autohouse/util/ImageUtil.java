@@ -5,7 +5,7 @@ import bg.autohouse.data.models.media.MediaFile;
 public class ImageUtil {
 
   public static String generateFileName(MediaFile record) {
-    String extension = getMimiTypeExtension(record.getMimeType());
+    String extension = getMimiTypeExtension(record.getContentType());
     return "image-" + record.getFileKey() + "." + extension;
   }
 

@@ -48,9 +48,9 @@ public class ImageFetchController extends BaseController {
     byte[] data = storageService.downloadMedia(record);
     HttpHeaders headers = new HttpHeaders();
     try {
-      headers.setContentType(MediaType.parseMediaType(record.getMimeType()));
+      headers.setContentType(MediaType.parseMediaType(record.getContentType()));
     } catch (InvalidMediaTypeException e) {
-      log.info("error processing mime type, record has: {}", record.getMimeType());
+      log.info("error processing mime type, record has: {}", record.getContentType());
       log.error("couldn't set MIME heading ...", e);
     }
     String filename = ImageUtil.generateFileName(record);

@@ -67,7 +67,7 @@ public class MediaFileServiceImpl implements MediaFileService {
       record =
           MediaFile.builder()
               .bucket(bucket)
-              .mimeType(contentType)
+              .contentType(contentType)
               .fileKey(imageKey)
               .fileName(nameToUse)
               .build();
@@ -92,7 +92,7 @@ public class MediaFileServiceImpl implements MediaFileService {
     MediaFile record =
         MediaFile.builder()
             .bucket(bucket)
-            .mimeType(mimeType)
+            .contentType(mimeType)
             .fileKey(imageKey)
             .fileName(fileName)
             .build();

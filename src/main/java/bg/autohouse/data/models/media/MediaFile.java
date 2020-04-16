@@ -23,6 +23,10 @@ public class MediaFile extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1L;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "storage_type", nullable = false)
+  private StorageType storageType;
+
   @Column(name = "bucket", nullable = false)
   private String bucket;
 
@@ -33,11 +37,11 @@ public class MediaFile extends BaseUuidEntity {
   private String fileName;
 
   @Column(name = "mime_type")
-  private String mimeType;
+  private String contentType;
 
-  private String rev;
-
+  @Column(name = "content_hash")
   private String contentHash;
 
+  @Column(name = "size")
   private long size;
 }

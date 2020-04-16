@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MediaFileService {
   public static final String DEFAULT_MEDIA_BUCKET = "autohouse-media-files-general";
-  public static final String DEFAULT_OFFER_IMAGE_BUCKET = "offer-images-staging";
+  public static final String DEFAULT_OFFER_IMAGE_BUCKET = "autohouse-offer-images";
 
   MediaFile load(String id);
 
