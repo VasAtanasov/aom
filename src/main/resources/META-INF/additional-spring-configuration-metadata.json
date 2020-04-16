@@ -34,6 +34,11 @@
       "name": "app.time-zone",
       "type": "java.lang.String",
       "description": "A description for 'app.time-zone'"
+    },
+    {
+      "name": "file.storage.folder",
+      "type": "java.lang.String",
+      "description": "A description for 'file.storage.folder'"
     }
   ]
 }

@@ -45,6 +45,9 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_MODELS = URL_VEHICLES + "/models";
   public static final String OFFERS = URL_VEHICLES + "/offers";
 
+  public static final String URL_IMAGES = "/images";
+  public static final String URL_MEDIA = "/media";
+
   private static final long MAX_AGE_SECS = 3600;
 
   @Bean

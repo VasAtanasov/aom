@@ -17,7 +17,7 @@ public class ThumbnailServiceImpl implements ThumbnailService {
   private static final String API_BASE_URL = "https://api.screenshotmachine.com/?";
   private static final String PDF_API_BASE_URL = "https://pdfapi.screenshotmachine.com/?";
 
-  @Value("${screenshotMachine.customerKey}")
+  @Value("${app.screenshot-machine.customer-key}")
   private String customerKey;
 
   @Override

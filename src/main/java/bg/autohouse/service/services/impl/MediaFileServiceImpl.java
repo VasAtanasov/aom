@@ -3,8 +3,8 @@ package bg.autohouse.service.services.impl;
 import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.data.repositories.MedialFileRepository;
-import bg.autohouse.service.services.CloudService;
 import bg.autohouse.service.services.MediaFileService;
+import bg.autohouse.service.services.StorageService;
 import bg.autohouse.util.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MediaFileServiceImpl implements MediaFileService {
   private final MedialFileRepository medialFileRepository;
-  private final CloudService cloudService;
+  private final StorageService cloudService;
 
   @Override
   @Transactional(readOnly = true)
@@ -30,12 +30,12 @@ public class MediaFileServiceImpl implements MediaFileService {
   @Override
   @Transactional(readOnly = true)
   public MediaFile load(MediaFunction function, String imageKey) {
-    return medialFileRepository.findByBucketAndKey(getBucketForFunction(function), imageKey);
+    return medialFileRepository.findByBucketAndFileKey(getBucketForFunction(function), imageKey);
   }
 
   @Override
   public boolean doesFileExist(MediaFunction function, String imageKey) {
-    return medialFileRepository.existsByBucketAdnKey(getBucketForFunction(function), imageKey);
+    return medialFileRepository.existsByBucketAndFileKey(getBucketForFunction(function), imageKey);
   }
 
   @Override
@@ -60,15 +60,15 @@ public class MediaFileServiceImpl implements MediaFileService {
         fileName,
         file.getOriginalFilename());
 
-    MediaFile record = medialFileRepository.findByBucketAndKey(bucket, imageKey);
+    MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, imageKey);
     String contentType = !Assert.has(mimeType) ? file.getContentType() : mimeType;
     String nameToUse = !Assert.has(mimeType) ? file.getOriginalFilename() : fileName;
     if (record == null)
       record =
           MediaFile.builder()
               .bucket(bucket)
-              .contentType(contentType)
-              .key(imageKey)
+              .mimeType(contentType)
+              .fileKey(imageKey)
               .fileName(nameToUse)
               .build();
 
@@ -92,8 +92,8 @@ public class MediaFileServiceImpl implements MediaFileService {
     MediaFile record =
         MediaFile.builder()
             .bucket(bucket)
-            .contentType(mimeType)
-            .key(imageKey)
+            .mimeType(mimeType)
+            .fileKey(imageKey)
             .fileName(fileName)
             .build();
 

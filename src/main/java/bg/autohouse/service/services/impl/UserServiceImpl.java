@@ -178,4 +178,15 @@ public class UserServiceImpl implements UserService {
     int index = allRoles.indexOf(role);
     return new HashSet<>(allRoles.subList(index, allRoles.size()));
   }
+
+  @Override
+  @Transactional
+  public void updateHasImage(String userId, boolean hasImage) {
+    User user =
+        userRepository
+            .findById(userId)
+            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
+    user.setHasImage(hasImage);
+    userRepository.save(user);
+  }
 }

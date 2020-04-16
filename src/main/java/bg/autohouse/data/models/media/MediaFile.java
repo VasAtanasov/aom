@@ -10,25 +10,24 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(
     name = EntityConstants.MEDIA_FILE,
     uniqueConstraints = {
       @UniqueConstraint(
-          columnNames = {"bucket", "key"},
-          name = "uk_media_file_bucket_key")
+          columnNames = {"bucket", "file_key"},
+          name = "uk_media_file_bucket_file_key")
     })
 public class MediaFile extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1L;
 
   @Column(name = "bucket", nullable = false)
-  @Setter
   private String bucket;
 
-  @Column(name = "key", nullable = false)
-  @Setter
-  private String key;
+  @Column(name = "file_key", nullable = false)
+  private String fileKey;
 
   @Column(name = "file_name")
   private String fileName;
@@ -36,17 +35,9 @@ public class MediaFile extends BaseUuidEntity {
   @Column(name = "mime_type")
   private String mimeType;
 
-  @Column(name = "thumbnail_url")
-  private String thumbnailUrl;
+  private String rev;
 
-  @Column(nullable = false)
-  private String url;
+  private String contentHash;
 
-  @Builder
-  public MediaFile(String bucket, String contentType, String key, String fileName) {
-    this.bucket = bucket;
-    this.key = key;
-    this.mimeType = contentType;
-    this.fileName = fileName;
-  }
+  private long size;
 }

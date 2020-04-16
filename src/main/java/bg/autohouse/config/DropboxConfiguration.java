@@ -13,7 +13,7 @@ class DropboxConfiguration {
   private String accessToken;
 
   @Bean
-  public DbxClientV2 dropboxClient(String accessToken) {
+  public DbxClientV2 dropboxClient() {
     // TODO externalize folder
     DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/autohouse").build();
     return new DbxClientV2(config, accessToken);

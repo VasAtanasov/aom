@@ -4,13 +4,18 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.security.authentication.LoggedUser;
+import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.PasswordService;
+import bg.autohouse.service.services.UserService;
+import bg.autohouse.util.ImageUtil;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserChangePasswordRequest;
 import bg.autohouse.web.util.RestUtil;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,33 +23,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequestMapping(WebConfiguration.URL_USER_BASE)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @PreAuthorize("hasRole('USER')")
 public class UserController extends BaseController {
 
-  private static final String USER_PROFILE_IMAGE_FOLDER = "user-profile-images-staging}";
-
   private final PasswordService passwordService;
+  private final UserService userService;
+  private final MediaFileService mediaFileService;
 
-  // @RequestMapping(value = "/image/change", method = RequestMethod.POST)
-  // public ResponseEntity uploadProfileImage(@RequestBody MultipartFile photo, HttpServletRequest
-  // request) {
-  //     String userUid = getUserIdFromRequest(request);
-  //     String imageKey = userProfileImagesFolder + "/" + userUid;
+  @PostMapping(value = "/image/change")
+  public ResponseEntity<?> uploadProfileImage(
+      @RequestBody MultipartFile photo, @LoggedUser User user) {
 
-  //     log.info("storing a media file, with imageKey = {}, and mediaFunction = {}", imageKey,
-  // MediaFunction.USER_PROFILE_IMAGE);
+    String contentType = photo.getContentType();
+    boolean acceptable = ImageUtil.isAcceptedMimeType(contentType);
 
-  //     String storedFileUid = mediaFileBroker.storeFile(photo, MediaFunction.USER_PROFILE_IMAGE,
-  // null, imageKey, photo.getName());
-  //     userService.updateHasImage(userUid, true);
-  //     MediaUploadResult result =
-  // MediaUploadResult.builder().mediaRecordUid(storedFileUid).build();
-  //     return ResponseEntity.ok(result);
-  // }
+    if (!acceptable) return RestUtil.errorResponse(RestMessage.INVALID_MEDIA_TYPE);
+
+    String imageKey = ImageUtil.generateImageKey(USER_PROFILE_IMAGE_FOLDER, user.getId());
+
+    log.info(
+        "storing a media file, with imageKey = {}, and mediaFunction = {}",
+        imageKey,
+        MediaFunction.USER_PROFILE_IMAGE);
+
+    String storedFileUid =
+        mediaFileService.storeFile(
+            photo, MediaFunction.USER_PROFILE_IMAGE, null, imageKey, photo.getName());
+
+    userService.updateHasImage(user.getId(), true);
+    return RestUtil.okayResponseWithData(
+        RestMessage.IMAGE_UPLOAD_SUCCESSFUL, toMap("mediaUid", storedFileUid));
+  }
 
   @PostMapping(
       value = "/password/update",
@@ -66,7 +81,6 @@ public class UserController extends BaseController {
     return RestUtil.errorResponse(RestMessage.INVALID_PASSWORD);
   }
 
-  // TODO update profile image
   // TODO update user data
   // TODO delete user profile
 }
