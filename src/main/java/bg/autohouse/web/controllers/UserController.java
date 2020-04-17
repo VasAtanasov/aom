@@ -48,7 +48,7 @@ public class UserController extends BaseController {
     boolean acceptable = ImageUtil.isAcceptedMimeType(contentType);
 
     if (!acceptable) return RestUtil.errorResponse(RestMessage.INVALID_MEDIA_TYPE);
-
+    // TODO resize image and convert to jpeg
     log.info("storing a media file, with mediaFunction = {}", MediaFunction.USER_PROFILE_IMAGE);
     String imageKey = generateFileKey(USER_PROFILE_IMAGE_FOLDER, user.getId());
     String storedFileUid =

@@ -1,7 +1,9 @@
 package bg.autohouse.data.models;
 
+import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.ContactDetails;
 import bg.autohouse.data.models.geo.Location;
+import bg.autohouse.util.TimeUtils;
 import java.util.Date;
 import javax.persistence.*;
 import lombok.*;
@@ -18,9 +20,9 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
 
   private static final long serialVersionUID = -2840866963962522737L;
 
-  @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-  private User seller;
+  @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
+  @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+  private Account account;
 
   @OneToOne(
       fetch = FetchType.LAZY,
@@ -66,7 +68,7 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   private void doBeforeUpdate() {
     int areEqualPrices = Integer.compare(previousPrice, price);
     if (areEqualPrices != 0) {
-      priceModifiedOn = new Date();
+      priceModifiedOn = TimeUtils.now();
     }
   }
 

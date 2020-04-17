@@ -6,10 +6,10 @@ import static org.springframework.data.jpa.domain.Specification.where;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Offer;
+import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
-import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import java.util.Arrays;
@@ -112,14 +112,15 @@ public class OfferRepositoryTest {
 
   @Test
   void whenOfferFilter_bySeller_shouldReturnCollection() {
-    List<SellerType> sellerTypes = Arrays.asList(SellerType.DEALER);
-    Filter filter = Filter.builder().sellerTypes(sellerTypes).build();
+    List<AccountType> accountTypes = Arrays.asList(AccountType.DEALER);
+    Filter filter = Filter.builder().accountTypes(accountTypes).build();
 
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
 
     List<Offer> offers = offerRepository.findAll(offerSpecification);
 
-    assertThat(offers).allMatch(offer -> sellerTypes.contains(offer.getSeller().getSellerType()));
+    assertThat(offers)
+        .allMatch(offer -> accountTypes.contains(offer.getAccount().getAccountType()));
   }
 
   @Test

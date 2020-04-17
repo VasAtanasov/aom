@@ -1,7 +1,6 @@
 package bg.autohouse.data.models;
 
 import bg.autohouse.data.models.enums.Role;
-import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.util.F;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,13 +34,6 @@ public class User extends BaseUuidEntity implements UserDetails {
 
   @Column(name = "has_account")
   private boolean hasAccount = false;
-
-  @Column(name = "has_image")
-  private boolean hasImage = false;
-
-  @Column(name = "seller_type")
-  @Enumerated(EnumType.STRING)
-  private SellerType sellerType = null;
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(

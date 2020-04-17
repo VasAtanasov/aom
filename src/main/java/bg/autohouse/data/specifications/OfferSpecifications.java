@@ -5,8 +5,8 @@ import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.ManufactureDate_;
 import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.Offer_;
-import bg.autohouse.data.models.User_;
 import bg.autohouse.data.models.Vehicle_;
+import bg.autohouse.data.models.account.Account_;
 import bg.autohouse.data.models.enums.*;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.F;
@@ -29,13 +29,13 @@ public class OfferSpecifications {
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.maker, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.model, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.feature, JoinType.LEFT);
-        root.join(Offer_.seller, JoinType.LEFT);
+        root.join(Offer_.account, JoinType.LEFT);
       } else {
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.maker, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.model, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
-        root.fetch(Offer_.seller, JoinType.LEFT);
+        root.fetch(Offer_.account, JoinType.LEFT);
       }
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
@@ -92,10 +92,10 @@ public class OfferSpecifications {
                     cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.feature)));
               });
 
-      if (!F.isNullOrEmpty(filter.getSellerTypes())) {
-        List<SellerType> sellers =
-            F.filterToList(filter.getSellerTypes(), seller -> Assert.has(seller));
-        restrictions.add(cb.isTrue(root.get(Offer_.seller).get(User_.sellerType).in(sellers)));
+      if (!F.isNullOrEmpty(filter.getAccountTypes())) {
+        List<AccountType> sellers =
+            F.filterToList(filter.getAccountTypes(), seller -> Assert.has(seller));
+        restrictions.add(cb.isTrue(root.get(Offer_.account).get(Account_.accountType).in(sellers)));
       }
 
       if (!F.isNullOrEmpty(filter.getState())) {

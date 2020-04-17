@@ -3,6 +3,7 @@ package bg.autohouse.data.models.account;
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.geo.Address;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,13 +44,17 @@ public class Account extends BaseUuidEntity {
   private String displayName;
 
   @Column(name = "enabled", nullable = false)
-  private boolean enabled = false;
+  private boolean enabled = true;
 
   @Column(name = "closed", nullable = false)
   private boolean closed = false;
 
   @Column(name = "has_image")
   private boolean hasImage = false;
+
+  @Column(name = "account_type")
+  @Enumerated(EnumType.STRING)
+  private AccountType accountType = null;
 
   @OneToOne(
       fetch = FetchType.LAZY,

@@ -2,13 +2,13 @@ package bg.autohouse.data.models;
 
 import static bg.autohouse.data.models.EntityConstants.*;
 
+import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Color;
 import bg.autohouse.data.models.enums.Drive;
 import bg.autohouse.data.models.enums.EuroStandard;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
-import bg.autohouse.data.models.enums.SellerType;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Transmission;
 import java.util.ArrayList;
@@ -132,18 +132,19 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Builder.Default
   private List<Feature> feature = new ArrayList<>();
 
-  @ElementCollection(fetch = FetchType.LAZY, targetClass = SellerType.class)
+  @ElementCollection(fetch = FetchType.LAZY, targetClass = AccountType.class)
   @JoinTable(
-      name = "filter_seller",
+      name = "filter_account_type",
       joinColumns =
           @JoinColumn(
               name = "filter_id",
               referencedColumnName = "id",
-              foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_seller_filter_id")))
-  @Column(name = "seller")
+              foreignKey =
+                  @ForeignKey(name = EntityConstants.PREFIX + "fk_account_type_filter_id")))
+  @Column(name = "account_type")
   @Enumerated(value = EnumType.STRING)
   @Builder.Default
-  private List<SellerType> sellerTypes = new ArrayList<>();
+  private List<AccountType> accountTypes = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = State.class)
   @JoinTable(

@@ -4,7 +4,7 @@ import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.AccountLog;
 import bg.autohouse.data.models.enums.AccountLogType;
-import bg.autohouse.data.models.enums.SellerType;
+import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.repositories.AccountLogRepository;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.UserRepository;
@@ -23,13 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AccountServiceImpl implements AccountService {
-  enum AccountType {
-    PRIVATE_ACCOUNT,
-    DEALER_ACCOUNT;
-  }
-
-  private static final int MAX_PRIVATE_ACCOUNT_OFFERS = 5;
-  // private static final int MAX_DEALER_ACCOUNT_OFFERS = 200;
 
   private final AccountRepository accountRepository;
   private final UserRepository userRepository;
@@ -60,6 +53,7 @@ public class AccountServiceImpl implements AccountService {
     return modelMapper.map(account, AccountServiceModel.class);
   }
 
+  // TODO return account details
   @Override
   @Transactional
   public void createPrivateSellerAccount(AccountServiceModel model, String ownerId) {
@@ -72,30 +66,21 @@ public class AccountServiceImpl implements AccountService {
             .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
 
     Account privateAccount = modelMapper.map(model, Account.class);
-    privateAccount.setMaxOffersCount(MAX_PRIVATE_ACCOUNT_OFFERS);
+    privateAccount.setMaxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount());
     privateAccount.setOwner(owner);
-    privateAccount.setEnabled(Boolean.TRUE);
+    privateAccount.setAccountType(AccountType.PRIVATE);
     accountRepository.save(privateAccount);
     owner.setHasAccount(Boolean.TRUE);
-    owner.setSellerType(SellerType.PRIVATE);
     userRepository.save(owner);
 
     AccountLog accountLogCreate =
         AccountLog.builder()
             .accountLogType(AccountLogType.ACCOUNT_CREATED)
-            .description(AccountType.PRIVATE_ACCOUNT.name())
-            .user(owner)
-            .build();
-
-    AccountLog accountLogEnable =
-        AccountLog.builder()
-            .accountLogType(AccountLogType.ACCOUNT_ENABLED)
-            .description(AccountType.PRIVATE_ACCOUNT.name())
+            .description(AccountType.PRIVATE.name())
             .user(owner)
             .build();
 
     accountLogRepository.save(accountLogCreate);
-    accountLogRepository.save(accountLogEnable);
   }
 
   // @Override

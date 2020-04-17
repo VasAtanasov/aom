@@ -186,7 +186,8 @@ public class UserServiceImpl implements UserService {
         userRepository
             .findById(userId)
             .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
-    user.setHasImage(hasImage);
+    // TODO set account has image
+    // user.setHasImage(hasImage);
     userRepository.save(user);
   }
 }
