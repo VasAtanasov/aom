@@ -2,6 +2,8 @@ package bg.autohouse.service.services;
 
 import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
+import java.io.IOException;
+import java.nio.file.Path;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MediaFileService {
@@ -9,8 +11,6 @@ public interface MediaFileService {
   public static final String DEFAULT_OFFER_IMAGE_BUCKET = "autohouse-offer-images";
 
   MediaFile load(String id);
-
-  String getBucketForFunction(MediaFunction function);
 
   MediaFile load(MediaFunction function, String imageKey);
 
@@ -23,6 +23,9 @@ public interface MediaFileService {
       String imageKey,
       String fileName);
 
-  String recordFile(
-      String userUid, String bucket, String mimeType, String imageKey, String fileName);
+  byte[] getBytes(final String uuid) throws IOException;
+
+  void downloadTo(final String uuid, final Path targetPath) throws IOException;
+
+  void remove(final String uuid);
 }

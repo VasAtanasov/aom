@@ -4,7 +4,6 @@ import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.service.services.MediaFileService;
-import bg.autohouse.service.services.StorageService;
 import bg.autohouse.util.ImageUtil;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.util.RestUtil;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ImageFetchController extends BaseController {
 
-  private final StorageService storageService;
   private final MediaFileService mediaFileService;
 
   @GetMapping(value = "/user/{userUid}")
@@ -45,7 +43,7 @@ public class ImageFetchController extends BaseController {
   }
 
   private ResponseEntity<byte[]> convertRecordToResponse(MediaFile record) throws IOException {
-    byte[] data = storageService.downloadMedia(record);
+    byte[] data = mediaFileService.getBytes(record.getId());
     HttpHeaders headers = new HttpHeaders();
     try {
       headers.setContentType(MediaType.parseMediaType(record.getContentType()));

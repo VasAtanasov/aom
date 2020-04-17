@@ -19,7 +19,12 @@ public enum MediaFunction {
   }
 
   public String formatFilename(final MediaFile mediaFile) {
-    return mediaFile.getId().toString() + "_" + System.currentTimeMillis();
+    switch (this) {
+      case USER_PROFILE_IMAGE:
+        return mediaFile.getReferenceId();
+      default:
+        return mediaFile.getId().toString() + "_" + System.currentTimeMillis();
+    }
   }
 
   public String resolveBucketName() {

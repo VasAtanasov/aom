@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BaseController {
 
-  protected static final String USER_PROFILE_IMAGE_FOLDER = "user-profile-images-staging";
+  protected static final String USER_PROFILE_IMAGE_FOLDER = "user-profile-images";
   protected static final int DEFAULT_PAGE_SIZE = 20;
   protected static final int DEFAULT_PAGE_NUMBER = 0;
   protected static final String DEFAULT_SORT = "createdAt,desc";

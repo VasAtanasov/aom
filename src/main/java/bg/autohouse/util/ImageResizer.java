@@ -32,6 +32,13 @@ public class ImageResizer {
     return toJPG(resize(image, MAX_IMAGE_SIZE, MAX_IMAGE_SIZE, true));
   }
 
+  public static byte[] createThumbnail(InputStream inputStream, int width) throws IOException {
+    BufferedImage img = ImageIO.read(inputStream);
+    BufferedImage thumbImg =
+        Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, width, Scalr.OP_ANTIALIAS);
+    return toJPG(thumbImg);
+  }
+
   public byte[] resize(
       @Nonnull final byte[] photoData,
       final int width,

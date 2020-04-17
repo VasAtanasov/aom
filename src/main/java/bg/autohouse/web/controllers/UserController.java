@@ -57,6 +57,7 @@ public class UserController extends BaseController {
             photo, MediaFunction.USER_PROFILE_IMAGE, null, imageKey, photo.getName());
 
     userService.updateHasImage(user.getId(), true);
+
     return RestUtil.okayResponseWithData(
         RestMessage.IMAGE_UPLOAD_SUCCESSFUL, toMap("mediaUid", storedFileUid));
   }

@@ -2,6 +2,7 @@ package bg.autohouse.data.models.media;
 
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
+import java.net.URL;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.*;
@@ -33,8 +34,8 @@ public class MediaFile extends BaseUuidEntity {
   @Column(name = "file_key", nullable = false)
   private String fileKey;
 
-  @Column(name = "file_name")
-  private String fileName;
+  @Column(name = "original_file_name")
+  private String originalFilename;
 
   @Column(name = "mime_type")
   private String contentType;
@@ -44,4 +45,10 @@ public class MediaFile extends BaseUuidEntity {
 
   @Column(name = "size")
   private long size;
+
+  @Column(name = "resource_url")
+  private URL resourceUrl;
+
+  @Column(name = "reference_id")
+  private String referenceId;
 }

@@ -6,24 +6,16 @@ import bg.autohouse.data.models.media.StorageType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface StorageService {
+  StorageType getType();
 
-  boolean storeMedia(MediaFile record, MultipartFile file);
+  boolean isConfigured();
 
   void storeFile(MediaFunction mediaFunction, MediaFile mediaFile, InputStream inputStream)
       throws IOException;
 
-  byte[] downloadMedia(MediaFile record);
-
   void retrieveFile(MediaFile record, OutputStream outputStream) throws IOException;
 
-  boolean removeMedia(MediaFile record);
-
   void removeFromStorage(MediaFile record);
-
-  boolean isConfigured();
-
-  StorageType getType();
 }
