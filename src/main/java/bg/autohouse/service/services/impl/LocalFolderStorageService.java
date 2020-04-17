@@ -24,15 +24,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocalFolderStorageService implements StorageService {
 
+  @Value("${app.file.storage.folder:autohouse}")
+  private String path;
+
   private Path storageBasePath;
 
-  @Value("${file.storage.folder}")
   @PostConstruct
-  public void init(String path) throws IOException {
-
+  public void init() throws IOException {
     if (Assert.has(path)) {
       log.info("File local storage folder: {}", path);
-
       this.storageBasePath = Paths.get(path);
     } else {
       log.warn("Using temporary folder");
@@ -57,8 +57,14 @@ public class LocalFolderStorageService implements StorageService {
   public void storeFile(MediaFunction mediaFunction, MediaFile mediaFile, InputStream inputStream)
       throws IOException {
 
-    final Path storageFile = this.storageBasePath.resolve(mediaFunction.formatFilename(mediaFile));
+    String fileName = mediaFunction.formatFilename(mediaFile);
+    final Path storageFile = storageBasePath.resolve(mediaFile.getBucket()).resolve(fileName);
     mediaFile.setResourceUrl(storageFile.toUri().toURL());
+
+    if (!Files.exists(storageFile)) {
+      Files.createDirectories(storageFile.getParent());
+      log.info("Directory created", storageFile.getParent().toString());
+    }
 
     try {
       Files.copy(inputStream, storageFile, StandardCopyOption.REPLACE_EXISTING);

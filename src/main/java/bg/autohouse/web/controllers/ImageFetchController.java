@@ -28,7 +28,7 @@ public class ImageFetchController extends BaseController {
 
   @GetMapping(value = "/user/{userUid}")
   public ResponseEntity<byte[]> viewProfileImage(@PathVariable String userUid) throws IOException {
-    String imageKey = ImageUtil.generateImageKey(USER_PROFILE_IMAGE_FOLDER, userUid);
+    String imageKey = generateFileKey(USER_PROFILE_IMAGE_FOLDER, userUid);
     MediaFile userImg = mediaFileService.load(MediaFunction.USER_PROFILE_IMAGE, imageKey);
     log.info("Fetched record: {}", userImg);
     return convertRecordToResponse(userImg);

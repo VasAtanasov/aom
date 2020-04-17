@@ -9,10 +9,6 @@ public class ImageUtil {
     return "image-" + record.getFileKey() + "." + extension;
   }
 
-  public static String generateImageKey(String... params) {
-    return String.join("/", params);
-  }
-
   public static String getMimiTypeExtension(String mimeType) {
 
     if (!isAcceptedMimeType(mimeType.toLowerCase())) {

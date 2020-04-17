@@ -21,7 +21,8 @@ public enum UserLogType {
 
   USER_SESSION("user initiated a session"),
   USER_SKIPPED_NAME("user preferred not to set name"),
-  USER_SKIPPED_PROVINCE("user preferred not to set a province");
+  USER_SKIPPED_PROVINCE("user preferred not to set a province"),
+  USER_CHANGE_PROFILE_PHOTO("user change own profile photo");
 
   private final String text;
 

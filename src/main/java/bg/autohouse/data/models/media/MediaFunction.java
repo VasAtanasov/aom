@@ -5,7 +5,7 @@ import bg.autohouse.service.services.MediaFileService;
 public enum MediaFunction {
   OFFER_IMAGE(StorageType.DROPBOX_BUCKET),
   OFFER_THUMBNAIL_IMAGE(StorageType.DROPBOX_BUCKET),
-  USER_PROFILE_IMAGE(StorageType.LOCAL_DATABASE),
+  USER_PROFILE_IMAGE(StorageType.LOCAL_FOLDER),
   GENERAL_UNKNOWN(StorageType.LOCAL_FOLDER);
 
   private final StorageType storageType;
@@ -21,9 +21,9 @@ public enum MediaFunction {
   public String formatFilename(final MediaFile mediaFile) {
     switch (this) {
       case USER_PROFILE_IMAGE:
-        return mediaFile.getReferenceId();
+        return mediaFile.getFileKey();
       default:
-        return mediaFile.getId().toString() + "_" + System.currentTimeMillis();
+        return mediaFile.getId() + "_" + System.currentTimeMillis();
     }
   }
 

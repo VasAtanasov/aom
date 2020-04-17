@@ -15,16 +15,19 @@ import com.dropbox.core.v2.files.WriteMode;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class DropboxService implements StorageService {
+
+  @Value("${app.file.storage.dropbox.folder.base}")
+  private String storageBaseFolder;
 
   private final DbxClientV2 client;
 
@@ -41,7 +44,7 @@ public class DropboxService implements StorageService {
   @Override
   public void storeFile(MediaFunction mediaFunction, MediaFile record, InputStream inputStream)
       throws IOException {
-    String dropboxPath = getFilePath(record);
+    String dropboxPath = getUploadPath(record);
     log.info(
         "storing a media file in bucket {}, with key {}", record.getBucket(), record.getFileKey());
 
@@ -55,7 +58,6 @@ public class DropboxService implements StorageService {
       if (metadata != null) {
         record.setContentHash(metadata.getContentHash());
         record.setSize(metadata.getSize());
-        record.setResourceUrl(new URL(metadata.getPathLower()));
       }
       log.info("upload meta data =====> {}", metadata.toString());
 
@@ -73,7 +75,7 @@ public class DropboxService implements StorageService {
 
   @Override
   public void retrieveFile(MediaFile record, OutputStream outputStream) throws IOException {
-    String dropboxPath = getFilePath(record);
+    String dropboxPath = getUploadPath(record);
     log.debug("Going to download file" + dropboxPath);
     try {
       ProgressListener progressListener = l -> printProgress(l, record.getSize());
@@ -87,7 +89,7 @@ public class DropboxService implements StorageService {
 
   @Override
   public void removeFromStorage(MediaFile record) {
-    String filePath = getFilePath(record);
+    String filePath = getUploadPath(record);
     try {
       client.files().deleteV2(filePath);
     } catch (DbxException e) {
@@ -95,8 +97,8 @@ public class DropboxService implements StorageService {
     }
   }
 
-  private String getFilePath(MediaFile record) {
-    return "/" + record.getBucket() + "/" + record.getFileKey();
+  private String getUploadPath(MediaFile record) {
+    return "/" + storageBaseFolder + "/" + record.getBucket() + "/" + record.getFileKey();
   }
 
   private static void printProgress(long uploaded, long size) {

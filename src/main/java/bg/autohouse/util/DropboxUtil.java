@@ -142,4 +142,31 @@ public final class DropboxUtil {
   //     return null;
   // }
 
+  // private Map<String, Object> downloadFilesInFolder(String path) throws DropboxException {
+  //   try {
+  //     ListFolderResult folderResult = client.files().listFolder(path.equals("/") ? "" : path);
+  //     Map<String, Object> returnMap = new LinkedHashMap<>();
+  //     for (Metadata entry : folderResult.getEntries()) {
+  //       returnMap.put(entry.getPathDisplay(),
+  // downloadSingleFile(entry.getPathDisplay()).getValue());
+  //     }
+  //     return returnMap;
+  //   } catch (ListFolderErrorException e) {
+  //     try {
+  //       DbxDownloader<FileMetadata> listing = client.files().download(path);
+  //       if (listing == null) {
+  //         return Collections.emptyMap();
+  //       } else {
+  //         LOG.debug("downloading a single file...");
+  //         Map.Entry<String, Object> entry = downloadSingleFile(path);
+  //         return Collections.singletonMap(entry.getKey(), entry.getValue());
+  //       }
+  //     } catch (DbxException dbxException) {
+  //       throw new DropboxException(dbxException);
+  //     }
+  //   } catch (DbxException e) {
+  //     throw new DropboxException(e);
+  //   }
+  // }
+
 }

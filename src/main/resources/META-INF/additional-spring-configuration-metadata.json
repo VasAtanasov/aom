@@ -36,9 +36,14 @@
       "description": "A description for 'app.time-zone'"
     },
     {
-      "name": "file.storage.folder",
+      "name": "app.file.storage.folder",
       "type": "java.lang.String",
       "description": "A description for 'file.storage.folder'"
+    },
+    {
+      "name": "app.file.storage.dropbox.folder.base",
+      "type": "java.lang.String",
+      "description": "A description for 'app.file.storage.dropbox.folder.base'"
     }
   ]
 }

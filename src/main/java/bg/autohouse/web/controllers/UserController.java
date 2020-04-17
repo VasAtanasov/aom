@@ -4,12 +4,15 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.enums.UserLogType;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.security.authentication.LoggedUser;
+import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ImageUtil;
+import bg.autohouse.util.UIDGenerator;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserChangePasswordRequest;
 import bg.autohouse.web.util.RestUtil;
@@ -35,6 +38,7 @@ public class UserController extends BaseController {
   private final PasswordService passwordService;
   private final UserService userService;
   private final MediaFileService mediaFileService;
+  private final AsyncUserLogger userLogger;
 
   @PostMapping(value = "/image/change")
   public ResponseEntity<?> uploadProfileImage(
@@ -45,19 +49,19 @@ public class UserController extends BaseController {
 
     if (!acceptable) return RestUtil.errorResponse(RestMessage.INVALID_MEDIA_TYPE);
 
-    String imageKey = ImageUtil.generateImageKey(USER_PROFILE_IMAGE_FOLDER, user.getId());
-
-    log.info(
-        "storing a media file, with imageKey = {}, and mediaFunction = {}",
-        imageKey,
-        MediaFunction.USER_PROFILE_IMAGE);
-
+    log.info("storing a media file, with mediaFunction = {}", MediaFunction.USER_PROFILE_IMAGE);
+    String imageKey = generateFileKey(USER_PROFILE_IMAGE_FOLDER, user.getId());
     String storedFileUid =
         mediaFileService.storeFile(
-            photo, MediaFunction.USER_PROFILE_IMAGE, null, imageKey, photo.getName());
+            UIDGenerator.generateId(),
+            photo,
+            imageKey,
+            MediaFunction.USER_PROFILE_IMAGE,
+            photo.getOriginalFilename(),
+            user.getId());
 
     userService.updateHasImage(user.getId(), true);
-
+    userLogger.recordUserLog(user.getId(), UserLogType.USER_CHANGE_PROFILE_PHOTO, imageKey);
     return RestUtil.okayResponseWithData(
         RestMessage.IMAGE_UPLOAD_SUCCESSFUL, toMap("mediaUid", storedFileUid));
   }

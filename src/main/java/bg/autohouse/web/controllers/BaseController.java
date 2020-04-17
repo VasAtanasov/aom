@@ -21,4 +21,8 @@ public class BaseController {
   protected ImmutableMap<String, Object> toMap(final String key, final Object objects) {
     return ImmutableMap.of(key, objects);
   }
+
+  public String generateFileKey(String... params) {
+    return String.join("/", params);
+  }
 }

@@ -17,11 +17,12 @@ public interface MediaFileService {
   boolean doesFileExist(MediaFunction function, String imageKey);
 
   String storeFile(
+      String fileUuid,
       MultipartFile file,
+      String fileKey,
       MediaFunction function,
-      String mimeType,
-      String imageKey,
-      String fileName);
+      String originalFilename,
+      String referenceId);
 
   byte[] getBytes(final String uuid) throws IOException;
 
