@@ -26,4 +26,5 @@ public class ExceptionsMessages {
       "Dealership by the name of %s already exists!";
   public static final String INVALID_DEALER_DATA = "Missing or invalid dealer data.";
   public static final String INVALID_LOCATION = "Invalid location identifier";
+  public static final String USER_HAS_ACCOUNT = "User already have active account";
 }

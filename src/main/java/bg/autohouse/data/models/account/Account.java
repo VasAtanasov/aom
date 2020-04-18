@@ -44,7 +44,7 @@ public class Account extends BaseUuidEntity {
   private String displayName;
 
   @Column(name = "enabled", nullable = false)
-  private boolean enabled = true;
+  private boolean enabled = false;
 
   @Column(name = "closed", nullable = false)
   private boolean closed = false;

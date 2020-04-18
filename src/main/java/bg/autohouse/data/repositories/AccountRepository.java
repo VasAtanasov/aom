@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository
     extends JpaRepository<Account, Long>, JpaSpecificationExecutor<Account> {
-
+  // TODO query only active accounts
   boolean existsByOwnerId(String ownerId);
 
   Optional<Account> findByOwnerId(String ownerId);

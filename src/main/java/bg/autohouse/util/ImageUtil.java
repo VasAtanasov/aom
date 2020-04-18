@@ -1,8 +1,17 @@
 package bg.autohouse.util;
 
 import bg.autohouse.data.models.media.MediaFile;
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 public class ImageUtil {
+
+  private static final Set<String> ALLOWED_ATTACHMENT_CONTENT_TYPE =
+      ImmutableSet.of(MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE);
 
   public static String generateFileName(MediaFile record) {
     String extension = getMimiTypeExtension(record.getContentType());
@@ -30,5 +39,16 @@ public class ImageUtil {
 
   public static boolean isAcceptedMimeType(String mimeType) {
     return mimeType.endsWith("png") || mimeType.endsWith("jpg") || mimeType.endsWith("jpeg");
+  }
+
+  public boolean isValidAttachmentContent(final MultipartFile file) {
+    final String contentType = file.getContentType();
+
+    if (!ALLOWED_ATTACHMENT_CONTENT_TYPE.contains(contentType)) {
+      log.error("Invalid media type not allowed:" + contentType);
+      return false;
+    }
+
+    return true;
   }
 }

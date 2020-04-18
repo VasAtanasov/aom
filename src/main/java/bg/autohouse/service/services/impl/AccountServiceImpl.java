@@ -10,10 +10,12 @@ import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.NotFoundException;
-import bg.autohouse.service.models.AccountServiceModel;
+import bg.autohouse.errors.ResourceAlreadyExistsException;
+import bg.autohouse.service.models.account.*;
 import bg.autohouse.service.services.AccountService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.util.StringGenericUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,13 +52,19 @@ public class AccountServiceImpl implements AccountService {
             .findByOwnerId(userId)
             .orElseThrow(() -> new NotFoundException(ExceptionsMessages.ACCOUNT_NOT_FOUND));
 
+    if (!account.isEnabled() || !account.isClosed()) {
+      // TODO throw exception on account closed
+      return null;
+    }
+
     return modelMapper.map(account, AccountServiceModel.class);
   }
 
   // TODO return account details
   @Override
   @Transactional
-  public void createPrivateSellerAccount(AccountServiceModel model, String ownerId) {
+  public PrivateAccountServiceModel createPrivateSellerAccount(
+      PrivateAccountServiceModel model, String ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
 
@@ -65,10 +73,21 @@ public class AccountServiceImpl implements AccountService {
             .findById(ownerId)
             .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
 
+    if (owner.isHasAccount()) {
+      throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_HAS_ACCOUNT);
+    }
+
+    String displayNameToUse =
+        Assert.has(model.getDisplayedName())
+            ? model.getDisplayedName()
+            : StringGenericUtils.generateRandomDisplayName();
+
     Account privateAccount = modelMapper.map(model, Account.class);
     privateAccount.setMaxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount());
     privateAccount.setOwner(owner);
     privateAccount.setAccountType(AccountType.PRIVATE);
+    privateAccount.setDisplayName(displayNameToUse);
+    privateAccount.setEnabled(Boolean.TRUE);
     accountRepository.save(privateAccount);
     owner.setHasAccount(Boolean.TRUE);
     userRepository.save(owner);
@@ -81,6 +100,15 @@ public class AccountServiceImpl implements AccountService {
             .build();
 
     accountLogRepository.save(accountLogCreate);
+
+    return modelMapper.map(privateAccount, PrivateAccountServiceModel.class);
+  }
+
+  @Override
+  public DealerAccountServiceModel createDealerAccount(DealerAccountServiceModel model, String id) {
+
+    // TODO notify admin when created
+    return null;
   }
 
   // @Override

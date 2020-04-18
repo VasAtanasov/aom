@@ -9,13 +9,17 @@ public class StringGenericUtils {
   private static final char[] symbols;
   private static final char[] specials;
   private static final Random random;
+  private static final char[] upperDecimal;
 
   static {
     final StringBuilder tmp = new StringBuilder();
+    final StringBuilder tmpUD = new StringBuilder();
     specials = "!@#".toCharArray();
+
     tmp.append(specials);
     for (char ch = '1'; ch <= '9'; ++ch) {
       tmp.append(ch);
+      tmpUD.append(ch);
     }
     for (char ch = 'a'; ch <= 'z'; ++ch) {
       if (ch != 'o') {
@@ -26,19 +30,29 @@ public class StringGenericUtils {
       if (ch != 'O') {
         tmp.append(ch);
       }
+      tmpUD.append(ch);
     }
     symbols = tmp.toString().toCharArray();
+    upperDecimal = tmpUD.toString().toCharArray();
     random = new Random();
   }
 
+  public static String generateRandomDisplayName() {
+    return "Auto" + nextString(10, upperDecimal).toUpperCase();
+  }
+
   public static String nextString(final int length) {
-    if (length < 1) {
+    return nextString(length, symbols);
+  }
+
+  private static final String nextString(final int length, final char[] chars) {
+    if (length < 1 || chars.length < 1) {
       throw new IllegalArgumentException("length < 1: " + length);
     }
     final char[] buf = new char[length];
 
     for (int idx = 0; idx < buf.length; ++idx) {
-      buf[idx] = symbols[random.nextInt(symbols.length)];
+      buf[idx] = chars[random.nextInt(chars.length)];
     }
 
     return new String(buf);

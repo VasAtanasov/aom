@@ -56,7 +56,7 @@ public class AuthenticationControllerTest extends MvcPerformer {
   public MockMvc getMockMvc() {
     return mockMvc;
   }
-
+  // TODO test login of disabled user
   @Test
   void when_loginOrRegister_withNonExistingUsername_thenReturns200() throws Exception {
     LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
