@@ -1,5 +1,7 @@
 package bg.autohouse.service.services.impl;
 
+import static bg.autohouse.errors.ExceptionSupplier.*;
+
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.AccountLog;
@@ -33,34 +35,20 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional(readOnly = true)
-  public boolean isHasAccount(String id) {
+  public boolean hasAccount(String id) {
     return accountRepository.existsByOwnerId(id);
   }
 
   @Override
   public AccountServiceModel loadAccountForUser(String userId) {
     Assert.notNull(userId, "User id is required.");
-    User user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
-
-    if (!user.isHasAccount()) return null;
-
-    Account account =
-        accountRepository
-            .findByOwnerId(userId)
-            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.ACCOUNT_NOT_FOUND));
-
-    if (!account.isEnabled() || !account.isClosed()) {
-      // TODO throw exception on account closed
-      return null;
-    }
-
+    if (userRepository.existsById(userId)) throw noSuchUser.get();
+    // TODO check account type and return projection
+    Account account = accountRepository.findByOwnerId(userId).orElseThrow(noAccountFound);
+    if (!account.isEnabled() || !account.isClosed()) throw accountInactive.get();
     return modelMapper.map(account, AccountServiceModel.class);
   }
 
-  // TODO return account details
   @Override
   @Transactional
   public PrivateAccountServiceModel createPrivateSellerAccount(

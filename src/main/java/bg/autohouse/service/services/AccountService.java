@@ -3,7 +3,7 @@ package bg.autohouse.service.services;
 import bg.autohouse.service.models.account.*;
 
 public interface AccountService {
-  boolean isHasAccount(String id);
+  boolean hasAccount(String id);
 
   AccountServiceModel loadAccountForUser(String userId);
 

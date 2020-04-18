@@ -118,6 +118,7 @@ Content-Type: application/bg.autohouse.api-v1+json
     "username": "simple_user@mail.com",
     "password": "123"
 }
+
 ###
 
 POST {{auth}}/password-reset-request HTTP/1.1

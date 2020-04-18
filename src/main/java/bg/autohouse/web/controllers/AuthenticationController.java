@@ -3,18 +3,19 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
-import bg.autohouse.data.models.User;
 import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.security.SecurityConstants;
+import bg.autohouse.errors.UserRegistrationDisabledException;
+import bg.autohouse.errors.UsernamePasswordLoginFailedException;
 import bg.autohouse.security.jwt.AuthorizationHeader;
-import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenService;
 import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
+import bg.autohouse.service.models.user.AuthorizedUserServiceModel;
 import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
+import bg.autohouse.util.DebugProfileUtil;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.OperationStatus;
 import bg.autohouse.web.enums.RequestOperationName;
@@ -34,6 +35,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -63,27 +65,22 @@ public class AuthenticationController extends BaseController {
   public ResponseEntity<?> login(
       @Valid @RequestBody UserLoginRequest loginRequest, HttpServletResponse res)
       throws IOException {
+    long startTime = System.currentTimeMillis();
 
-    User user = findExistingUser(loginRequest.getUsername());
-
-    boolean isValidCredentials =
-        passwordService.validateCredentials(loginRequest.getUsername(), loginRequest.getPassword());
-
-    if (!isValidCredentials) {
-      return RestUtil.errorResponse(RestMessage.INVALID_CREDENTIALS);
-    }
-
-    JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
-    String token = jwtService.createJwt(tokenRequest);
-    log.info("generate a jwt token, on server is: {}", token);
+    AuthorizedUserServiceModel serviceModel =
+        userService.tryLogin(loginRequest.getUsername(), loginRequest.getPassword());
 
     AuthorizedUserResponseModel response =
-        AuthorizedUserResponseModel.builder().user(user).token(token).build();
+        modelMapper.map(serviceModel, AuthorizedUserResponseModel.class);
 
-    res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-    res.addHeader("UserID", user.getId());
+    res.addHeader(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + serviceModel.getToken());
+    res.addHeader("UserID", serviceModel.getUserId());
 
-    userLogger.logUserLogin(user.getId());
+    log.info(
+        "User login took {} s, now recording use",
+        DebugProfileUtil.elapsedTimeInSeconds(startTime));
+    userLogger.logUserLogin(serviceModel.getUserId());
+    log.info("Memory stats at present: {}", DebugProfileUtil.memoryStats());
     return RestUtil.okayResponseWithData(RestMessage.LOGIN_SUCCESSFUL, response);
   }
 
@@ -238,16 +235,18 @@ public class AuthenticationController extends BaseController {
     return userService.userExist(username);
   }
 
-  private User findExistingUser(String username) {
-    User user = userService.findByUsername(username);
-    if (user == null) {
-      throw new NoSuchUserException("No user with email: " + username);
-    }
-    return user;
-  }
-
   @ExceptionHandler(NoSuchUserException.class)
   public ResponseEntity<?> noSuchUserResponse() {
     return RestUtil.errorResponse(RestMessage.INVALID_USERNAME);
+  }
+
+  @ExceptionHandler(UserRegistrationDisabledException.class)
+  public ResponseEntity<?> userDisabledException() {
+    return RestUtil.errorResponse(RestMessage.USER_REGISTRATION_DISABLED);
+  }
+
+  @ExceptionHandler(UsernamePasswordLoginFailedException.class)
+  public ResponseEntity<?> loginFailedResponse() {
+    return RestUtil.errorResponse(RestMessage.LOGIN_FAILED);
   }
 }

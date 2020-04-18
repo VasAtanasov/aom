@@ -37,7 +37,7 @@ public class User extends BaseUuidEntity implements UserDetails {
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(
-      name = "user_role",
+      name = EntityConstants.PREFIX + "user_role",
       joinColumns =
           @JoinColumn(
               name = "user_id",
@@ -68,6 +68,12 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Transient
   public boolean isCredentialsNonExpired() {
     return true;
+  }
+
+  @Override
+  @Transient
+  public boolean isEnabled() {
+    return enabled;
   }
 
   public boolean isNormalUser() {

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BaseController {
+  public static final String TOKEN_PREFIX = "Bearer ";
 
   protected static final String USER_PROFILE_IMAGE_FOLDER = "user-profile-images";
   protected static final int DEFAULT_PAGE_SIZE = 20;

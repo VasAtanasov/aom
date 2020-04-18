@@ -77,7 +77,7 @@ public class Vehicle extends BaseUuidEntity {
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
-      name = "vehicle_feature",
+      name = EntityConstants.PREFIX + "vehicle_feature",
       joinColumns =
           @JoinColumn(
               name = "vehicle_id",

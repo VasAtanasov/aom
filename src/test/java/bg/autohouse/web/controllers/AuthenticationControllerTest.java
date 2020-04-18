@@ -56,7 +56,7 @@ public class AuthenticationControllerTest extends MvcPerformer {
   public MockMvc getMockMvc() {
     return mockMvc;
   }
-  // TODO test login of disabled user
+
   @Test
   void when_loginOrRegister_withNonExistingUsername_thenReturns200() throws Exception {
     LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
@@ -136,7 +136,7 @@ public class AuthenticationControllerTest extends MvcPerformer {
     performGet(
             API_BASE
                 + "/register/verify?code="
-                + "invalid_code"
+                + "sdoLK8ASD9c0SD9n2rySD28r2cr23c"
                 + "&username="
                 + VALID_USER_REGISTER_MODEL.getUsername())
         .andExpect(status().isUnauthorized());
@@ -200,5 +200,29 @@ public class AuthenticationControllerTest extends MvcPerformer {
     performGet(API_BASE + "/token/validate?token=" + "invalid_code")
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
+  }
+
+  @Test
+  void when_login_invalidCredentials_shouldReturn400() throws Exception {
+    UserLoginRequest loginRequest = UserLoginRequest.of("non_existent@mail.com", "123");
+    performPost(API_BASE + "/login", loginRequest)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_USERNAME.name())));
+  }
+
+  @Test
+  void when_login_invalidPassword_shouldReturn400() throws Exception {
+    UserLoginRequest loginRequest = UserLoginRequest.of("vas@mail.com", "1234567");
+    performPost(API_BASE + "/login", loginRequest)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.LOGIN_FAILED.name())));
+  }
+
+  @Test
+  void when_login_withBlacklistedToke_thenReturn401() throws Exception {
+    UserLoginRequest loginRequest = UserLoginRequest.of(DatabaseSeeder.USERNAME, "123");
+    HttpHeaders headers = getAuthHeadersFor(loginRequest);
+    performGet(API_BASE + "/logout", headers).andExpect(status().isOk());
+    performGet(API_BASE + "/logout", headers).andExpect(status().isUnauthorized());
   }
 }

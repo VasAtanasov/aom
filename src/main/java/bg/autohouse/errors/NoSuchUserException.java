@@ -7,4 +7,8 @@ public class NoSuchUserException extends NullPointerException {
   public NoSuchUserException(String message) {
     super(message);
   }
+
+  public NoSuchUserException() {
+    super();
+  }
 }

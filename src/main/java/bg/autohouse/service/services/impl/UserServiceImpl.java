@@ -1,5 +1,7 @@
 package bg.autohouse.service.services.impl;
 
+import static bg.autohouse.errors.ExceptionSupplier.*;
+
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.models.VerificationTokenCode;
@@ -10,8 +12,12 @@ import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
+import bg.autohouse.security.jwt.JwtTokenCreateRequest;
+import bg.autohouse.security.jwt.JwtTokenService;
+import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
+import bg.autohouse.service.models.user.AuthorizedUserServiceModel;
 import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
@@ -43,26 +49,21 @@ public class UserServiceImpl implements UserService {
   private final UserRequestRepository userRequestRepository;
   private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
+  private final JwtTokenService jwtService;
   private final PasswordEncoder encoder;
   private final AsyncUserLogger asyncUserService;
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
   public UserDetails loadUserById(String id) {
-    return userRepository
-        .findById(id)
-        .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
+    return userRepository.findById(id).orElseThrow(noSuchUser);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
   public UserDetails loadUserByUsername(String username) {
-    if (username == null) {
-      throw new UsernameNotFoundException(ExceptionsMessages.INVALID_USER_LOGIN);
-    }
-    return userRepository
-        .findByUsernameIgnoreCase(username)
-        .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.NO_SUCH_USERNAME));
+    if (Assert.isEmpty(username)) noSuchUser.get();
+    return userRepository.findByUsernameIgnoreCase(username).orElseThrow(noSuchUser);
   }
 
   @Override
@@ -81,6 +82,23 @@ public class UserServiceImpl implements UserService {
   @Transactional(readOnly = true)
   public User findByUsername(String username) {
     return userRepository.findByUsernameIgnoreCase(username).orElse(null);
+  }
+
+  @Override
+  public AuthorizedUserServiceModel tryLogin(String username, String password) {
+    User user = userRepository.findByUsernameIgnoreCase(username).orElseThrow(noSuchUser);
+
+    if (!user.isEnabled()) throw userDisabled.get();
+
+    boolean isValidCredentials = passwordService.validateCredentials(username, password);
+
+    if (!isValidCredentials) throw loginFailed.get();
+
+    JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
+    String token = jwtService.createJwt(tokenRequest);
+    log.info("generate a jwt token, on server is: {}", token);
+
+    return AuthorizedUserServiceModel.builder().user(user).token(token).build();
   }
 
   @Override

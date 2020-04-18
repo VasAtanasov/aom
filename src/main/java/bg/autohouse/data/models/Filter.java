@@ -121,7 +121,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
-      name = "filter_feature",
+      name = EntityConstants.PREFIX + "filter_feature",
       joinColumns =
           @JoinColumn(
               name = "filter_id",
@@ -134,7 +134,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = AccountType.class)
   @JoinTable(
-      name = "filter_account_type",
+      name = EntityConstants.PREFIX + "filter_account_type",
       joinColumns =
           @JoinColumn(
               name = "filter_id",
@@ -148,7 +148,7 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = State.class)
   @JoinTable(
-      name = "filter_state",
+      name = EntityConstants.PREFIX + "filter_state",
       joinColumns =
           @JoinColumn(
               name = "filter_id",
