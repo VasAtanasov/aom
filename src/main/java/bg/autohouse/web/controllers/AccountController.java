@@ -50,7 +50,7 @@ public class AccountController extends BaseController {
     PrivateAccountServiceModel account =
         accountService.createPrivateSellerAccount(model, user.getId());
 
-    return RestUtil.okayResponseWithData(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
+    return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
   }
 
   @PostMapping(
@@ -68,7 +68,7 @@ public class AccountController extends BaseController {
     DealerAccountServiceModel model = modelMapper.map(request, DealerAccountServiceModel.class);
     DealerAccountServiceModel account = accountService.createDealerAccount(model, user.getId());
 
-    return RestUtil.okayResponseWithData(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED, account);
+    return RestUtil.okResponse(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED, account);
   }
 
   @ExceptionHandler(AccountDisabledOrClosed.class)

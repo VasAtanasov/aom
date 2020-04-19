@@ -63,7 +63,7 @@ public class ImageFetchController extends BaseController {
   public ResponseEntity<?> noImageResponse(IOException e) {
     log.error("IO Exception in image fetching: ", e);
 
-    return RestUtil.errorResponse(
+    return RestUtil.errResponse(
         HttpStatus.INTERNAL_SERVER_ERROR, RestMessage.ERROR_WHILE_FETCHING_IMAGE);
   }
 }

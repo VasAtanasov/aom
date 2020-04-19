@@ -45,8 +45,7 @@ public class MakerController extends BaseController {
         makerServiceModels.stream()
             .map(model -> modelMapper.map(model, MakerResponseWrapper.class))
             .collect(Collectors.toUnmodifiableList());
-    return RestUtil.okayResponseWithData(
-        RestMessage.MAKERS_GET_SUCCESSFUL, toMap("makers", makers));
+    return RestUtil.okResponse(RestMessage.MAKERS_GET_SUCCESSFUL, toMap("makers", makers));
   }
 
   @PreAuthorize("hasRole('ADMIN')")
@@ -69,7 +68,7 @@ public class MakerController extends BaseController {
     MakerModelServiceModel model = makerService.getOne(makerId);
     MakerResponseWrapper maker = modelMapper.map(model, MakerResponseWrapper.class);
 
-    return RestUtil.okayResponseWithData(RestMessage.MAKER_GET_SUCCESSFUL, toMap("maker", maker));
+    return RestUtil.okResponse(RestMessage.MAKER_GET_SUCCESSFUL, toMap("maker", maker));
   }
 
   @PreAuthorize("hasRole('ADMIN')")

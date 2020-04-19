@@ -1,6 +1,6 @@
 package bg.autohouse.web.enums;
 
-public enum RequestOperationName {
+public enum ActionType {
   LOGIN_OR_REGISTER,
   DELETE,
   VERIFY_EMAIL,

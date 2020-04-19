@@ -1,5 +1,6 @@
 package bg.autohouse.web.models.response;
 
+import bg.autohouse.web.enums.RestMessage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -15,13 +16,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@JsonPropertyOrder({"success", "message", "status", "timestamp", "data", "errors"})
+@JsonPropertyOrder({"success", "message", "status", "data", "errors", "action"})
 public class ResponseWrapper {
   @JsonProperty("success")
   private Boolean success;
 
   @JsonProperty("message")
-  private String message;
+  private RestMessage message;
 
   @JsonProperty("status")
   private Integer status;
@@ -31,4 +32,7 @@ public class ResponseWrapper {
 
   @JsonProperty("errors")
   private Object errors;
+
+  @JsonProperty("action")
+  private ActionStatusResponse action;
 }

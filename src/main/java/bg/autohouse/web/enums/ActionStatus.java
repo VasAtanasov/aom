@@ -1,6 +1,6 @@
 package bg.autohouse.web.enums;
 
-public enum OperationStatus {
+public enum ActionStatus {
   ERROR,
   SUCCESS,
   LOGIN,

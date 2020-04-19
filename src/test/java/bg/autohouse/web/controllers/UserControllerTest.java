@@ -16,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -83,6 +82,6 @@ public class UserControllerTest extends MvcPerformer {
 
     performPost(API_BASE + "/password/update", request, headers)
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is(HttpStatus.BAD_REQUEST.getReasonPhrase())));
+        .andExpect(jsonPath("$.message", is(RestMessage.PARAMETER_VALIDATION_FAILURE.name())));
   }
 }

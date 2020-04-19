@@ -27,6 +27,6 @@ public class HomeController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<ResponseWrapper> getInitialState() {
     InitialStateModel initialState = initialStateService.getInitialState();
-    return RestUtil.okayResponseWithData(RestMessage.INITIAL_STATE_GET_SUCCESSFUL, initialState);
+    return RestUtil.okResponse(RestMessage.INITIAL_STATE_GET_SUCCESSFUL, initialState);
   }
 }

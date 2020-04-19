@@ -62,7 +62,7 @@ public class UserController extends BaseController {
 
     userService.updateHasImage(user.getId(), true);
     userLogger.recordUserLog(user.getId(), UserLogType.USER_CHANGE_PROFILE_PHOTO, imageKey);
-    return RestUtil.okayResponseWithData(
+    return RestUtil.okResponse(
         RestMessage.IMAGE_UPLOAD_SUCCESSFUL, toMap("mediaUid", storedFileUid));
   }
 

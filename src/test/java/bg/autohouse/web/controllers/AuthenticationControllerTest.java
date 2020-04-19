@@ -10,8 +10,8 @@ import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.utils.TimingExtension;
-import bg.autohouse.web.enums.OperationStatus;
-import bg.autohouse.web.enums.RequestOperationName;
+import bg.autohouse.web.enums.ActionStatus;
+import bg.autohouse.web.enums.ActionType;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.LoginOrRegisterRequest;
 import bg.autohouse.web.models.request.PasswordResetRequest;
@@ -63,8 +63,8 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
     performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.operation", is(RequestOperationName.LOGIN_OR_REGISTER.name())))
-        .andExpect(jsonPath("$.data.result", is(OperationStatus.REGISTER.name())));
+        .andExpect(jsonPath("$.data.operation", is(ActionType.LOGIN_OR_REGISTER.name())))
+        .andExpect(jsonPath("$.data.result", is(ActionStatus.REGISTER.name())));
   }
 
   @Test
@@ -75,8 +75,8 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
     performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.operation", is(RequestOperationName.LOGIN_OR_REGISTER.name())))
-        .andExpect(jsonPath("$.data.result", is(OperationStatus.LOGIN.name())));
+        .andExpect(jsonPath("$.data.operation", is(ActionType.LOGIN_OR_REGISTER.name())))
+        .andExpect(jsonPath("$.data.result", is(ActionStatus.LOGIN.name())));
   }
 
   @Test
@@ -199,7 +199,7 @@ public class AuthenticationControllerTest extends MvcPerformer {
   void when_validateToken_invalidToken_shouldReturn400() throws Exception {
     performGet(API_BASE + "/token/validate?token=" + "invalid_code")
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
+        .andExpect(jsonPath("$.message", is(RestMessage.SOMETHING_WENT_WRONG.name())));
   }
 
   @Test

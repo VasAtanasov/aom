@@ -17,14 +17,14 @@ import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.DebugProfileUtil;
 import bg.autohouse.util.ModelMapperWrapper;
-import bg.autohouse.web.enums.OperationStatus;
-import bg.autohouse.web.enums.RequestOperationName;
+import bg.autohouse.web.enums.ActionStatus;
+import bg.autohouse.web.enums.ActionType;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.LoginOrRegisterRequest;
 import bg.autohouse.web.models.request.PasswordResetRequest;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.UserRegisterRequest;
-import bg.autohouse.web.models.response.OperationStatusResponse;
+import bg.autohouse.web.models.response.ActionStatusResponse;
 import bg.autohouse.web.models.response.ResponseWrapper;
 import bg.autohouse.web.models.response.user.AuthorizedUserResponseModel;
 import bg.autohouse.web.util.RestUtil;
@@ -81,7 +81,7 @@ public class AuthenticationController extends BaseController {
         DebugProfileUtil.elapsedTimeInSeconds(startTime));
     userLogger.logUserLogin(serviceModel.getUserId());
     log.info("Memory stats at present: {}", DebugProfileUtil.memoryStats());
-    return RestUtil.okayResponseWithData(RestMessage.LOGIN_SUCCESSFUL, response);
+    return RestUtil.okResponse(RestMessage.LOGIN_SUCCESSFUL, response);
   }
 
   @GetMapping(
@@ -102,10 +102,10 @@ public class AuthenticationController extends BaseController {
   public ResponseEntity<?> loginOrRegister(@Valid @RequestBody LoginOrRegisterRequest request) {
     boolean exists = ifExists(request.getUsername());
 
-    return RestUtil.okayResponseWithData(
-        OperationStatusResponse.builder()
-            .operation(RequestOperationName.LOGIN_OR_REGISTER.name())
-            .result(exists ? OperationStatus.LOGIN.name() : OperationStatus.REGISTER.name())
+    return RestUtil.okResponse(
+        ActionStatusResponse.builder()
+            .type(ActionType.LOGIN_OR_REGISTER)
+            .status(exists ? ActionStatus.LOGIN : ActionStatus.REGISTER)
             .build());
   }
 
@@ -119,7 +119,7 @@ public class AuthenticationController extends BaseController {
     if (ifExists(model.getUsername())) {
       log.info(
           "Creating a verifier for user with email ={}, user already exists.", model.getUsername());
-      return RestUtil.errorResponse(HttpStatus.CONFLICT, RestMessage.USER_ALREADY_EXISTS);
+      return RestUtil.errResponse(HttpStatus.CONFLICT, RestMessage.USER_ALREADY_EXISTS);
     }
 
     log.info("Creating a verifier for a new user with email ={}", model.getUsername());
@@ -127,7 +127,7 @@ public class AuthenticationController extends BaseController {
     String token = userService.generateUserRegistrationVerifier(model);
     log.info("Sending verification email to: {} with value: {}", model.getUsername(), token);
     // TODO send to email
-    return RestUtil.okayResponseWithData(
+    return RestUtil.okResponse(
         RestMessage.REGISTRATION_VERIFICATION_TOKEN_SENT, toMap("code", token));
   }
 
@@ -146,11 +146,10 @@ public class AuthenticationController extends BaseController {
 
       passwordService.expireVerificationCode(user.getId());
 
-      return RestUtil.messageOkayResponse(RestMessage.USER_REGISTRATION_VERIFIED);
+      return RestUtil.okResponse(RestMessage.USER_REGISTRATION_VERIFIED);
     } else {
       log.info("Token verification for new user failed");
-      return RestUtil.errorResponse(
-          HttpStatus.UNAUTHORIZED, RestMessage.INVALID_REGISTRATION_TOKEN);
+      return RestUtil.errResponse(HttpStatus.UNAUTHORIZED, RestMessage.INVALID_REGISTRATION_TOKEN);
     }
   }
 
@@ -162,7 +161,7 @@ public class AuthenticationController extends BaseController {
 
     if (!ifExists(resetRequest.getUsername())) {
       log.info("Invalid user of passed username: {}", resetRequest.getUsername());
-      return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.INVALID_USERNAME);
+      return RestUtil.errResponse(HttpStatus.BAD_REQUEST, RestMessage.INVALID_USERNAME);
     }
 
     log.info("Creating a verifier for password reset with email ={}", resetRequest.getUsername());
@@ -170,7 +169,7 @@ public class AuthenticationController extends BaseController {
     String token = userService.regenerateUserVerifier(resetRequest.getUsername());
     log.info("Sending verification email to: {} with value: {}", resetRequest.getUsername(), token);
     // TODO send to email
-    return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT);
+    return RestUtil.okResponse(RestMessage.PASSWORD_RESET_VERIFICATION_TOKEN_SENT);
   }
 
   @GetMapping(
@@ -182,10 +181,10 @@ public class AuthenticationController extends BaseController {
     boolean isValidOtp = passwordService.isShortLivedOtpValid(username, code);
 
     if (isValidOtp) {
-      return RestUtil.messageOkayResponse(RestMessage.OTP_VALID);
+      return RestUtil.okResponse(RestMessage.OTP_VALID);
     }
 
-    return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.OTP_INVALID);
+    return RestUtil.errResponse(HttpStatus.BAD_REQUEST, RestMessage.OTP_INVALID);
   }
 
   @GetMapping(
@@ -200,12 +199,12 @@ public class AuthenticationController extends BaseController {
 
     if (!isVerified) {
       log.info("Token verification for password reset failed");
-      return RestUtil.errorResponse(HttpStatus.UNAUTHORIZED, RestMessage.OTP_INVALID);
+      return RestUtil.errResponse(HttpStatus.UNAUTHORIZED, RestMessage.OTP_INVALID);
     }
 
     log.info("User code verified, now resetting user password");
     passwordService.resetPassword(username, code, newPassword);
-    return RestUtil.messageOkayResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
+    return RestUtil.okResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
   }
 
   @GetMapping(
@@ -215,8 +214,8 @@ public class AuthenticationController extends BaseController {
     boolean isJwtTokenValid = jwtService.isJwtTokenValid(token);
     boolean isNotBlacklisted = !jwtService.isBlackListed(token);
     if (isJwtTokenValid && isNotBlacklisted)
-      return RestUtil.messageOkayResponse(RestMessage.TOKEN_STILL_VALID);
-    return RestUtil.errorResponse(HttpStatus.EXPECTATION_FAILED, RestMessage.INVALID_TOKEN);
+      return RestUtil.okResponse(RestMessage.TOKEN_STILL_VALID);
+    return RestUtil.errResponse(HttpStatus.EXPECTATION_FAILED, RestMessage.INVALID_TOKEN);
   }
 
   @GetMapping(
@@ -225,9 +224,9 @@ public class AuthenticationController extends BaseController {
   public ResponseEntity<ResponseWrapper> refreshToken(@RequestParam("oldToken") String oldToken) {
     String newToken = jwtService.refreshToken(oldToken, JwtTokenType.API_CLIENT);
     if (newToken != null) {
-      return RestUtil.okayResponseWithData(RestMessage.LOGIN_SUCCESSFUL, newToken);
+      return RestUtil.okResponse(RestMessage.LOGIN_SUCCESSFUL, newToken);
     } else {
-      return RestUtil.errorResponse(HttpStatus.BAD_REQUEST, RestMessage.TOKEN_EXPIRED);
+      return RestUtil.errResponse(HttpStatus.BAD_REQUEST, RestMessage.TOKEN_EXPIRED);
     }
   }
 

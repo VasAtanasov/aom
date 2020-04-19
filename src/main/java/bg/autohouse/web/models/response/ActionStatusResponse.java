@@ -1,5 +1,7 @@
 package bg.autohouse.web.models.response;
 
+import bg.autohouse.web.enums.ActionStatus;
+import bg.autohouse.web.enums.ActionType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -14,10 +16,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class OperationStatusResponse {
-  @JsonProperty("operation")
-  private String operation;
+public class ActionStatusResponse {
+  @JsonProperty("type")
+  private ActionType type;
 
-  @JsonProperty("result")
-  private String result;
+  @JsonProperty("status")
+  private ActionStatus status;
 }

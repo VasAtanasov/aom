@@ -53,7 +53,7 @@ public class SearchController extends BaseController {
     ResponseWrapper response =
         ResponseWrapper.builder()
             .success(Boolean.TRUE)
-            .message(String.valueOf(RestMessage.REQUEST_SUCCESS))
+            .message(RestMessage.REQUEST_SUCCESS)
             .data(toMap("page", page))
             .status(HttpStatus.OK.value())
             .build();
