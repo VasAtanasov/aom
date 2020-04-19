@@ -3,16 +3,19 @@ package bg.autohouse.service.services.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
+import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
-import bg.autohouse.errors.ExceptionsMessages;
+import bg.autohouse.errors.NoRegistrationRequestFoundException;
+import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
+import bg.autohouse.web.enums.RestMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -99,7 +102,7 @@ public class UserServiceImplTest {
 
     assertThat(thrown)
         .isInstanceOf(ResourceAlreadyExistsException.class)
-        .hasMessage(ExceptionsMessages.USER_ALREADY_EXISTS);
+        .hasMessage(RestMessage.USER_ALREADY_EXISTS.name());
   }
 
   @Test
@@ -135,5 +138,35 @@ public class UserServiceImplTest {
 
     assertThat(iseReset).isTrue();
     assertThat(passwordsMatch).isTrue();
+  }
+
+  @Test
+  void when_completeRegistration_nonExistentRequest_shouldThrow() {
+    Throwable thrown =
+        catchThrowable(() -> userService.completeRegistration(VALID_REGISTER_MODEL.getUsername()));
+
+    assertThat(thrown)
+        .isInstanceOf(NoRegistrationRequestFoundException.class)
+        .hasMessage(RestMessage.USER_REGISTRATION_REQUEST_NOT_FOUND.name());
+  }
+
+  @Test
+  void when_completeRegistration_userExists_shouldThrow() {
+    Throwable thrown =
+        catchThrowable(() -> userService.completeRegistration(DatabaseSeeder.USERNAME));
+
+    assertThat(thrown)
+        .isInstanceOf(ResourceAlreadyExistsException.class)
+        .hasMessage(RestMessage.USER_ALREADY_EXISTS.name());
+  }
+
+  @Test
+  void when_regenerateUserVerifier_userNotExists_shouldThrow() {
+    Throwable thrown =
+        catchThrowable(() -> userService.regenerateUserVerifier("not_existing@mail.com"));
+
+    assertThat(thrown)
+        .isInstanceOf(NoSuchUserException.class)
+        .hasMessage(RestMessage.USER_NOT_FOUND.name());
   }
 }

@@ -1,7 +1,6 @@
 package bg.autohouse.security.jwt;
 
 import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.errors.UsernamePasswordLoginFailedException;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.web.enums.RestMessage;
 import java.io.IOException;
@@ -54,9 +53,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     log.debug("auth headers: {}, token: {}", request.getHeaderNames(), token);
 
     if (authHeader.hasBearerToken()) {
+
       try {
         if (!jwtService.isJwtTokenValid(token) || jwtService.isBlackListed(token)) {
-          throw new UsernamePasswordLoginFailedException(RestMessage.INVALID_TOKEN);
+          throw new BadCredentialsException(RestMessage.INVALID_TOKEN.name());
         }
 
         String userId = jwtService.getUserIdFromJWT(token);
@@ -81,7 +81,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (!userDetails.isCredentialsNonExpired()) {
-          throw new CredentialsExpiredException(RestMessage.USER_CREADENTIALS_EXPIRED.name());
+          throw new CredentialsExpiredException(RestMessage.USER_CREDENTIALS_EXPIRED.name());
         }
 
         log.info("Successful JWT authentication for username={}", userDetails.getUsername());

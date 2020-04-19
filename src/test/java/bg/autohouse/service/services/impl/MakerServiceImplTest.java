@@ -12,6 +12,7 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.models.ModelTrimsServicesMode;
 import bg.autohouse.service.services.MakerService;
+import bg.autohouse.web.enums.RestMessage;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class MakerServiceImplTest {
 
     assertThat(thrown)
         .isInstanceOf(MakerNotFoundException.class)
-        .hasMessage(ExceptionsMessages.EXCEPTION_MAKER_NOT_FOUND);
+        .hasMessage(RestMessage.MAKER_NOT_FOUND.name());
   }
 
   @Test
@@ -60,7 +61,7 @@ public class MakerServiceImplTest {
 
     assertThat(thrown)
         .isInstanceOf(MakerNotFoundException.class)
-        .hasMessage(ExceptionsMessages.EXCEPTION_MAKER_NOT_FOUND);
+        .hasMessage(RestMessage.MAKER_NOT_FOUND.name());
   }
 
   @Test

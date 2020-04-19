@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerServiceImpl implements MakerService {
-
+  // TODO replace exception messages
   private final MakerRepository makerRepository;
   private final ModelRepository modelRepository;
   private final ModelMapperWrapper modelMapper;

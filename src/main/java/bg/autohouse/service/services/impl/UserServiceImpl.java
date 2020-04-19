@@ -1,6 +1,6 @@
 package bg.autohouse.service.services.impl;
 
-import static bg.autohouse.errors.ExceptionSupplier.*;
+// import static bg.autohouse.errors.ExceptionSupplier.*;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
@@ -9,7 +9,8 @@ import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.UserLogType;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
-import bg.autohouse.errors.ExceptionsMessages;
+import bg.autohouse.errors.NoRegistrationRequestFoundException;
+import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.errors.UsernamePasswordLoginFailedException;
@@ -35,7 +36,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -58,14 +58,14 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
   public UserDetails loadUserById(String id) {
-    return userRepository.findById(id).orElseThrow(noSuchUser);
+    return userRepository.findById(id).orElseThrow(NoSuchUserException::new);
   }
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
   public UserDetails loadUserByUsername(String username) {
-    if (Assert.isEmpty(username)) noSuchUser.get();
-    return userRepository.findByUsernameIgnoreCase(username).orElseThrow(noSuchUser);
+    // Assert.notNull(username, message);
+    return userRepository.findByUsernameIgnoreCase(username).orElseThrow(NoSuchUserException::new);
   }
 
   @Override
@@ -82,7 +82,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public AuthorizedUserServiceModel tryLogin(String username, String password) {
-    User user = userRepository.findByUsernameIgnoreCase(username).orElseThrow(loginFailed);
+    User user =
+        userRepository
+            .findByUsernameIgnoreCase(username)
+            .orElseThrow(UsernamePasswordLoginFailedException::new);
 
     boolean isValidCredentials = passwordService.validateCredentials(username, password);
 
@@ -102,7 +105,7 @@ public class UserServiceImpl implements UserService {
     Assert.notNull(model, "Model is required");
 
     if (userExist(model.getUsername())) {
-      throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
+      throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_EXISTS);
     }
 
     UserCreateRequest request =
@@ -119,8 +122,6 @@ public class UserServiceImpl implements UserService {
     return token.getCode();
   }
 
-  // TODO test if user request not present
-  // TODO test if user already completed registration
   @Override
   @Transactional
   public UserServiceModel completeRegistration(String username) {
@@ -135,9 +136,11 @@ public class UserServiceImpl implements UserService {
     if (userExists) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_EXISTS);
     }
-    // TODO throw generic error
+
     UserCreateRequest request =
-        userRequestRepository.findByUsernameAndIsVerifiedIsFalse(username).orElseThrow(noSuchUser);
+        userRequestRepository
+            .findByUsernameAndIsVerifiedIsFalse(username)
+            .orElseThrow(NoRegistrationRequestFoundException::new);
 
     User user = modelMapper.map(request, User.class);
     user.setId(null);
@@ -155,10 +158,8 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public String regenerateUserVerifier(String username) {
     Assert.notNull(username, "Username is required");
-    // TODO Change exception and message
-    if (!userExist(username)) {
-      throw new UsernameNotFoundException(ExceptionsMessages.USER_NOT_FOUND_USERNAME);
-    }
+
+    if (!userExist(username)) throw new NoSuchUserException();
 
     VerificationTokenCode newTokenCode = passwordService.generateShortLivedOTP(username);
     return newTokenCode.getCode();
@@ -167,16 +168,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserServiceModel updateUser(
       String userId, UserDetailsUpdateRequest user, User loggedUser) {
-    // TODO Change exception and message
 
-    User userEntity =
-        userRepository
-            .findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.NO_RECORD_FOUND));
-    // TODO Change exception and message
+    User userEntity = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
     if (!userEntity.getUsername().equals(loggedUser.getUsername())) {
-      throw new IllegalStateException(ExceptionsMessages.INVALID_UPDATE_OPERATION);
+      throw new IllegalStateException(RestMessage.INVALID_UPDATE_OPERATION.name());
     }
     // TODO update User profile
     // userEntity.setFirstName(user.getFirstName());
@@ -196,12 +192,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void updateHasImage(String userId, boolean hasImage) {
-    // TODO Change exception and message
-
-    User user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(() -> new NotFoundException(ExceptionsMessages.USER_NOT_FOUND_ID));
+    User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
     // TODO set account has image
     // user.setHasImage(hasImage);
     userRepository.save(user);

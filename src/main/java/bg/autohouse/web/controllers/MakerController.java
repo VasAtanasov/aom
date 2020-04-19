@@ -38,9 +38,7 @@ public class MakerController extends BaseController {
 
   @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
-
     List<MakerModelServiceModel> makerServiceModels = makerService.getAllMakerWithModels();
-
     List<MakerResponseWrapper> makers =
         makerServiceModels.stream()
             .map(model -> modelMapper.map(model, MakerResponseWrapper.class))
@@ -67,7 +65,6 @@ public class MakerController extends BaseController {
   public ResponseEntity<?> getMakerById(@Valid @PathVariable Long makerId) {
     MakerModelServiceModel model = makerService.getOne(makerId);
     MakerResponseWrapper maker = modelMapper.map(model, MakerResponseWrapper.class);
-
     return RestUtil.okResponse(RestMessage.MAKER_GET_SUCCESSFUL, toMap("maker", maker));
   }
 

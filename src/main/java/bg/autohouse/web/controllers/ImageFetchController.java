@@ -5,14 +5,11 @@ import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.util.ImageUtil;
-import bg.autohouse.web.enums.RestMessage;
-import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -57,13 +54,5 @@ public class ImageFetchController extends BaseController {
     headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
     headers.setContentLength(data.length);
     return ResponseEntity.ok().headers(headers).body(data);
-  }
-
-  @ExceptionHandler(IOException.class)
-  public ResponseEntity<?> noImageResponse(IOException e) {
-    log.error("IO Exception in image fetching: ", e);
-
-    return RestUtil.errResponse(
-        HttpStatus.INTERNAL_SERVER_ERROR, RestMessage.ERROR_WHILE_FETCHING_IMAGE);
   }
 }
