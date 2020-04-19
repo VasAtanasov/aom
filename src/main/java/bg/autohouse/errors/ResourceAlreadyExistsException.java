@@ -1,5 +1,6 @@
 package bg.autohouse.errors;
 
+import bg.autohouse.web.enums.RestMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -9,5 +10,9 @@ public class ResourceAlreadyExistsException extends RuntimeException {
 
   public ResourceAlreadyExistsException(String message) {
     super(message);
+  }
+
+  public ResourceAlreadyExistsException(RestMessage message) {
+    super(message.name());
   }
 }

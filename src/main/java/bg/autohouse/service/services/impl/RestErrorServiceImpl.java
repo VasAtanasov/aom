@@ -5,8 +5,13 @@ import bg.autohouse.errors.ModelNotFoundException;
 import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.error.RestError;
+import bg.autohouse.service.models.error.RestError.RestErrorBuilder;
 import bg.autohouse.service.models.error.RestValidationError;
 import bg.autohouse.service.services.RestErrorService;
+import bg.autohouse.util.Assert;
+import bg.autohouse.util.EnumUtils;
+import bg.autohouse.util.F;
+import bg.autohouse.web.enums.RestMessage;
 import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,8 +96,18 @@ public class RestErrorServiceImpl implements RestErrorService {
 
   @Override
   public RestError exposeGeneralException(final Throwable ex) {
+
     final HttpStatus httpStatusCode = getHttpStatusCode(ex);
-    return RestError.builder().httpStatus(httpStatusCode).build();
+    RestErrorBuilder restErrorBuilder = RestError.builder().httpStatus(httpStatusCode);
+
+    if (Assert.has(ex.getMessage())) {
+      RestMessage restMessage =
+          EnumUtils.fromString(ex.getMessage(), RestMessage.class)
+              .orElse(RestMessage.SOMETHING_WENT_WRONG);
+      restErrorBuilder.message(restMessage);
+    }
+
+    return restErrorBuilder.build();
   }
 
   @Override
@@ -126,37 +141,63 @@ public class RestErrorServiceImpl implements RestErrorService {
       errors.add(error);
     }
 
-    return RestError.builder().httpStatus(HttpStatus.BAD_REQUEST).errors(errors).build();
+    return RestError.builder()
+        .httpStatus(HttpStatus.BAD_REQUEST)
+        .message(RestMessage.CONSTRAINT_VIOLATION)
+        .errors(errors)
+        .build();
   }
 
   @Override
   public RestError exposeMethodArgumentError(
       MethodArgumentNotValidException ex, HttpStatus status) {
-    List<RestValidationError> errors = getValidationErrors(ex.getBindingResult());
-    return RestError.builder().errors(errors).build();
+    Function<FieldError, RestValidationError> fieldErrorMapper =
+        err ->
+            RestValidationError.builder()
+                .field(err.getField())
+                .fieldErrorCode(err.getCode())
+                .errorMessage(err.getDefaultMessage())
+                .build();
+
+    Function<ObjectError, RestValidationError> objectErrorMapper =
+        err ->
+            RestValidationError.builder()
+                .field(err.getObjectName())
+                .fieldErrorCode(err.getCode())
+                .errorMessage(err.getDefaultMessage())
+                .build();
+    BindingResult result = ex.getBindingResult();
+
+    List<RestValidationError> errors =
+        Stream.concat(
+                F.mapToStream(result.getFieldErrors(), fieldErrorMapper),
+                F.mapToStream(result.getGlobalErrors(), objectErrorMapper))
+            .collect(Collectors.toList());
+
+    return RestError.builder()
+        .httpStatus(status)
+        .message(RestMessage.PARAMETER_VALIDATION_FAILURE)
+        .errors(errors)
+        .build();
   }
 
-  private Function<FieldError, RestValidationError> fieldErrorToValidationErrorModel =
-      err ->
-          RestValidationError.builder()
-              .field(err.getField())
-              .fieldErrorCode(err.getCode())
-              .errorMessage(err.getDefaultMessage())
-              .build();
-
-  private Function<ObjectError, RestValidationError> objectErrorToRestValidationError =
-      err ->
-          RestValidationError.builder()
-              .field(err.getObjectName())
-              .fieldErrorCode(err.getCode())
-              .errorMessage(err.getDefaultMessage())
-              .build();
-
-  private List<RestValidationError> getValidationErrors(BindingResult result) {
-    Stream<RestValidationError> fieldErrorStream =
-        result.getFieldErrors().stream().map(fieldErrorToValidationErrorModel);
-    Stream<RestValidationError> objectErrorStream =
-        result.getGlobalErrors().stream().map(objectErrorToRestValidationError);
-    return Stream.concat(fieldErrorStream, objectErrorStream).collect(Collectors.toList());
+  public RestError exposeOtherSpringError(Exception ex, HttpStatus status) {
+    return RestError.builder()
+        .httpStatus(status)
+        .message(
+            EnumUtils.fromString(ex.getMessage(), RestMessage.class)
+                .orElse(RestMessage.SOMETHING_WENT_WRONG))
+        .build();
   }
+
+  // private List<RestValidationError> getValidationErrors(BindingResult result) {
+  // Stream<RestValidationError> fieldErrorStream =
+  //     result.getFieldErrors().stream().map(fieldErrorToValidationErrorModel);
+  // Stream<RestValidationError> objectErrorStream =
+  //     result.getGlobalErrors().stream().map(objectErrorToRestValidationError);
+  // return Stream.concat(
+  //         F.stream(result.getFieldErrors(), fieldErrorMapper),
+  //         F.stream(result.getGlobalErrors(), objectErrorMapper))
+  //     .collect(Collectors.toList());
+  // }
 }

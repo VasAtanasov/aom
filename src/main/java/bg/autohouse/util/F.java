@@ -379,6 +379,12 @@ public final class F {
   }
 
   @Nonnull
+  public static <T, S> Stream<T> mapToStream(
+      @Nonnull final Iterable<S> iterable, @Nonnull final Function<? super S, T> mapper) {
+    return StreamSupport.stream(requireNonNull(iterable).spliterator(), false).map(mapper);
+  }
+
+  @Nonnull
   public static <T> Stream<T> stream(
       @Nullable final T object, @Nonnull final Iterable<? extends T> iterable) {
     final Stream<T> first = object != null ? Stream.of(object) : Stream.empty();

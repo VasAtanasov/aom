@@ -23,8 +23,6 @@ public interface UserService extends UserDetailsService {
 
   String regenerateUserVerifier(String username);
 
-  User findByUsername(String username);
-
   void updateHasImage(String id, boolean b);
 
   AuthorizedUserServiceModel tryLogin(String username, String password);

@@ -110,7 +110,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
       log.error("Token validation failed, wrong signature. Exception: {}", e.getMessage());
       return false;
     } catch (Exception e) {
-      log.error("Unexpected token validation error.", e);
+      log.error("Unexpected token validation error.", e.getMessage());
       return false;
     }
   }
@@ -188,10 +188,12 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean isBlackListed(String token) {
     String tokenUid = getJwtUidFromJWT(token);
-    String username = getUsernameFromJWT(token);
     Assert.notNull(tokenUid, INVALID_TOKEN_MESSAGE);
+
+    String username = getUsernameFromJWT(token);
     Assert.notNull(username, INVALID_TOKEN_MESSAGE);
     return tokenBlackList.findOne(forUser(username).and(withTokenUid(tokenUid))).isPresent();
   }
@@ -199,19 +201,22 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   @Override
   @Transactional
   public void blackListJwt(String token) {
-    Assert.notNull(token, String.format(INVALID_TOKEN_MESSAGE, "token"));
+    Assert.notNull(token, INVALID_TOKEN_MESSAGE);
 
     JwtTokenType tokenType =
         EnumUtils.fromString(getTokenTypeFromJWT(token), JwtTokenType.class).orElse(null);
-    String tokenUid = getJwtUidFromJWT(token);
-    String userId = getUserIdFromJWT(token);
-    String username = getUsernameFromJWT(token);
-    Date expirationTime = getExpirationDateFromToken(token);
-
     Assert.notNull(tokenType, INVALID_TOKEN_MESSAGE);
+
+    String tokenUid = getJwtUidFromJWT(token);
     Assert.notNull(tokenUid, INVALID_TOKEN_MESSAGE);
+
+    String userId = getUserIdFromJWT(token);
     Assert.notNull(userId, INVALID_TOKEN_MESSAGE);
+
+    String username = getUsernameFromJWT(token);
     Assert.notNull(username, INVALID_TOKEN_MESSAGE);
+
+    Date expirationTime = getExpirationDateFromToken(token);
     Assert.notNull(expirationTime, INVALID_TOKEN_MESSAGE);
 
     JwtToken invalidToken =

@@ -11,4 +11,6 @@ public interface RestErrorService {
   RestError exposeConstraintViolation(ConstraintViolationException cve);
 
   RestError exposeMethodArgumentError(MethodArgumentNotValidException ex, HttpStatus status);
+
+  RestError exposeOtherSpringError(Exception ex, HttpStatus status);
 }

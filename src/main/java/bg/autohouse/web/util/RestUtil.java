@@ -16,7 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class RestUtil {
 
   public static ResponseEntity<ResponseWrapper> errResponse(HttpStatus code, RestMessage msg) {
-    ResponseWrapper response = response(b -> b.message(msg));
+    ResponseWrapper response = wrapper(b -> b.message(msg));
     return new ResponseEntity<>(response, code);
   }
 
@@ -25,27 +25,27 @@ public class RestUtil {
   }
 
   public static ResponseEntity<ResponseWrapper> errResponse(RestMessage message, Object data) {
-    ResponseWrapper response = response(b -> b.message(message).data(data));
+    ResponseWrapper response = wrapper(b -> b.message(message).data(data));
     return new ResponseEntity<>(response, BAD_REQUEST);
   }
 
   public static ResponseEntity<ResponseWrapper> accessDeniedResponse() {
-    ResponseWrapper response = response(b -> b.message(RestMessage.PERMISSION_DENIED));
+    ResponseWrapper response = wrapper(b -> b.message(RestMessage.PERMISSION_DENIED));
     return new ResponseEntity<>(response, FORBIDDEN);
   }
 
   public static ResponseEntity<ResponseWrapper> okResponse(RestMessage message) {
-    ResponseWrapper response = response(b -> b.message(message));
+    ResponseWrapper response = wrapper(b -> b.message(message));
     return new ResponseEntity<>(response, OK);
   }
 
   public static ResponseEntity<ResponseWrapper> okResponse(RestMessage message, Object data) {
-    ResponseWrapper response = response(b -> b.message(message).data(data));
+    ResponseWrapper response = wrapper(b -> b.message(message).data(data));
     return new ResponseEntity<>(response, OK);
   }
 
   public static ResponseEntity<ResponseWrapper> okResponse(Object data) {
-    ResponseWrapper response = response(b -> b.data(data));
+    ResponseWrapper response = wrapper(b -> b.data(data));
     return new ResponseEntity<>(response, OK);
   }
 
@@ -53,11 +53,11 @@ public class RestUtil {
       Object data, RestMessage message, String path) {
     URI location =
         ServletUriComponentsBuilder.fromCurrentContextPath().path(path).buildAndExpand().toUri();
-    ResponseWrapper response = response(b -> b.message(message).data(data));
+    ResponseWrapper response = wrapper(b -> b.message(message).data(data));
     return ResponseEntity.created(location).body(response);
   }
 
-  public static ResponseWrapper response(
+  public static ResponseWrapper wrapper(
       Function<ResponseWrapperBuilder, ResponseWrapperBuilder> func) {
     return func.apply(ResponseWrapper.builder()).build();
   }

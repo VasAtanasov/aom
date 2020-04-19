@@ -12,6 +12,7 @@ import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
+import bg.autohouse.errors.UsernamePasswordLoginFailedException;
 import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenService;
 import bg.autohouse.security.jwt.JwtTokenType;
@@ -23,6 +24,7 @@ import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserDetailsUpdateRequest;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -79,24 +81,18 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public User findByUsername(String username) {
-    return userRepository.findByUsernameIgnoreCase(username).orElse(null);
-  }
-
-  @Override
   public AuthorizedUserServiceModel tryLogin(String username, String password) {
-    User user = userRepository.findByUsernameIgnoreCase(username).orElseThrow(noSuchUser);
-
-    if (!user.isEnabled()) throw userDisabled.get();
+    User user = userRepository.findByUsernameIgnoreCase(username).orElseThrow(loginFailed);
 
     boolean isValidCredentials = passwordService.validateCredentials(username, password);
 
-    if (!isValidCredentials) throw loginFailed.get();
+    if (!isValidCredentials) {
+      throw new UsernamePasswordLoginFailedException();
+    }
 
     JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
     String token = jwtService.createJwt(tokenRequest);
-    log.info("generate a jwt token, on server is: {}", token);
+    log.info("Generated a jwt token, on server is: {}", token);
 
     return AuthorizedUserServiceModel.builder().user(user).token(token).build();
   }
@@ -123,27 +119,25 @@ public class UserServiceImpl implements UserService {
     return token.getCode();
   }
 
+  // TODO test if user request not present
+  // TODO test if user already completed registration
   @Override
   @Transactional
   public UserServiceModel completeRegistration(String username) {
     Assert.notNull(username, "User email address is required");
+    log.info("about to try to use email : {}", username);
 
-    UserCreateRequest request =
-        userRequestRepository
-            .findByUsernameAndIsVerifiedIsFalse(username)
-            .orElseThrow(() -> new UsernameNotFoundException("No registration request found"));
-
-    log.info("about to try to use email : {}", request.getUsername());
-
-    String email = request.getUsername();
     long start = System.nanoTime();
-    boolean userExists = Assert.has(email) && userExist(email);
+    boolean userExists = Assert.has(username) && userExist(username);
     long time = System.nanoTime() - start;
     log.info("User exists check took {} nano seconds", time);
 
     if (userExists) {
-      throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_ALREADY_EXISTS);
+      throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_EXISTS);
     }
+    // TODO throw generic error
+    UserCreateRequest request =
+        userRequestRepository.findByUsernameAndIsVerifiedIsFalse(username).orElseThrow(noSuchUser);
 
     User user = modelMapper.map(request, User.class);
     user.setId(null);
@@ -161,7 +155,7 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public String regenerateUserVerifier(String username) {
     Assert.notNull(username, "Username is required");
-
+    // TODO Change exception and message
     if (!userExist(username)) {
       throw new UsernameNotFoundException(ExceptionsMessages.USER_NOT_FOUND_USERNAME);
     }
@@ -173,11 +167,13 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserServiceModel updateUser(
       String userId, UserDetailsUpdateRequest user, User loggedUser) {
+    // TODO Change exception and message
 
     User userEntity =
         userRepository
             .findById(userId)
             .orElseThrow(() -> new UsernameNotFoundException(ExceptionsMessages.NO_RECORD_FOUND));
+    // TODO Change exception and message
 
     if (!userEntity.getUsername().equals(loggedUser.getUsername())) {
       throw new IllegalStateException(ExceptionsMessages.INVALID_UPDATE_OPERATION);
@@ -200,6 +196,8 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void updateHasImage(String userId, boolean hasImage) {
+    // TODO Change exception and message
+
     User user =
         userRepository
             .findById(userId)

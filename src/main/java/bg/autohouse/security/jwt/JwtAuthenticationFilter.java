@@ -1,6 +1,9 @@
 package bg.autohouse.security.jwt;
 
+import bg.autohouse.errors.NoSuchUserException;
+import bg.autohouse.errors.UsernamePasswordLoginFailedException;
 import bg.autohouse.service.services.UserService;
+import bg.autohouse.web.enums.RestMessage;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -8,6 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,13 +53,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     log.debug("auth headers: {}, token: {}", request.getHeaderNames(), token);
 
-    try {
-      if (authHeader.hasBearerToken()
-          && jwtService.isJwtTokenValid(token)
-          && !jwtService.isBlackListed(token)) {
+    if (authHeader.hasBearerToken()) {
+      try {
+        if (!jwtService.isJwtTokenValid(token) || jwtService.isBlackListed(token)) {
+          throw new UsernamePasswordLoginFailedException(RestMessage.INVALID_TOKEN);
+        }
 
         String userId = jwtService.getUserIdFromJWT(token);
-        UserDetails userDetails = userService.loadUserById(userId);
+        final UserDetails userDetails;
+
+        try {
+          userDetails = userService.loadUserById(userId);
+        } catch (final NoSuchUserException notFound) {
+          throw new BadCredentialsException(RestMessage.BAD_CREDENTIALS.name());
+        }
+
+        if (!userDetails.isAccountNonLocked()) {
+          throw new LockedException(RestMessage.USER_ACCOUNT_LOCKED.name());
+        }
+
+        if (!userDetails.isEnabled()) {
+          throw new DisabledException(RestMessage.USER_ACCOUNT_DISABLED.name());
+        }
+
+        if (!userDetails.isAccountNonExpired()) {
+          throw new AccountExpiredException(RestMessage.USER_ACCOUNT_EXPIRED.name());
+        }
+
+        if (!userDetails.isCredentialsNonExpired()) {
+          throw new CredentialsExpiredException(RestMessage.USER_CREADENTIALS_EXPIRED.name());
+        }
+
+        log.info("Successful JWT authentication for username={}", userDetails.getUsername());
         log.debug("User ID: {}", userId);
 
         UsernamePasswordAuthenticationToken authentication =
@@ -62,15 +95,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.debug("Finished pushing authentication object");
-
-      } else {
+      } catch (Exception e) {
+        log.error("Could not set user authentication in security context");
         SecurityContextHolder.clearContext();
       }
-    } catch (Exception e) {
-      log.error("Could not set user authentication in security context");
-      SecurityContextHolder.clearContext();
-    }
 
-    filterChain.doFilter(request, response);
+      try {
+        filterChain.doFilter(request, response);
+      } finally {
+        SecurityContextHolder.clearContext();
+      }
+
+    } else {
+      SecurityContextHolder.clearContext();
+      filterChain.doFilter(request, response);
+    }
   }
 }

@@ -3,9 +3,6 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
-import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.errors.UserRegistrationDisabledException;
-import bg.autohouse.errors.UsernamePasswordLoginFailedException;
 import bg.autohouse.security.jwt.AuthorizationHeader;
 import bg.autohouse.security.jwt.JwtTokenService;
 import bg.autohouse.security.jwt.JwtTokenType;
@@ -38,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -81,7 +77,7 @@ public class AuthenticationController extends BaseController {
         DebugProfileUtil.elapsedTimeInSeconds(startTime));
     userLogger.logUserLogin(serviceModel.getUserId());
     log.info("Memory stats at present: {}", DebugProfileUtil.memoryStats());
-    return RestUtil.okResponse(RestMessage.LOGIN_SUCCESSFUL, response);
+    return RestUtil.okResponse(RestMessage.USER_LOGIN_SUCCESSFUL, response);
   }
 
   @GetMapping(
@@ -101,12 +97,13 @@ public class AuthenticationController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> loginOrRegister(@Valid @RequestBody LoginOrRegisterRequest request) {
     boolean exists = ifExists(request.getUsername());
-
-    return RestUtil.okResponse(
+    ActionStatusResponse action =
         ActionStatusResponse.builder()
             .type(ActionType.LOGIN_OR_REGISTER)
             .status(exists ? ActionStatus.LOGIN : ActionStatus.REGISTER)
-            .build());
+            .build();
+    ResponseWrapper response = RestUtil.wrapper(b -> b.action(action));
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping(
@@ -211,10 +208,9 @@ public class AuthenticationController extends BaseController {
       value = WebConfiguration.URL_TOKEN_VALIDATE,
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<ResponseWrapper> validateToken(@RequestParam("token") String token) {
-    boolean isJwtTokenValid = jwtService.isJwtTokenValid(token);
-    boolean isNotBlacklisted = !jwtService.isBlackListed(token);
-    if (isJwtTokenValid && isNotBlacklisted)
+    if (jwtService.isJwtTokenValid(token) && !jwtService.isBlackListed(token)) {
       return RestUtil.okResponse(RestMessage.TOKEN_STILL_VALID);
+    }
     return RestUtil.errResponse(HttpStatus.EXPECTATION_FAILED, RestMessage.INVALID_TOKEN);
   }
 
@@ -224,7 +220,7 @@ public class AuthenticationController extends BaseController {
   public ResponseEntity<ResponseWrapper> refreshToken(@RequestParam("oldToken") String oldToken) {
     String newToken = jwtService.refreshToken(oldToken, JwtTokenType.API_CLIENT);
     if (newToken != null) {
-      return RestUtil.okResponse(RestMessage.LOGIN_SUCCESSFUL, newToken);
+      return RestUtil.okResponse(RestMessage.USER_LOGIN_SUCCESSFUL, newToken);
     } else {
       return RestUtil.errResponse(HttpStatus.BAD_REQUEST, RestMessage.TOKEN_EXPIRED);
     }
@@ -232,20 +228,5 @@ public class AuthenticationController extends BaseController {
 
   private boolean ifExists(String username) {
     return userService.userExist(username);
-  }
-
-  @ExceptionHandler(NoSuchUserException.class)
-  public ResponseEntity<?> noSuchUserResponse() {
-    return RestUtil.errorResponse(RestMessage.INVALID_USERNAME);
-  }
-
-  @ExceptionHandler(UserRegistrationDisabledException.class)
-  public ResponseEntity<?> userDisabledException() {
-    return RestUtil.errorResponse(RestMessage.USER_REGISTRATION_DISABLED);
-  }
-
-  @ExceptionHandler(UsernamePasswordLoginFailedException.class)
-  public ResponseEntity<?> loginFailedResponse() {
-    return RestUtil.errorResponse(RestMessage.LOGIN_FAILED);
   }
 }

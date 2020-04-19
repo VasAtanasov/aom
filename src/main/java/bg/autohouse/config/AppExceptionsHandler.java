@@ -2,10 +2,8 @@ package bg.autohouse.config;
 
 import bg.autohouse.service.models.error.RestError;
 import bg.autohouse.service.services.RestErrorService;
-import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.response.ResponseWrapper;
 import bg.autohouse.web.util.RestUtil;
-import io.jsonwebtoken.JwtException;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +24,9 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(Throwable.class)
   public ResponseEntity<Object> handleAll(final Throwable ex) {
-    log.error("Exception caught", ex);
+    log.error("Exception caught");
     final RestError restError = restErrorService.exposeGeneralException(ex);
-    // String message = restError.getHttpStatus().getReasonPhrase();
-    ResponseWrapper response = RestUtil.response(b -> b.message(RestMessage.SOMETHING_WENT_WRONG));
+    ResponseWrapper response = RestUtil.wrapper(b -> b.message(restError.getMessage()));
     return new ResponseEntity<>(response, restError.getHttpStatus());
   }
 
@@ -39,27 +36,34 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
       final HttpHeaders headers,
       final HttpStatus status,
       final WebRequest request) {
-    log.error("Spring parameter validation failed", ex);
-    final RestMessage message = RestMessage.PARAMETER_VALIDATION_FAILURE;
+    log.error("Spring parameter validation failed");
     final RestError restError = restErrorService.exposeMethodArgumentError(ex, status);
     ResponseWrapper response =
-        RestUtil.response(b -> b.message(message).errors(restError.getErrors()));
-    return handleExceptionInternal(ex, response, headers, status, request);
+        RestUtil.wrapper(b -> b.message(restError.getMessage()).errors(restError.getErrors()));
+    return new ResponseEntity<>(response, headers, restError.getHttpStatus());
+  }
+
+  @Override
+  protected ResponseEntity<Object> handleExceptionInternal(
+      final Exception ex,
+      final Object body,
+      final HttpHeaders headers,
+      final HttpStatus status,
+      final WebRequest request) {
+    log.error("Spring exception was caught");
+
+    final RestError restError = restErrorService.exposeOtherSpringError(ex, status);
+    ResponseWrapper response = RestUtil.wrapper(b -> b.message(restError.getMessage()));
+    return new ResponseEntity<>(response, headers, restError.getHttpStatus());
   }
 
   @ExceptionHandler(value = ConstraintViolationException.class)
   public ResponseEntity<ResponseWrapper> handleConstraintViolationException(
       final ConstraintViolationException cve) {
-    log.error("Constraint violation failure", cve);
-    final RestMessage message = RestMessage.CONSTRAINT_VIOLATION;
+    log.error("Constraint violation failure");
     final RestError restError = restErrorService.exposeConstraintViolation(cve);
     ResponseWrapper response =
-        RestUtil.response(b -> b.message(message).errors(restError.getErrors()));
+        RestUtil.wrapper(b -> b.message(restError.getMessage()).errors(restError.getErrors()));
     return new ResponseEntity<>(response, restError.getHttpStatus());
-  }
-
-  @ExceptionHandler(JwtException.class)
-  public ResponseEntity<ResponseWrapper> invalidTokenResponse() {
-    return RestUtil.errorResponse(RestMessage.INVALID_TOKEN);
   }
 }

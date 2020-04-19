@@ -63,8 +63,8 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
     performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.operation", is(ActionType.LOGIN_OR_REGISTER.name())))
-        .andExpect(jsonPath("$.data.result", is(ActionStatus.REGISTER.name())));
+        .andExpect(jsonPath("$.action.type", is(ActionType.LOGIN_OR_REGISTER.name())))
+        .andExpect(jsonPath("$.action.status", is(ActionStatus.REGISTER.name())));
   }
 
   @Test
@@ -75,8 +75,8 @@ public class AuthenticationControllerTest extends MvcPerformer {
 
     performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.data.operation", is(ActionType.LOGIN_OR_REGISTER.name())))
-        .andExpect(jsonPath("$.data.result", is(ActionStatus.LOGIN.name())));
+        .andExpect(jsonPath("$.action.type", is(ActionType.LOGIN_OR_REGISTER.name())))
+        .andExpect(jsonPath("$.action.status", is(ActionStatus.LOGIN.name())));
   }
 
   @Test
@@ -198,24 +198,24 @@ public class AuthenticationControllerTest extends MvcPerformer {
   @Test
   void when_validateToken_invalidToken_shouldReturn400() throws Exception {
     performGet(API_BASE + "/token/validate?token=" + "invalid_code")
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is(RestMessage.SOMETHING_WENT_WRONG.name())));
+        .andExpect(status().isExpectationFailed())
+        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
   }
 
   @Test
   void when_login_invalidCredentials_shouldReturn400() throws Exception {
     UserLoginRequest loginRequest = UserLoginRequest.of("non_existent@mail.com", "123");
     performPost(API_BASE + "/login", loginRequest)
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_USERNAME.name())));
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.message", is(RestMessage.USER_LOGIN_FAILED.name())));
   }
 
   @Test
   void when_login_invalidPassword_shouldReturn400() throws Exception {
     UserLoginRequest loginRequest = UserLoginRequest.of("vas@mail.com", "1234567");
     performPost(API_BASE + "/login", loginRequest)
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.message", is(RestMessage.LOGIN_FAILED.name())));
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.message", is(RestMessage.USER_LOGIN_FAILED.name())));
   }
 
   @Test
