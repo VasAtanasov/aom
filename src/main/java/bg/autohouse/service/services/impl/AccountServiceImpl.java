@@ -5,17 +5,22 @@ import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.AccountLog;
 import bg.autohouse.data.models.enums.AccountLogType;
 import bg.autohouse.data.models.enums.AccountType;
+import bg.autohouse.data.models.geo.Address;
+import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.repositories.AccountLogRepository;
 import bg.autohouse.data.repositories.AccountRepository;
+import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.AccountDisabledOrClosed;
 import bg.autohouse.errors.AccountNotFoundException;
-import bg.autohouse.errors.ExceptionsMessages;
+import bg.autohouse.errors.LocationNotFoundException;
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.account.*;
 import bg.autohouse.service.services.AccountService;
 import bg.autohouse.service.services.AsyncUserLogger;
+import bg.autohouse.service.validations.FieldValidator;
+import bg.autohouse.service.validations.annotations.Required;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
@@ -31,10 +36,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountServiceImpl implements AccountService {
 
   private final AccountRepository accountRepository;
+
   private final UserRepository userRepository;
+  private final LocationRepository locationRepository;
   private final AccountLogRepository accountLogRepository;
   private final ModelMapperWrapper modelMapper;
   private final AsyncUserLogger userLogger;
+  private final FieldValidator fieldValidator;
 
   @Override
   @Transactional(readOnly = true)
@@ -72,13 +80,13 @@ public class AccountServiceImpl implements AccountService {
     User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);
 
     if (owner.isHasAccount()) {
-      throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_HAS_ACCOUNT);
+      throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
 
+    validateModel(model, PrivateAccountRequiredFields.class);
+
     String displayNameToUse =
-        Assert.has(model.getDisplayedName())
-            ? model.getDisplayedName()
-            : generateRandomDisplayName();
+        Assert.has(model.getDisplayName()) ? model.getDisplayName() : generateRandomDisplayName();
 
     Account privateAccount = modelMapper.map(model, Account.class);
     privateAccount.setMaxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount());
@@ -86,24 +94,25 @@ public class AccountServiceImpl implements AccountService {
     privateAccount.setAccountType(AccountType.PRIVATE);
     privateAccount.setDisplayName(displayNameToUse);
     privateAccount.setEnabled(Boolean.TRUE);
+
     accountRepository.save(privateAccount);
     owner.setHasAccount(Boolean.TRUE);
+
     userRepository.save(owner);
 
-    AccountLog accountLogCreate =
-        AccountLog.builder()
-            .accountLogType(AccountLogType.ACCOUNT_CREATED)
-            .description(AccountType.PRIVATE.name())
-            .user(owner)
-            .build();
+    logAccountCreate(AccountType.PRIVATE, owner);
 
-    accountLogRepository.save(accountLogCreate);
-    userLogger.logUserAddPrivateAccount(owner.getId());
     return modelMapper.map(privateAccount, AccountServiceModel.class);
   }
 
   private String generateRandomDisplayName() {
     return "Auto" + StringGenericUtils.nextStringUpperDecimal(10);
+  }
+
+  private static class PrivateAccountRequiredFields {
+    @Required private String firstName;
+    @Required private String lastName;
+    @Required private String accountType;
   }
 
   @Override
@@ -113,43 +122,64 @@ public class AccountServiceImpl implements AccountService {
     Assert.notNull(ownerId, "Account owner must be provided");
 
     User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);
-
     if (owner.isHasAccount()) {
-      throw new ResourceAlreadyExistsException(ExceptionsMessages.USER_HAS_ACCOUNT);
+      throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
+    validateModel(model, DealerAccountRequiredFields.class);
+
+    Location location =
+        locationRepository
+            .findById(model.getAddress().getLocationId())
+            .orElseThrow(LocationNotFoundException::new);
+
+    Account dealerAccount = modelMapper.map(model, Account.class);
+    dealerAccount.setId(null); // modelMapper sets id
+    dealerAccount.setMaxOffersCount(AccountType.DEALER.resolveMaxOffersCount());
+    dealerAccount.setOwner(owner);
+    dealerAccount.setAccountType(AccountType.DEALER);
+    dealerAccount.setEnabled(Boolean.TRUE);
+
+    Address address = modelMapper.map(model.getAddress(), Address.class);
+    address.setLocation(location);
+    address.setLocation(location);
+    address.setResident(dealerAccount);
+    dealerAccount.setAddress(address);
+
+    accountRepository.saveAndFlush(dealerAccount);
+    owner.setHasAccount(Boolean.TRUE);
+
+    userRepository.save(owner);
+
+    logAccountCreate(AccountType.DEALER, owner);
 
     // TODO notify admin when created
-    return null;
+    return modelMapper.map(dealerAccount, AccountServiceModel.class);
   }
 
-  // @Override
-  // public DealershipServiceModel registerDealer(String userId,
-  // DealershipServiceModel dealer) {
+  private static class DealerAccountRequiredFields {
+    @Required private String firstName;
+    @Required private String lastName;
+    @Required private String displayName;
+    @Required private String description;
+    @Required private String contactDetailsPhoneNumber;
+    @Required private Long addressLocationId;
+    @Required private String addressStreet;
+    @Required private String accountType;
+  }
 
-  // if (existsByDealershipName(dealer.getName())) {
-  // throw new ResourceAlreadyExistsException(
-  // String.format(ExceptionsMessages.DEALERSHIP_ALREADY_EXISTS,
-  // dealer.getName()));
-  // }
-  // Address address =
-  // addressRepository
-  // .findById(dealer.getLocationId())
-  // .orElseThrow(() -> new
-  // NotFoundException(ExceptionsMessages.INVALID_LOCATION));
-  // User user =
-  // userRepository
-  // .findById(userId)
-  // .orElseThrow(
-  // () ->
-  // new
-  // UsernameNotFoundException(ExceptionsMessages.EXCEPTION_USER_NOT_FOUND_ID));
+  private void validateModel(AccountServiceModel model, Class<?> target) {
+    fieldValidator.validate(modelMapper.map(model, target));
+  }
 
-  // Dealership dealership = modelMapper.map(dealer, Dealership.class);
-  // dealership.setDealer(user);
-  // dealershipRepository.save(dealership);
-  // log.info("Saved dealership with name: {}", dealership.getName());
-  // return modelMapper.map(dealership, DealershipServiceModel.class);
+  private void logAccountCreate(AccountType accountType, User owner) {
+    AccountLog accountLogCreate =
+        AccountLog.builder()
+            .accountLogType(AccountLogType.ACCOUNT_CREATED)
+            .description(accountType.name())
+            .user(owner)
+            .build();
 
-  // return null;
-  // }
+    accountLogRepository.save(accountLogCreate);
+    userLogger.logUserAddPrivateAccount(owner.getId());
+  }
 }

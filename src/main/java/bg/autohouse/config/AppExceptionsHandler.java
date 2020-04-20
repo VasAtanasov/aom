@@ -1,5 +1,6 @@
 package bg.autohouse.config;
 
+import bg.autohouse.errors.RequiredFieldMissing;
 import bg.autohouse.service.models.error.RestError;
 import bg.autohouse.service.services.RestErrorService;
 import bg.autohouse.web.models.response.ResponseWrapper;
@@ -62,6 +63,16 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
       final ConstraintViolationException cve) {
     log.error("Constraint violation failure");
     final RestError restError = restErrorService.exposeConstraintViolation(cve);
+    ResponseWrapper response =
+        RestUtil.wrapper(b -> b.message(restError.getMessage()).errors(restError.getErrors()));
+    return new ResponseEntity<>(response, restError.getHttpStatus());
+  }
+
+  @ExceptionHandler(value = RequiredFieldMissing.class)
+  public ResponseEntity<ResponseWrapper> handleRequiredFieldMissing(
+      final RequiredFieldMissing rfe) {
+    log.error("Constraint violation failure");
+    final RestError restError = restErrorService.exposeValidationError(rfe);
     ResponseWrapper response =
         RestUtil.wrapper(b -> b.message(restError.getMessage()).errors(restError.getErrors()));
     return new ResponseEntity<>(response, restError.getHttpStatus());

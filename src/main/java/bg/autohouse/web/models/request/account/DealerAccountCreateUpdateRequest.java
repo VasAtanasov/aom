@@ -13,11 +13,11 @@ import lombok.*;
 public class DealerAccountCreateUpdateRequest {
   @NotNull @NotBlank private String firstName;
   @NotNull @NotBlank private String lastName;
-  @NotNull @NotBlank private String displayedName;
+  @NotNull @NotBlank private String displayName;
   @NotNull @NotBlank private String description;
   @NotNull @NotBlank private String contactDetailsPhoneNumber;
   private String contactDetailsWebLink;
-  @NotNull private Long locationId;
-  @NotNull @NotBlank private String street;
+  @NotNull private Long addressLocationId;
+  @NotNull @NotBlank private String addressStreet;
   @ValidAccountType private String accountType;
 }

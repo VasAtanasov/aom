@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressServiceModel {
-  private LocationServiceModel location;
+  private Long locationId;
   private String street;
   private String residentId;
 }

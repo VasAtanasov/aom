@@ -1,5 +1,6 @@
 package bg.autohouse.service.services;
 
+import bg.autohouse.errors.RequiredFieldMissing;
 import bg.autohouse.service.models.error.RestError;
 import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -13,4 +14,6 @@ public interface RestErrorService {
   RestError exposeMethodArgumentError(MethodArgumentNotValidException ex, HttpStatus status);
 
   RestError exposeOtherSpringError(Exception ex, HttpStatus status);
+
+  RestError exposeValidationError(RequiredFieldMissing rfe);
 }

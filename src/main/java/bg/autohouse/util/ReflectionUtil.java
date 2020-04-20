@@ -13,8 +13,10 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.experimental.UtilityClass;
 
-public final class ReflectionTestUtils {
+@UtilityClass
+public final class ReflectionUtil {
 
   private static final boolean DEFAULT_INCLUDE_JAVA_LANG_OBJECT = false;
 
@@ -27,10 +29,6 @@ public final class ReflectionTestUtils {
               && !clazz.isAnonymousClass()
               && !clazz.isEnum()
               && !Throwable.class.isAssignableFrom(clazz);
-
-  private ReflectionTestUtils() {
-    throw new AssertionError();
-  }
 
   // Methods returning functions
 

@@ -13,7 +13,7 @@ import lombok.*;
 public class PrivateAccountCreateUpdateRequest {
   @NotNull @NotBlank private String firstName;
   @NotNull @NotBlank private String lastName;
-  private String displayedName;
+  private String displayName;
   private String description;
   private String contactDetailsPhoneNumber;
   private String contactDetailsWebLink;

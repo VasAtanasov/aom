@@ -14,7 +14,7 @@ public class AccountServiceModel {
   private String ownerId;
   private String firstName;
   private String lastName;
-  private String displayedName;
+  private String displayName;
   private int maxOffersCount;
   private String description;
   private ContactDetailsServiceModel contactDetails;

@@ -53,7 +53,7 @@ public class AccountControllerTest extends MvcPerformer {
         PrivateAccountCreateUpdateRequest.builder()
             .firstName("firstName")
             .lastName("lastName")
-            .displayedName("displayedName")
+            .displayName("displayedName")
             .description("Bla bla bla")
             .contactDetailsPhoneNumber("phoneNumber")
             .contactDetailsWebLink("webLink")

@@ -3,7 +3,9 @@ package bg.autohouse.service.services.impl;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ModelNotFoundException;
 import bg.autohouse.errors.NotFoundException;
+import bg.autohouse.errors.RequiredFieldMissing;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
+import bg.autohouse.errors.modela.ValidationError;
 import bg.autohouse.service.models.error.RestError;
 import bg.autohouse.service.models.error.RestError.RestErrorBuilder;
 import bg.autohouse.service.models.error.RestValidationError;
@@ -62,6 +64,7 @@ public class RestErrorServiceImpl implements RestErrorService {
           .put(HttpRequestMethodNotSupportedException.class, HttpStatus.BAD_REQUEST)
           .put(IllegalArgumentException.class, HttpStatus.BAD_REQUEST)
           .put(HttpMessageNotReadableException.class, HttpStatus.BAD_REQUEST)
+          .put(RequiredFieldMissing.class, HttpStatus.BAD_REQUEST)
           .put(NotFoundException.class, HttpStatus.NOT_FOUND)
           .put(EntityNotFoundException.class, HttpStatus.NOT_FOUND)
           .put(NoHandlerFoundException.class, HttpStatus.NOT_FOUND)
@@ -187,6 +190,26 @@ public class RestErrorServiceImpl implements RestErrorService {
         .message(
             EnumUtils.fromString(ex.getMessage(), RestMessage.class)
                 .orElse(RestMessage.SOMETHING_WENT_WRONG))
+        .build();
+  }
+
+  @Override
+  public RestError exposeValidationError(RequiredFieldMissing rfe) {
+    final HttpStatus httpStatusCode = getHttpStatusCode(rfe);
+    final ValidationError error = rfe.getValidationError();
+    return RestError.builder()
+        .httpStatus(httpStatusCode)
+        .message(RestMessage.CONSTRAINT_VIOLATION)
+        .errors(
+            Stream.of(rfe.getValidationError())
+                .map(
+                    err ->
+                        RestValidationError.builder()
+                            .field(error.getFieldName())
+                            .errorMessage(error.getMessage())
+                            .fieldErrorCode("Required")
+                            .build())
+                .collect(Collectors.toList()))
         .build();
   }
 
