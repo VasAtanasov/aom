@@ -10,9 +10,7 @@ public class StringGenericUtilsTest {
   @Test
   void when_nextString_whitValidLength_shouldReturn() {
     String randomString = StringGenericUtils.nextString(10);
-    String randomUsername = StringGenericUtils.generateRandomDisplayName();
 
     assertThat(randomString.length()).isEqualTo(10);
-    assertThat(randomUsername.length()).isEqualTo(14);
   }
 }

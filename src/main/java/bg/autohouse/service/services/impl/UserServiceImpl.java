@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
   public UserDetails loadUserByUsername(String username) {
-    // Assert.notNull(username, message);
+    Assert.notNull(username, "username is required");
     return userRepository.findByUsernameIgnoreCase(username).orElseThrow(NoSuchUserException::new);
   }
 

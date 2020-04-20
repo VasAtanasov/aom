@@ -19,7 +19,7 @@ import lombok.Setter;
 @Table(name = EntityConstants.ACCOUNTS)
 public class Account extends BaseUuidEntity {
 
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = -3845486410834998722L;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @MapsId

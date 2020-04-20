@@ -37,8 +37,8 @@ public class StringGenericUtils {
     random = new Random();
   }
 
-  public static String generateRandomDisplayName() {
-    return "Auto" + nextString(10, upperDecimal).toUpperCase();
+  public static String nextStringUpperDecimal(final int length) {
+    return nextString(length, upperDecimal);
   }
 
   public static String nextString(final int length) {

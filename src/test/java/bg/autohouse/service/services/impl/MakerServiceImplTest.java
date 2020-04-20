@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 import bg.autohouse.data.models.Maker;
-import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.MakerModelServiceModel;
@@ -76,7 +75,7 @@ public class MakerServiceImplTest {
 
     assertThat(thrown)
         .isInstanceOf(ResourceAlreadyExistsException.class)
-        .hasMessage(ExceptionsMessages.MODEL_WITH_NAME_EXISTS);
+        .hasMessage(RestMessage.MODEL_ALREADY_EXISTS.name());
   }
 
   @Test

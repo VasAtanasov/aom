@@ -60,4 +60,6 @@ public class ValidationMessages {
   public static final String MISSING_INVALID_DESCRIPTION = "Missing or invalid offer description.";
 
   public static final String INVALID_SELLER = "Invalid seller type.";
+
+  public static final String INVALID_ACCOUNT_TYPE = "Invalid account type";
 }

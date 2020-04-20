@@ -10,7 +10,7 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.OfferServiceModel;
 import bg.autohouse.service.services.InitialStateService;
 import bg.autohouse.service.services.OfferService;
-import bg.autohouse.util.ClassFinder;
+import bg.autohouse.util.ClassUtils;
 import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.ModelMapperWrapper;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class InitialStateServiceImpl implements InitialStateService {
     List<String> searchCriteriaNamesForRangeCriteria =
         Arrays.asList("seats", "doors", "mileage", "price", "registrationYear", "horsePower");
 
-    ClassFinder.find(ENUM_PACKAGE).stream()
+    ClassUtils.find(ENUM_PACKAGE).stream()
         .filter(cls -> cls.isEnum() && Textable.class.isAssignableFrom(cls))
         .forEach(
             cls -> {

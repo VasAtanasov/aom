@@ -9,6 +9,8 @@ public interface AsyncUserLogger {
 
   void logUserLogin(String userId);
 
+  void logUserAddPrivateAccount(String userId);
+
   void recordUserLog(String userId, UserLogType userLogType, String description);
 
   void storeUserLogs(Set<UserLog> userLogSet);

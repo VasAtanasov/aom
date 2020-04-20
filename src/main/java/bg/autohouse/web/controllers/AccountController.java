@@ -4,10 +4,12 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.security.authentication.LoggedUser;
-import bg.autohouse.service.models.account.DealerAccountServiceModel;
-import bg.autohouse.service.models.account.PrivateAccountServiceModel;
+import bg.autohouse.service.models.account.AccountServiceModel;
 import bg.autohouse.service.services.AccountService;
+import bg.autohouse.util.Assert;
+import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.account.DealerAccountCreateUpdateRequest;
@@ -38,17 +40,8 @@ public class AccountController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createPrivateSellerAccount(
       @Valid @RequestBody PrivateAccountCreateUpdateRequest request, @LoggedUser User user) {
-
-    if (accountService.hasAccount(user.getId())) {
-      log.error("User already has set account");
-      return RestUtil.errorResponse(RestMessage.USER_ALREADY_HAS_ACCOUNT);
-    }
-
-    PrivateAccountServiceModel model = modelMapper.map(request, PrivateAccountServiceModel.class);
-    PrivateAccountServiceModel account =
-        accountService.createPrivateSellerAccount(model, user.getId());
-
-    return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
+    AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
+    return createAccount(model, user.getId());
   }
 
   @PostMapping(
@@ -57,15 +50,31 @@ public class AccountController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> requestDealerAccount(
       @Valid @RequestBody DealerAccountCreateUpdateRequest request, @LoggedUser User user) {
+    AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
+    return createAccount(model, user.getId());
+  }
 
-    if (accountService.hasAccount(user.getId())) {
+  private ResponseEntity<?> createAccount(AccountServiceModel model, String ownerId) {
+    if (Assert.isEmpty(model) || Assert.isEmpty(ownerId)) {
+      log.error("Missing account data");
+      return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);
+    }
+
+    if (accountService.hasAccount(ownerId)) {
       log.error("User already has set account");
       return RestUtil.errorResponse(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
 
-    DealerAccountServiceModel model = modelMapper.map(request, DealerAccountServiceModel.class);
-    DealerAccountServiceModel account = accountService.createDealerAccount(model, user.getId());
+    AccountType accountType =
+        EnumUtils.fromString(model.getAccountType(), AccountType.class)
+            .orElseThrow(() -> new IllegalStateException(RestMessage.INVALID_ACCOUNT_TYPE.name()));
 
-    return RestUtil.okResponse(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED, account);
+    if (AccountType.DEALER.equals(accountType)) {
+      AccountServiceModel account = accountService.createDealerAccount(model, ownerId);
+      return RestUtil.okResponse(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED, account);
+    }
+
+    AccountServiceModel account = accountService.createPrivateSellerAccount(model, ownerId);
+    return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
   }
 }

@@ -7,8 +7,7 @@ public interface AccountService {
 
   AccountServiceModel loadAccountForUser(String userId);
 
-  PrivateAccountServiceModel createPrivateSellerAccount(
-      PrivateAccountServiceModel model, String ownerId);
+  AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, String ownerId);
 
-  DealerAccountServiceModel createDealerAccount(DealerAccountServiceModel model, String id);
+  AccountServiceModel createDealerAccount(AccountServiceModel model, String id);
 }

@@ -4,7 +4,6 @@ import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Model;
 import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.ModelRepository;
-import bg.autohouse.errors.ExceptionsMessages;
 import bg.autohouse.errors.MakerNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.MakerModelServiceModel;
@@ -13,6 +12,7 @@ import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.models.ModelTrimsServicesMode;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.RestMessage;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -70,7 +70,7 @@ public class MakerServiceImpl implements MakerService {
         modelRepository.existsByNameAndMakerId(modelServiceModel.getName(), makerId);
 
     if (modelExists) {
-      throw new ResourceAlreadyExistsException(ExceptionsMessages.MODEL_WITH_NAME_EXISTS);
+      throw new ResourceAlreadyExistsException(RestMessage.MODEL_ALREADY_EXISTS);
     }
 
     Model model = modelMapper.map(modelServiceModel, Model.class);
@@ -91,7 +91,11 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   public MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel) {
-    // TODO chekc if maker exists (move from validation to service)
+
+    if (makerRepository.existsByName(makerServiceModel.getName())) {
+      throw new ResourceAlreadyExistsException(RestMessage.MAKER_ALREADY_EXISTS);
+    }
+
     Maker maker = modelMapper.map(makerServiceModel, Maker.class);
     makerRepository.save(maker);
     return modelMapper.map(maker, MakerServiceModel.class);

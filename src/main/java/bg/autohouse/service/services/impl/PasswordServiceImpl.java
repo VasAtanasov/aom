@@ -19,7 +19,6 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +36,7 @@ public class PasswordServiceImpl implements PasswordService {
   private final PasswordEncoder encoder;
 
   @Override
+  @Transactional(readOnly = true)
   public boolean validateCredentials(String username, String password) {
     User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
     if (user == null || !encoder.matches(password, user.getPassword())) {
@@ -137,11 +137,9 @@ public class PasswordServiceImpl implements PasswordService {
       return false;
     }
 
-    User user =
-        userRepository
-            .findByUsernameIgnoreCase(username)
-            .orElseThrow(
-                () -> new UsernameNotFoundException(ExceptionsMessages.USER_NOT_FOUND_USERNAME));
+    User user = userRepository.findByUsernameIgnoreCase(username).orElse(null);
+
+    if (user == null) return false;
 
     user.setPassword(encoder.encode(password));
     userRepository.save(user);

@@ -200,7 +200,12 @@ public class AuthenticationController extends BaseController {
     }
 
     log.info("User code verified, now resetting user password");
-    passwordService.resetPassword(username, code, newPassword);
+    boolean isReset = passwordService.resetPassword(username, code, newPassword);
+
+    if (!isReset) {
+      return RestUtil.errResponse(HttpStatus.UNAUTHORIZED, RestMessage.BAD_CREDENTIALS);
+    }
+
     return RestUtil.okResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
   }
 

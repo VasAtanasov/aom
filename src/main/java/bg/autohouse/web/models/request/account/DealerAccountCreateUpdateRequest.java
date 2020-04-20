@@ -1,5 +1,6 @@
 package bg.autohouse.web.models.request.account;
 
+import bg.autohouse.validation.account.ValidAccountType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.*;
@@ -18,4 +19,5 @@ public class DealerAccountCreateUpdateRequest {
   private String contactDetailsWebLink;
   @NotNull private Long locationId;
   @NotNull @NotBlank private String street;
+  @ValidAccountType private String accountType;
 }

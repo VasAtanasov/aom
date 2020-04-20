@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
+import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.account.PrivateAccountCreateUpdateRequest;
@@ -56,6 +57,7 @@ public class AccountControllerTest extends MvcPerformer {
             .description("Bla bla bla")
             .contactDetailsPhoneNumber("phoneNumber")
             .contactDetailsWebLink("webLink")
+            .accountType(AccountType.PRIVATE.name())
             .build();
 
     performPost(API_BASE + "/private-create", request, headers)
