@@ -9,6 +9,7 @@ import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserLoginRequest;
+import bg.autohouse.web.models.request.account.DealerAccountCreateUpdateRequest;
 import bg.autohouse.web.models.request.account.PrivateAccountCreateUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,12 +21,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@Sql("/location.sql")
 @TestPropertySource("classpath:test.properties")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -67,5 +70,42 @@ public class AccountControllerTest extends MvcPerformer {
     performPost(API_BASE + "/private-create", request, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.USER_ALREADY_HAS_ACCOUNT.name())));
+  }
+
+  @Test
+  void when_createDealerAccount_thenReturn200() throws Exception {
+    DealerAccountCreateUpdateRequest request =
+        DealerAccountCreateUpdateRequest.builder()
+            .firstName("firstName")
+            .lastName("lastName")
+            .displayName("displayedName")
+            .description("description")
+            .contactDetailsPhoneNumber("phoneNumber")
+            .addressLocationId(2L)
+            .addressStreet("street")
+            .accountType(AccountType.DEALER.name())
+            .build();
+
+    performPost(API_BASE + "/dealer-request", request, headers)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED.name())));
+  }
+
+  @Test
+  void when_createDealerAccount_missingLastName_thenReturn400() throws Exception {
+    DealerAccountCreateUpdateRequest request =
+        DealerAccountCreateUpdateRequest.builder()
+            .firstName("firstName")
+            .displayName("displayedName")
+            .description("description")
+            .contactDetailsPhoneNumber("phoneNumber")
+            .addressLocationId(2L)
+            .addressStreet("street")
+            .accountType(AccountType.DEALER.name())
+            .build();
+
+    performPost(API_BASE + "/dealer-request", request, headers)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.PARAMETER_VALIDATION_FAILURE.name())));
   }
 }

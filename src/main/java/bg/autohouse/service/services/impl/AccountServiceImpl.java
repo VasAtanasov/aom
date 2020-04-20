@@ -25,6 +25,7 @@ import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
 import bg.autohouse.web.enums.RestMessage;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,8 @@ public class AccountServiceImpl implements AccountService {
   private final ModelMapperWrapper modelMapper;
   private final AsyncUserLogger userLogger;
   private final FieldValidator fieldValidator;
+
+  // private final ApplicationEventPublisher applicationEventPublisher;
 
   @Override
   @Transactional(readOnly = true)
@@ -109,10 +112,12 @@ public class AccountServiceImpl implements AccountService {
     return "Auto" + StringGenericUtils.nextStringUpperDecimal(10);
   }
 
+  @Getter
+  @Required
   private static class PrivateAccountRequiredFields {
-    @Required private String firstName;
-    @Required private String lastName;
-    @Required private String accountType;
+    private String firstName;
+    private String lastName;
+    private String accountType;
   }
 
   @Override
@@ -156,15 +161,17 @@ public class AccountServiceImpl implements AccountService {
     return modelMapper.map(dealerAccount, AccountServiceModel.class);
   }
 
+  @Getter
+  @Required
   private static class DealerAccountRequiredFields {
-    @Required private String firstName;
-    @Required private String lastName;
-    @Required private String displayName;
-    @Required private String description;
-    @Required private String contactDetailsPhoneNumber;
-    @Required private Long addressLocationId;
-    @Required private String addressStreet;
-    @Required private String accountType;
+    private String firstName;
+    private String lastName;
+    private String displayName;
+    private String description;
+    private String contactDetailsPhoneNumber;
+    private Long addressLocationId;
+    private String addressStreet;
+    private String accountType;
   }
 
   private void validateModel(AccountServiceModel model, Class<?> target) {
