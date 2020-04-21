@@ -47,6 +47,9 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @Column(name = "hit_count", columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer hitCount = 0;
 
+  @Column(name = "saved_count", columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  private Integer savedCount = 0;
+
   @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
@@ -78,5 +81,18 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @PostLoad
   private void storePriceState() {
     previousPrice = price;
+  }
+
+  public void incrementHitCount() {
+    hitCount += 1;
+  }
+
+  public void incrementSavedCount() {
+    savedCount += 1;
+  }
+
+  public void decrementSaveCount() {
+    savedCount -= 1;
+    if (savedCount < 0) savedCount = 0;
   }
 }

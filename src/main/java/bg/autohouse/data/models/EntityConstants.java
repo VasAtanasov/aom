@@ -30,6 +30,7 @@ public class EntityConstants {
   public static final String ACCOUNTS = PREFIX + "accounts";
   public static final String TRIMS = PREFIX + "trims";
   public static final String TOKENS = PREFIX + "tokens";
+  public static final String PRICE_CHANGE = PREFIX + "price_change";
   public static final String VERIFICATION_TOKEN_CODES = PREFIX + "verification_token_codes";
 
   public static final Integer MIN_VALUE = 1;
