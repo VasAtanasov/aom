@@ -52,15 +52,12 @@ public class EmailServiceImpl implements EmailService {
 
   @Override
   public void verifyEmail(String email, String token) {
-
     EmailServiceModelBuilder mail =
         EmailServiceModel.builder().subject(REGISTRATION_SUBJECT).toAddress(email);
-
     Context context = new Context();
     context.setVariable("token", token);
     String html = templateEngine.process("html/email_verification", context);
     mail.htmlContent(html);
-
     try {
       log.info("Sending email with token for registration confirmation...");
       sendEmail(mail.build(), Boolean.TRUE);
@@ -70,11 +67,9 @@ public class EmailServiceImpl implements EmailService {
   }
 
   public void sendPasswordResetRequest(String firstName, String email, String token) {
-
     String textBodyWithToken = PASSWORD_RESET_TEXT_BODY.replace("$tokenValue", token);
     textBodyWithToken = textBodyWithToken.replace("$firstName", firstName);
     log.info(textBodyWithToken);
-
     log.info("Sending email with token for password reset...");
     log.info("Email sent!");
   }
@@ -85,10 +80,8 @@ public class EmailServiceImpl implements EmailService {
     MimeMessageHelper helper =
         new MimeMessageHelper(
             message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
-
     // helper.addAttachment("template-cover.png", new
     // ClassPathResource("javabydeveloper-email.PNG"));
-
     helper.setTo(mail.getToAddress());
     helper.setText(isHtml ? mail.getHtmlContent() : mail.getTextContent(), isHtml);
     helper.setSubject(mail.getSubject());

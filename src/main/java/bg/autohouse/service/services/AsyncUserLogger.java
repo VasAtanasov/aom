@@ -16,4 +16,6 @@ public interface AsyncUserLogger {
   void storeUserLogs(Set<UserLog> userLogSet);
 
   void removeAllUserInfoLogs(String userId);
+
+  void auditLogoutEvent(String userId);
 }

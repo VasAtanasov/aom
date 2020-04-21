@@ -43,10 +43,8 @@ public class UserController extends BaseController {
   @PostMapping(value = "/image/change")
   public ResponseEntity<?> uploadProfileImage(
       @RequestBody MultipartFile photo, @LoggedUser User user) {
-
     String contentType = photo.getContentType();
     boolean acceptable = ImageUtil.isAcceptedMimeType(contentType);
-
     if (!acceptable) return RestUtil.errorResponse(RestMessage.INVALID_MEDIA_TYPE);
     // TODO resize image and convert to jpeg
     log.info("storing a media file, with mediaFunction = {}", MediaFunction.USER_PROFILE_IMAGE);
@@ -59,7 +57,6 @@ public class UserController extends BaseController {
             MediaFunction.USER_PROFILE_IMAGE,
             photo.getOriginalFilename(),
             user.getId());
-
     userService.updateHasImage(user.getId(), true);
     userLogger.recordUserLog(user.getId(), UserLogType.USER_CHANGE_PROFILE_PHOTO, imageKey);
     return RestUtil.okResponse(
@@ -72,17 +69,13 @@ public class UserController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> changeUserPassword(
       @Valid @RequestBody UserChangePasswordRequest request, @LoggedUser User user) {
-
     if (!request.getNewPassword().equals(request.getConfirmPassword())) {
       return RestUtil.errorResponse(RestMessage.INVALID_PASSWORD);
     }
-
     boolean isChanged =
         passwordService.changeUserPassword(
             user.getId(), request.getOldPassword(), request.getNewPassword());
-
     if (isChanged) return ResponseEntity.ok().build();
-
     return RestUtil.errorResponse(RestMessage.INVALID_PASSWORD);
   }
 

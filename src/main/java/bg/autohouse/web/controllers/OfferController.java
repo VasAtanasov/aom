@@ -25,7 +25,6 @@ public class OfferController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createOffer(@Valid @RequestBody OfferCreateRequest createRequest) {
-
     return ResponseEntity.ok().build();
   }
 }

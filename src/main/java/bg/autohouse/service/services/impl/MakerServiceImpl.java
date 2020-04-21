@@ -11,10 +11,10 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.models.ModelTrimsServicesMode;
 import bg.autohouse.service.services.MakerService;
+import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,25 +60,19 @@ public class MakerServiceImpl implements MakerService {
   @Override
   public MakerServiceModel addModelToMaker(
       @Nonnull Long makerId, @Nonnull ModelServiceModel modelServiceModel) {
-
-    Objects.requireNonNull(modelServiceModel);
+    Assert.notNull(modelServiceModel, "Model ise required");
     modelServiceModel.setId(null); // modelMapper maps id to model
-
     Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
-
     boolean modelExists =
         modelRepository.existsByNameAndMakerId(modelServiceModel.getName(), makerId);
-
     if (modelExists) {
       throw new ResourceAlreadyExistsException(RestMessage.MODEL_ALREADY_EXISTS);
     }
-
     Model model = modelMapper.map(modelServiceModel, Model.class);
     model.setMaker(maker);
     maker.getModels().add(model);
     modelRepository.save(model);
     makerRepository.save(maker);
-
     return modelMapper.map(maker, MakerServiceModel.class);
   }
 
@@ -91,11 +85,9 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   public MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel) {
-
     if (makerRepository.existsByName(makerServiceModel.getName())) {
       throw new ResourceAlreadyExistsException(RestMessage.MAKER_ALREADY_EXISTS);
     }
-
     Maker maker = modelMapper.map(makerServiceModel, Maker.class);
     makerRepository.save(maker);
     return modelMapper.map(maker, MakerServiceModel.class);

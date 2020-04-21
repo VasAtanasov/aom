@@ -57,20 +57,15 @@ public class AccountServiceImpl implements AccountService {
   @Transactional(readOnly = true)
   public AccountServiceModel loadAccountForUser(String userId) {
     Assert.notNull(userId, "User id is required.");
-
     User user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
-    // Account id and user id is sam due to @MapsId
-    Account account =
+    Account account = // Account id and user id is sam due to @MapsId
         accountRepository.findById(user.getId()).orElseThrow(AccountNotFoundException::new);
-
     if (!account.isEnabled()) {
       throw new AccountDisabledOrClosed(RestMessage.USER_ACCOUNT_DISABLED.name());
     }
-
     if (account.isClosed()) {
       throw new AccountDisabledOrClosed(RestMessage.USER_ACCOUNT_LOCKED.name());
     }
-
     return modelMapper.map(account, AccountServiceModel.class);
   }
 
@@ -79,32 +74,23 @@ public class AccountServiceImpl implements AccountService {
   public AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, String ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
-
     User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);
-
     if (owner.isHasAccount()) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
-
     validateModel(model, PrivateAccountRequiredFields.class);
-
     String displayNameToUse =
         Assert.has(model.getDisplayName()) ? model.getDisplayName() : generateRandomDisplayName();
-
     Account privateAccount = modelMapper.map(model, Account.class);
     privateAccount.setMaxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount());
     privateAccount.setOwner(owner);
     privateAccount.setAccountType(AccountType.PRIVATE);
     privateAccount.setDisplayName(displayNameToUse);
     privateAccount.setEnabled(Boolean.TRUE);
-
     accountRepository.save(privateAccount);
     owner.setHasAccount(Boolean.TRUE);
-
     userRepository.save(owner);
-
     logAccountCreate(AccountType.PRIVATE, owner);
-
     return modelMapper.map(privateAccount, AccountServiceModel.class);
   }
 
@@ -125,38 +111,30 @@ public class AccountServiceImpl implements AccountService {
   public AccountServiceModel createDealerAccount(AccountServiceModel model, String ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
-
     User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);
     if (owner.isHasAccount()) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
     validateModel(model, DealerAccountRequiredFields.class);
-
     Location location =
         locationRepository
             .findById(model.getAddress().getLocationId())
             .orElseThrow(LocationNotFoundException::new);
-
     Account dealerAccount = modelMapper.map(model, Account.class);
     dealerAccount.setId(null); // modelMapper sets id
     dealerAccount.setMaxOffersCount(AccountType.DEALER.resolveMaxOffersCount());
     dealerAccount.setOwner(owner);
     dealerAccount.setAccountType(AccountType.DEALER);
     dealerAccount.setEnabled(Boolean.TRUE);
-
     Address address = modelMapper.map(model.getAddress(), Address.class);
     address.setLocation(location);
     address.setLocation(location);
     address.setResident(dealerAccount);
     dealerAccount.setAddress(address);
-
     accountRepository.saveAndFlush(dealerAccount);
     owner.setHasAccount(Boolean.TRUE);
-
     userRepository.save(owner);
-
     logAccountCreate(AccountType.DEALER, owner);
-
     // TODO notify admin when created
     return modelMapper.map(dealerAccount, AccountServiceModel.class);
   }
@@ -185,7 +163,6 @@ public class AccountServiceImpl implements AccountService {
             .description(accountType.name())
             .user(owner)
             .build();
-
     accountLogRepository.save(accountLogCreate);
     userLogger.logUserAddPrivateAccount(owner.getId());
   }

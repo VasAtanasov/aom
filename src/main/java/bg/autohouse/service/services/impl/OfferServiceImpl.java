@@ -51,13 +51,10 @@ public class OfferServiceImpl implements OfferService {
   @Override
   public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
     Objects.requireNonNull(filterRequest);
-
     Filter filter = modelMapper.map(filterRequest, Filter.class);
-
     if (Assert.has(filterRequest.getMakerId())) {
       Maker maker = makerRepository.findById(filterRequest.getMakerId()).orElse(null);
       filter.setMaker(maker);
-
       if (Assert.has(filterRequest.getModelId())) {
         Model model =
             maker.getModels().stream()
@@ -67,9 +64,7 @@ public class OfferServiceImpl implements OfferService {
         filter.setModel(model);
       }
     }
-
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
-
     return offerRepository
         .findAll(offerSpecification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));

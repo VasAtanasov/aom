@@ -1,7 +1,6 @@
 package bg.autohouse.service.services.impl;
 
-// import static bg.autohouse.errors.ExceptionSupplier.*;
-
+import bg.autohouse.audit.models.UserLoginEvent;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.models.VerificationTokenCode;
@@ -35,6 +34,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
   private final JwtTokenService jwtService;
   private final PasswordEncoder encoder;
   private final AsyncUserLogger asyncUserService;
+  private final ApplicationEventPublisher eventPublisher;
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
@@ -86,38 +87,31 @@ public class UserServiceImpl implements UserService {
         userRepository
             .findByUsernameIgnoreCase(username)
             .orElseThrow(UsernamePasswordLoginFailedException::new);
-
     boolean isValidCredentials = passwordService.validateCredentials(username, password);
-
     if (!isValidCredentials) {
       throw new UsernamePasswordLoginFailedException();
     }
-
     JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
     String token = jwtService.createJwt(tokenRequest);
     log.info("Generated a jwt token, on server is: {}", token);
-
+    eventPublisher.publishEvent(UserLoginEvent.of(user.getId()));
     return AuthorizedUserServiceModel.builder().user(user).token(token).build();
   }
 
   @Override
   public String generateUserRegistrationVerifier(UserRegisterServiceModel model) {
     Assert.notNull(model, "Model is required");
-
     if (userExist(model.getUsername())) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_EXISTS);
     }
-
     UserCreateRequest request =
         userRequestRepository.findByUsernameAndIsVerifiedIsFalse(model.getUsername()).orElse(null);
-
     if (request == null) {
       request = modelMapper.map(model, UserCreateRequest.class);
       log.info("Hashing password...");
       request.setPassword(encoder.encode(model.getPassword()));
       userRequestRepository.save(request);
     }
-
     VerificationTokenCode token = passwordService.generateShortLivedOTP(model.getUsername());
     return token.getCode();
   }
@@ -127,21 +121,17 @@ public class UserServiceImpl implements UserService {
   public UserServiceModel completeRegistration(String username) {
     Assert.notNull(username, "User email address is required");
     log.info("about to try to use email : {}", username);
-
     long start = System.nanoTime();
     boolean userExists = Assert.has(username) && userExist(username);
     long time = System.nanoTime() - start;
     log.info("User exists check took {} nano seconds", time);
-
     if (userExists) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_EXISTS);
     }
-
     UserCreateRequest request =
         userRequestRepository
             .findByUsernameAndIsVerifiedIsFalse(username)
             .orElseThrow(NoRegistrationRequestFoundException::new);
-
     User user = modelMapper.map(request, User.class);
     user.setId(null);
     log.info("Saving user entity...");
@@ -158,9 +148,7 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public String regenerateUserVerifier(String username) {
     Assert.notNull(username, "Username is required");
-
     if (!userExist(username)) throw new NoSuchUserException();
-
     VerificationTokenCode newTokenCode = passwordService.generateShortLivedOTP(username);
     return newTokenCode.getCode();
   }
@@ -168,18 +156,12 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserServiceModel updateUser(
       String userId, UserDetailsUpdateRequest user, User loggedUser) {
-
     User userEntity = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
-
     if (!userEntity.getUsername().equals(loggedUser.getUsername())) {
       throw new IllegalStateException(RestMessage.INVALID_UPDATE_OPERATION.name());
     }
     // TODO update User profile
-    // userEntity.setFirstName(user.getFirstName());
-    // userEntity.setLastName(user.getLastName());
-
     userRepository.save(userEntity);
-
     return modelMapper.map(userEntity, UserServiceModel.class);
   }
 

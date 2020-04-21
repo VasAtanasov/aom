@@ -24,11 +24,9 @@ public class MatchingFieldsValidator
   public boolean isValid(Object obj, ConstraintValidatorContext context) {
     List<Field> classFields = extractFieldsFromObject(obj);
     boolean areMatching = allFieldsAreMatching(classFields, obj);
-
     if (!areMatching) {
       addConstraintViolations(context);
     }
-
     return areMatching;
   }
 
@@ -39,7 +37,6 @@ public class MatchingFieldsValidator
    */
   private void addConstraintViolations(ConstraintValidatorContext context) {
     context.disableDefaultConstraintViolation();
-
     for (String field : fields) {
       context
           .buildConstraintViolationWithTemplate(FIELDS_ARE_NOT_MATCHING)
@@ -61,7 +58,6 @@ public class MatchingFieldsValidator
         try {
           Object f1 = field.get(obj);
           Object f2 = field1.get(obj);
-
           if ((f1 == null || f2 == null) || !f1.equals(f2)) {
             return false;
           }
@@ -70,7 +66,6 @@ public class MatchingFieldsValidator
         }
       }
     }
-
     return true;
   }
 
@@ -82,7 +77,6 @@ public class MatchingFieldsValidator
    */
   private List<Field> extractFieldsFromObject(Object obj) {
     Class<?> aClass = obj.getClass();
-
     List<Field> classFields = new ArrayList<>();
     for (String field : fields) {
       try {
@@ -94,7 +88,6 @@ public class MatchingFieldsValidator
         e.printStackTrace();
       }
     }
-
     return classFields;
   }
 }

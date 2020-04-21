@@ -37,7 +37,6 @@ public class ValidationController {
 
   private ResponseEntity<String> validate(final Object dto) {
     final DataBinder binder = new DataBinder(dto);
-
     return createResponse(!binder.getBindingResult().hasErrors());
   }
 

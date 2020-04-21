@@ -59,21 +59,17 @@ public class AccountController extends BaseController {
       log.error("Missing account data");
       return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);
     }
-
     if (accountService.hasAccount(ownerId)) {
       log.error("User already has set account");
       return RestUtil.errorResponse(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
-
     AccountType accountType =
         EnumUtils.fromString(model.getAccountType(), AccountType.class)
             .orElseThrow(() -> new IllegalStateException(RestMessage.INVALID_ACCOUNT_TYPE.name()));
-
     if (AccountType.DEALER.equals(accountType)) {
       AccountServiceModel account = accountService.createDealerAccount(model, ownerId);
       return RestUtil.okResponse(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED, account);
     }
-
     AccountServiceModel account = accountService.createPrivateSellerAccount(model, ownerId);
     return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
   }

@@ -39,7 +39,6 @@ public class LocalFolderStorageService implements StorageService {
       this.storageBasePath = Files.createTempDirectory("autohouse").toAbsolutePath();
       return;
     }
-
     checkDirectoryExistsAndWritable(this.storageBasePath);
   }
 
@@ -56,16 +55,13 @@ public class LocalFolderStorageService implements StorageService {
   @Override
   public void storeFile(MediaFunction mediaFunction, MediaFile mediaFile, InputStream inputStream)
       throws IOException {
-
     String fileName = mediaFunction.formatFilename(mediaFile);
     final Path storageFile = storageBasePath.resolve(mediaFile.getBucket()).resolve(fileName);
     mediaFile.setResourceUrl(storageFile.toUri().toURL());
-
     if (!Files.exists(storageFile)) {
       Files.createDirectories(storageFile.getParent());
       log.info("Directory created", storageFile.getParent().toString());
     }
-
     try {
       Files.copy(inputStream, storageFile, StandardCopyOption.REPLACE_EXISTING);
     } finally {
@@ -91,7 +87,6 @@ public class LocalFolderStorageService implements StorageService {
 
   private static void checkDirectoryExistsAndWritable(final Path directory) throws IOException {
     final File file = directory.toFile();
-
     if (!file.exists()) {
       Files.createDirectory(directory);
     } else {

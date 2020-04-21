@@ -169,4 +169,14 @@ public final class DropboxUtil {
   //   }
   // }
 
+  // public DropboxMoveResult move(String remotePath, String newRemotePath) throws DropboxException
+  // {
+  //   try {
+  //     client.files().moveV2(remotePath, newRemotePath);
+  //     return new DropboxMoveResult(remotePath, newRemotePath);
+  //   } catch (DbxException e) {
+  //     throw new DropboxException(remotePath + " does not exist or cannot obtain metadata", e);
+  //   }
+  // }
+
 }

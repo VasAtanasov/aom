@@ -42,12 +42,10 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   @Override
   public String createJwt(JwtTokenCreateRequest request) {
     request.setShortExpiryMillis(securityProperties.getExpirationTime());
-
     Date now = TimeUtils.now();
     long typeExpiryMillis = convertTypeToExpiryMillis(request.getTokenType());
     Date expiryDate = TimeUtils.dateOf(now.getTime() + typeExpiryMillis);
     request.getHeaderParameters().put("kid", keyIdentifier);
-
     return Jwts.builder()
         .setHeaderParams(request.getHeaderParameters())
         .setClaims(request.getClaims())
@@ -58,7 +56,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   }
 
   private long convertTypeToExpiryMillis(JwtTokenType jwtType) {
-
     switch (jwtType) {
       case API_CLIENT:
         return securityProperties.getExpirationTime();
@@ -165,7 +162,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     String userId = null;
     String username = null;
     String roles = null;
-
     try {
       userId = getUserIdFromJWT(oldToken);
       username = getUsernameFromJWT(oldToken);
@@ -178,12 +174,9 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     if (isTokenStillValid || expirationTime != null && expirationTime.before(TimeUtils.now())) {
       JwtTokenCreateRequest cjtRequest =
           new JwtTokenCreateRequest(jwtType, userId, username, roles);
-
       blackListJwt(oldToken);
-
       newToken = createJwt(cjtRequest);
     }
-
     return newToken;
   }
 
@@ -192,7 +185,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   public boolean isBlackListed(String token) {
     String tokenUid = getJwtUidFromJWT(token);
     Assert.notNull(tokenUid, INVALID_TOKEN_MESSAGE);
-
     String username = getUsernameFromJWT(token);
     Assert.notNull(username, INVALID_TOKEN_MESSAGE);
     return tokenBlackList.findOne(forUser(username).and(withTokenUid(tokenUid))).isPresent();
@@ -202,23 +194,17 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   @Transactional
   public void blackListJwt(String token) {
     Assert.notNull(token, INVALID_TOKEN_MESSAGE);
-
     JwtTokenType tokenType =
         EnumUtils.fromString(getTokenTypeFromJWT(token), JwtTokenType.class).orElse(null);
     Assert.notNull(tokenType, INVALID_TOKEN_MESSAGE);
-
     String tokenUid = getJwtUidFromJWT(token);
     Assert.notNull(tokenUid, INVALID_TOKEN_MESSAGE);
-
     String userId = getUserIdFromJWT(token);
     Assert.notNull(userId, INVALID_TOKEN_MESSAGE);
-
     String username = getUsernameFromJWT(token);
     Assert.notNull(username, INVALID_TOKEN_MESSAGE);
-
     Date expirationTime = getExpirationDateFromToken(token);
     Assert.notNull(expirationTime, INVALID_TOKEN_MESSAGE);
-
     JwtToken invalidToken =
         JwtToken.builder()
             .value(token)
@@ -228,7 +214,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
             .userId(userId)
             .expirationTime(expirationTime)
             .build();
-
     tokenBlackList.save(invalidToken);
   }
 }

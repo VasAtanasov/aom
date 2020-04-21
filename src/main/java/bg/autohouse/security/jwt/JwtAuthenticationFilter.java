@@ -40,72 +40,55 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-
     log.debug("request method: {}", request.getMethod());
     if ("OPTIONS".equals(request.getMethod())) { // to handle CORS
       filterChain.doFilter(request, response);
       return;
     }
-
     AuthorizationHeader authHeader = new AuthorizationHeader(request);
     String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
-
     log.debug("auth headers: {}, token: {}", request.getHeaderNames(), token);
-
     if (authHeader.hasBearerToken()) {
-
       try {
         if (!jwtService.isJwtTokenValid(token) || jwtService.isBlackListed(token)) {
           throw new BadCredentialsException(RestMessage.INVALID_TOKEN.name());
         }
-
         String userId = jwtService.getUserIdFromJWT(token);
         final UserDetails userDetails;
-
         try {
           userDetails = userService.loadUserById(userId);
         } catch (final NoSuchUserException notFound) {
           throw new BadCredentialsException(RestMessage.BAD_CREDENTIALS.name());
         }
-
         if (!userDetails.isAccountNonLocked()) {
           throw new LockedException(RestMessage.USER_ACCOUNT_LOCKED.name());
         }
-
         if (!userDetails.isEnabled()) {
           throw new DisabledException(RestMessage.USER_ACCOUNT_DISABLED.name());
         }
-
         if (!userDetails.isAccountNonExpired()) {
           throw new AccountExpiredException(RestMessage.USER_ACCOUNT_EXPIRED.name());
         }
-
         if (!userDetails.isCredentialsNonExpired()) {
           throw new CredentialsExpiredException(RestMessage.USER_CREDENTIALS_EXPIRED.name());
         }
-
         log.info("Successful JWT authentication for username={}", userDetails.getUsername());
         log.debug("User ID: {}", userId);
-
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
-
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.debug("Finished pushing authentication object");
       } catch (Exception e) {
         log.error("Could not set user authentication in security context");
         SecurityContextHolder.clearContext();
       }
-
       try {
         filterChain.doFilter(request, response);
       } finally {
         SecurityContextHolder.clearContext();
       }
-
     } else {
       SecurityContextHolder.clearContext();
       filterChain.doFilter(request, response);

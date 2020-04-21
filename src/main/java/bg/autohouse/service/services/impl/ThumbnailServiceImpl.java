@@ -24,7 +24,6 @@ public class ThumbnailServiceImpl implements ThumbnailService {
   public String generateThumbnailUrl(String url) {
     Map<String, String> options = new HashMap<>();
     options.put("url", url);
-
     try {
       return generateUrl(API_BASE_URL, options);
     } catch (UnsupportedEncodingException e) {

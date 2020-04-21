@@ -13,9 +13,10 @@ public enum UserLogType {
 
   ADDED_ADDRESS("User added address"),
   CHANGED_ADDRESS("User changed address"),
-  REMOVED_ADDRESS("User removed addres"),
+  REMOVED_ADDRESS("User removed address"),
 
   USER_SESSION("User initiated a session"),
+  USER_LOGOUT_SESSION("User terminated session"),
   USER_ADDED_PRIVATE_ACCOUNT("User added private seller account"),
   USER_SKIPPED_NAME("User preferred not to set name"),
   USER_SKIPPED_PROVINCE("User preferred not to set a province"),

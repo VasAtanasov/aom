@@ -44,12 +44,10 @@ public class SearchController extends BaseController {
               sort = SORT,
               direction = Sort.Direction.DESC)
           Pageable pageable) {
-
     Page<OfferResponseModel> page =
         offerService
             .searchOffers(filterRequest, pageable)
             .map(o -> modelMapper.map(o, OfferResponseModel.class));
-
     ResponseWrapper response =
         ResponseWrapper.builder()
             .success(Boolean.TRUE)
@@ -57,7 +55,6 @@ public class SearchController extends BaseController {
             .data(toMap("page", page))
             .status(HttpStatus.OK.value())
             .build();
-
     return ResponseEntity.ok()
         .headers(PaginationHeadersUtils.buildPaginationHeaders(page))
         .body(response);

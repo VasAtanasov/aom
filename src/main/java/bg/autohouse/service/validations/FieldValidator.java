@@ -18,10 +18,8 @@ public class FieldValidator {
 
   public void validate(Object object) {
     Class<?> refClass = object.getClass();
-
     Stream<Field> fieldsStream = getRequiredFieldsStream(refClass);
     List<Field> fields = new ArrayList<>();
-
     if (refClass.isAnnotationPresent(annotationClass)) {
       fields.addAll(fieldsStream.collect(Collectors.toList()));
     } else {
@@ -30,7 +28,6 @@ public class FieldValidator {
               .filter(f -> f.isAnnotationPresent(annotationClass))
               .collect(Collectors.toList()));
     }
-
     fields.forEach(
         field ->
             RequiredFieldMissing.assertNotNull(getValueOfField(object, field), field.getName()));

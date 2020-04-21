@@ -93,12 +93,9 @@ public class MediaFileServiceImpl implements MediaFileService {
       MediaFunction function,
       String originalFilename,
       String referenceId) {
-
     final StorageService storage = getStorageOrFallback(function.storageType());
     Assert.notNull(function, "Unspecified media function.");
-
     String bucket = function.resolveBucketName();
-
     log.info(
         "storing a file, with function {}, bucket {}, file key {}, content type: {},  original name: {}",
         function,
@@ -106,7 +103,6 @@ public class MediaFileServiceImpl implements MediaFileService {
         fileKey,
         file.getContentType(),
         file.getOriginalFilename());
-
     MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey);
     if (Assert.isEmpty(record)) {
       record =
@@ -122,7 +118,6 @@ public class MediaFileServiceImpl implements MediaFileService {
 
       record.setId(fileUuid);
     }
-
     try (final InputStream fis = file.getInputStream();
         final BufferedInputStream bis = new BufferedInputStream(fis)) {
       storage.storeFile(function, record, bis);
@@ -140,7 +135,6 @@ public class MediaFileServiceImpl implements MediaFileService {
   public byte[] getBytes(final String uuid) throws IOException {
     final MediaFile mediaFile = medialFileRepository.getOne(uuid);
     final StorageService storage = getStorage(mediaFile.getStorageType());
-
     try (final ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
       storage.retrieveFile(mediaFile, bos);
       return bos.toByteArray();
@@ -152,7 +146,6 @@ public class MediaFileServiceImpl implements MediaFileService {
   public void downloadTo(final String uuid, final Path targetPath) throws IOException {
     final MediaFile mediaFile = medialFileRepository.getOne(uuid);
     final StorageService storage = getStorage(mediaFile.getStorageType());
-
     try (final FileOutputStream fos = new FileOutputStream(targetPath.toFile());
         final BufferedOutputStream bos = new BufferedOutputStream(fos)) {
       storage.retrieveFile(mediaFile, bos);

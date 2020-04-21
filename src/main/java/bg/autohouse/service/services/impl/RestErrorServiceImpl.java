@@ -81,41 +81,33 @@ public class RestErrorServiceImpl implements RestErrorService {
   private static HttpStatus getHttpStatusCode(final @Nonnull Throwable ex) {
     final ResponseStatus annotationStatusCode =
         AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
-
     if (annotationStatusCode != null) {
       return annotationStatusCode.value();
     }
-
     for (final Map.Entry<Class<?>, HttpStatus> entry : exceptionToStatusMapping.entrySet()) {
       if (entry.getKey().isAssignableFrom(ex.getClass())) {
         return entry.getValue();
       }
     }
-
     log.warn("Unknown exception type: " + ex.getClass().getName());
-
     return HttpStatus.INTERNAL_SERVER_ERROR;
   }
 
   @Override
   public RestError exposeGeneralException(final Throwable ex) {
-
     final HttpStatus httpStatusCode = getHttpStatusCode(ex);
     RestErrorBuilder restErrorBuilder = RestError.builder().httpStatus(httpStatusCode);
-
     if (Assert.has(ex.getMessage())) {
       RestMessage restMessage =
           EnumUtils.fromString(ex.getMessage(), RestMessage.class)
               .orElse(RestMessage.SOMETHING_WENT_WRONG);
       restErrorBuilder.message(restMessage);
     }
-
     return restErrorBuilder.build();
   }
 
   @Override
   public RestError exposeConstraintViolation(ConstraintViolationException cve) {
-
     List<RestValidationError> errors = new ArrayList<>();
     for (final ConstraintViolation<?> violation : cve.getConstraintViolations()) {
       final String fieldName =
@@ -124,7 +116,6 @@ public class RestErrorServiceImpl implements RestErrorService {
       final String fieldErrorCode =
           violation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
       final String fieldErrorMessage;
-
       if (violation.getMessage() != null && !violation.getMessage().matches("^\\{.+\\}$")) {
         fieldErrorMessage =
             String.format(
@@ -133,7 +124,6 @@ public class RestErrorServiceImpl implements RestErrorService {
       } else {
         fieldErrorMessage = "";
       }
-
       RestValidationError error =
           RestValidationError.builder()
               .field(fieldName)
@@ -143,7 +133,6 @@ public class RestErrorServiceImpl implements RestErrorService {
 
       errors.add(error);
     }
-
     return RestError.builder()
         .httpStatus(HttpStatus.BAD_REQUEST)
         .message(RestMessage.CONSTRAINT_VIOLATION)
@@ -161,7 +150,6 @@ public class RestErrorServiceImpl implements RestErrorService {
                 .fieldErrorCode(err.getCode())
                 .errorMessage(err.getDefaultMessage())
                 .build();
-
     Function<ObjectError, RestValidationError> objectErrorMapper =
         err ->
             RestValidationError.builder()
@@ -170,13 +158,11 @@ public class RestErrorServiceImpl implements RestErrorService {
                 .errorMessage(err.getDefaultMessage())
                 .build();
     BindingResult result = ex.getBindingResult();
-
     List<RestValidationError> errors =
         Stream.concat(
                 F.mapToStream(result.getFieldErrors(), fieldErrorMapper),
                 F.mapToStream(result.getGlobalErrors(), objectErrorMapper))
             .collect(Collectors.toList());
-
     return RestError.builder()
         .httpStatus(status)
         .message(RestMessage.PARAMETER_VALIDATION_FAILURE)

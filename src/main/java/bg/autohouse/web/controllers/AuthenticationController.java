@@ -2,6 +2,7 @@ package bg.autohouse.web.controllers;
 
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
+import bg.autohouse.audit.models.UserLogoutEvent;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.security.jwt.AuthorizationHeader;
 import bg.autohouse.security.jwt.JwtTokenService;
@@ -9,7 +10,6 @@ import bg.autohouse.security.jwt.JwtTokenType;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.user.AuthorizedUserServiceModel;
-import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.DebugProfileUtil;
@@ -32,6 +32,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,8 +52,8 @@ public class AuthenticationController extends BaseController {
   private final UserService userService;
   private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
-  private final AsyncUserLogger userLogger;
   private final JwtTokenService jwtService;
+  private final ApplicationEventPublisher eventPublisher;
 
   @PostMapping(
       value = WebConfiguration.URL_USER_LOGIN,
@@ -62,20 +63,15 @@ public class AuthenticationController extends BaseController {
       @Valid @RequestBody UserLoginRequest loginRequest, HttpServletResponse res)
       throws IOException {
     long startTime = System.currentTimeMillis();
-
     AuthorizedUserServiceModel serviceModel =
         userService.tryLogin(loginRequest.getUsername(), loginRequest.getPassword());
-
     AuthorizedUserResponseModel response =
         modelMapper.map(serviceModel, AuthorizedUserResponseModel.class);
-
     res.addHeader(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + serviceModel.getToken());
     res.addHeader("UserID", serviceModel.getUserId());
-
     log.info(
         "User login took {} s, now recording use",
         DebugProfileUtil.elapsedTimeInSeconds(startTime));
-    userLogger.logUserLogin(serviceModel.getUserId());
     log.info("Memory stats at present: {}", DebugProfileUtil.memoryStats());
     return RestUtil.okResponse(RestMessage.USER_LOGIN_SUCCESSFUL, response);
   }
@@ -84,10 +80,12 @@ public class AuthenticationController extends BaseController {
       value = WebConfiguration.URL_USER_LOGOUT,
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> logout(HttpServletRequest request) {
+    // TODO transfer logout into service
     AuthorizationHeader authHeader = new AuthorizationHeader(request);
     String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
     if (token == null) return RestUtil.errorResponse(RestMessage.INVALID_TOKEN);
     jwtService.blackListJwt(token);
+    eventPublisher.publishEvent(UserLogoutEvent.of(jwtService.getUserIdFromJWT(token)));
     return ResponseEntity.ok().build();
   }
 
@@ -112,15 +110,12 @@ public class AuthenticationController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request) {
     UserRegisterServiceModel model = modelMapper.map(request, UserRegisterServiceModel.class);
-
     if (ifExists(model.getUsername())) {
       log.info(
           "Creating a verifier for user with email ={}, user already exists.", model.getUsername());
       return RestUtil.errResponse(HttpStatus.CONFLICT, RestMessage.USER_ALREADY_EXISTS);
     }
-
     log.info("Creating a verifier for a new user with email ={}", model.getUsername());
-
     String token = userService.generateUserRegistrationVerifier(model);
     log.info("Sending verification email to: {} with value: {}", model.getUsername(), token);
     // TODO send to email
@@ -134,15 +129,11 @@ public class AuthenticationController extends BaseController {
   public ResponseEntity<?> verifyRegistration(
       @RequestParam(value = "username") String username,
       @RequestParam(value = "code") String code) {
-
     boolean isVerified = passwordService.isShortLivedOtpValid(username, code);
-
     if (isVerified) {
       log.info("User code verified, now creating user with email={}", username);
       UserServiceModel user = userService.completeRegistration(username);
-
       passwordService.expireVerificationCode(user.getId());
-
       return RestUtil.okResponse(RestMessage.USER_REGISTRATION_VERIFIED);
     } else {
       log.info("Token verification for new user failed");
@@ -155,14 +146,11 @@ public class AuthenticationController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> requestPasswordReset(@RequestBody PasswordResetRequest resetRequest) {
-
     if (!ifExists(resetRequest.getUsername())) {
       log.info("Invalid user of passed username: {}", resetRequest.getUsername());
       return RestUtil.errResponse(HttpStatus.BAD_REQUEST, RestMessage.INVALID_USERNAME);
     }
-
     log.info("Creating a verifier for password reset with email ={}", resetRequest.getUsername());
-
     String token = userService.regenerateUserVerifier(resetRequest.getUsername());
     log.info("Sending verification email to: {} with value: {}", resetRequest.getUsername(), token);
     // TODO send to email
@@ -174,13 +162,10 @@ public class AuthenticationController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> validateOtp(
       @RequestParam("username") String username, @RequestParam(value = "code") String code) {
-
     boolean isValidOtp = passwordService.isShortLivedOtpValid(username, code);
-
     if (isValidOtp) {
       return RestUtil.okResponse(RestMessage.OTP_VALID);
     }
-
     return RestUtil.errResponse(HttpStatus.BAD_REQUEST, RestMessage.OTP_INVALID);
   }
 
@@ -191,21 +176,16 @@ public class AuthenticationController extends BaseController {
       @RequestParam("username") String username,
       @RequestParam("password") String newPassword,
       @RequestParam("code") String code) {
-
     boolean isVerified = passwordService.isShortLivedOtpValid(username, code);
-
     if (!isVerified) {
       log.info("Token verification for password reset failed");
       return RestUtil.errResponse(HttpStatus.UNAUTHORIZED, RestMessage.OTP_INVALID);
     }
-
     log.info("User code verified, now resetting user password");
     boolean isReset = passwordService.resetPassword(username, code, newPassword);
-
     if (!isReset) {
       return RestUtil.errResponse(HttpStatus.UNAUTHORIZED, RestMessage.BAD_CREDENTIALS);
     }
-
     return RestUtil.okResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
   }
 

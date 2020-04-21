@@ -47,20 +47,17 @@ public class DropboxService implements StorageService {
     String dropboxPath = getUploadPath(record);
     log.info(
         "storing a media file in bucket {}, with key {}", record.getBucket(), record.getFileKey());
-
     try {
       ProgressListener progressListener = l -> printProgress(l, record.getSize());
       UploadBuilder upload =
           client.files().uploadBuilder(dropboxPath).withMode(WriteMode.OVERWRITE);
       FileMetadata metadata = upload.uploadAndFinish(inputStream, progressListener);
       System.out.println(metadata.toStringMultiline());
-
       if (metadata != null) {
         record.setContentHash(metadata.getContentHash());
         record.setSize(metadata.getSize());
       }
       log.info("upload meta data =====> {}", metadata.toString());
-
     } catch (UploadErrorException ex) {
       log.error("Error uploading to Dropbox: " + ex.getMessage());
     } catch (DbxException ex) {

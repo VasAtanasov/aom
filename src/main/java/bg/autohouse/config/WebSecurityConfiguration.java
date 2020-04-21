@@ -89,13 +89,9 @@ public class WebSecurityConfiguration {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
       http.cors().and().csrf().disable();
-
       http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
       http.exceptionHandling().authenticationEntryPoint(unauthorizedHandler);
-
       http.authorizeRequests()
           .antMatchers(HttpMethod.POST, PUBLIC_POST_URLS)
           .permitAll()
@@ -107,10 +103,8 @@ public class WebSecurityConfiguration {
           .permitAll()
           .anyRequest()
           .authenticated();
-
       http.addFilterBefore(
           jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
       http.headers().frameOptions().disable();
     }
   }

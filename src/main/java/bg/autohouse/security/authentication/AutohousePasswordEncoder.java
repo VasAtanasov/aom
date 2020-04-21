@@ -18,21 +18,17 @@ public class AutohousePasswordEncoder implements PasswordEncoder {
     if (rawPassword == null || rawPassword.length() == 0) {
       return false;
     }
-
     if (encodedPassword == null || encodedPassword.length() == 0) {
       return false;
     }
-
     if (BCRYPT_PATTERN.matcher(encodedPassword).matches()) {
       return BCrypt.checkpw(rawPassword.toString(), encodedPassword);
     }
-
     if (PLAIN_PATTERN.matcher(encodedPassword).matches()) {
       // Allow fast plaint-text comparison for strong generated passwords when storing digest does
       // not make sense.
       return rawPassword.equals(encodedPassword.substring(10));
     }
-
     return false;
   }
 }

@@ -75,13 +75,10 @@ public class MakerController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createModel(
       @PathVariable Long makerId, @Valid @RequestBody ModelCreateRequestModel createRequest) {
-
     ModelServiceModel modelServiceModel = modelMapper.map(createRequest, ModelServiceModel.class);
     makerService.addModelToMaker(makerId, modelServiceModel);
-
     MakerResponseWrapper maker =
         modelMapper.map(makerService.getOne(makerId), MakerResponseWrapper.class);
-
     String locationURI =
         WebConfiguration.URL_API_BASE
             + WebConfiguration.URL_MAKERS

@@ -57,4 +57,10 @@ public class AsyncUserLoggerImpl implements AsyncUserLogger {
             UserLogType.USER_EMAIL_CHANGED,
             UserLogType.USER_PHONE_CHANGED));
   }
+
+  @Async
+  @Override
+  public void auditLogoutEvent(String userId) {
+    userLogRepository.save(new UserLog(userId, UserLogType.USER_LOGOUT_SESSION, ""));
+  }
 }
