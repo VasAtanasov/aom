@@ -7,7 +7,7 @@ import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.service.models.InitialStateModel;
 import bg.autohouse.service.models.MakerServiceModel;
-import bg.autohouse.service.models.OfferServiceModel;
+import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.InitialStateService;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.ClassUtils;

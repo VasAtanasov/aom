@@ -1,5 +1,8 @@
-package bg.autohouse.data.models;
+package bg.autohouse.data.models.offer;
 
+import bg.autohouse.data.models.BaseUuidEntity;
+import bg.autohouse.data.models.EntityConstants;
+import bg.autohouse.data.models.EntityDetails;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.ContactDetails;
 import bg.autohouse.data.models.geo.Location;

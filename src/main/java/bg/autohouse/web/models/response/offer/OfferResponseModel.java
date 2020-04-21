@@ -1,4 +1,4 @@
-package bg.autohouse.web.models.response;
+package bg.autohouse.web.models.response.offer;
 
 import lombok.*;
 

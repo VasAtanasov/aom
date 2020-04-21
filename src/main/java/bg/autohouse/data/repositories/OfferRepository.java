@@ -1,6 +1,6 @@
 package bg.autohouse.data.repositories;
 
-import bg.autohouse.data.models.Offer;
+import bg.autohouse.data.models.offer.Offer;
 import java.util.List;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Page;

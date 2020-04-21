@@ -1,13 +1,13 @@
 package bg.autohouse.data.specifications;
 
-import bg.autohouse.data.models.Engine_;
 import bg.autohouse.data.models.Filter;
-import bg.autohouse.data.models.ManufactureDate_;
-import bg.autohouse.data.models.Offer;
-import bg.autohouse.data.models.Offer_;
-import bg.autohouse.data.models.Vehicle_;
 import bg.autohouse.data.models.account.Account_;
 import bg.autohouse.data.models.enums.*;
+import bg.autohouse.data.models.offer.Engine_;
+import bg.autohouse.data.models.offer.ManufactureDate_;
+import bg.autohouse.data.models.offer.Offer;
+import bg.autohouse.data.models.offer.Offer_;
+import bg.autohouse.data.models.offer.Vehicle_;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.F;
 import java.util.ArrayList;

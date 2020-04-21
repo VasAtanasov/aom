@@ -1,4 +1,4 @@
-package bg.autohouse.web.models;
+package bg.autohouse.web.models.offer;
 
 import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.data.models.enums.BodyStyle;
@@ -8,8 +8,8 @@ import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.enums.Transmission;
 import bg.autohouse.validation.ValidationMessages;
-import bg.autohouse.web.models.request.EngineCreateRequest;
-import bg.autohouse.web.models.request.VehicleCreateRequest;
+import bg.autohouse.web.models.request.offer.EngineCreateRequest;
+import bg.autohouse.web.models.request.offer.VehicleCreateRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package bg.autohouse.service.models;
+package bg.autohouse.service.models.offer;
 
 import lombok.*;
 

@@ -1,5 +1,9 @@
-package bg.autohouse.data.models;
+package bg.autohouse.data.models.offer;
 
+import bg.autohouse.data.models.BaseUuidEntity;
+import bg.autohouse.data.models.EntityConstants;
+import bg.autohouse.data.models.Maker;
+import bg.autohouse.data.models.Model;
 import bg.autohouse.data.models.enums.*;
 import java.util.ArrayList;
 import java.util.List;

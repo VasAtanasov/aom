@@ -1,5 +1,6 @@
 package bg.autohouse.service.models;
 
+import bg.autohouse.service.models.offer.OfferServiceModel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.ArrayList;

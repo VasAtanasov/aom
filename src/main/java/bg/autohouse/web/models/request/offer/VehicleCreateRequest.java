@@ -1,4 +1,4 @@
-package bg.autohouse.web.models.request;
+package bg.autohouse.web.models.request.offer;
 
 import bg.autohouse.validation.offer.ValidBodyStyle;
 import bg.autohouse.validation.offer.ValidColor;

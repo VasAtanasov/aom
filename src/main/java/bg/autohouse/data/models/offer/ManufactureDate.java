@@ -1,4 +1,4 @@
-package bg.autohouse.data.models;
+package bg.autohouse.data.models.offer;
 
 import javax.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
-package bg.autohouse.web.models;
+package bg.autohouse.web.models.offer;
 
 import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.validation.ValidationMessages;
-import bg.autohouse.web.models.request.EngineCreateRequest;
+import bg.autohouse.web.models.request.offer.EngineCreateRequest;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

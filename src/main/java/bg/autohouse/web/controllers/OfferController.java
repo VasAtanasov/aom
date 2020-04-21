@@ -3,7 +3,7 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
-import bg.autohouse.web.models.request.OfferCreateRequest;
+import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

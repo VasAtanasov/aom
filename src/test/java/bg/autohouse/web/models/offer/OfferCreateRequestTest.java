@@ -1,11 +1,11 @@
-package bg.autohouse.web.models;
+package bg.autohouse.web.models.offer;
 
 import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.data.models.enums.*;
 import bg.autohouse.validation.ValidationMessages;
-import bg.autohouse.web.models.request.EngineCreateRequest;
-import bg.autohouse.web.models.request.OfferCreateRequest;
-import bg.autohouse.web.models.request.VehicleCreateRequest;
+import bg.autohouse.web.models.request.offer.EngineCreateRequest;
+import bg.autohouse.web.models.request.offer.OfferCreateRequest;
+import bg.autohouse.web.models.request.offer.VehicleCreateRequest;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;

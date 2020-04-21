@@ -5,12 +5,12 @@ import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.Maker;
-import bg.autohouse.data.models.Offer;
 import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.models.enums.State;
+import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import java.util.Arrays;
 import java.util.List;

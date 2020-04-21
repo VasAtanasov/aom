@@ -52,7 +52,6 @@ public class AppExceptionsHandler extends ResponseEntityExceptionHandler {
       final HttpStatus status,
       final WebRequest request) {
     log.error("Spring exception was caught");
-
     final RestError restError = restErrorService.exposeOtherSpringError(ex, status);
     ResponseWrapper response = RestUtil.wrapper(b -> b.message(restError.getMessage()));
     return new ResponseEntity<>(response, headers, restError.getHttpStatus());

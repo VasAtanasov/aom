@@ -2,7 +2,7 @@ package bg.autohouse.validation.offer;
 
 import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.util.Assert;
-import bg.autohouse.web.models.request.VehicleCreateRequest;
+import bg.autohouse.web.models.request.offer.VehicleCreateRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,7 @@
-package bg.autohouse.data.models;
+package bg.autohouse.data.models.offer;
 
+import bg.autohouse.data.models.BaseUuidEntity;
+import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.enums.EuroStandard;
 import bg.autohouse.data.models.enums.FuelType;
 import javax.persistence.*;
