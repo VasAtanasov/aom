@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class PasswordServiceImpl implements PasswordService {
   private static final int TOKEN_LIFE_SPAN_MINUTES = 5;
@@ -82,7 +81,7 @@ public class PasswordServiceImpl implements PasswordService {
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public boolean isShortLivedOtpValid(String username, String code) {
     if (username == null || code == null) return false;
     log.info("checking for token by username: {}", username);
@@ -115,6 +114,7 @@ public class PasswordServiceImpl implements PasswordService {
   }
 
   @Override
+  @Transactional
   public boolean resetPassword(String username, String code, String password) {
     if (!Assert.has(code) || !Assert.has(password) || !Assert.has(username)) {
       return false;

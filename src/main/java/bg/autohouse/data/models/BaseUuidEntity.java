@@ -21,8 +21,8 @@ public abstract class BaseUuidEntity extends BaseEntity<UUID> implements Persist
   @Id
   @GeneratedValue(generator = "uuid2")
   @GenericGenerator(name = "uuid2", strategy = "uuid2")
-  // @Column(unique = true, nullable = false, updatable = false, columnDefinition = "BINARY(16)")
-  @Column(unique = true, nullable = false, updatable = false)
+  @Column(unique = true, nullable = false, updatable = false, columnDefinition = "BINARY(16)")
+  // @Column(unique = true, nullable = false, updatable = false)
   @Access(AccessType.PROPERTY)
   private UUID id;
 

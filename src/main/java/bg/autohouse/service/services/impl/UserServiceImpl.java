@@ -44,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class UserServiceImpl implements UserService {
 
@@ -83,6 +82,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public AuthorizedUserServiceModel tryLogin(String username, String password) {
     User user =
         userRepository
@@ -100,6 +100,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public String generateUserRegistrationVerifier(UserRegisterServiceModel model) {
     Assert.notNull(model, "Model is required");
     if (userExist(model.getUsername())) {
@@ -155,6 +156,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public UserServiceModel updateUser(UUID userId, UserDetailsUpdateRequest user, User loggedUser) {
     User userEntity = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
     if (!userEntity.getUsername().equals(loggedUser.getUsername())) {

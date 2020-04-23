@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerServiceImpl implements MakerService {
   // TODO replace exception messages
@@ -58,6 +57,7 @@ public class MakerServiceImpl implements MakerService {
   }
 
   @Override
+  @Transactional
   public MakerServiceModel addModelToMaker(
       @Nonnull Long makerId, @Nonnull ModelServiceModel modelServiceModel) {
     Assert.notNull(modelServiceModel, "Model ise required");
@@ -84,6 +84,7 @@ public class MakerServiceImpl implements MakerService {
   }
 
   @Override
+  @Transactional
   public MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel) {
     if (makerRepository.existsByName(makerServiceModel.getName())) {
       throw new ResourceAlreadyExistsException(RestMessage.MAKER_ALREADY_EXISTS);

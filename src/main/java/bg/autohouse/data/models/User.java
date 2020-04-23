@@ -76,6 +76,16 @@ public class User extends BaseUuidEntity implements UserDetails {
     return enabled;
   }
 
+  private User(String username, String password) {
+    this.username = username;
+    this.password = password;
+    this.roles.add(Role.USER);
+  }
+
+  public static User createNormalUser(String username, String password) {
+    return new User(username, password);
+  }
+
   public boolean isNormalUser() {
     return F.containsAll(roles, Role.USER);
   }

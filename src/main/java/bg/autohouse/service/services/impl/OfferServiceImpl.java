@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class OfferServiceImpl implements OfferService {
 
@@ -37,6 +36,7 @@ public class OfferServiceImpl implements OfferService {
   private final ModelMapperWrapper modelMapper;
 
   @Override
+  @Transactional(readOnly = true)
   public List<OfferServiceModel> getTopOffers() {
     Sort sort = Sort.by("createdAt").descending();
     Pageable pageable = PageRequest.of(0, 20, sort);
@@ -49,6 +49,7 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
     Objects.requireNonNull(filterRequest);
     Filter filter = modelMapper.map(filterRequest, Filter.class);

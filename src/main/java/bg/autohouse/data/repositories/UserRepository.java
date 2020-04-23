@@ -11,8 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository
-    extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User>, BatchRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
 
   @Query("SELECT u from User u JOIN FETCH u.roles ur where lower(u.username) = lower(:username)")
   Optional<User> findByUsernameIgnoreCase(@Param("username") String username);

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.thymeleaf.context.Context;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class EmailServiceImpl implements EmailService {
 

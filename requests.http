@@ -136,3 +136,8 @@ Content-Type: application/bg.autohouse.api-v1+json
 {
   "username": "vas@mail.com"
 }
+
+
+###
+
+GET http://localhost:8007/api/health

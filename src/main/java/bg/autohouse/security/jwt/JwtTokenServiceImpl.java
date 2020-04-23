@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class JwtTokenServiceImpl implements JwtTokenService {
   private static final String INVALID_TOKEN_MESSAGE = RestMessage.INVALID_TOKEN.name();
@@ -155,6 +154,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
   }
 
   @Override
+  @Transactional
   public String refreshToken(String oldToken, JwtTokenType jwtType) {
     boolean isTokenStillValid = false;
     Date expirationTime = null;

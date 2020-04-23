@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MediaFileServiceImpl implements MediaFileService {
   private final MedialFileRepository medialFileRepository;
