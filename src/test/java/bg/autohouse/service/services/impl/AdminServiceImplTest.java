@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.projections.user.UserIdUsername;
 import bg.autohouse.data.repositories.UserRepository;
-import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.AdminService;
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class AdminServiceImplTest {
 
   @Test
   void when_loadAllUsers_shouldGetAll() {
-    List<UserServiceModel> users = adminService.loadAllUsers();
+    List<UserIdUsername> users = adminService.loadAllUsers();
     assertThat(users).isNotEmpty();
   }
 

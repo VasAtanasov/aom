@@ -1,12 +1,11 @@
 package bg.autohouse.service.services.impl;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.projections.user.UserIdUsername;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.Assert;
-import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -30,8 +28,6 @@ public class AdminServiceImpl implements AdminService {
   private int batchSize;
 
   private final UserRepository userRepository;
-  private final ModelMapperWrapper modelMapper;
-  private final PasswordEncoder encoder;
 
   @Override
   @Transactional
@@ -43,8 +39,15 @@ public class AdminServiceImpl implements AdminService {
     long startNanos = System.nanoTime();
     for (int i = 0; i < usernames.size(); i++) {
       String email = usernames.get(i);
-      String password = StringGenericUtils.nextPassword(12);
-      User user = User.createNormalUser(email, encoder.encode(password));
+      String password = StringGenericUtils.nextPassword(8);
+      // TODO not encoding password because its degregating performance of application for batch
+      // records
+      // long startEncoding = System.nanoTime();
+      // String encodedPassword = encoder.encode(password);
+      // log.info(
+      //     "Generating/Encoding password for {} millis",
+      //     TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startEncoding));
+      User user = User.createNormalUser(email, password);
       users.add(user);
       if (i % batchSize == 0 && i > 0) {
         log.info("Saving {} entities ...", users.size());
@@ -67,6 +70,7 @@ public class AdminServiceImpl implements AdminService {
         "{}.bulkRegisterUsers took {} millis",
         getClass().getSimpleName(),
         TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos));
+    // TODO add accounts to users
   }
 
   private void validateAdminRole(UUID id) {
@@ -77,7 +81,7 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public List<UserServiceModel> loadAllUsers() {
-    return modelMapper.mapAll(userRepository.findAll(), UserServiceModel.class);
+  public List<UserIdUsername> loadAllUsers() {
+    return userRepository.getAllUsers();
   }
 }

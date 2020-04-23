@@ -1,6 +1,7 @@
 package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.projections.user.UserIdUsername;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +26,9 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
   Optional<User> findById(UUID id);
 
   boolean existsByUsernameIgnoreCase(String username);
+
+  @Query("SELECT u from User u")
+  List<UserIdUsername> getAllUsers();
 
   // List<Person> findByIdNotIn(List<Long> personIds);
 }
