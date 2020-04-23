@@ -6,6 +6,7 @@ import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.AccountLogType;
 import bg.autohouse.data.models.enums.ActionLogType;
+import java.util.UUID;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Builder
 @Entity
 @Table(name = EntityConstants.ACCOUNT_LOGS)
-public class AccountLog extends BaseUuidEntity implements ActionLog {
+public class AccountLog extends BaseUuidEntity implements ActionLog<UUID> {
 
   private static final long serialVersionUID = -3591186610368572849L;
 

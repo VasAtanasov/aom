@@ -2,13 +2,12 @@ package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.media.MediaFile;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MedialFileRepository extends JpaRepository<MediaFile, String> {
-
-  List<MediaFile> findByIdIn(List<String> uids);
+public interface MedialFileRepository extends JpaRepository<MediaFile, UUID> {
 
   MediaFile findByBucketAndFileKey(String bucket, String key);
 

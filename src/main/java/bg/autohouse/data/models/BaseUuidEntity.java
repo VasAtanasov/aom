@@ -1,6 +1,6 @@
 package bg.autohouse.data.models;
 
-import java.io.Serializable;
+import java.util.UUID;
 import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,17 +14,17 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseUuidEntity extends BaseAuditEntity
-    implements Serializable, Persistable<String> {
+public abstract class BaseUuidEntity extends BaseEntity<UUID> implements Persistable<UUID> {
 
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(generator = "uuid-string")
-  @GenericGenerator(name = "uuid-string", strategy = "org.hibernate.id.UUIDGenerator")
-  @Column(name = "id", unique = true, nullable = false, updatable = false)
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  // @Column(unique = true, nullable = false, updatable = false, columnDefinition = "BINARY(16)")
+  @Column(unique = true, nullable = false, updatable = false)
   @Access(AccessType.PROPERTY)
-  private String id;
+  private UUID id;
 
   @Override
   @Transient

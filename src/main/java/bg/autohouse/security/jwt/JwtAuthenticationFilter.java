@@ -2,8 +2,10 @@ package bg.autohouse.security.jwt;
 
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.service.services.UserService;
+import bg.autohouse.util.UIDUtil;
 import bg.autohouse.web.enums.RestMessage;
 import java.io.IOException;
+import java.util.UUID;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (!jwtService.isJwtTokenValid(token) || jwtService.isBlackListed(token)) {
           throw new BadCredentialsException(RestMessage.INVALID_TOKEN.name());
         }
-        String userId = jwtService.getUserIdFromJWT(token);
+        UUID userId = UIDUtil.convert(jwtService.getUserIdFromJWT(token));
         final UserDetails userDetails;
         try {
           userDetails = userService.loadUserById(userId);

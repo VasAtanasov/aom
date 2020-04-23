@@ -3,19 +3,20 @@ package bg.autohouse.service.services;
 import bg.autohouse.data.models.UserLog;
 import bg.autohouse.data.models.enums.UserLogType;
 import java.util.Set;
+import java.util.UUID;
 
 /** Created by luke on 2016/02/22. */
 public interface AsyncUserLogger {
 
-  void logUserLogin(String userId);
+  void logUserLogin(UUID userId);
 
-  void logUserAddPrivateAccount(String userId);
+  void logUserAddPrivateAccount(UUID userId);
 
-  void recordUserLog(String userId, UserLogType userLogType, String description);
+  void recordUserLog(UUID userId, UserLogType userLogType, String description);
 
   void storeUserLogs(Set<UserLog> userLogSet);
 
-  void removeAllUserInfoLogs(String userId);
+  void removeAllUserInfoLogs(UUID userId);
 
-  void auditLogoutEvent(String userId);
+  void auditLogoutEvent(UUID userId);
 }

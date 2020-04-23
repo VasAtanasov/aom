@@ -1,5 +1,6 @@
 package bg.autohouse.service.models;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserServiceModel {
-  private String id;
+  private UUID id;
   private String username;
 }

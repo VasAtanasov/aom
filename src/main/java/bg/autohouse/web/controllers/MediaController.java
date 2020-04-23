@@ -2,6 +2,7 @@ package bg.autohouse.web.controllers;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.services.MediaFileService;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class MediaController {
 
   // TODO implement service and response models for media file
   @GetMapping(value = "/details/{mediaRecordId}")
-  public ResponseEntity<?> fetchMediaRecordDetails(@PathVariable String mediaRecordId) {
+  public ResponseEntity<?> fetchMediaRecordDetails(@PathVariable UUID mediaRecordId) {
     log.info("Fetching media record with id: {}", mediaRecordId);
     return ResponseEntity.ok(mediaService.load(mediaRecordId));
   }

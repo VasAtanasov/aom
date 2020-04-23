@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JwtTokenRepository
-    extends JpaRepository<JwtToken, String>, JpaSpecificationExecutor<JwtToken> {
+    extends JpaRepository<JwtToken, Long>, JpaSpecificationExecutor<JwtToken> {
 
   @Modifying
   void deleteAllExpiredSince(Date now);

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class AuthorizedUserResponseModel {
-
+  private String userId;
   private String username;
   private boolean hasAccount;
   private List<Role> roles;

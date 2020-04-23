@@ -3,6 +3,7 @@ package bg.autohouse.data.repositories;
 import bg.autohouse.data.models.User;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -11,9 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository
-    extends JpaRepository<User, String>,
-        JpaSpecificationExecutor<User>,
-        BatchRepository<User, String> {
+    extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User>, BatchRepository<User, UUID> {
 
   @Query("SELECT u from User u JOIN FETCH u.roles ur where lower(u.username) = lower(:username)")
   Optional<User> findByUsernameIgnoreCase(@Param("username") String username);
@@ -24,7 +23,7 @@ public interface UserRepository
 
   @Override
   @Query("SELECT u from User u JOIN FETCH u.roles ur where u.id = :id")
-  Optional<User> findById(String id);
+  Optional<User> findById(UUID id);
 
   boolean existsByUsernameIgnoreCase(String username);
 

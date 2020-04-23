@@ -14,6 +14,7 @@ import bg.autohouse.service.services.AccountService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.account.DealerAccountCreateUpdateRequest;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -54,7 +55,7 @@ public class AccountServiceImplTest {
     assertThat(user).isNotNull();
     AccountServiceModel model = AccountServiceModel.builder().firstName("firstName").build();
     Throwable thrown =
-        catchThrowable(() -> accountService.createDealerAccount(model, "invalid id"));
+        catchThrowable(() -> accountService.createDealerAccount(model, UUID.randomUUID()));
     assertThat(thrown)
         .isInstanceOf(NoSuchUserException.class)
         .hasMessageStartingWith(RestMessage.USER_NOT_FOUND.name());

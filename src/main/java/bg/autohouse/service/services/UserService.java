@@ -5,17 +5,18 @@ import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.user.AuthorizedUserServiceModel;
 import bg.autohouse.web.models.request.UserDetailsUpdateRequest;
+import java.util.UUID;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
-  UserDetails loadUserById(String id);
+  UserDetails loadUserById(UUID id);
 
   String generateUserRegistrationVerifier(UserRegisterServiceModel model);
 
   UserServiceModel completeRegistration(String username);
 
-  UserServiceModel updateUser(String userId, UserDetailsUpdateRequest user, User loggedUser);
+  UserServiceModel updateUser(UUID userId, UserDetailsUpdateRequest user, User loggedUser);
 
   boolean userExist(String username);
 
@@ -23,7 +24,7 @@ public interface UserService extends UserDetailsService {
 
   String regenerateUserVerifier(String username);
 
-  void updateHasImage(String id, boolean b);
+  void updateHasImage(UUID id, boolean b);
 
   AuthorizedUserServiceModel tryLogin(String username, String password);
 }

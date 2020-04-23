@@ -4,11 +4,14 @@ import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.NoSuchUserException;
+import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.F;
+import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
 import java.util.List;
+import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +34,12 @@ public class AdminServiceImpl implements AdminService {
   @PersistenceContext private EntityManager entityManager;
 
   private final UserRepository userRepository;
+  private final ModelMapperWrapper modelMapper;
   private final PasswordEncoder encoder;
 
   @Override
   @Transactional
-  public void bulkRegisterUsers(String adminId, List<String> usernames) {
+  public void bulkRegisterUsers(UUID adminId, List<String> usernames) {
     Assert.notNull(adminId, "Admin id is required");
     Assert.notNull(usernames, "Invalid usernames collection");
     validateAdminRole(adminId);
@@ -54,32 +58,37 @@ public class AdminServiceImpl implements AdminService {
     // userRepository.saveAll(usersToRegister);
     // List<User> users = new ArrayList<>();
     // for (int i = 0; i < usernames.size(); i++) {
-    //   String email = usernames.get(i);
-    //   User user = new User();
-    //   user.setUsername(email);
-    //   String password = StringGenericUtils.nextPassword(12);
-    //   user.setPassword(encoder.encode(password));
-    //   user.getRoles().add(Role.USER);
-    //   users.add(user);
+    // String email = usernames.get(i);
+    // User user = new User();
+    // user.setUsername(email);
+    // String password = StringGenericUtils.nextPassword(12);
+    // user.setPassword(encoder.encode(password));
+    // user.getRoles().add(Role.USER);
+    // users.add(user);
     // if (i % 2000 == 0 && i > 0) {
-    //   userRepository.saveAll(users);
-    //   // userRepository.flush();
-    //   users.clear();
+    // userRepository.saveAll(users);
+    // // userRepository.flush();
+    // users.clear();
     // }
     // }
     // authorRepository.saveInBatch(authors);
     // if (users.size() > 0) {
-    //   userRepository.saveAll(users);
-    //   // userRepository.flush();
-    //   users.clear();
+    // userRepository.saveAll(users);
+    // // userRepository.flush();
+    // users.clear();
     // }
   }
 
-  private void validateAdminRole(String id) {
+  private void validateAdminRole(UUID id) {
     User admin = userRepository.findById(id).orElseThrow(NoSuchUserException::new);
     if (!admin.isAdmin()) {
       throw new AccessDeniedException("Error! User does not have admin role");
     }
+  }
+
+  @Override
+  public List<UserServiceModel> loadAllUsers() {
+    return modelMapper.mapAll(userRepository.findAll(), UserServiceModel.class);
   }
 
   // public <S extends User> void saveInBatch(Iterable<S> entities) {

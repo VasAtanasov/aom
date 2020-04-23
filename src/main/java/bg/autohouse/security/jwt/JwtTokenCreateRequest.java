@@ -2,7 +2,7 @@ package bg.autohouse.security.jwt;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
-import bg.autohouse.util.UIDGenerator;
+import bg.autohouse.util.UIDUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ public class JwtTokenCreateRequest {
 
   public JwtTokenCreateRequest(JwtTokenType tokenType) {
     this.tokenType = tokenType;
-    String tokenUid = UIDGenerator.generateId();
+    String tokenUid = UIDUtil.generateStringUid();
     claims.put(JwtTokenService.JWT_TYPE_KEY, tokenType);
     claims.put(JwtTokenService.JWT_UID, tokenUid);
   }

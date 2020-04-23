@@ -16,6 +16,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +100,7 @@ public class PasswordServiceImpl implements PasswordService {
 
   @Override
   @Transactional
-  public boolean changeUserPassword(String userId, String oldPassword, String newPassword) {
+  public boolean changeUserPassword(UUID userId, String oldPassword, String newPassword) {
     Objects.requireNonNull(userId);
     Objects.requireNonNull(oldPassword);
     Objects.requireNonNull(newPassword);
@@ -128,7 +129,7 @@ public class PasswordServiceImpl implements PasswordService {
 
   @Override
   @Transactional
-  public void expireVerificationCode(String userId) {
+  public void expireVerificationCode(UUID userId) {
     Objects.requireNonNull(userId);
     User user = userRepository.findById(userId).orElse(null);
     if (user == null) return;

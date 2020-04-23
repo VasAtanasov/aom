@@ -1,6 +1,5 @@
 package bg.autohouse.data.models;
 
-import java.io.Serializable;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,8 +14,7 @@ import org.springframework.data.domain.Persistable;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id", callSuper = false)
 @MappedSuperclass
-public abstract class BaseLongEntity extends BaseAuditEntity
-    implements Serializable, Persistable<Long> {
+public abstract class BaseLongEntity extends BaseEntity<Long> implements Persistable<Long> {
 
   private static final long serialVersionUID = 1L;
 

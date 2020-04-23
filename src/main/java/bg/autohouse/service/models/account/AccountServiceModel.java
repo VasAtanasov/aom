@@ -2,6 +2,7 @@ package bg.autohouse.service.models.account;
 
 import bg.autohouse.service.models.ContactDetailsServiceModel;
 import bg.autohouse.service.models.geo.AddressServiceModel;
+import java.util.UUID;
 import lombok.*;
 
 @Getter
@@ -10,8 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class AccountServiceModel {
-  private String id;
-  private String ownerId;
+  private UUID id;
+  private UUID ownerId;
   private String firstName;
   private String lastName;
   private String displayName;

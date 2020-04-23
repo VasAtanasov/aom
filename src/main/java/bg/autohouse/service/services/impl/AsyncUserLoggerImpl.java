@@ -6,6 +6,7 @@ import bg.autohouse.data.repositories.UserLogRepository;
 import bg.autohouse.service.services.AsyncUserLogger;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +24,20 @@ public class AsyncUserLoggerImpl implements AsyncUserLogger {
 
   @Async
   @Override
-  public void logUserLogin(String userId) {
+  public void logUserLogin(UUID userId) {
     log.info("Recording user login (should be off main thread), user ID : {}", userId);
     userLogRepository.save(new UserLog(userId, UserLogType.USER_SESSION, ""));
   }
 
   @Async
   @Override
-  public void logUserAddPrivateAccount(String userId) {
+  public void logUserAddPrivateAccount(UUID userId) {
     userLogRepository.save(new UserLog(userId, UserLogType.USER_ADDED_PRIVATE_ACCOUNT, ""));
   }
 
   @Async
   @Override
-  public void recordUserLog(String userId, UserLogType userLogType, String description) {
+  public void recordUserLog(UUID userId, UserLogType userLogType, String description) {
     UserLog userLog = new UserLog(userId, userLogType, description);
     userLogRepository.saveAndFlush(userLog);
   }
@@ -48,7 +49,7 @@ public class AsyncUserLoggerImpl implements AsyncUserLogger {
   }
 
   @Override
-  public void removeAllUserInfoLogs(String userId) {
+  public void removeAllUserInfoLogs(UUID userId) {
     userLogRepository.deleteAllByUserIdAndUserLogTypeIn(
         userId,
         Arrays.asList(
@@ -60,7 +61,7 @@ public class AsyncUserLoggerImpl implements AsyncUserLogger {
 
   @Async
   @Override
-  public void auditLogoutEvent(String userId) {
+  public void auditLogoutEvent(UUID userId) {
     userLogRepository.save(new UserLog(userId, UserLogType.USER_LOGOUT_SESSION, ""));
   }
 }

@@ -3,6 +3,7 @@ package bg.autohouse.data.models.media;
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
 import java.net.URL;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import lombok.*;
@@ -49,6 +50,6 @@ public class MediaFile extends BaseUuidEntity {
   @Column(name = "resource_url")
   private URL resourceUrl;
 
-  @Column(name = "reference_id")
-  private String referenceId;
+  @Column(name = "reference_id", columnDefinition = "BINARY(16)")
+  private UUID referenceId;
 }

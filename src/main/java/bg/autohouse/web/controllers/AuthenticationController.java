@@ -4,6 +4,8 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.audit.models.UserLogoutEvent;
 import bg.autohouse.config.WebConfiguration;
+import bg.autohouse.data.models.User;
+import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.security.jwt.AuthorizationHeader;
 import bg.autohouse.security.jwt.JwtTokenService;
 import bg.autohouse.security.jwt.JwtTokenType;
@@ -79,13 +81,13 @@ public class AuthenticationController extends BaseController {
   @GetMapping(
       value = WebConfiguration.URL_USER_LOGOUT,
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> logout(HttpServletRequest request) {
+  public ResponseEntity<?> logout(HttpServletRequest request, @LoggedUser User user) {
     // TODO transfer logout into service
     AuthorizationHeader authHeader = new AuthorizationHeader(request);
     String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
     if (token == null) return RestUtil.errorResponse(RestMessage.INVALID_TOKEN);
     jwtService.blackListJwt(token);
-    eventPublisher.publishEvent(UserLogoutEvent.of(jwtService.getUserIdFromJWT(token)));
+    eventPublisher.publishEvent(UserLogoutEvent.of(user.getId()));
     return ResponseEntity.ok().build();
   }
 

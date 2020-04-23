@@ -1,6 +1,7 @@
 package bg.autohouse.service.services;
 
 import bg.autohouse.data.models.VerificationTokenCode;
+import java.util.UUID;
 
 public interface PasswordService {
   boolean validateCredentials(String username, String password);
@@ -13,9 +14,9 @@ public interface PasswordService {
 
   boolean resetPassword(String username, String code, String password);
 
-  boolean changeUserPassword(String userId, String oldPassword, String newPassword);
+  boolean changeUserPassword(UUID userId, String oldPassword, String newPassword);
 
-  void expireVerificationCode(String userId);
+  void expireVerificationCode(UUID userId);
 
   String generateRandomPassword();
 }

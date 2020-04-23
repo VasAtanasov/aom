@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +69,7 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional(readOnly = true)
-  public MediaFile load(String id) {
+  public MediaFile load(UUID id) {
     return medialFileRepository.getOne(id);
   }
 
@@ -86,13 +87,13 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional(rollbackFor = IOException.class)
-  public String storeFile(
-      String fileUuid,
+  public UUID storeFile(
+      UUID fileUuid,
       MultipartFile file,
       String fileKey,
       MediaFunction function,
       String originalFilename,
-      String referenceId) {
+      UUID referenceId) {
     final StorageService storage = getStorageOrFallback(function.storageType());
     Assert.notNull(function, "Unspecified media function.");
     String bucket = function.resolveBucketName();
@@ -132,7 +133,7 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional(readOnly = true, rollbackFor = IOException.class)
-  public byte[] getBytes(final String uuid) throws IOException {
+  public byte[] getBytes(final UUID uuid) throws IOException {
     final MediaFile mediaFile = medialFileRepository.getOne(uuid);
     final StorageService storage = getStorage(mediaFile.getStorageType());
     try (final ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
@@ -143,7 +144,7 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional(readOnly = true, rollbackFor = IOException.class)
-  public void downloadTo(final String uuid, final Path targetPath) throws IOException {
+  public void downloadTo(final UUID uuid, final Path targetPath) throws IOException {
     final MediaFile mediaFile = medialFileRepository.getOne(uuid);
     final StorageService storage = getStorage(mediaFile.getStorageType());
     try (final FileOutputStream fos = new FileOutputStream(targetPath.toFile());
@@ -154,7 +155,7 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional
-  public void remove(final String uuid) {
+  public void remove(final UUID uuid) {
     final MediaFile mediaFile = medialFileRepository.getOne(uuid);
     getStorage(mediaFile.getStorageType()).removeFromStorage(mediaFile);
     medialFileRepository.delete(mediaFile);

@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
-  public UserDetails loadUserById(String id) {
+  public UserDetails loadUserById(UUID id) {
     return userRepository.findById(id).orElseThrow(NoSuchUserException::new);
   }
 
@@ -154,8 +155,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserServiceModel updateUser(
-      String userId, UserDetailsUpdateRequest user, User loggedUser) {
+  public UserServiceModel updateUser(UUID userId, UserDetailsUpdateRequest user, User loggedUser) {
     User userEntity = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
     if (!userEntity.getUsername().equals(loggedUser.getUsername())) {
       throw new IllegalStateException(RestMessage.INVALID_UPDATE_OPERATION.name());
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public void updateHasImage(String userId, boolean hasImage) {
+  public void updateHasImage(UUID userId, boolean hasImage) {
     User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
     // TODO set account has image
     // user.setHasImage(hasImage);

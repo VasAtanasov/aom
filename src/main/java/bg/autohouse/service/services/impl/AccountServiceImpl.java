@@ -25,6 +25,7 @@ import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
 import bg.autohouse.web.enums.RestMessage;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +50,13 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional(readOnly = true)
-  public boolean hasAccount(String id) {
+  public boolean hasAccount(UUID id) {
     return accountRepository.existsByOwnerId(id);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public AccountServiceModel loadAccountForUser(String userId) {
+  public AccountServiceModel loadAccountForUser(UUID userId) {
     Assert.notNull(userId, "User id is required.");
     User user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
     Account account = // Account id and user id is sam due to @MapsId
@@ -71,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional
-  public AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, String ownerId) {
+  public AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
     User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);
@@ -108,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional
-  public AccountServiceModel createDealerAccount(AccountServiceModel model, String ownerId) {
+  public AccountServiceModel createDealerAccount(AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
     User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);

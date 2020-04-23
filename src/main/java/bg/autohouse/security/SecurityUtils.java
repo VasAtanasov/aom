@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 
 import bg.autohouse.data.models.User;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
@@ -67,7 +68,7 @@ public final class SecurityUtils {
     return findActiveUserInfo().map(User::getUsername).orElse(null);
   }
 
-  public Optional<String> findActiveUserId() {
+  public Optional<UUID> findActiveUserId() {
     return findActiveUserInfo().map(User::getId);
   }
 
@@ -105,13 +106,13 @@ public final class SecurityUtils {
         "Authenticate user principal type is unknown: " + userDetails.getClass().getSimpleName());
   }
 
-  public static String extractUserIdForEntity(final Authentication authentication) {
+  public static UUID extractUserIdForEntity(final Authentication authentication) {
     if (authentication != null && authentication.isAuthenticated()) {
       if (authentication.getPrincipal() == null) {
         return null;
 
       } else if (authentication.getPrincipal() instanceof User) {
-        final String userId = extractFrom(authentication).getId();
+        final UUID userId = extractFrom(authentication).getId();
 
         // This check is needed when database is empty and there exists no
         // users at all initially.

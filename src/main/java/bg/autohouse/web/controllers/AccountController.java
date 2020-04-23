@@ -15,6 +15,7 @@ import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.account.DealerAccountCreateUpdateRequest;
 import bg.autohouse.web.models.request.account.PrivateAccountCreateUpdateRequest;
 import bg.autohouse.web.util.RestUtil;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +55,7 @@ public class AccountController extends BaseController {
     return createAccount(model, user.getId());
   }
 
-  private ResponseEntity<?> createAccount(AccountServiceModel model, String ownerId) {
+  private ResponseEntity<?> createAccount(AccountServiceModel model, UUID ownerId) {
     if (Assert.isEmpty(model) || Assert.isEmpty(ownerId)) {
       log.error("Missing account data");
       return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);

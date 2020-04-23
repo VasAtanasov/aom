@@ -39,7 +39,7 @@ public class AuthorizedUserServiceModel {
 
   @Builder
   public AuthorizedUserServiceModel(User user, String token) {
-    this.userId = user.getId();
+    this.userId = user.getId().toString();
     this.username = user.getUsername();
     this.hasAccount = user.isHasAccount();
     this.roles = new ArrayList<>(user.getRoles());
