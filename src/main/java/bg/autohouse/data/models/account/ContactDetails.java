@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 @Embeddable
 public class ContactDetails {
   @Column(name = "phone_number", nullable = true, length = 20)

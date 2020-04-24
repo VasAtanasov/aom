@@ -5,8 +5,10 @@ import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.geo.Address;
+import bg.autohouse.service.models.account.AccountServiceModel;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,8 +54,8 @@ public class Account extends BaseUuidEntity {
   @Column(name = "has_image")
   private boolean hasImage = false;
 
-  @Column(name = "account_type")
   @Enumerated(EnumType.STRING)
+  @Column(name = "account_type", nullable = false)
   private AccountType accountType = null;
 
   @OneToOne(
@@ -62,4 +64,53 @@ public class Account extends BaseUuidEntity {
       orphanRemoval = true,
       mappedBy = "resident")
   private Address address;
+
+  @Builder
+  private Account(
+      String firstName,
+      String lastName,
+      int maxOffersCount,
+      String description,
+      String displayName,
+      AccountType accountType,
+      User owner,
+      String phoneNumber,
+      String webLink) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.maxOffersCount = maxOffersCount;
+    this.description = description;
+    this.displayName = displayName;
+    this.accountType = accountType;
+    this.contact = ContactDetails.of(phoneNumber, webLink);
+    this.enabled = true;
+  }
+
+  public static Account createDealerAccount(AccountServiceModel model, User owner) {
+    return Account.builder()
+        .firstName(model.getFirstName())
+        .lastName(model.getLastName())
+        .maxOffersCount(AccountType.DEALER.resolveMaxOffersCount())
+        .displayName(model.getDisplayName())
+        .description(model.getDescription())
+        .accountType(AccountType.DEALER)
+        .owner(owner)
+        .phoneNumber(model.getContactDetails().getPhoneNumber())
+        .webLink(model.getContactDetails().getWebLink())
+        .build();
+  }
+
+  public static Account createPrivateAccount(AccountServiceModel model, User owner) {
+    return Account.builder()
+        .firstName(model.getFirstName())
+        .lastName(model.getLastName())
+        .maxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount())
+        .displayName(model.getDisplayName())
+        .description(model.getDescription())
+        .accountType(AccountType.PRIVATE)
+        .owner(owner)
+        .phoneNumber(model.getContactDetails().getPhoneNumber())
+        .webLink(model.getContactDetails().getWebLink())
+        .build();
+  }
 }

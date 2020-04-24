@@ -8,9 +8,11 @@ import bg.autohouse.data.projections.user.UserIdUsername;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.NoSuchUserException;
+import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.F;
+import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +37,11 @@ public class AdminServiceImpl implements AdminService {
 
   private final UserRepository userRepository;
   private final LocationRepository locationRepository;
-
+  private final ModelMapperWrapper modelMapper;
   // TODO not encoding password because its degregating performance of application for batch
   @Override
   @Transactional
-  public void bulkRegisterUsers(UUID adminId, List<String> usernames) {
+  public List<UserServiceModel> bulkRegisterUsers(UUID adminId, List<String> usernames) {
     Assert.notNull(adminId, "Admin id is required");
     Assert.notNull(usernames, "Invalid usernames collection");
     validateAdminRole(adminId);
@@ -47,6 +49,7 @@ public class AdminServiceImpl implements AdminService {
         F.mapNonNullsToSet(
             userRepository.getAllUsers(usernameIn(usernames)), user -> user.getUsername());
     List<User> users = new ArrayList<>();
+    List<User> registered = new ArrayList<>();
     long startNanos = System.nanoTime();
     for (int i = 0; i < usernames.size(); i++) {
       String email = usernames.get(i);
@@ -57,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
       if (i % batchSize == 0 && i > 0) {
         log.info("Saving {} entities ...", users.size());
         long startSaveAll = System.nanoTime();
-        userRepository.saveAll(users);
+        registered.addAll(userRepository.saveAll(users));
         log.info(
             "{}.bulkRegisterUsers saving batch of {} took {} millis",
             getClass().getSimpleName(),
@@ -68,21 +71,17 @@ public class AdminServiceImpl implements AdminService {
     }
     if (users.size() > 0) {
       log.info("Saving the remaining {} entities ...", users.size());
-      userRepository.saveAll(users);
+      registered.addAll(userRepository.saveAll(users));
       users.clear();
     }
     log.info(
         "{}.bulkRegisterUsers took {} millis",
         getClass().getSimpleName(),
         TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos));
+    return modelMapper.mapAll(registered, UserServiceModel.class);
   }
 
-  private void validateAdminRole(UUID id) {
-    User admin = userRepository.findById(id).orElseThrow(NoSuchUserException::new);
-    if (!admin.isAdmin()) {
-      throw new AccessDeniedException("Error! User does not have admin role");
-    }
-  }
+  public void bulkCreateAccounts() {}
 
   @Override
   public List<UserIdUsername> loadAllUsers() {
@@ -92,5 +91,12 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public List<LocationId> loadAllLocations() {
     return locationRepository.getAllLocationIds();
+  }
+
+  private void validateAdminRole(UUID id) {
+    User admin = userRepository.findById(id).orElseThrow(NoSuchUserException::new);
+    if (!admin.isAdmin()) {
+      throw new AccessDeniedException("Error! User does not have admin role");
+    }
   }
 }

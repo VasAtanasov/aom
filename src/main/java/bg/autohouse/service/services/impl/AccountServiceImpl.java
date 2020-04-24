@@ -81,12 +81,8 @@ public class AccountServiceImpl implements AccountService {
     validateModel(model, PrivateAccountRequiredFields.class);
     String displayNameToUse =
         Assert.has(model.getDisplayName()) ? model.getDisplayName() : generateRandomDisplayName();
-    Account privateAccount = modelMapper.map(model, Account.class);
-    privateAccount.setMaxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount());
-    privateAccount.setOwner(owner);
-    privateAccount.setAccountType(AccountType.PRIVATE);
-    privateAccount.setDisplayName(displayNameToUse);
-    privateAccount.setEnabled(Boolean.TRUE);
+    model.setDisplayName(displayNameToUse);
+    Account privateAccount = Account.createPrivateAccount(model, owner);
     accountRepository.save(privateAccount);
     owner.setHasAccount(Boolean.TRUE);
     userRepository.save(owner);
@@ -120,18 +116,11 @@ public class AccountServiceImpl implements AccountService {
         locationRepository
             .findById(model.getAddress().getLocationId())
             .orElseThrow(LocationNotFoundException::new);
-    Account dealerAccount = modelMapper.map(model, Account.class);
-    dealerAccount.setId(null); // modelMapper sets id
-    dealerAccount.setMaxOffersCount(AccountType.DEALER.resolveMaxOffersCount());
-    dealerAccount.setOwner(owner);
-    dealerAccount.setAccountType(AccountType.DEALER);
-    dealerAccount.setEnabled(Boolean.TRUE);
-    Address address = modelMapper.map(model.getAddress(), Address.class);
-    address.setLocation(location);
-    address.setLocation(location);
-    address.setResident(dealerAccount);
+    Account dealerAccount = Account.createDealerAccount(model, owner);
+    String street = model.getAddress().getStreet();
+    Address address = Address.createAddress(location, street, dealerAccount);
     dealerAccount.setAddress(address);
-    accountRepository.saveAndFlush(dealerAccount);
+    accountRepository.save(dealerAccount);
     owner.setHasAccount(Boolean.TRUE);
     userRepository.save(owner);
     logAccountCreate(AccountType.DEALER, owner);
