@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -126,7 +127,7 @@ public class UserServiceImpl implements UserService {
     long start = System.nanoTime();
     boolean userExists = Assert.has(username) && userExist(username);
     long time = System.nanoTime() - start;
-    log.info("User exists check took {} nano seconds", time);
+    log.info("User exists check took {} milliseconds", TimeUnit.NANOSECONDS.toMillis(time));
     if (userExists) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_EXISTS);
     }

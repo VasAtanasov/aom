@@ -1,14 +1,20 @@
 package bg.autohouse.service.services.impl;
 
+import static bg.autohouse.data.specifications.UserSpecifications.usernameIn;
+
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.projections.geo.LocationId;
 import bg.autohouse.data.projections.user.UserIdUsername;
+import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.Assert;
+import bg.autohouse.util.F;
 import bg.autohouse.util.StringGenericUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.transaction.Transactional;
@@ -28,25 +34,24 @@ public class AdminServiceImpl implements AdminService {
   private int batchSize;
 
   private final UserRepository userRepository;
+  private final LocationRepository locationRepository;
 
+  // TODO not encoding password because its degregating performance of application for batch
   @Override
   @Transactional
   public void bulkRegisterUsers(UUID adminId, List<String> usernames) {
     Assert.notNull(adminId, "Admin id is required");
     Assert.notNull(usernames, "Invalid usernames collection");
     validateAdminRole(adminId);
+    Set<String> existingUsers =
+        F.mapNonNullsToSet(
+            userRepository.getAllUsers(usernameIn(usernames)), user -> user.getUsername());
     List<User> users = new ArrayList<>();
     long startNanos = System.nanoTime();
     for (int i = 0; i < usernames.size(); i++) {
       String email = usernames.get(i);
+      if (existingUsers.contains(email)) continue;
       String password = StringGenericUtils.nextPassword(8);
-      // TODO not encoding password because its degregating performance of application for batch
-      // records
-      // long startEncoding = System.nanoTime();
-      // String encodedPassword = encoder.encode(password);
-      // log.info(
-      //     "Generating/Encoding password for {} millis",
-      //     TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startEncoding));
       User user = User.createNormalUser(email, password);
       users.add(user);
       if (i % batchSize == 0 && i > 0) {
@@ -70,7 +75,6 @@ public class AdminServiceImpl implements AdminService {
         "{}.bulkRegisterUsers took {} millis",
         getClass().getSimpleName(),
         TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos));
-    // TODO add accounts to users
   }
 
   private void validateAdminRole(UUID id) {
@@ -83,5 +87,10 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public List<UserIdUsername> loadAllUsers() {
     return userRepository.getAllUsers();
+  }
+
+  @Override
+  public List<LocationId> loadAllLocations() {
+    return locationRepository.getAllLocationIds();
   }
 }

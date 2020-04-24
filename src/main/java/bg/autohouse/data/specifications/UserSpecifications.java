@@ -23,4 +23,8 @@ public class UserSpecifications {
   public static Specification<User> idIn(Collection<String> ids) {
     return (root, query, cb) -> root.get(User_.id).in(ids);
   }
+
+  public static Specification<User> usernameIn(Collection<String> usernames) {
+    return (root, query, cb) -> root.get(User_.username).in(usernames);
+  }
 }

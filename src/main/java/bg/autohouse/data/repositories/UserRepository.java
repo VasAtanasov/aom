@@ -2,9 +2,12 @@ package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.projections.user.UserIdUsername;
+import bg.autohouse.data.projections.user.UserUsername;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +32,9 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
 
   @Query("SELECT u from User u")
   List<UserIdUsername> getAllUsers();
+
+  @Query("SELECT u from User u")
+  Set<UserUsername> getAllUsers(Specification<User> spec);
 
   // List<Person> findByIdNotIn(List<Long> personIds);
 }

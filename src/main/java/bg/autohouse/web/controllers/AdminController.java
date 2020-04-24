@@ -37,4 +37,9 @@ public class AdminController {
   public ResponseEntity<?> getUsersList() {
     return RestUtil.okResponse(adminService.loadAllUsers());
   }
+
+  @GetMapping(value = "/locations/list")
+  public ResponseEntity<?> getLocationsList() {
+    return RestUtil.okResponse(adminService.loadAllLocations());
+  }
 }
