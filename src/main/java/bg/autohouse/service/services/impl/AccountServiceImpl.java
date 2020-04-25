@@ -152,6 +152,7 @@ public class AccountServiceImpl implements AccountService {
             .user(owner)
             .build();
     accountLogRepository.save(accountLogCreate);
+    // TODO change to log both
     userLogger.logUserAddPrivateAccount(owner.getId());
   }
 }

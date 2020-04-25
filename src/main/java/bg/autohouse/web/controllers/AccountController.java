@@ -42,7 +42,7 @@ public class AccountController extends BaseController {
   public ResponseEntity<?> createPrivateSellerAccount(
       @Valid @RequestBody PrivateAccountCreateUpdateRequest request, @LoggedUser User user) {
     AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
-    return createAccount(model, user.getId());
+    return createAccount(model, user.getId(), AccountType.PRIVATE);
   }
 
   @PostMapping(
@@ -52,10 +52,11 @@ public class AccountController extends BaseController {
   public ResponseEntity<?> requestDealerAccount(
       @Valid @RequestBody DealerAccountCreateUpdateRequest request, @LoggedUser User user) {
     AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
-    return createAccount(model, user.getId());
+    return createAccount(model, user.getId(), AccountType.DEALER);
   }
 
-  private ResponseEntity<?> createAccount(AccountServiceModel model, UUID ownerId) {
+  private ResponseEntity<?> createAccount(
+      AccountServiceModel model, UUID ownerId, AccountType requiredAccountType) {
     if (Assert.isEmpty(model) || Assert.isEmpty(ownerId)) {
       log.error("Missing account data");
       return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);
@@ -67,11 +68,15 @@ public class AccountController extends BaseController {
     AccountType accountType =
         EnumUtils.fromString(model.getAccountType(), AccountType.class)
             .orElseThrow(() -> new IllegalStateException(RestMessage.INVALID_ACCOUNT_TYPE.name()));
-    if (AccountType.DEALER.equals(accountType)) {
+    if (AccountType.DEALER.equals(accountType) && requiredAccountType.equals(AccountType.DEALER)) {
       AccountServiceModel account = accountService.createDealerAccount(model, ownerId);
       return RestUtil.okResponse(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED, account);
     }
-    AccountServiceModel account = accountService.createPrivateSellerAccount(model, ownerId);
-    return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
+    if (AccountType.PRIVATE.equals(accountType)
+        && requiredAccountType.equals(AccountType.PRIVATE)) {
+      AccountServiceModel account = accountService.createPrivateSellerAccount(model, ownerId);
+      return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
+    }
+    return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);
   }
 }

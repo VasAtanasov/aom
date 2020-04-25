@@ -56,7 +56,7 @@ public class Account extends BaseUuidEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "account_type", nullable = false)
-  private AccountType accountType = null;
+  private AccountType accountType;
 
   @OneToOne(
       fetch = FetchType.LAZY,

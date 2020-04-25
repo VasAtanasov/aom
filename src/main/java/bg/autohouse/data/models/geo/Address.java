@@ -28,7 +28,11 @@ public class Address extends BaseUuidEntity {
   private String street;
 
   @MapsId
-  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @OneToOne(
+      fetch = FetchType.LAZY,
+      optional = false,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   @JoinColumn(name = "id")
   private Account resident;
 
