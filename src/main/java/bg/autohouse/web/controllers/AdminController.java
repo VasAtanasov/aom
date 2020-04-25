@@ -4,7 +4,9 @@ import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.UserServiceModel;
+import bg.autohouse.service.models.account.AccountCreateServiceModel;
 import bg.autohouse.service.services.AdminService;
+import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.account.AccountWrapper;
 import bg.autohouse.web.models.wrappers.ListWrapper;
 import bg.autohouse.web.util.RestUtil;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
   private final AdminService adminService;
+  private final ModelMapperWrapper modelMapper;
 
   @PostMapping(value = "/users/bulk")
   public ResponseEntity<?> bulkInsert(@Valid @RequestBody ListWrapper list, @LoggedUser User user) {
@@ -49,10 +52,9 @@ public class AdminController {
 
   @PostMapping(value = "/accounts/bulk")
   public ResponseEntity<?> createAccountsForUsers(
-      @Valid @RequestBody List<AccountWrapper> account, @LoggedUser User user) {
-
-    int a = 5;
-
+      @Valid @RequestBody List<AccountWrapper> accounts, @LoggedUser User user) {
+    adminService.bulkCreateAccounts(
+        user.getId(), modelMapper.mapAll(accounts, AccountCreateServiceModel.class));
     return ResponseEntity.ok().build();
   }
 }

@@ -40,8 +40,6 @@ public class Account extends BaseUuidEntity {
   @Column(name = "description")
   private String description;
 
-  @Embedded private ContactDetails contact;
-
   @Column(name = "display_name")
   private String displayName;
 
@@ -53,6 +51,8 @@ public class Account extends BaseUuidEntity {
 
   @Column(name = "has_image")
   private boolean hasImage = false;
+
+  @Embedded private ContactDetails contact;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "account_type", nullable = false)
@@ -67,34 +67,35 @@ public class Account extends BaseUuidEntity {
 
   @Builder
   private Account(
+      User owner,
       String firstName,
       String lastName,
       int maxOffersCount,
       String description,
       String displayName,
-      AccountType accountType,
-      User owner,
+      String webLink,
       String phoneNumber,
-      String webLink) {
+      AccountType accountType) {
+    this.owner = owner;
     this.firstName = firstName;
     this.lastName = lastName;
     this.maxOffersCount = maxOffersCount;
     this.description = description;
     this.displayName = displayName;
-    this.accountType = accountType;
     this.contact = ContactDetails.of(phoneNumber, webLink);
+    this.accountType = accountType;
     this.enabled = true;
   }
 
   public static Account createDealerAccount(AccountServiceModel model, User owner) {
     return Account.builder()
+        .owner(owner)
         .firstName(model.getFirstName())
         .lastName(model.getLastName())
         .maxOffersCount(AccountType.DEALER.resolveMaxOffersCount())
         .displayName(model.getDisplayName())
         .description(model.getDescription())
         .accountType(AccountType.DEALER)
-        .owner(owner)
         .phoneNumber(model.getContactDetails().getPhoneNumber())
         .webLink(model.getContactDetails().getWebLink())
         .build();
@@ -102,13 +103,13 @@ public class Account extends BaseUuidEntity {
 
   public static Account createPrivateAccount(AccountServiceModel model, User owner) {
     return Account.builder()
+        .owner(owner)
         .firstName(model.getFirstName())
         .lastName(model.getLastName())
         .maxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount())
         .displayName(model.getDisplayName())
         .description(model.getDescription())
         .accountType(AccountType.PRIVATE)
-        .owner(owner)
         .phoneNumber(model.getContactDetails().getPhoneNumber())
         .webLink(model.getContactDetails().getWebLink())
         .build();

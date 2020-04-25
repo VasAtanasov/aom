@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class AccountWrapper {
-  @NotNull @NotNull private String username;
   @NotNull private UUID id;
-  @NotNull private DealerAccountCreateUpdateRequest account;
+  @NotNull @NotNull private String username;
+  @NotNull private AccountCreateRequest account;
 }

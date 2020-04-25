@@ -33,6 +33,8 @@ public class Address extends BaseUuidEntity {
   private Account resident;
 
   public static Address createAddress(Location location, String street, Account resident) {
-    return new Address(location, street, resident);
+    Address address = new Address(location, street, resident);
+    resident.setAddress(address);
+    return address;
   }
 }

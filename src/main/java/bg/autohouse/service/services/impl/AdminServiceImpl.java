@@ -1,21 +1,32 @@
 package bg.autohouse.service.services.impl;
 
-import static bg.autohouse.data.specifications.UserSpecifications.usernameIn;
+import static bg.autohouse.data.specifications.UserSpecifications.*;
 
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.account.Account;
+import bg.autohouse.data.models.enums.AccountType;
+import bg.autohouse.data.models.geo.Address;
+import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.projections.geo.LocationId;
 import bg.autohouse.data.projections.user.UserIdUsername;
+import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.service.models.UserServiceModel;
+import bg.autohouse.service.models.account.AccountCreateServiceModel;
+import bg.autohouse.service.models.account.AccountServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.Assert;
+import bg.autohouse.util.Collect;
+import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.F;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
+import bg.autohouse.web.enums.RestMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +50,9 @@ public class AdminServiceImpl implements AdminService {
   private final UserRepository userRepository;
   private final LocationRepository locationRepository;
   private final ModelMapperWrapper modelMapper;
-  // TODO not encoding password because its degregating performance of application for batch
+  private final AccountRepository accountRepository;
+
+  // TODO not encoding password its degregating performance of application for batch
   @Override
   @Transactional
   public List<UserServiceModel> bulkRegisterUsers(UUID adminId, List<String> usernames) {
@@ -81,7 +95,56 @@ public class AdminServiceImpl implements AdminService {
     return modelMapper.mapAll(registered, UserServiceModel.class);
   }
 
-  public void bulkCreateAccounts() {}
+  @Override
+  public void bulkCreateAccounts(UUID adminId, List<AccountCreateServiceModel> models) {
+    Assert.notNull(adminId, "Admin id is required");
+    Assert.notNull(models, "Invalid accounts collection");
+    validateAdminRole(adminId);
+    List<UUID> ids = F.mapNonNullsToList(models, m -> m.getId());
+    List<String> usernames = F.mapNonNullsToList(models, m -> m.getUsername());
+    Map<UUID, User> usersById =
+        userRepository
+            .findAll(Specification.where(hasNoAccount()).and(idIn(ids)).and(usernameIn(usernames)))
+            .stream()
+            .collect(Collect.indexingBy(u -> u.getId()));
+    Map<Long, Location> locationsById =
+        locationRepository.findAll().stream().collect(Collect.indexingBy(l -> l.getId()));
+    List<Account> accounts = new ArrayList<>();
+    for (int i = 0; i < models.size(); i++) {
+      AccountCreateServiceModel model = models.get(i);
+      UUID userId = model.getId();
+      if (!usersById.containsKey(userId)) continue;
+      User owner = usersById.getOrDefault(userId, null);
+      if (owner == null) continue;
+      String username = model.getUsername();
+      if (!owner.getUsername().equals(username)) continue;
+      AccountServiceModel accountModel = model.getAccount();
+      Assert.notNull(accountModel.getAccountType(), "Invalid AccountType");
+      AccountType accountType =
+          EnumUtils.fromString(accountModel.getAccountType(), AccountType.class)
+              .orElseThrow(
+                  () -> new IllegalStateException(RestMessage.INVALID_ACCOUNT_TYPE.name()));
+      Account account;
+      if (AccountType.DEALER.equals(accountType)) {
+        account = Account.createDealerAccount(accountModel, owner);
+        String street = accountModel.getAddress().getStreet();
+        Location location = locationsById.get(accountModel.getAddress().getLocationId());
+        Address.createAddress(location, street, account);
+      } else {
+        account = Account.createPrivateAccount(accountModel, owner);
+      }
+      accounts.add(account);
+      owner.setHasAccount(true);
+      if (i % batchSize == 0 && i > 0) {
+        accountRepository.saveAll(accounts);
+        accounts.clear();
+      }
+    }
+    if (accounts.size() > 0) {
+      accountRepository.saveAll(accounts);
+      accounts.clear();
+    }
+  }
 
   @Override
   public List<UserIdUsername> loadAllUsers() {

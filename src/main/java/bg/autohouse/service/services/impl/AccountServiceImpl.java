@@ -118,8 +118,7 @@ public class AccountServiceImpl implements AccountService {
             .orElseThrow(LocationNotFoundException::new);
     Account dealerAccount = Account.createDealerAccount(model, owner);
     String street = model.getAddress().getStreet();
-    Address address = Address.createAddress(location, street, dealerAccount);
-    dealerAccount.setAddress(address);
+    Address.createAddress(location, street, dealerAccount);
     accountRepository.save(dealerAccount);
     owner.setHasAccount(Boolean.TRUE);
     userRepository.save(owner);

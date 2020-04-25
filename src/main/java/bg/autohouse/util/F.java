@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import bg.autohouse.data.models.Identifiable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -463,6 +464,11 @@ public final class F {
   @Nonnull
   public static <T> List<T> listFromOptional(@Nonnull Optional<T> optional) {
     return optional.map(ImmutableList::of).orElseGet(ImmutableList::of);
+  }
+
+  @Nullable
+  public static <ID> ID getId(@Nullable final Identifiable<ID> identifiable) {
+    return identifiable == null ? null : identifiable.getId();
   }
 
   private F() {
