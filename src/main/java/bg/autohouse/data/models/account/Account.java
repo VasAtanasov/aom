@@ -23,10 +23,9 @@ public class Account extends BaseUuidEntity {
 
   private static final long serialVersionUID = -3845486410834998722L;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @MapsId
-  @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_account_user_id"))
-  private User owner;
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_account_user_id"))
+  private User user;
 
   @Column(name = "first_name")
   private String firstName;
@@ -62,12 +61,12 @@ public class Account extends BaseUuidEntity {
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true,
-      mappedBy = "resident")
+      mappedBy = "account")
   private Address address;
 
   @Builder
   private Account(
-      User owner,
+      User user,
       String firstName,
       String lastName,
       int maxOffersCount,
@@ -76,7 +75,7 @@ public class Account extends BaseUuidEntity {
       String webLink,
       String phoneNumber,
       AccountType accountType) {
-    this.owner = owner;
+    this.user = user;
     this.firstName = firstName;
     this.lastName = lastName;
     this.maxOffersCount = maxOffersCount;
@@ -86,32 +85,38 @@ public class Account extends BaseUuidEntity {
     this.accountType = accountType;
     this.enabled = true;
   }
-
-  public static Account createDealerAccount(AccountServiceModel model, User owner) {
-    return Account.builder()
-        .owner(owner)
-        .firstName(model.getFirstName())
-        .lastName(model.getLastName())
-        .maxOffersCount(AccountType.DEALER.resolveMaxOffersCount())
-        .displayName(model.getDisplayName())
-        .description(model.getDescription())
-        .accountType(AccountType.DEALER)
-        .phoneNumber(model.getContactDetails().getPhoneNumber())
-        .webLink(model.getContactDetails().getWebLink())
-        .build();
+  // TODO remove substring method
+  public static Account createDealerAccount(AccountServiceModel model, User user) {
+    Account account =
+        Account.builder()
+            .user(user)
+            .firstName(model.getFirstName())
+            .lastName(model.getLastName())
+            .maxOffersCount(AccountType.DEALER.resolveMaxOffersCount())
+            .displayName(model.getDisplayName())
+            .description(model.getDescription())
+            .accountType(AccountType.DEALER)
+            .phoneNumber(model.getContactDetails().getPhoneNumber().substring(0, 10))
+            .webLink(model.getContactDetails().getWebLink())
+            .build();
+    user.setHasAccount(true);
+    return account;
   }
 
-  public static Account createPrivateAccount(AccountServiceModel model, User owner) {
-    return Account.builder()
-        .owner(owner)
-        .firstName(model.getFirstName())
-        .lastName(model.getLastName())
-        .maxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount())
-        .displayName(model.getDisplayName())
-        .description(model.getDescription())
-        .accountType(AccountType.PRIVATE)
-        .phoneNumber(model.getContactDetails().getPhoneNumber())
-        .webLink(model.getContactDetails().getWebLink())
-        .build();
+  public static Account createPrivateAccount(AccountServiceModel model, User user) {
+    Account account =
+        Account.builder()
+            .user(user)
+            .firstName(model.getFirstName())
+            .lastName(model.getLastName())
+            .maxOffersCount(AccountType.PRIVATE.resolveMaxOffersCount())
+            .displayName(model.getDisplayName())
+            .description(model.getDescription())
+            .accountType(AccountType.PRIVATE)
+            .phoneNumber(model.getContactDetails().getPhoneNumber().substring(0, 10))
+            .webLink(model.getContactDetails().getWebLink())
+            .build();
+    user.setHasAccount(true);
+    return account;
   }
 }

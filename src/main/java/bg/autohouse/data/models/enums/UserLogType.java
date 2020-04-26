@@ -20,7 +20,8 @@ public enum UserLogType {
   USER_ADDED_PRIVATE_ACCOUNT("User added private seller account"),
   USER_SKIPPED_NAME("User preferred not to set name"),
   USER_SKIPPED_PROVINCE("User preferred not to set a province"),
-  USER_CHANGE_PROFILE_PHOTO("User change own profile photo");
+  USER_CHANGE_PROFILE_PHOTO("User change own profile photo"),
+  USER_ADDED_DEALER_ACCOUNT("User added dealer account");
 
   private final String text;
 

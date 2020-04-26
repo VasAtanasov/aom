@@ -12,6 +12,8 @@ public interface AsyncUserLogger {
 
   void logUserAddPrivateAccount(UUID userId);
 
+  void logUserAddDealerAccount(UUID userId);
+
   void recordUserLog(UUID userId, UserLogType userLogType, String description);
 
   void storeUserLogs(Set<UserLog> userLogSet);

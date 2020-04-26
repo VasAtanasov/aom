@@ -12,5 +12,5 @@ import lombok.Setter;
 public class AddressServiceModel {
   private Long locationId;
   private String street;
-  private String residentId;
+  private String accountId;
 }

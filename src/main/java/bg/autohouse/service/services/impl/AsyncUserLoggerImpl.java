@@ -37,6 +37,12 @@ public class AsyncUserLoggerImpl implements AsyncUserLogger {
 
   @Async
   @Override
+  public void logUserAddDealerAccount(UUID userId) {
+    userLogRepository.save(new UserLog(userId, UserLogType.USER_ADDED_DEALER_ACCOUNT, ""));
+  }
+
+  @Async
+  @Override
   public void recordUserLog(UUID userId, UserLogType userLogType, String description) {
     UserLog userLog = new UserLog(userId, userLogType, description);
     userLogRepository.saveAndFlush(userLog);

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository
     extends JpaRepository<Account, UUID>, JpaSpecificationExecutor<Account> {
-  boolean existsByOwnerId(UUID ownerId);
+  boolean existsByUserId(UUID userId);
 
   // TODO query only active accounts
-  Optional<Account> findByOwnerId(UUID ownerId);
+  Optional<Account> findByUserId(UUID userId);
 }

@@ -62,6 +62,7 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @Column(name = "is_expired")
   private boolean isExpired = false;
 
+  // TODO foreign key names
   @ManyToOne
   @JoinColumn(name = "location_id", nullable = false, updatable = true)
   private Location location;

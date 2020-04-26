@@ -53,8 +53,9 @@ public class AdminController {
   @PostMapping(value = "/accounts/bulk")
   public ResponseEntity<?> createAccountsForUsers(
       @Valid @RequestBody List<AccountWrapper> accounts, @LoggedUser User user) {
-    adminService.bulkCreateAccounts(
-        user.getId(), modelMapper.mapAll(accounts, AccountCreateServiceModel.class));
-    return ResponseEntity.ok().build();
+    List<UserServiceModel> users =
+        adminService.bulkCreateAccounts(
+            user.getId(), modelMapper.mapAll(accounts, AccountCreateServiceModel.class));
+    return ResponseEntity.ok(users);
   }
 }

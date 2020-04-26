@@ -96,7 +96,8 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public void bulkCreateAccounts(UUID adminId, List<AccountCreateServiceModel> models) {
+  public List<UserServiceModel> bulkCreateAccounts(
+      UUID adminId, List<AccountCreateServiceModel> models) {
     Assert.notNull(adminId, "Admin id is required");
     Assert.notNull(models, "Invalid accounts collection");
     validateAdminRole(adminId);
@@ -134,7 +135,6 @@ public class AdminServiceImpl implements AdminService {
         account = Account.createPrivateAccount(accountModel, owner);
       }
       accounts.add(account);
-      owner.setHasAccount(true);
       if (i % batchSize == 0 && i > 0) {
         accountRepository.saveAll(accounts);
         accounts.clear();
@@ -144,6 +144,9 @@ public class AdminServiceImpl implements AdminService {
       accountRepository.saveAll(accounts);
       accounts.clear();
     }
+
+    return modelMapper.mapAll(
+        usersById.values().stream().filter(u -> u.isHasAccount()), UserServiceModel.class);
   }
 
   @Override

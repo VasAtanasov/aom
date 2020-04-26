@@ -27,18 +27,13 @@ public class Address extends BaseUuidEntity {
   @Column(name = "street_name")
   private String street;
 
-  @MapsId
-  @OneToOne(
-      fetch = FetchType.LAZY,
-      optional = false,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  @JoinColumn(name = "id")
-  private Account resident;
+  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "account_id", foreignKey = @ForeignKey(name = "fk_address_account_id"))
+  private Account account;
 
-  public static Address createAddress(Location location, String street, Account resident) {
-    Address address = new Address(location, street, resident);
-    resident.setAddress(address);
+  public static Address createAddress(Location location, String street, Account account) {
+    Address address = new Address(location, street, account);
+    account.setAddress(address);
     return address;
   }
 }

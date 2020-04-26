@@ -37,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountServiceImpl implements AccountService {
 
   private final AccountRepository accountRepository;
-
   private final UserRepository userRepository;
   private final LocationRepository locationRepository;
   private final AccountLogRepository accountLogRepository;
@@ -50,7 +49,7 @@ public class AccountServiceImpl implements AccountService {
   @Override
   @Transactional(readOnly = true)
   public boolean hasAccount(UUID id) {
-    return accountRepository.existsByOwnerId(id);
+    return accountRepository.existsByUserId(id);
   }
 
   @Override
@@ -84,8 +83,6 @@ public class AccountServiceImpl implements AccountService {
     model.setDisplayName(displayNameToUse);
     Account privateAccount = Account.createPrivateAccount(model, owner);
     accountRepository.save(privateAccount);
-    owner.setHasAccount(Boolean.TRUE);
-    userRepository.save(owner);
     logAccountCreate(AccountType.PRIVATE, owner);
     return modelMapper.map(privateAccount, AccountServiceModel.class);
   }
@@ -120,8 +117,6 @@ public class AccountServiceImpl implements AccountService {
     String street = model.getAddress().getStreet();
     Address.createAddress(location, street, dealerAccount);
     accountRepository.save(dealerAccount);
-    owner.setHasAccount(Boolean.TRUE);
-    userRepository.save(owner);
     logAccountCreate(AccountType.DEALER, owner);
     // TODO notify admin when created
     return modelMapper.map(dealerAccount, AccountServiceModel.class);
@@ -152,7 +147,14 @@ public class AccountServiceImpl implements AccountService {
             .user(owner)
             .build();
     accountLogRepository.save(accountLogCreate);
-    // TODO change to log both
-    userLogger.logUserAddPrivateAccount(owner.getId());
+
+    switch (accountType) {
+      case DEALER:
+        userLogger.logUserAddDealerAccount(owner.getId());
+        break;
+      case PRIVATE:
+        userLogger.logUserAddPrivateAccount(owner.getId());
+        break;
+    }
   }
 }

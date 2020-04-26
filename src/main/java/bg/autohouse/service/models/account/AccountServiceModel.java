@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class AccountServiceModel {
   private UUID id;
-  private UUID ownerId;
+  private UUID userId;
   private String firstName;
   private String lastName;
   private String displayName;
