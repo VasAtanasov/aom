@@ -33,8 +33,11 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
   @Query("SELECT u from User u")
   Stream<User> findAllStream(Specification<User> spec);
 
+  @Transactional(readOnly = true)
   default Map<UUID, User> getAllMap(Specification<User> spec) {
-    return findAllStream(spec).collect(Collect.indexingBy(u -> u.getId()));
+    try (Stream<User> userStream = findAllStream(spec)) {
+      return userStream.collect(Collect.indexingBy(u -> u.getId()));
+    }
   }
 
   @Modifying

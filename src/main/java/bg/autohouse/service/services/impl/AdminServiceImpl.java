@@ -1,6 +1,7 @@
 package bg.autohouse.service.services.impl;
 
 import static bg.autohouse.data.specifications.UserSpecifications.*;
+import static org.springframework.data.jpa.domain.Specification.*;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.account.Account;
@@ -34,7 +35,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -121,8 +121,7 @@ public class AdminServiceImpl implements AdminService {
     List<UUID> ids = F.mapNonNullsToList(models, m -> m.getId());
     List<String> usernames = F.mapNonNullsToList(models, m -> m.getUsername());
     Map<UUID, User> usersById =
-        userRepository.getAllMap(
-            Specification.where(hasNoAccount()).and(idIn(ids)).and(usernameIn(usernames)));
+        userRepository.getAllMap(where(hasNoAccount()).and(idIn(ids)).and(usernameIn(usernames)));
     Map<Long, Location> locationsById =
         locationRepository.findAll().stream().collect(Collect.indexingBy(l -> l.getId()));
     List<Account> accounts = new ArrayList<>();

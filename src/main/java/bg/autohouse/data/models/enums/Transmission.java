@@ -9,7 +9,6 @@ import lombok.Getter;
 @SelectCriteria
 public enum Transmission implements Textable {
   AUTOMATIC("Automatic"),
-  SEMI_AUTOMATIC("Semi-automatic"),
   MANUAL("Manual");
 
   private final String text;
