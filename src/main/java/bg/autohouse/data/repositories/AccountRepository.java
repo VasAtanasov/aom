@@ -12,6 +12,5 @@ public interface AccountRepository
     extends JpaRepository<Account, UUID>, JpaSpecificationExecutor<Account> {
   boolean existsByUserId(UUID userId);
 
-  // TODO query only active accounts
   Optional<Account> findByUserId(UUID userId);
 }

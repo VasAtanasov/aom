@@ -14,5 +14,5 @@ public interface AdminService {
 
   List<LocationId> loadAllLocations();
 
-  List<UserServiceModel> bulkCreateAccounts(UUID id, List<AccountCreateServiceModel> mapAll);
+  int bulkCreateAccounts(UUID id, List<AccountCreateServiceModel> mapAll);
 }

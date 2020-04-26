@@ -85,7 +85,7 @@ public class Account extends BaseUuidEntity {
     this.accountType = accountType;
     this.enabled = true;
   }
-  // TODO remove substring method
+
   public static Account createDealerAccount(AccountServiceModel model, User user) {
     Account account =
         Account.builder()
@@ -96,7 +96,7 @@ public class Account extends BaseUuidEntity {
             .displayName(model.getDisplayName())
             .description(model.getDescription())
             .accountType(AccountType.DEALER)
-            .phoneNumber(model.getContactDetails().getPhoneNumber().substring(0, 10))
+            .phoneNumber(model.getContactDetails().getPhoneNumber())
             .webLink(model.getContactDetails().getWebLink())
             .build();
     user.setHasAccount(true);
@@ -113,7 +113,7 @@ public class Account extends BaseUuidEntity {
             .displayName(model.getDisplayName())
             .description(model.getDescription())
             .accountType(AccountType.PRIVATE)
-            .phoneNumber(model.getContactDetails().getPhoneNumber().substring(0, 10))
+            .phoneNumber(model.getContactDetails().getPhoneNumber())
             .webLink(model.getContactDetails().getWebLink())
             .build();
     user.setHasAccount(true);

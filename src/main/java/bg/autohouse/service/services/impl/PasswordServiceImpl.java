@@ -103,7 +103,7 @@ public class PasswordServiceImpl implements PasswordService {
     Objects.requireNonNull(userId);
     Objects.requireNonNull(oldPassword);
     Objects.requireNonNull(newPassword);
-    User user = userRepository.findById(userId).orElse(null);
+    User user = userRepository.findByIdWithRoles(userId).orElse(null);
     if (!Assert.has(user)) return false;
     if (!encoder.matches(oldPassword, user.getPassword())) return false;
     String encodedPassword = encoder.encode(newPassword);
@@ -131,7 +131,7 @@ public class PasswordServiceImpl implements PasswordService {
   @Transactional
   public void expireVerificationCode(UUID userId) {
     Objects.requireNonNull(userId);
-    User user = userRepository.findById(userId).orElse(null);
+    User user = userRepository.findByIdWithRoles(userId).orElse(null);
     if (user == null) return;
     VerificationTokenCode token =
         verificationTokenCodeRepository.findByUsername(user.getUsername());

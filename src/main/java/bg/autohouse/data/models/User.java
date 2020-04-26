@@ -19,7 +19,26 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = EntityConstants.USERS)
+@NamedQueries({
+  @NamedQuery(
+      name = User.QUERY_BY_ID_WITH_ROLES,
+      query = "SELECT u from User u JOIN FETCH u.roles ur where u.id = :id"),
+  @NamedQuery(
+      name = User.UPDATE_HAS_ACCOUNT,
+      query = "UPDATE User u set u.hasAccount = 1 where u.id in :ids"),
+  @NamedQuery(
+      name = User.QUERY_ALL_ACTIVE_WITH_ROLES,
+      query = "SELECT DISTINCT u FROM User u JOIN FETCH u.roles r WHERE u.enabled = true"),
+  @NamedQuery(
+      name = User.QUERY_BY_USERNAME,
+      query =
+          "SELECT u from User u JOIN FETCH u.roles ur where lower(u.username) = lower(:username)")
+})
 public class User extends BaseUuidEntity implements UserDetails {
+  public static final String QUERY_BY_ID_WITH_ROLES = "User.findByIdWithRoles";;
+  public static final String UPDATE_HAS_ACCOUNT = "User.updateHasAccount";
+  public static final String QUERY_ALL_ACTIVE_WITH_ROLES = "User.findAllActiveWithRoles";
+  public static final String QUERY_BY_USERNAME = "User.findByUsernameIgnoreCase";
 
   private static final long serialVersionUID = -4468841758676373460L;
   // username == email

@@ -83,7 +83,7 @@ public class UserServiceImplTest {
 
     assertThat(userRepository.count()).isGreaterThan(ZERO);
 
-    User user = userRepository.findById(registeredUser.getId()).orElse(null);
+    User user = userRepository.findByIdWithRoles(registeredUser.getId()).orElse(null);
     assertThat(user).isNotNull();
   }
 

@@ -79,6 +79,6 @@ public class AccountServiceImplTest {
     AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
     AccountServiceModel account = accountService.createDealerAccount(model, user.getId());
 
-    assertThat(account.getId()).isEqualTo(user.getId());
+    assertThat(account.getId()).isNotNull();
   }
 }

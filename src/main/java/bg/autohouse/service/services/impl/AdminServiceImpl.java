@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +37,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -51,6 +52,16 @@ public class AdminServiceImpl implements AdminService {
   private final LocationRepository locationRepository;
   private final ModelMapperWrapper modelMapper;
   private final AccountRepository accountRepository;
+
+  @Override
+  public List<UserIdUsername> loadAllUsers() {
+    return userRepository.getAllUsers();
+  }
+
+  @Override
+  public List<LocationId> loadAllLocations() {
+    return locationRepository.getAllLocationIds();
+  }
 
   // TODO not encoding password its degregating performance of application for batch
   @Override
@@ -96,11 +107,17 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public List<UserServiceModel> bulkCreateAccounts(
-      UUID adminId, List<AccountCreateServiceModel> models) {
+  public int bulkCreateAccounts(UUID adminId, List<AccountCreateServiceModel> models) {
     Assert.notNull(adminId, "Admin id is required");
     Assert.notNull(models, "Invalid accounts collection");
     validateAdminRole(adminId);
+    List<UserServiceModel> users = bulkCreateAccountsInternally(models);
+    return updateHasAccount(F.mapNonNullsToList(users, u -> u.getId()));
+  }
+
+  @Transactional
+  private List<UserServiceModel> bulkCreateAccountsInternally(
+      List<AccountCreateServiceModel> models) {
     List<UUID> ids = F.mapNonNullsToList(models, m -> m.getId());
     List<String> usernames = F.mapNonNullsToList(models, m -> m.getUsername());
     Map<UUID, User> usersById =
@@ -144,23 +161,17 @@ public class AdminServiceImpl implements AdminService {
       accountRepository.saveAll(accounts);
       accounts.clear();
     }
-
     return modelMapper.mapAll(
-        usersById.values().stream().filter(u -> u.isHasAccount()), UserServiceModel.class);
+        F.filterToStream(usersById.values(), u -> u.isHasAccount()), UserServiceModel.class);
   }
 
-  @Override
-  public List<UserIdUsername> loadAllUsers() {
-    return userRepository.getAllUsers();
-  }
-
-  @Override
-  public List<LocationId> loadAllLocations() {
-    return locationRepository.getAllLocationIds();
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  private int updateHasAccount(List<UUID> ids) {
+    return userRepository.updateHasAccount(ids);
   }
 
   private void validateAdminRole(UUID id) {
-    User admin = userRepository.findById(id).orElseThrow(NoSuchUserException::new);
+    User admin = userRepository.findByIdWithRoles(id).orElseThrow(NoSuchUserException::new);
     if (!admin.isAdmin()) {
       throw new AccessDeniedException("Error! User does not have admin role");
     }

@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional(readOnly = true, propagation = Propagation.REQUIRES_NEW)
   public UserDetails loadUserById(UUID id) {
-    return userRepository.findById(id).orElseThrow(NoSuchUserException::new);
+    return userRepository.findByIdWithRoles(id).orElseThrow(NoSuchUserException::new);
   }
 
   @Override
@@ -159,7 +159,8 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public UserServiceModel updateUser(UUID userId, UserDetailsUpdateRequest user, User loggedUser) {
-    User userEntity = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
+    User userEntity =
+        userRepository.findByIdWithRoles(userId).orElseThrow(NoSuchUserException::new);
     if (!userEntity.getUsername().equals(loggedUser.getUsername())) {
       throw new IllegalStateException(RestMessage.INVALID_UPDATE_OPERATION.name());
     }
@@ -177,7 +178,7 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void updateHasImage(UUID userId, boolean hasImage) {
-    User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+    User user = userRepository.findByIdWithRoles(userId).orElseThrow(NotFoundException::new);
     // TODO set account has image
     // user.setHasImage(hasImage);
     userRepository.save(user);

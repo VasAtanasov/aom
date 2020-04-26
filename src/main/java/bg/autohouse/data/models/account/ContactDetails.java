@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor(staticName = "of")
 @Embeddable
 public class ContactDetails {
-  @Column(name = "phone_number", nullable = true, length = 20)
+  @Column(name = "phone_number", nullable = true)
   private String phoneNumber;
 
   @Column(name = "web_link", nullable = true)

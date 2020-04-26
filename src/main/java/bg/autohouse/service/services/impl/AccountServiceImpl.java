@@ -56,9 +56,9 @@ public class AccountServiceImpl implements AccountService {
   @Transactional(readOnly = true)
   public AccountServiceModel loadAccountForUser(UUID userId) {
     Assert.notNull(userId, "User id is required.");
-    User user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
-    Account account = // Account id and user id is sam due to @MapsId
-        accountRepository.findById(user.getId()).orElseThrow(AccountNotFoundException::new);
+    User user = userRepository.findByIdWithRoles(userId).orElseThrow(NoSuchUserException::new);
+    Account account =
+        accountRepository.findByUserId(user.getId()).orElseThrow(AccountNotFoundException::new);
     if (!account.isEnabled()) {
       throw new AccountDisabledOrClosed(RestMessage.USER_ACCOUNT_DISABLED.name());
     }
@@ -73,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
   public AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
-    User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);
+    User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);
     if (owner.isHasAccount()) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }
@@ -104,7 +104,7 @@ public class AccountServiceImpl implements AccountService {
   public AccountServiceModel createDealerAccount(AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
-    User owner = userRepository.findById(ownerId).orElseThrow(NoSuchUserException::new);
+    User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);
     if (owner.isHasAccount()) {
       throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
     }

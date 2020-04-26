@@ -15,7 +15,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = EntityConstants.LOCATIONS)
+@NamedQuery(name = Location.QUERY_ALL_IDS, query = "SELECT l from Location l")
 public class Location extends BaseLongEntity {
+  public static final String QUERY_ALL_IDS = "Location.getAllLocationIds";
 
   private static final long serialVersionUID = -2377398736911388136L;
 

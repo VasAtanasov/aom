@@ -33,13 +33,6 @@ public class AdminController {
   private final AdminService adminService;
   private final ModelMapperWrapper modelMapper;
 
-  @PostMapping(value = "/users/bulk")
-  public ResponseEntity<?> bulkInsert(@Valid @RequestBody ListWrapper list, @LoggedUser User user) {
-    log.info("Inserting bulk emails");
-    List<UserServiceModel> users = adminService.bulkRegisterUsers(user.getId(), list.getValues());
-    return RestUtil.okResponse(users);
-  }
-
   @GetMapping(value = "/users/list")
   public ResponseEntity<?> getUsersList() {
     return RestUtil.okResponse(adminService.loadAllUsers());
@@ -50,12 +43,20 @@ public class AdminController {
     return RestUtil.okResponse(adminService.loadAllLocations());
   }
 
+  @PostMapping(value = "/users/bulk")
+  public ResponseEntity<?> bulkInsert(@Valid @RequestBody ListWrapper list, @LoggedUser User user) {
+    log.info("Inserting bulk emails");
+    List<UserServiceModel> users = adminService.bulkRegisterUsers(user.getId(), list.getValues());
+    return RestUtil.okResponse(users);
+  }
+
   @PostMapping(value = "/accounts/bulk")
   public ResponseEntity<?> createAccountsForUsers(
       @Valid @RequestBody List<AccountWrapper> accounts, @LoggedUser User user) {
-    List<UserServiceModel> users =
+    int created =
         adminService.bulkCreateAccounts(
             user.getId(), modelMapper.mapAll(accounts, AccountCreateServiceModel.class));
-    return ResponseEntity.ok(users);
+    log.info("Update: {} users", created);
+    return ResponseEntity.ok(created);
   }
 }
