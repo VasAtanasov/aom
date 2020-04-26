@@ -3,11 +3,14 @@ package bg.autohouse.data.repositories;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.projections.user.UserIdUsername;
 import bg.autohouse.data.projections.user.UserUsername;
+import bg.autohouse.util.Collect;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -26,6 +29,13 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
 
   @Query("SELECT u from User u")
   Set<UserUsername> getAllUsers(Specification<User> spec);
+
+  @Query("SELECT u from User u")
+  Stream<User> findAllStream(Specification<User> spec);
+
+  default Map<UUID, User> getAllMap(Specification<User> spec) {
+    return findAllStream(spec).collect(Collect.indexingBy(u -> u.getId()));
+  }
 
   @Modifying
   @Transactional

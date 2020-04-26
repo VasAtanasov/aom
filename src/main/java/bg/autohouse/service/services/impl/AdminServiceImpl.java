@@ -121,10 +121,8 @@ public class AdminServiceImpl implements AdminService {
     List<UUID> ids = F.mapNonNullsToList(models, m -> m.getId());
     List<String> usernames = F.mapNonNullsToList(models, m -> m.getUsername());
     Map<UUID, User> usersById =
-        userRepository
-            .findAll(Specification.where(hasNoAccount()).and(idIn(ids)).and(usernameIn(usernames)))
-            .stream()
-            .collect(Collect.indexingBy(u -> u.getId()));
+        userRepository.getAllMap(
+            Specification.where(hasNoAccount()).and(idIn(ids)).and(usernameIn(usernames)));
     Map<Long, Location> locationsById =
         locationRepository.findAll().stream().collect(Collect.indexingBy(l -> l.getId()));
     List<Account> accounts = new ArrayList<>();
