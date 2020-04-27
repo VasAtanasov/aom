@@ -18,37 +18,25 @@ public interface OfferRepository
   @Query(
       value =
           "SELECT o FROM Offer o "
-              + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH v.engine e "
-              + "JOIN FETCH v.maker mk "
-              + "JOIN FETCH v.model m "
-              + "WHERE o.isActive = 1 AND o.isDeleted = 0 AND o.isExpired = 0")
+              + "JOIN FETCH o.vehicle v JOIN FETCH v.engine e "
+              + "WHERE o.isActive = 1")
   Stream<Offer> findLatestOffers(Pageable pageable);
 
   @Query(
       value =
           "SELECT o FROM Offer o "
-              + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH v.engine e "
-              + "JOIN FETCH v.maker mk "
-              + "JOIN FETCH v.model m "
-              + "WHERE o.isActive = 1 AND o.isDeleted = 0 AND o.isExpired = 0")
+              + "JOIN FETCH o.vehicle v JOIN FETCH v.engine e "
+              + "WHERE o.isActive = 1")
   List<Offer> findAll();
 
   @Query(
       value =
           "SELECT o FROM Offer o "
-              + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH v.engine e "
-              + "JOIN FETCH v.maker mk "
-              + "JOIN FETCH v.model m "
-              + "WHERE o.isActive = 1 AND o.isDeleted = 0 AND o.isExpired = 0",
+              + "JOIN FETCH o.vehicle v JOIN FETCH v.engine e "
+              + "WHERE o.isActive = 1",
       countQuery =
           "SELECT count(o) FROM Offer o "
-              + "LEFT JOIN o.vehicle v "
-              + "LEFT JOIN v.engine e "
-              + "LEFT JOIN v.maker mk "
-              + "LEFT JOIN v.model m "
-              + "WHERE o.isActive = 1 AND o.isDeleted = 0 AND o.isExpired = 0")
+              + "LEFT JOIN o.vehicle v LEFT JOIN v.engine e "
+              + "WHERE o.isActive = 1")
   Page<Offer> findLatestOffersPage(Pageable pageable);
 }

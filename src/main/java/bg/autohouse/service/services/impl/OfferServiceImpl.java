@@ -3,10 +3,7 @@ package bg.autohouse.service.services.impl;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
-import bg.autohouse.data.models.Maker;
-import bg.autohouse.data.models.Model;
 import bg.autohouse.data.models.offer.Offer;
-import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.service.models.offer.OfferServiceModel;
@@ -32,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OfferServiceImpl implements OfferService {
 
   private final OfferRepository offerRepository;
-  private final MakerRepository makerRepository;
   private final ModelMapperWrapper modelMapper;
 
   @Override
@@ -48,21 +44,16 @@ public class OfferServiceImpl implements OfferService {
     return topOffers;
   }
 
+  // TODO refactor filter request to add maker and models names
   @Override
   @Transactional(readOnly = true)
   public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
     Objects.requireNonNull(filterRequest);
     Filter filter = modelMapper.map(filterRequest, Filter.class);
     if (Assert.has(filterRequest.getMakerId())) {
-      Maker maker = makerRepository.findById(filterRequest.getMakerId()).orElse(null);
-      filter.setMaker(maker);
+      filter.setMakerId(filterRequest.getMakerId());
       if (Assert.has(filterRequest.getModelId())) {
-        Model model =
-            maker.getModels().stream()
-                .filter(m -> m.getId().equals(filterRequest.getModelId()))
-                .findFirst()
-                .orElse(null);
-        filter.setModel(model);
+        filter.setModelId(filterRequest.getModelId());
       }
     }
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));

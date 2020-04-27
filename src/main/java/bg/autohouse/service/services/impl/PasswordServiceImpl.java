@@ -55,9 +55,11 @@ public class PasswordServiceImpl implements PasswordService {
   public VerificationTokenCode generateShortLivedOTP(String username) {
     Assert.notNull(username, ExceptionsMessages.USER_NOT_FOUND_USERNAME);
     VerificationTokenCode token = verificationTokenCodeRepository.findByUsername(username);
+    UUID userId =
+        userRepository.findByUsernameIgnoreCase(username).map(u -> u.getId()).orElse(null);
     final String code = String.valueOf(100000 + new SecureRandom().nextInt(999999));
     if (token == null) {
-      token = new VerificationTokenCode(username, code, null);
+      token = new VerificationTokenCode(username, code, userId);
       Date now = TimeUtils.now();
       long defaultExpiration = Duration.ofMinutes(TOKEN_LIFE_SPAN_MINUTES).toMillis();
       token.setExpiryDateTime(TimeUtils.dateOf(now.getTime() + defaultExpiration));
@@ -69,7 +71,7 @@ public class PasswordServiceImpl implements PasswordService {
           "found an OTP, but it's stale, time now = {}, expiry time = {}",
           TimeUtils.now(),
           token.getExpiryDateTime().toString());
-      VerificationTokenCode newToken = new VerificationTokenCode(username, code, null);
+      VerificationTokenCode newToken = new VerificationTokenCode(username, code, userId);
       Date now = TimeUtils.now();
       long defaultExpiration = Duration.ofMinutes(TOKEN_LIFE_SPAN_MINUTES).toMillis();
       newToken.setExpiryDateTime(TimeUtils.dateOf(now.getTime() + defaultExpiration));

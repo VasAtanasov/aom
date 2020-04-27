@@ -55,7 +55,7 @@ public class OfferServiceImplTest {
     Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
     List<Offer> offers =
         offerRepository.findAll().stream()
-            .filter(offer -> offer.getVehicle().getMaker().getId().equals(1L))
+            .filter(offer -> offer.getVehicle().getMakerId().equals(1L))
             .collect(Collectors.toList());
 
     assertThat(page.getContent()).size().isEqualTo(offers.size());
@@ -68,7 +68,7 @@ public class OfferServiceImplTest {
     Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
     List<Offer> offers =
         offerRepository.findAll().stream()
-            .filter(offer -> offer.getVehicle().getModel().getId().equals(1505L))
+            .filter(offer -> offer.getVehicle().getModelId().equals(1505L))
             .collect(Collectors.toList());
 
     assertThat(page.getContent()).size().isEqualTo(offers.size());

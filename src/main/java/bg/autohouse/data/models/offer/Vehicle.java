@@ -2,8 +2,6 @@ package bg.autohouse.data.models.offer;
 
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
-import bg.autohouse.data.models.Maker;
-import bg.autohouse.data.models.Model;
 import bg.autohouse.data.models.enums.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,7 @@ import lombok.Setter;
 @Table(
     name = EntityConstants.VEHICLES,
     indexes = {
-      @Index(name = "idx_" + EntityConstants.VEHICLES, columnList = "id, maker_id, model_id")
+      @Index(name = "idx_" + EntityConstants.VEHICLES, columnList = "maker_id, maker_name")
     })
 public class Vehicle extends BaseUuidEntity {
 
@@ -30,16 +28,12 @@ public class Vehicle extends BaseUuidEntity {
 
   @OneToOne(fetch = FetchType.LAZY)
   @MapsId
-  @JoinColumn(name = "id")
+  @JoinColumn(
+      name = "id",
+      nullable = false,
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "fk_vehicle_offer_id"))
   private Offer offer;
-
-  @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "maker_id", referencedColumnName = "id", nullable = false)
-  private Maker maker;
-
-  @ManyToOne(targetEntity = Model.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "model_id", referencedColumnName = "id", nullable = false)
-  private Model model;
 
   @OneToOne(
       fetch = FetchType.LAZY,
@@ -48,7 +42,23 @@ public class Vehicle extends BaseUuidEntity {
       mappedBy = "vehicle")
   private Engine engine;
 
-  @Embedded private ManufactureDate manufactureDate;
+  @Column(name = "maker_name", nullable = false)
+  private String makerName;
+
+  @Column(name = "maker_id", nullable = false)
+  private Long makerId;
+
+  @Column(name = "model_name", nullable = false)
+  private String modelName;
+
+  @Column(name = "model_id", nullable = false)
+  private Long modelId;
+
+  @Column(name = "trim", nullable = false)
+  private String trim;
+
+  @Column(name = "year", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  private Integer year;
 
   @Column(name = "mileage", columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer mileage = 0;

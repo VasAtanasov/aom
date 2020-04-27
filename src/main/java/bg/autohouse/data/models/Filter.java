@@ -29,23 +29,21 @@ import lombok.Setter;
 @Entity
 @Builder
 @Table(name = EntityConstants.FILTERS)
-public class Filter extends BaseUuidEntity implements EntityDetails {
+public class Filter extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1915410703216504289L;
 
-  @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "maker_id",
-      referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_filter_maker_id"))
-  private Maker maker;
+  @Column(name = "maker_name", nullable = false)
+  private String makerName;
 
-  @ManyToOne(targetEntity = Model.class, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "model_id",
-      referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_filter_model_id"))
-  private Model model;
+  @Column(name = "maker_id", nullable = false)
+  private Long makerId;
+
+  @Column(name = "model_name", nullable = false)
+  private String modelName;
+
+  @Column(name = "model_id", nullable = false)
+  private Long modelId;
 
   @Column(name = "fuel_type")
   @Enumerated(EnumType.STRING)
@@ -158,18 +156,6 @@ public class Filter extends BaseUuidEntity implements EntityDetails {
   @Enumerated(value = EnumType.STRING)
   @Builder.Default
   private List<State> state = new ArrayList<>();
-
-  @Column(name = "is_deleted")
-  @Builder.Default
-  private boolean isDeleted = false;
-
-  @Builder.Default
-  @Column(name = "is_expired")
-  private boolean isExpired = false;
-
-  @Column(name = "is_active")
-  @Builder.Default
-  private boolean isActive = true;
 
   @Column(name = "has_accident")
   @Builder.Default

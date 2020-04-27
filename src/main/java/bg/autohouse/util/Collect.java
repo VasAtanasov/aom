@@ -25,59 +25,49 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 
 public final class Collect {
 
-  @Nonnull
   public static <T, K, U, M extends Map<K, U>> Collector<T, ?, M> toMap(
-      @Nonnull final Function<? super T, ? extends K> keyMapper,
-      @Nonnull final Function<? super T, ? extends U> valueMapper,
-      @Nonnull final Supplier<M> mapSupplier) {
+      Function<? super T, ? extends K> keyMapper,
+      Function<? super T, ? extends U> valueMapper,
+      Supplier<M> mapSupplier) {
 
     return Collectors.toMap(keyMapper, valueMapper, throwingMerger(), mapSupplier);
   }
 
-  @Nonnull
   public static <K, U> Collector<Map.Entry<K, U>, ?, Map<K, U>> entriesToMap() {
     return Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue);
   }
 
-  @Nonnull
   public static <T, K extends Comparable<? super K>, U>
       Collector<T, ?, ImmutableSortedMap<K, U>> toImmutableSortedMap(
-          @Nonnull final Function<? super T, ? extends K> keyMapper,
-          @Nonnull final Function<? super T, ? extends U> valueMapper) {
+          Function<? super T, ? extends K> keyMapper,
+          Function<? super T, ? extends U> valueMapper) {
 
     return ImmutableSortedMap.toImmutableSortedMap(
         Comparator.<K>naturalOrder(), keyMapper, valueMapper);
   }
 
-  @Nonnull
-  public static <T, K> Collector<T, ?, Map<K, T>> indexingBy(
-      @Nonnull final Function<? super T, K> keyMapper) {
+  public static <T, K> Collector<T, ?, Map<K, T>> indexingBy(Function<? super T, K> keyMapper) {
     requireNonNull(keyMapper);
     return Collectors.toMap(keyMapper, identity());
   }
 
-  @Nonnull
   public static <T, K extends Identifiable<ID>, ID> Collector<T, ?, Map<ID, T>> indexingByIdOf(
-      @Nonnull final Function<? super T, K> keyMapper) {
+      Function<? super T, K> keyMapper) {
     requireNonNull(keyMapper);
     return indexingBy(keyMapper.andThen(Identifiable::getId));
   }
 
-  @Nonnull
   public static <T, K extends Identifiable<ID>, ID>
-      Collector<T, ?, Map<ID, List<T>>> groupingByIdOf(
-          @Nonnull final Function<? super T, K> classifier) {
+      Collector<T, ?, Map<ID, List<T>>> groupingByIdOf(Function<? super T, K> classifier) {
     requireNonNull(classifier);
     return groupingBy(classifier.andThen(Identifiable::getId));
   }
 
-  @Nonnull
   public static <T, K> Collector<T, ?, Map<K, List<T>>> nullSafeGroupingBy(
-      @Nonnull final Function<? super T, K> classifier) {
+      Function<? super T, K> classifier) {
     requireNonNull(classifier);
 
     final BiConsumer<Map<K, List<T>>, T> accumulator =
@@ -94,10 +84,8 @@ public final class Collect {
     return Collector.of(HashMap::new, accumulator, mapCombiner());
   }
 
-  @Nonnull
   public static <T, K extends Identifiable<ID>, ID>
-      Collector<T, ?, Map<ID, List<T>>> nullSafeGroupingByIdOf(
-          @Nonnull final Function<? super T, K> classifier) {
+      Collector<T, ?, Map<ID, List<T>>> nullSafeGroupingByIdOf(Function<? super T, K> classifier) {
     requireNonNull(classifier);
 
     return nullSafeGroupingBy(
@@ -107,10 +95,8 @@ public final class Collect {
         });
   }
 
-  @Nonnull
   public static <K, V> Collector<V, ?, Map<K, V>> leastAfterGroupingBy(
-      @Nonnull final Function<? super V, ? extends K> classifier,
-      @Nonnull final Comparator<? super V> comparator) {
+      Function<? super V, ? extends K> classifier, Comparator<? super V> comparator) {
 
     requireNonNull(classifier, "classifier is null");
     requireNonNull(comparator, "comparator is null");
@@ -118,10 +104,8 @@ public final class Collect {
     return groupingBy(classifier, collectingAndThen(minBy(comparator), o -> o.orElse(null)));
   }
 
-  @Nonnull
   public static <K, V> Collector<V, ?, Map<K, V>> greatestAfterGroupingBy(
-      @Nonnull final Function<? super V, ? extends K> classifier,
-      @Nonnull final Comparator<? super V> comparator) {
+      Function<? super V, ? extends K> classifier, Comparator<? super V> comparator) {
 
     requireNonNull(classifier, "classifier is null");
     requireNonNull(comparator, "comparator is null");
@@ -129,41 +113,33 @@ public final class Collect {
     return groupingBy(classifier, collectingAndThen(maxBy(comparator), o -> o.orElse(null)));
   }
 
-  @Nonnull
   public static <T, V> Collector<T, ?, Map<T, V>> mappingTo(
-      @Nonnull final Function<? super T, ? extends V> valueMapper) {
+      Function<? super T, ? extends V> valueMapper) {
     requireNonNull(valueMapper);
     return Collectors.toMap(identity(), valueMapper);
   }
 
-  @Nonnull
   public static <T, U> Collector<T, ?, U> mappingAndCollectingFirst(
-      @Nonnull final Function<? super T, ? extends U> mapper) {
+      Function<? super T, ? extends U> mapper) {
     requireNonNull(mapper);
     return mapping(
         mapper, collectingAndThen(Collectors.toList(), list -> Iterables.getFirst(list, null)));
   }
 
-  @Nonnull
   public static <ID, T extends Identifiable<ID>> Collector<T, ?, List<ID>> idList() {
     return toListBy(nonNullIdAccumulator());
   }
 
-  @Nonnull
   public static <ID, T extends Identifiable<ID>> Collector<T, ?, Set<ID>> idSet() {
     return toSetBy(nonNullIdAccumulator());
   }
 
-  @Nonnull
-  public static <T, U> Collector<T, List<U>, List<U>> toListBy(
-      @Nonnull final BiConsumer<List<U>, T> accumulator) {
+  public static <T, U> Collector<T, List<U>, List<U>> toListBy(BiConsumer<List<U>, T> accumulator) {
     requireNonNull(accumulator);
     return Collector.of(ArrayList::new, accumulator, collectionCombiner());
   }
 
-  @Nonnull
-  public static <T, U> Collector<T, Set<U>, Set<U>> toSetBy(
-      @Nonnull final BiConsumer<Set<U>, T> accumulator) {
+  public static <T, U> Collector<T, Set<U>, Set<U>> toSetBy(BiConsumer<Set<U>, T> accumulator) {
     requireNonNull(accumulator);
     return Collector.of(HashSet::new, accumulator, collectionCombiner());
   }

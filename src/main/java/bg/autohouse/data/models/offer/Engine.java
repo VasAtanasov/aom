@@ -23,7 +23,11 @@ public class Engine extends BaseUuidEntity {
 
   @MapsId
   @OneToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "id")
+  @JoinColumn(
+      name = "id",
+      nullable = false,
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "fk_engine_vehicle_id"))
   private Vehicle vehicle;
 
   @Column(name = "fuel_type", nullable = false)

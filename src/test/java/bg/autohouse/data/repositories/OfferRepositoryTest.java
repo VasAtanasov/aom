@@ -75,13 +75,13 @@ public class OfferRepositoryTest {
   @Test
   void whenOfferFilter_byMaker_shouldReturnCollection() {
     Maker maker = Maker.builder().id(23L).name("Cupra").build();
-    Filter filter = Filter.builder().maker(maker).build();
+    Filter filter = Filter.builder().makerName(maker.getName()).makerId(maker.getId()).build();
 
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
 
     List<Offer> offers = offerRepository.findAll(offerSpecification);
 
-    assertThat(offers).allMatch(offer -> offer.getVehicle().getMaker().equals(maker));
+    assertThat(offers).allMatch(offer -> offer.getVehicle().getMakerName().equals(maker.getName()));
   }
 
   @Test

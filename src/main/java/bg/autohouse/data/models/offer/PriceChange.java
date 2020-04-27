@@ -21,7 +21,7 @@ public class PriceChange extends BaseLongEntity {
   @JoinColumn(
       name = "offer_id",
       referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_price_change_offer_id"))
+      foreignKey = @ForeignKey(name = "fk_price_change_offer_id"))
   private Offer offer;
 
   @Column(name = "price", nullable = false)

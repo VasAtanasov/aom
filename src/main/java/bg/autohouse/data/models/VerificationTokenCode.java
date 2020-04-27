@@ -3,6 +3,7 @@ package bg.autohouse.data.models;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +27,8 @@ public class VerificationTokenCode extends BaseLongEntity {
   @Column(name = "username", nullable = false)
   private String username;
 
-  @Column(name = "user_id")
-  private String userId;
+  @Column(name = "user_id", columnDefinition = "BINARY(16)")
+  private UUID userId;
 
   @Column(name = "code", nullable = false)
   protected String code;
@@ -38,7 +39,7 @@ public class VerificationTokenCode extends BaseLongEntity {
   @Column(name = "token_access_attempts")
   private int tokenAccessAttempts = 0;
 
-  public VerificationTokenCode(String username, String code, String userId) {
+  public VerificationTokenCode(String username, String code, UUID userId) {
     Objects.requireNonNull(username);
     Objects.requireNonNull(code);
     this.code = code;

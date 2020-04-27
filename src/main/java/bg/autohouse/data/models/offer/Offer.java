@@ -2,12 +2,9 @@ package bg.autohouse.data.models.offer;
 
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
-import bg.autohouse.data.models.EntityDetails;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.ContactDetails;
 import bg.autohouse.data.models.geo.Location;
-import bg.autohouse.util.TimeUtils;
-import java.util.Date;
 import javax.persistence.*;
 import lombok.*;
 
@@ -18,13 +15,23 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = EntityConstants.OFFERS)
-public class Offer extends BaseUuidEntity implements EntityDetails {
+@Table(
+    name = EntityConstants.OFFERS,
+    indexes = {
+      @Index(name = "idx_" + EntityConstants.OFFERS + "_account_id", columnList = "account_id")
+    })
+public class Offer extends BaseUuidEntity {
+  // TODO list of images
+  // TODO list of price changes
 
   private static final long serialVersionUID = -2840866963962522737L;
 
   @ManyToOne(targetEntity = Account.class, fetch = FetchType.LAZY)
-  @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+  @JoinColumn(
+      name = "account_id",
+      nullable = false,
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "fk_offer_account_id"))
   private Account account;
 
   @OneToOne(
@@ -40,10 +47,6 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer price = 0;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "price_modified_on")
-  private Date priceModifiedOn;
-
   @Column(name = "hit_count", columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer hitCount = 0;
 
@@ -56,33 +59,16 @@ public class Offer extends BaseUuidEntity implements EntityDetails {
   @Column(name = "is_active")
   private boolean isActive = true;
 
-  @Column(name = "is_deleted")
-  private boolean isDeleted = false;
-
-  @Column(name = "is_expired")
-  private boolean isExpired = false;
-
-  // TODO foreign key names
   @ManyToOne
-  @JoinColumn(name = "location_id", nullable = false, updatable = true)
+  @JoinColumn(
+      name = "location_id",
+      nullable = false,
+      updatable = true,
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "fk_offer_location_id"))
   private Location location;
 
   @Embedded private ContactDetails contactDetails;
-
-  @Transient private Integer previousPrice;
-
-  @PreUpdate
-  private void doBeforeUpdate() {
-    int areEqualPrices = Integer.compare(previousPrice, price);
-    if (areEqualPrices != 0) {
-      priceModifiedOn = TimeUtils.now();
-    }
-  }
-
-  @PostLoad
-  private void storePriceState() {
-    previousPrice = price;
-  }
 
   public void incrementHitCount() {
     hitCount += 1;

@@ -4,7 +4,6 @@ import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.account.Account_;
 import bg.autohouse.data.models.enums.*;
 import bg.autohouse.data.models.offer.Engine_;
-import bg.autohouse.data.models.offer.ManufactureDate_;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.models.offer.Offer_;
 import bg.autohouse.data.models.offer.Vehicle_;
@@ -26,29 +25,27 @@ public class OfferSpecifications {
 
       if (currentQueryIsCountRecords(query)) {
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.engine, JoinType.LEFT);
-        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.maker, JoinType.LEFT);
-        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.model, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.feature, JoinType.LEFT);
         root.join(Offer_.account, JoinType.LEFT);
       } else {
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
-        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.maker, JoinType.LEFT);
-        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.model, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
         root.fetch(Offer_.account, JoinType.LEFT);
       }
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
-      restrictions.add(cb.equal(root.get(Offer_.isExpired), Boolean.FALSE));
-      restrictions.add(cb.equal(root.get(Offer_.isDeleted), Boolean.FALSE));
 
-      if (Assert.has(filter.getMaker())) {
-        restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.maker), filter.getMaker()));
+      if (Assert.has(filter.getMakerName())) {
+        restrictions.add(
+            cb.equal(root.get(Offer_.vehicle).get(Vehicle_.makerName), filter.getMakerName()));
       }
 
-      if (Assert.has(filter.getModel())) {
-        restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.model), filter.getModel()));
+      if (Assert.has(filter.getModelName())) {
+        restrictions.add(
+            cb.equal(root.get(Offer_.vehicle).get(Vehicle_.modelName), filter.getModelName()));
       }
+
+      // TODO add trim
 
       if (Assert.has(filter.getFuelType())) {
         restrictions.add(
@@ -127,7 +124,7 @@ public class OfferSpecifications {
 
       restrictions.add(
           cb.between(
-              root.get(Offer_.vehicle).get(Vehicle_.manufactureDate).get(ManufactureDate_.year),
+              root.get(Offer_.vehicle).get(Vehicle_.year),
               filter.getRegistrationYear().getFrom(),
               filter.getRegistrationYear().getTo()));
 
