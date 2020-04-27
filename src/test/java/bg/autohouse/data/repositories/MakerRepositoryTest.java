@@ -3,9 +3,7 @@ package bg.autohouse.data.repositories;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bg.autohouse.data.models.Maker;
-import bg.autohouse.data.models.Model;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,11 +43,5 @@ public class MakerRepositoryTest {
   void whenFindById_ShouldReturnAll() {
     Optional<Maker> maker = makerRepository.findById(2L);
     assertThat(maker).isNotEmpty();
-  }
-
-  @Test
-  void when_modelsByMaker_shouldReturnMap() {
-    Map<Long, List<Model>> makerMap = makerRepository.modelsByMaker();
-    assertThat(makerMap).isNotEmpty();
   }
 }
