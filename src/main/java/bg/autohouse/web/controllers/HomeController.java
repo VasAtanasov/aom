@@ -5,6 +5,7 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.InitialStateModel;
 import bg.autohouse.service.services.InitialStateService;
+import bg.autohouse.service.services.LocationService;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.response.ResponseWrapper;
 import bg.autohouse.web.util.RestUtil;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(WebConfiguration.URL_VEHICLES)
+@RequestMapping(WebConfiguration.URL_INDEX)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class HomeController extends BaseController {
 
   private final InitialStateService initialStateService;
+  private final LocationService locationService;
 
   @GetMapping(
       value = "/state",
@@ -28,5 +30,12 @@ public class HomeController extends BaseController {
   public ResponseEntity<ResponseWrapper> getInitialState() {
     InitialStateModel initialState = initialStateService.getInitialState();
     return RestUtil.okResponse(RestMessage.INITIAL_STATE_GET_SUCCESSFUL, initialState);
+  }
+
+  @GetMapping(
+      value = "/locations/list",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getLocationsList() {
+    return RestUtil.okResponse(locationService.loadAllLocations());
   }
 }

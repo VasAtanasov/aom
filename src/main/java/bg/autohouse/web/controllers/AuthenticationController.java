@@ -112,6 +112,7 @@ public class AuthenticationController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request) {
     UserRegisterServiceModel model = modelMapper.map(request, UserRegisterServiceModel.class);
+    // TODO check if already logged in
     if (ifExists(model.getUsername())) {
       log.info(
           "Creating a verifier for user with email ={}, user already exists.", model.getUsername());

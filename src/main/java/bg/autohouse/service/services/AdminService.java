@@ -1,6 +1,5 @@
 package bg.autohouse.service.services;
 
-import bg.autohouse.data.projections.geo.LocationId;
 import bg.autohouse.data.projections.user.UserIdUsername;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.account.AccountCreateServiceModel;
@@ -11,8 +10,6 @@ public interface AdminService {
   List<UserServiceModel> bulkRegisterUsers(UUID adminId, List<String> usernames);
 
   List<UserIdUsername> loadAllUsers();
-
-  List<LocationId> loadAllLocations();
 
   int bulkCreateAccounts(UUID id, List<AccountCreateServiceModel> mapAll);
 }

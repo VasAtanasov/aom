@@ -38,11 +38,6 @@ public class AdminController {
     return RestUtil.okResponse(adminService.loadAllUsers());
   }
 
-  @GetMapping(value = "/locations/list")
-  public ResponseEntity<?> getLocationsList() {
-    return RestUtil.okResponse(adminService.loadAllLocations());
-  }
-
   @PostMapping(value = "/users/bulk")
   public ResponseEntity<?> bulkInsert(@Valid @RequestBody ListWrapper list, @LoggedUser User user) {
     log.info("Inserting bulk emails");

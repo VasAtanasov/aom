@@ -8,7 +8,6 @@ import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.data.models.geo.Location;
-import bg.autohouse.data.projections.geo.LocationId;
 import bg.autohouse.data.projections.user.UserIdUsername;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.LocationRepository;
@@ -56,11 +55,6 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public List<UserIdUsername> loadAllUsers() {
     return userRepository.getAllUsers();
-  }
-
-  @Override
-  public List<LocationId> loadAllLocations() {
-    return locationRepository.getAllLocationIds();
   }
 
   // TODO not encoding password its degregating performance of application for batch

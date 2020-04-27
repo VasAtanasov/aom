@@ -59,7 +59,8 @@ public class WebSecurityConfiguration {
         "/api/auth/token/refresh",
         "/api/vehicles/state",
         "/api/vehicles/makers/**",
-        "/api/app-health"
+        "/api/app-health",
+        "/api/locations/list"
       };
 
   public static final String H2_CONSOLE = "/h2-console/**";
