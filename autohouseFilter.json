@@ -4,7 +4,6 @@
   "bodyStyle": null,
   "color": null,
   "drive": null,
-  "euroStandard": null,
   "fuelType": null,
   "transmission": null,
   "doors": {
@@ -34,6 +33,5 @@
   "feature": [],
   "seller": [],
   "state": [],
-  "upholstery": [],
   "hasAccident": false
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// TODO refactor
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +21,6 @@ public class FilterRequest {
   private String transmission;
   private String bodyStyle;
   private String color;
-  private String euroStandard;
   private String drive;
   private Integer priceFrom;
   private Integer priceTo;
@@ -32,11 +32,8 @@ public class FilterRequest {
   private Integer seatsTo;
   private Integer registrationYearFrom;
   private Integer registrationYearTo;
-  private Integer horsePowerFrom;
-  private Integer horsePowerTo;
   @Builder.Default private List<String> feature = new ArrayList<>();
   @Builder.Default private List<String> seller = new ArrayList<>();
   @Builder.Default private List<String> state = new ArrayList<>();
-  @Builder.Default private List<String> upholstery = new ArrayList<>();
   private boolean hasAccident;
 }

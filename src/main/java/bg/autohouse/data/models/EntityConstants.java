@@ -38,7 +38,6 @@ public class EntityConstants {
   public static final Integer MILEAGE_TO = 10_000_000;
   public static final Integer DOORS_TO = 7;
   public static final Integer SEATS_TO = 12;
-  public static final Integer POWER_TO = 5000;
 
   public static final Integer YEAR_FROM = 1930;
   public static final Integer YEAR_TO = LocalDate.now().getYear();

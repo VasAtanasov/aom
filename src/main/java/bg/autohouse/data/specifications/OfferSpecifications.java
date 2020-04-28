@@ -3,7 +3,6 @@ package bg.autohouse.data.specifications;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.account.Account_;
 import bg.autohouse.data.models.enums.*;
-import bg.autohouse.data.models.offer.Engine_;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.models.offer.Offer_;
 import bg.autohouse.data.models.offer.Vehicle_;
@@ -24,11 +23,9 @@ public class OfferSpecifications {
       List<Predicate> restrictions = new ArrayList<>();
 
       if (currentQueryIsCountRecords(query)) {
-        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.engine, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.feature, JoinType.LEFT);
         root.join(Offer_.account, JoinType.LEFT);
       } else {
-        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.engine, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
         root.fetch(Offer_.account, JoinType.LEFT);
       }
@@ -49,9 +46,7 @@ public class OfferSpecifications {
 
       if (Assert.has(filter.getFuelType())) {
         restrictions.add(
-            cb.equal(
-                root.get(Offer_.vehicle).get(Vehicle_.engine).get(Engine_.fuelType),
-                filter.getFuelType()));
+            cb.equal(root.get(Offer_.vehicle).get(Vehicle_.fuelType), filter.getFuelType()));
       }
 
       if (Assert.has(filter.getTransmission())) {
@@ -67,13 +62,6 @@ public class OfferSpecifications {
 
       if (Assert.has(filter.getColor())) {
         restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.color), filter.getColor()));
-      }
-
-      if (Assert.has(filter.getEuroStandard())) {
-        restrictions.add(
-            cb.equal(
-                root.get(Offer_.vehicle).get(Vehicle_.engine).get(Engine_.euroStandard),
-                filter.getEuroStandard()));
       }
 
       if (Assert.has(filter.getDrive())) {
@@ -127,12 +115,6 @@ public class OfferSpecifications {
               root.get(Offer_.vehicle).get(Vehicle_.year),
               filter.getRegistrationYear().getFrom(),
               filter.getRegistrationYear().getTo()));
-
-      restrictions.add(
-          cb.between(
-              root.get(Offer_.vehicle).get(Vehicle_.engine).get(Engine_.power),
-              filter.getHorsePower().getFrom(),
-              filter.getHorsePower().getTo()));
 
       log.info(
           "Have generated {} predicates, look like: {}" + System.lineSeparator(),

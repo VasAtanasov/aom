@@ -3,7 +3,6 @@ package bg.autohouse.web.models.offer;
 import bg.autohouse.HibernateValidatorTest;
 import bg.autohouse.data.models.enums.*;
 import bg.autohouse.validation.ValidationMessages;
-import bg.autohouse.web.models.request.offer.EngineCreateRequest;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import bg.autohouse.web.models.request.offer.VehicleCreateRequest;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
       VehicleCreateRequest.builder()
           .makerId(1L)
           .modelId(1L)
-          .engine(EngineCreateRequest.of(FuelType.GASOLINE.name(), 100, EuroStandard.EURO6.name()))
+          .fuelType(FuelType.GASOLINE.name())
           .mileage(10)
           .seats(5)
           .doors(4)
@@ -41,7 +40,7 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
       VehicleCreateRequest.builder()
           .makerId(1L)
           .modelId(1L)
-          .engine(EngineCreateRequest.of(FuelType.GASOLINE.name(), 100, EuroStandard.EURO6.name()))
+          .fuelType(FuelType.GASOLINE.name())
           .mileage(10)
           .seats(5)
           .doors(4)
@@ -63,7 +62,7 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
       VehicleCreateRequest.builder()
           .makerId(1L)
           .modelId(1L)
-          .engine(EngineCreateRequest.of(INVALID_VALUE, 100, EuroStandard.EURO6.name()))
+          .fuelType(INVALID_VALUE)
           .mileage(10)
           .seats(5)
           .doors(4)
@@ -149,7 +148,7 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
                 .price(VALID_PRICE)
                 .description(VALID_DESCRIPTION)
                 .build(),
-            "vehicle.engine.fuelType",
+            "vehicle.fuelType",
             ValidationMessages.INVALID_FUEL_TYPE_NULL));
   }
 }

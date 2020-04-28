@@ -42,7 +42,7 @@ public class OfferServiceImplTest {
     Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
     List<Offer> offers =
         offerRepository.findAll().stream()
-            .filter(offer -> offer.getVehicle().getEngine().getFuelType().equals(FuelType.GASOLINE))
+            .filter(offer -> offer.getVehicle().getFuelType().equals(FuelType.GASOLINE))
             .collect(Collectors.toList());
 
     assertThat(page.getContent()).size().isEqualTo(offers.size());

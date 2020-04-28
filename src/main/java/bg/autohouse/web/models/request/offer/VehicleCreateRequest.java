@@ -4,12 +4,12 @@ import bg.autohouse.validation.offer.ValidBodyStyle;
 import bg.autohouse.validation.offer.ValidColor;
 import bg.autohouse.validation.offer.ValidDrive;
 import bg.autohouse.validation.offer.ValidFeatureList;
+import bg.autohouse.validation.offer.ValidFuelType;
 import bg.autohouse.validation.offer.ValidNumber;
 import bg.autohouse.validation.offer.ValidState;
 import bg.autohouse.validation.offer.ValidTransmission;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class VehicleCreateRequest {
   @NotNull private Long makerId;
   @NotNull private Long modelId;
 
-  @Valid private EngineCreateRequest engine;
+  @ValidFuelType private String fuelType;
 
   @ValidNumber(field = "mileage")
   private Integer mileage;

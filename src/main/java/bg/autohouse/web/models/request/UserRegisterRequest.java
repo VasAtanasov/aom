@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
+// TODO validate password length
+// TODO validate email
 @Data
 @Builder
 @MatchingFieldsConstraint(fields = {"password", "confirmPassword"})

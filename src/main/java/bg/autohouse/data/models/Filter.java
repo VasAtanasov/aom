@@ -6,7 +6,6 @@ import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Color;
 import bg.autohouse.data.models.enums.Drive;
-import bg.autohouse.data.models.enums.EuroStandard;
 import bg.autohouse.data.models.enums.Feature;
 import bg.autohouse.data.models.enums.FuelType;
 import bg.autohouse.data.models.enums.State;
@@ -61,10 +60,6 @@ public class Filter extends BaseUuidEntity {
   @Enumerated(EnumType.STRING)
   private Color color;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "euro_standard")
-  private EuroStandard euroStandard;
-
   @Column(name = "drive")
   @Enumerated(EnumType.STRING)
   private Drive drive;
@@ -108,14 +103,6 @@ public class Filter extends BaseUuidEntity {
   @Embedded
   @Builder.Default
   private RangeCriteria registrationYear = RangeCriteria.of(YEAR_FROM, YEAR_TO);
-
-  @AttributeOverrides({
-    @AttributeOverride(name = "from", column = @Column(name = "horsePower_from")),
-    @AttributeOverride(name = "to", column = @Column(name = "horsePower_to"))
-  })
-  @Embedded
-  @Builder.Default
-  private RangeCriteria horsePower = RangeCriteria.of(MIN_VALUE, POWER_TO);
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(

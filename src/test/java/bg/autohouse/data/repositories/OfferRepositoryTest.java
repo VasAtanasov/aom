@@ -58,7 +58,7 @@ public class OfferRepositoryTest {
     List<Offer> offers = offerRepository.findAll(offerSpecification);
 
     assertThat(offers)
-        .allMatch(offer -> offer.getVehicle().getEngine().getFuelType().equals(FuelType.GASOLINE));
+        .allMatch(offer -> offer.getVehicle().getFuelType().equals(FuelType.GASOLINE));
   }
 
   @Test

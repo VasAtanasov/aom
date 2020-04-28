@@ -14,7 +14,6 @@ public class TransmissionValidatorTest {
     void isValid_shouldReturnTrue_whenValidTransmission() {
       assertThat(isValid("Manual")).isTrue();
       assertThat(isValid("Automatic")).isTrue();
-      assertThat(isValid("SEMI_AUTOMATIC")).isTrue();
     }
   }
 

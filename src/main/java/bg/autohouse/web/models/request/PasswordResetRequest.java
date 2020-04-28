@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// TODO validate email
 @Getter
 @Setter
 @NoArgsConstructor

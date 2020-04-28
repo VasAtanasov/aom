@@ -3,7 +3,6 @@ package bg.autohouse.validation;
 import bg.autohouse.validation.offer.BodyStyleValidator;
 import bg.autohouse.validation.offer.ColorValidator;
 import bg.autohouse.validation.offer.DriveValidator;
-import bg.autohouse.validation.offer.EuroStandardValidator;
 import bg.autohouse.validation.offer.FeatureListValidator;
 import bg.autohouse.validation.offer.FuelTypeValidator;
 import bg.autohouse.validation.offer.StateValidator;
@@ -23,10 +22,6 @@ public class Validators {
 
   public static boolean isValidDrive(final String value) {
     return DriveValidator.validate(value);
-  }
-
-  public static boolean isValidEuroStandard(final String value) {
-    return EuroStandardValidator.validate(value);
   }
 
   public static boolean isValidFeatureList(final List<String> values) {

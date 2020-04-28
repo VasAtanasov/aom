@@ -35,13 +35,6 @@ public class Vehicle extends BaseUuidEntity {
       foreignKey = @ForeignKey(name = "fk_vehicle_offer_id"))
   private Offer offer;
 
-  @OneToOne(
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      mappedBy = "vehicle")
-  private Engine engine;
-
   @Column(name = "maker_name", nullable = false)
   private String makerName;
 
@@ -88,6 +81,10 @@ public class Vehicle extends BaseUuidEntity {
   @Column(name = "color")
   @Enumerated(EnumType.STRING)
   private Color color;
+
+  @Column(name = "fuel_type", nullable = false)
+  @Enumerated(EnumType.STRING)
+  private FuelType fuelType;
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(

@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.*;
 
+// TODO validate email
 @Getter
 @Setter
 @NoArgsConstructor
