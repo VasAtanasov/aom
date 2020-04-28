@@ -9,15 +9,13 @@ import lombok.Getter;
 @SelectCriteria
 public enum FuelType implements Textable {
   GASOLINE("Gasoline"),
+  FLEX_FUEL_VEHICLE("Flex Fuel Vehicle"),
   DIESEL("Diesel"),
-  ETHANOL("Ethanol"),
+  HYBRID("Hybrid"),
+  BIODIESEL("Biodiesel"),
   ELECTRIC("Electric"),
-  HYDROGEN("Hydrogen"),
-  LPG("LPG"),
-  CNG("CNG"),
-  ELECTRIC_GASOLINE("Electric/Gasoline"),
-  OTHERS("Others"),
-  ELECTRIC_DIESEL("Electric/Diesel");
+  COMPRESSED_NATURAL_GAS("Compressed Natural Gas"),
+  PLUG_IN_HYBRID("Plug-In Hybrid");
 
   private final String text;
 

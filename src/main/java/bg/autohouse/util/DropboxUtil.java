@@ -31,38 +31,6 @@ public final class DropboxUtil {
     return null;
   }
 
-  //   public static List<String> dropboxGetFiles(String code) {
-
-  //     DbxRequestConfig config = new DbxRequestConfig("Media Information Service Configuration");
-  //     DbxClientV2 client = new DbxClientV2(config, code);
-  //     ListFolderResult result = null;
-  //     List<String> elements = new LinkedList<String>();
-
-  //     try {
-  //         result = client.files().listFolderBuilder("/media").withRecursive(true).start();
-  //         while (true) {
-  //             for (Metadata metadata : result.getEntries()) {
-  //                 if (metadata instanceof FileMetadata) {
-  //                     elements.add(metadata.getName());
-  //                 }
-  //             }
-
-  //             if (!result.getHasMore()) {
-  //                 break;
-  //             }
-
-  //             result = client.files().listFolderContinue(result.getCursor());
-  //         }
-
-  //         //System.out.println(elements.toString());
-  //     } catch (DbxException e) {
-  //         e.printStackTrace();
-  //     }
-
-  //     return elements;
-
-  // }
-
   // public synchronized Metadata exists(String path) throws DbxException {
   //   // TODO validate path
   //   return client.files().getMetadata(path);
@@ -167,6 +135,38 @@ public final class DropboxUtil {
   //   } catch (DbxException e) {
   //     throw new DropboxException(e);
   //   }
+  // }
+
+  //   public static List<String> dropboxGetFiles(String code) {
+
+  //     DbxRequestConfig config = new DbxRequestConfig("Media Information Service Configuration");
+  //     DbxClientV2 client = new DbxClientV2(config, code);
+  //     ListFolderResult result = null;
+  //     List<String> elements = new LinkedList<String>();
+
+  //     try {
+  //         result = client.files().listFolderBuilder("/media").withRecursive(true).start();
+  //         while (true) {
+  //             for (Metadata metadata : result.getEntries()) {
+  //                 if (metadata instanceof FileMetadata) {
+  //                     elements.add(metadata.getName());
+  //                 }
+  //             }
+
+  //             if (!result.getHasMore()) {
+  //                 break;
+  //             }
+
+  //             result = client.files().listFolderContinue(result.getCursor());
+  //         }
+
+  //         //System.out.println(elements.toString());
+  //     } catch (DbxException e) {
+  //         e.printStackTrace();
+  //     }
+
+  //     return elements;
+
   // }
 
   // public DropboxMoveResult move(String remotePath, String newRemotePath) throws DropboxException

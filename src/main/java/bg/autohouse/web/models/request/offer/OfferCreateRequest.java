@@ -31,5 +31,6 @@ public class OfferCreateRequest {
   @NotBlank(message = ValidationMessages.MISSING_INVALID_DESCRIPTION)
   private String description;
 
+  @NotNull private Long locationId;
   @Builder.Default private List<MultipartFile> images = new ArrayList<>();
 }

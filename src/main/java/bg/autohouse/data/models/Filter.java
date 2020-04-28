@@ -89,14 +89,6 @@ public class Filter extends BaseUuidEntity {
   private RangeCriteria doors = RangeCriteria.of(MIN_VALUE, DOORS_TO);
 
   @AttributeOverrides({
-    @AttributeOverride(name = "from", column = @Column(name = "seats_from")),
-    @AttributeOverride(name = "to", column = @Column(name = "seats_to"))
-  })
-  @Embedded
-  @Builder.Default
-  private RangeCriteria seats = RangeCriteria.of(MIN_VALUE, SEATS_TO);
-
-  @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "registrationYear_from")),
     @AttributeOverride(name = "to", column = @Column(name = "registrationYear_to"))
   })

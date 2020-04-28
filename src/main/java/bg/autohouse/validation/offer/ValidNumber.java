@@ -18,7 +18,7 @@ public @interface ValidNumber {
 
   String message() default INVALID_NUMBER;
 
-  String field();
+  String field() default "";
 
   Class<?>[] groups() default {};
 

@@ -23,13 +23,13 @@ public class FilterRequestTest {
     FilterRequest filterRequestGasoline =
         FilterRequest.builder().fuelType(FuelType.GASOLINE.name()).build();
     FilterRequest filterRequestHydrogen =
-        FilterRequest.builder().fuelType(FuelType.HYDROGEN.name()).build();
+        FilterRequest.builder().fuelType(FuelType.HYBRID.name()).build();
 
     Filter filterGasoline = modelMapper.map(filterRequestGasoline, Filter.class);
     Filter filterHydrogen = modelMapper.map(filterRequestHydrogen, Filter.class);
 
     assertThat(filterGasoline.getFuelType()).isEqualTo(FuelType.GASOLINE);
-    assertThat(filterHydrogen.getFuelType()).isEqualTo(FuelType.HYDROGEN);
+    assertThat(filterHydrogen.getFuelType()).isEqualTo(FuelType.HYBRID);
   }
 
   @Test

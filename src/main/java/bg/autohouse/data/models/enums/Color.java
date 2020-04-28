@@ -8,19 +8,20 @@ import lombok.Getter;
 @AllArgsConstructor
 @SelectCriteria
 public enum Color implements Textable {
+  // TODO entity color (Colour groupName; displayName(entered by user))
   BLACK("Black"),
   GRAY("Gray"),
-  CREAM("Cream"),
-  LIGHT_BROWN("Light Brown"),
-  DARK_BROWN("Dark Brown"),
-  DARK_RED("Dark Red"),
-  RED("Red"),
-  DARK_BLUE("Dark Blue"),
-  LIGHT_BLUE("Light Blue"),
-  WHITE("White"),
-  ORANGE("Orange"),
   SILVER("Silver"),
-  GOLD("Gold");
+  RED("Red"),
+  WHITE("White"),
+  BLUE("Blue"),
+  GREEN("Green"),
+  BROWN("Brown"),
+  GOLD("Gold"),
+  PURPLE("Purple"),
+  TEAL("Teal"),
+  ORANGE("Orange"),
+  YELLOW("YELLOW");
 
   private final String text;
 

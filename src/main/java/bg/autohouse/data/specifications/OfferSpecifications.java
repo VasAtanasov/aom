@@ -106,12 +106,6 @@ public class OfferSpecifications {
 
       restrictions.add(
           cb.between(
-              root.get(Offer_.vehicle).get(Vehicle_.seats),
-              filter.getSeats().getFrom(),
-              filter.getSeats().getTo()));
-
-      restrictions.add(
-          cb.between(
               root.get(Offer_.vehicle).get(Vehicle_.year),
               filter.getRegistrationYear().getFrom(),
               filter.getRegistrationYear().getTo()));

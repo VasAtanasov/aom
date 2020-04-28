@@ -64,7 +64,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "mileage",
@@ -81,7 +81,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "seats",
@@ -98,7 +98,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "doors",
@@ -115,7 +115,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "state",
@@ -132,7 +132,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(INVALID_VALUE)
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "transmission",
@@ -149,7 +149,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(INVALID_VALUE)
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "drive",
@@ -183,7 +183,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(INVALID_VALUE)
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "bodyStyle",
@@ -200,7 +200,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(validFeatures)
                 .build(),
             "fuelType",
@@ -217,7 +217,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(invalidFeatures)
                 .build(),
             "features",
@@ -234,7 +234,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .bodyStyle(BodyStyle.CONVERTIBLE.name())
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
-                .color(Color.DARK_RED.name())
+                .color(Color.RED.name())
                 .features(new ArrayList<>())
                 .build(),
             "features",

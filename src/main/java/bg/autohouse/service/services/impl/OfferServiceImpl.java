@@ -3,7 +3,6 @@ package bg.autohouse.service.services.impl;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
-import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.service.models.offer.OfferServiceModel;
@@ -20,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,9 +54,121 @@ public class OfferServiceImpl implements OfferService {
         filter.setModelId(filterRequest.getModelId());
       }
     }
-    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
     return offerRepository
-        .findAll(offerSpecification, pageable)
+        .findAll(where(OfferSpecifications.getOffersByFilter(filter)), pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
   }
+
+  // @Override
+  // public boolean createOffer(OfferCreateServiceModel offerCreateServiceModel, String
+  // userUsername) {
+  //     VehicleCreateServiceModel vehicleCreateServiceModel = offerCreateServiceModel.getVehicle();
+  //     EngineCreateServiceModel engineCreateServiceModel =
+  // offerCreateServiceModel.getVehicle().getEngine();
+
+  //     Offer offer = modelMapper.map(offerCreateServiceModel, Offer.class);
+  //     offer.setVehicle(null);
+
+  //     User user = userRepository.findByUsername(userUsername)
+  //             .orElseThrow(() -> new UsernameNotFoundException(EXCEPTION_USER_NOT_FOUND));
+  //     user.addOffer(offer);
+
+  //     Location location = locationRepository.findById(offerCreateServiceModel.getLocation())
+  //             .orElseThrow(() -> new NotFoundException(EXCEPTION_LOCATION_NOT_FOUND));
+  //     location.addOffer(offer);
+
+  //     offerCreateServiceModel.getFiles()
+  //             .stream()
+  //             .filter(multipartFile -> multipartFile.getSize() > 0)
+  //             .map(multipartFile -> {
+  //                 Map<String, Object> params =
+  // cloudService.uploadFileAndGetParams(multipartFile);
+  //                 return params.get("url").toString();
+  //             })
+  //             .forEach(url -> {
+  //                 Image image = Image.builder()
+  //                         .url(url)
+  //                         .thumbnailUrl(url)
+  //                         .build();
+
+  //                 offer.addImage(image);
+  //             });
+
+  //     Offer persistedOffer = offerRepository.save(offer);
+
+  //     Vehicle vehicle = modelMapper.map(offerCreateServiceModel.getVehicle(), Vehicle.class);
+  //     vehicle.setVehicleType(VehicleCategory.CAR);
+
+  //     State state = EnumUtils.fromString(vehicleCreateServiceModel.getState(), State.class);
+  //     vehicle.setState(state);
+
+  //     Maker maker = makerRepository.findById(offerCreateServiceModel.getVehicle().getMaker())
+  //             .orElseThrow(() -> new NotFoundException(EXCEPTION_MAKER_NOT_FOUND));
+  //     vehicle.setMaker(maker);
+
+  //     Model model = maker.getModels().stream()
+  //             .filter(m -> m.getId().equals(offerCreateServiceModel.getVehicle().getModel()))
+  //             .findFirst()
+  //             .orElseThrow(() -> new NotFoundException(EXCEPTION_MODEL_NOT_FOUND));
+  //     vehicle.setModel(model);
+
+  //     BodyStyle bodyStyle = EnumUtils.fromString(vehicleCreateServiceModel.getBodyStyle(),
+  // BodyStyle.class);
+  //     vehicle.setBodyStyle(bodyStyle);
+
+  //     Drive drive = EnumUtils.fromString(vehicleCreateServiceModel.getDrive(), Drive.class);
+  //     vehicle.setDrive(drive);
+
+  //     Transmission transmission =
+  // EnumUtils.fromString(vehicleCreateServiceModel.getTransmission(), Transmission.class);
+  //     vehicle.setTransmission(transmission);
+
+  //     List<Color> colors = colorRepository.findAll();
+
+  //     Color interiorColor = colors.stream()
+  //             .filter(color ->
+  // color.getId().equals(vehicleCreateServiceModel.getInteriorColor()))
+  //             .findFirst()
+  //             .orElse(null);
+
+  //     vehicle.setInteriorColor(interiorColor);
+
+  //     Color exteriorColor = colors.stream()
+  //             .filter(color ->
+  // color.getId().equals(vehicleCreateServiceModel.getExteriorColor()))
+  //             .findFirst()
+  //             .orElse(null);
+
+  //     vehicle.setExteriorColor(exteriorColor);
+
+  //     featureRepository.findAll()
+  //             .stream()
+  //             .filter(feature ->
+  // offerCreateServiceModel.getVehicle().getFeatures().contains(feature.getId()))
+  //             .forEach(vehicle::addFeature);
+
+  //     Engine engine = vehicle.getEngine();
+
+  //     FuelType fuelType = EnumUtils.fromString(engineCreateServiceModel.getFuelType(),
+  // FuelType.class);
+  //     engine.setFuelType(fuelType);
+
+  //     PowerType powerType = EnumUtils.fromString(engineCreateServiceModel.getPowerType(),
+  // PowerType.class);
+  //     engine.setPowerType(powerType);
+
+  //     EuroStandard euroStandard =
+  // EnumUtils.fromString(engineCreateServiceModel.getEuroStandard(), EuroStandard.class);
+  //     engine.setEuroStandard(euroStandard);
+
+  //     vehicle.setOffer(persistedOffer);
+  //     persistedOffer.setVehicle(vehicle);
+
+  //     vehicle.setEngine(engine);
+  //     engine.setVehicle(vehicle);
+
+  //     offerRepository.flush();
+
+  //     return true;
+  // }
 }

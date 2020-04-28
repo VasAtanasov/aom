@@ -54,10 +54,7 @@ public class Vehicle extends BaseUuidEntity {
   private Integer year;
 
   @Column(name = "mileage", columnDefinition = "INT UNSIGNED DEFAULT(0)")
-  private Integer mileage = 0;
-
-  @Column(name = "seats", columnDefinition = "INT UNSIGNED DEFAULT(0)")
-  private Integer seats;
+  private Integer mileage;
 
   @Column(name = "doors", columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer doors;

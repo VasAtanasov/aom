@@ -15,7 +15,6 @@ public class FuelTypeValidatorTest {
       assertThat(isValid("Diesel")).isTrue();
       assertThat(isValid("diesel")).isTrue();
       assertThat(isValid("Gasoline")).isTrue();
-      assertThat(isValid("Electric_Gasoline")).isTrue();
     }
   }
 

@@ -10,16 +10,15 @@ import lombok.*;
 public class OfferServiceModel {
   private String id;
   private String vehicleState;
-  private Integer vehicleManufactureDateYear;
+  private Integer vehicleYear;
   private String vehicleMakerName;
   private String vehicleModelName;
-  private String vehicleEngineFuelType;
+  private String vehicleFuelType;
   private Integer vehicleMileage;
   private Integer price;
   private String vehicleTransmission;
   private String locationName;
   private String vehicleBodyStyle;
-  private String createdAT;
+  private String createdAt;
   private String thumbnail;
-  private Integer vehicleEnginePower;
 }

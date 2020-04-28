@@ -8,21 +8,19 @@ import lombok.Getter;
 @AllArgsConstructor
 @SelectCriteria
 public enum BodyStyle implements Textable {
-  CROSSOVER("Crossover"),
-  SUV("SUV"),
-  VAN("Van"),
   COUPE("Coupe"),
   CONVERTIBLE("Convertible"),
-  SEDAN("Sedan"),
-  PICKUP("Pickup"),
-  MINIVAN("Minivan"),
-  WAGON("Wagon"),
+  CROSSOVER("Crossover"),
   HATCHBACK("Hatchback"),
+  MINIVAN("Minivan"),
+  PICKUP("Pickup"),
+  SEDAN("Sedan"),
+  SUV("SUV"),
+  VAN("Van"),
+  WAGON("Wagon"),
   // TOOD remove below types
-  MPV("MPV"),
-  CPO("CPO"),
-  HYBRID("Hybrid"),
   LUXURY("Luxury"),
+  MPV("MPV"),
   TRUCK("Truck"),
   SPORT("Sport"),
   OTHER("Other");

@@ -10,6 +10,7 @@ import bg.autohouse.validation.offer.ValidState;
 import bg.autohouse.validation.offer.ValidTransmission;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,10 +24,14 @@ import lombok.Setter;
 @AllArgsConstructor(staticName = "of")
 @Builder
 public class VehicleCreateRequest {
+  @NotNull @NotEmpty private String makerName;
   @NotNull private Long makerId;
+  @NotNull @NotEmpty private String modelName;
   @NotNull private Long modelId;
+  @NotNull @NotEmpty private String trim;
 
-  @ValidFuelType private String fuelType;
+  @ValidNumber(field = "year")
+  private Integer year;
 
   @ValidNumber(field = "mileage")
   private Integer mileage;
@@ -42,6 +47,7 @@ public class VehicleCreateRequest {
   @ValidTransmission private String transmission;
   @ValidDrive private String drive;
   @ValidColor private String color;
+  @ValidFuelType private String fuelType;
 
   @ValidFeatureList @Builder.Default private List<String> features = new ArrayList<>();
 

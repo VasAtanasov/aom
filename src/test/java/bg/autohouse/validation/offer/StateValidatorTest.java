@@ -14,7 +14,6 @@ public class StateValidatorTest {
     void isValid_shouldReturnTrue_whenValidState() {
       assertThat(isValid("new")).isTrue();
       assertThat(isValid("used")).isTrue();
-      assertThat(isValid("accident")).isTrue();
     }
   }
 

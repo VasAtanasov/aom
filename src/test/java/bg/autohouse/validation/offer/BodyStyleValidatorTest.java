@@ -16,8 +16,6 @@ public class BodyStyleValidatorTest {
       assertThat(isValid("CONVERTIBLE")).isTrue();
       assertThat(isValid("PICKUP")).isTrue();
       assertThat(isValid("SEDAN")).isTrue();
-      assertThat(isValid("HYBRID")).isTrue();
-      assertThat(isValid("OTHER")).isTrue();
     }
   }
 

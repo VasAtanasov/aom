@@ -10,7 +10,7 @@ import lombok.Getter;
 public enum State implements Textable {
   NEW("New"),
   USED("Used"),
-  ACCIDENT("Accident");
+  CPO("Certified Pre-Owned");
 
   private final String text;
 
