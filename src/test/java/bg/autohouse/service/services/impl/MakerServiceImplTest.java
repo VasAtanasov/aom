@@ -9,7 +9,7 @@ import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
-import bg.autohouse.service.models.ModelTrimsServicesMode;
+import bg.autohouse.service.models.ModelTrimsServicesModel;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.web.enums.RestMessage;
 import java.util.List;
@@ -90,7 +90,7 @@ public class MakerServiceImplTest {
 
   @Test
   void whenFindModelsForMaker_shouldReturnAllModels() {
-    List<ModelTrimsServicesMode> models = makerService.getMakerModelsTrims(2L);
+    List<ModelTrimsServicesModel> models = makerService.getMakerModelsTrims(2L);
     assertThat(models).isNotNull();
   }
 

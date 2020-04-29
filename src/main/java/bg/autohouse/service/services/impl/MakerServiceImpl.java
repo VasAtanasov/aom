@@ -5,11 +5,12 @@ import bg.autohouse.data.models.Model;
 import bg.autohouse.data.repositories.MakerRepository;
 import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.errors.MakerNotFoundException;
+import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
-import bg.autohouse.service.models.ModelTrimsServicesMode;
+import bg.autohouse.service.models.ModelTrimsServicesModel;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
@@ -78,9 +79,9 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<ModelTrimsServicesMode> getMakerModelsTrims(Long makerId) {
+  public List<ModelTrimsServicesModel> getMakerModelsTrims(Long makerId) {
     return modelMapper.mapAll(
-        modelRepository.findAllByMakerId(makerId), ModelTrimsServicesMode.class);
+        modelRepository.findAllByMakerId(makerId), ModelTrimsServicesModel.class);
   }
 
   @Override
@@ -92,5 +93,15 @@ public class MakerServiceImpl implements MakerService {
     Maker maker = modelMapper.map(makerServiceModel, Maker.class);
     makerRepository.save(maker);
     return modelMapper.map(maker, MakerServiceModel.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public ModelTrimsServicesModel getModel(String makerName, String modelName) {
+    Model model =
+        modelRepository
+            .findByNameAndMakerName(modelName, makerName)
+            .orElseThrow(NotFoundException::new);
+    return modelMapper.map(model, ModelTrimsServicesModel.class);
   }
 }

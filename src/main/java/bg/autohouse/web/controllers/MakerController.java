@@ -6,6 +6,7 @@ import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
+import bg.autohouse.service.models.ModelTrimsServicesModel;
 import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
@@ -13,6 +14,7 @@ import bg.autohouse.web.models.request.MakerCreateRequestModel;
 import bg.autohouse.web.models.request.ModelCreateRequestModel;
 import bg.autohouse.web.models.response.MakerResponseModel;
 import bg.autohouse.web.models.response.MakerResponseWrapper;
+import bg.autohouse.web.models.response.ModelTrimsResponseModel;
 import bg.autohouse.web.util.RestUtil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,6 +68,16 @@ public class MakerController extends BaseController {
     MakerModelServiceModel model = makerService.getOne(makerId);
     MakerResponseWrapper maker = modelMapper.map(model, MakerResponseWrapper.class);
     return RestUtil.okResponse(RestMessage.MAKER_GET_SUCCESSFUL, toMap("maker", maker));
+  }
+
+  @GetMapping(
+      value = "/{makerName}/{modelName}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getByMakerNameModelName(
+      @Valid @PathVariable String makerName, @Valid @PathVariable String modelName) {
+    ModelTrimsServicesModel model = makerService.getModel(makerName, modelName);
+    ModelTrimsResponseModel response = modelMapper.map(model, ModelTrimsResponseModel.class);
+    return RestUtil.okResponse(RestMessage.MODEL_GET_SUCCESSFUL, toMap("model", response));
   }
 
   @PreAuthorize("hasRole('ADMIN')")

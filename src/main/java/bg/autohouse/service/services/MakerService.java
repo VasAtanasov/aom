@@ -3,7 +3,7 @@ package bg.autohouse.service.services;
 import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
-import bg.autohouse.service.models.ModelTrimsServicesMode;
+import bg.autohouse.service.models.ModelTrimsServicesModel;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -18,7 +18,9 @@ public interface MakerService {
 
   MakerServiceModel addModelToMaker(@Nonnull Long makerId, ModelServiceModel modelServiceModel);
 
-  List<ModelTrimsServicesMode> getMakerModelsTrims(Long makerId);
+  List<ModelTrimsServicesModel> getMakerModelsTrims(Long makerId);
 
   MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel);
+
+  ModelTrimsServicesModel getModel(String makerName, String modelName);
 }

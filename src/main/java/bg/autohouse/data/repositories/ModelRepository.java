@@ -13,7 +13,11 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
 
   Stream<Model> findAllByMaker(Maker maker);
 
-  @Query("SELECT DISTINCT m FROM Model m LEFT JOIN FETCH m.trims t WHERE m.maker.id = :makerId")
+  @Query(
+      "SELECT DISTINCT m "
+          + "FROM Model m "
+          + "LEFT JOIN FETCH m.trims t "
+          + "WHERE m.maker.id = :makerId")
   Stream<Model> findAllByMakerId(Long makerId);
 
   @Query("SELECT DISTINCT m FROM Model m LEFT JOIN FETCH m.trims t WHERE m.id = :modelId")
@@ -21,12 +25,18 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
 
   @Query(
       value =
-          "SELECT DISTINCT t.year FROM auto_models as m LEFT JOIN auto_trims as t on m.id = t.model_id  WHERE m.id = :modelId order by t.year desc",
+          "SELECT DISTINCT t.year "
+              + "FROM auto_models as m "
+              + "LEFT JOIN auto_trims as t on m.id = t.model_id "
+              + "WHERE m.id = :modelId order by t.year desc",
       nativeQuery = true)
   Stream<Object[]> findAllYearsByModelId(Long modelId);
 
   @Query(
-      "SELECT DISTINCT m FROM Model m LEFT JOIN FETCH m.trims t WHERE m.id = :modelId AND t.year = :year")
+      "SELECT DISTINCT m "
+          + "FROM Model m "
+          + "LEFT JOIN FETCH m.trims t "
+          + "WHERE m.id = :modelId AND t.year = :year")
   Stream<Model> findAllByModelIdAndModelYear(Long modelId, Integer year);
 
   boolean existsByNameAndMakerId(String name, Long makerId);
@@ -36,4 +46,12 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
   Optional<Model> findByIdAndMakerId(Long id, Long makerId);
 
   Model findByName(String name);
+
+  @Query(
+      "SELECT DISTINCT m "
+          + "FROM Model m "
+          + "LEFT JOIN FETCH m.maker mk "
+          + "LEFT JOIN FETCH m.trims t "
+          + "WHERE m.name = :name AND mk.name = :makerName")
+  Optional<Model> findByNameAndMakerName(String name, String makerName);
 }

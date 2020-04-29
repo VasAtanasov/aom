@@ -36,9 +36,6 @@ public class VehicleCreateRequest {
   @ValidNumber(field = "mileage")
   private Integer mileage;
 
-  @ValidNumber(field = "seats")
-  private Integer seats;
-
   @ValidNumber(field = "doors")
   private Integer doors;
 

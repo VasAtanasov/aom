@@ -1,4 +1,4 @@
-package bg.autohouse.service.models;
+package bg.autohouse.web.models.response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class ModelTrimsServicesMode {
+@AllArgsConstructor
+public class ModelTrimsResponseModel {
   private Long id;
+  private Long makerId;
   private String name;
-  @Builder.Default private List<TrimServiceModel> trims = new ArrayList<>();
+  private String makerName;
+  @Builder.Default private List<TrimResponseModel> trims = new ArrayList<>();
 }
