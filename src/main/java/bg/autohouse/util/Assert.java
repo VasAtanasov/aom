@@ -2,6 +2,7 @@ package bg.autohouse.util;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import lombok.experimental.UtilityClass;
@@ -129,5 +130,12 @@ public class Assert implements Serializable {
 
   private static String nullSafeGet(Supplier<String> messageSupplier) {
     return (messageSupplier != null ? messageSupplier.get() : null);
+  }
+
+  public static void notNulls(List<?> collection, String message) {
+    has(collection);
+    if (collection.contains(null)) {
+      throw new IllegalArgumentException(message);
+    }
   }
 }

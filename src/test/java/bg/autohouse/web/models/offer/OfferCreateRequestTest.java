@@ -26,7 +26,7 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
           .transmission(Transmission.AUTOMATIC.name())
           .drive(Drive.ALL_WHEEL_DRIVE.name())
           .color(Color.RED.name())
-          .feature(
+          .features(
               Arrays.asList(
                   Feature.DRIVER_SIDE_AIRBAG.name(),
                   Feature.MULTI_FUNCTION_STEERING_WHEEL.name(),
@@ -47,7 +47,7 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
           .transmission(Transmission.AUTOMATIC.name())
           .drive(Drive.ALL_WHEEL_DRIVE.name())
           .color(Color.RED.name())
-          .feature(
+          .features(
               Arrays.asList(
                   Feature.DRIVER_SIDE_AIRBAG.name(),
                   Feature.MULTI_FUNCTION_STEERING_WHEEL.name(),
@@ -68,7 +68,7 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
           .transmission(Transmission.AUTOMATIC.name())
           .drive(Drive.ALL_WHEEL_DRIVE.name())
           .color(Color.RED.name())
-          .feature(
+          .features(
               Arrays.asList(
                   Feature.DRIVER_SIDE_AIRBAG.name(),
                   Feature.MULTI_FUNCTION_STEERING_WHEEL.name(),

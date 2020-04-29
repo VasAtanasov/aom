@@ -1,8 +1,8 @@
 @accounts = http://localhost:8007/api/accounts
 @auth = http://localhost:8007/api/auth
 @content-type = application/bg.autohouse.api-v1+json
-@token = Bearer eyJraWQiOiJlYjczOGUwOS05YTkwLTQ5M2UtOWM3ZS04OWMxYTVlY2VkMmEiLCJhbGciOiJIUzUxMiJ9.eyJST0xFIjoiQURNSU4sVVNFUixNT0RFUkFUT1IsUk9PVCIsIlVTRVJfVVNFUk5BTUUiOiJ2YXNAbWFpbC5jb20iLCJKV1RfVUlEIjoiYzhmY2VlMTEtNzYwMC00ZDEwLWJkYTktN2QzYTRlZmI4OGZhIiwiSldUX1RZUEUiOiJBUElfQ0xJRU5UIiwiVVNFUl9VSUQgIjoiOTE1NWI2ZDItODFmZS00Mzc1LWIyNmItMjA3OGU0NmQ3M2JmIiwiZXhwIjoxNTg5MDIzMTA5LCJpYXQiOjE1ODgxNTkxMDl9.RCtehOVR3WWffekkqUJ1FILE00FkITt3676-O0L2Ivfv61XyzrUR4rZsQgpoCGIxU1vOhuAXPKXY2AeEb_G8LA
-
+### Login
+# @name loggedUser
 POST {{auth}}/login HTTP/1.1
 Content-Type: {{content-type}}
 
@@ -11,6 +11,7 @@ Content-Type: {{content-type}}
     "password": "123"
 }
 
+@token = {{loggedUser.response.body.$.data.token}}
 ###
 
 POST {{accounts}}/private-create HTTP/1.1

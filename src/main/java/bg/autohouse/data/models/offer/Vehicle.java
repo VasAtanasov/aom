@@ -84,7 +84,7 @@ public class Vehicle extends BaseUuidEntity {
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
-      name = EntityConstants.PREFIX + "vehicle_feature",
+      name = EntityConstants.PREFIX + "vehicles_features",
       joinColumns =
           @JoinColumn(
               name = "vehicle_id",
@@ -92,7 +92,7 @@ public class Vehicle extends BaseUuidEntity {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_feature_vehicle_id")))
   @Column(name = "feature")
   @Enumerated(value = EnumType.STRING)
-  private List<Feature> feature = new ArrayList<>();
+  private List<Feature> features = new ArrayList<>();
 
   @Column(name = "has_accident")
   private boolean hasAccident = false;

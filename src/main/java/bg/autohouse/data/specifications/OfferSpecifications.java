@@ -23,10 +23,10 @@ public class OfferSpecifications {
       List<Predicate> restrictions = new ArrayList<>();
 
       if (currentQueryIsCountRecords(query)) {
-        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.feature, JoinType.LEFT);
+        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.features, JoinType.LEFT);
         root.join(Offer_.account, JoinType.LEFT);
       } else {
-        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.feature, JoinType.LEFT);
+        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.features, JoinType.LEFT);
         root.fetch(Offer_.account, JoinType.LEFT);
       }
 
@@ -74,7 +74,7 @@ public class OfferSpecifications {
               feature -> {
                 if (!Assert.has(feature)) return;
                 restrictions.add(
-                    cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.feature)));
+                    cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.features)));
               });
 
       if (!F.isNullOrEmpty(filter.getAccountTypes())) {

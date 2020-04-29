@@ -64,7 +64,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "mileage",
             String.format(ERROR_MESSAGE, "mileage")),
@@ -80,7 +80,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "doors",
             String.format(ERROR_MESSAGE, "doors")),
@@ -96,7 +96,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "state",
             ValidationMessages.INVALID_STATE),
@@ -112,7 +112,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(INVALID_VALUE)
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "transmission",
             ValidationMessages.INVALID_TRANSMISSION),
@@ -128,7 +128,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(INVALID_VALUE)
                 .color(Color.RED.name())
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "drive",
             ValidationMessages.INVALID_DRIVE),
@@ -144,7 +144,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(INVALID_VALUE)
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "color",
             ValidationMessages.INVALID_COLOR),
@@ -160,7 +160,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "bodyStyle",
             ValidationMessages.INVALID_BODY_STYLE),
@@ -176,7 +176,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(validFeatures)
+                .features(validFeatures)
                 .build(),
             "fuelType",
             ValidationMessages.INVALID_FUEL_TYPE_NULL),
@@ -192,9 +192,9 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(invalidFeatures)
+                .features(invalidFeatures)
                 .build(),
-            "feature",
+            "features",
             ValidationMessages.INVALID_FEATURE),
         Arguments.of(
             VehicleCreateRequest.builder()
@@ -208,7 +208,7 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
                 .transmission(Transmission.AUTOMATIC.name())
                 .drive(Drive.ALL_WHEEL_DRIVE.name())
                 .color(Color.RED.name())
-                .feature(new ArrayList<>())
+                .features(new ArrayList<>())
                 .build(),
             "features",
             ValidationMessages.INVALID_FEATURE));

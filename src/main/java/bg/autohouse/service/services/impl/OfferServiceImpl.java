@@ -17,6 +17,7 @@ import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.FilterRequest;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import java.util.List;
@@ -71,7 +72,6 @@ public class OfferServiceImpl implements OfferService {
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
   }
 
-  // TODO validate model
   @Override
   @Transactional
   public OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId) {
@@ -83,11 +83,19 @@ public class OfferServiceImpl implements OfferService {
         locationRepository
             .findById(request.getLocationId())
             .orElseThrow(LocationNotFoundException::new);
+    Vehicle vehicle = modelMapper.map(request.getVehicle(), Vehicle.class);
+    Assert.notNull(vehicle.getBodyStyle(), RestMessage.INVALID_BODY_STYLE.name());
+    Assert.notNull(vehicle.getColor(), RestMessage.INVALID_COLOR.name());
+    Assert.notNull(vehicle.getDrive(), RestMessage.INVALID_DRIVE.name());
+    Assert.notNull(vehicle.getFuelType(), RestMessage.INVALID_FUEL_TYPE.name());
+    Assert.notNull(vehicle.getState(), RestMessage.INVALID_VEHICLE_STATE.name());
+    Assert.notNull(vehicle.getTransmission(), RestMessage.INVALID_TRANSMISSION.name());
+    Assert.notNulls(vehicle.getFeatures(), RestMessage.INVALID_FEATURE.name());
+    request.setVehicle(null);
     Offer offer = modelMapper.map(request, Offer.class);
-    Vehicle vehicle = offer.getVehicle();
-    offer.setVehicle(null);
     offer.setLocation(location);
     offer.setAccount(account);
+    // TODO make thumbnail
     offer.setThumbnail("sdadadsa");
     offer = offerRepository.save(offer);
     offer.setVehicle(vehicle);
