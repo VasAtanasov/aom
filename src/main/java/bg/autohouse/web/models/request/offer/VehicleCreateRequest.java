@@ -46,7 +46,7 @@ public class VehicleCreateRequest {
   @ValidColor private String color;
   @ValidFuelType private String fuelType;
 
-  @ValidFeatureList @Builder.Default private List<String> features = new ArrayList<>();
+  @ValidFeatureList @Builder.Default private List<String> feature = new ArrayList<>();
 
   @Builder.Default private boolean hasAccident = false;
 }

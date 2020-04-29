@@ -17,7 +17,7 @@ public class OfferServiceModel {
   private Integer vehicleMileage;
   private Integer price;
   private String vehicleTransmission;
-  private String locationName;
+  private String locationCity;
   private String vehicleBodyStyle;
   private String createdAt;
   private String thumbnail;

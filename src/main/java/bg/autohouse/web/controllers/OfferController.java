@@ -3,6 +3,10 @@ package bg.autohouse.web.controllers;
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
+import bg.autohouse.data.models.User;
+import bg.autohouse.security.authentication.LoggedUser;
+import bg.autohouse.service.models.offer.OfferServiceModel;
+import bg.autohouse.service.services.OfferService;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class OfferController extends BaseController {
 
-  // private final OfferService offerService;
+  private final OfferService offerService;
   // private final ModelMapperWrapper modelMapper;
 
   @PostMapping(
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> createOffer(@Valid @RequestBody OfferCreateRequest createRequest) {
-    return ResponseEntity.ok().build();
+  public ResponseEntity<?> createOffer(
+      @Valid @RequestBody OfferCreateRequest createRequest, @LoggedUser User creator) {
+    OfferServiceModel offerServiceModel = offerService.createOffer(createRequest, creator.getId());
+    return ResponseEntity.ok(offerServiceModel);
   }
 }

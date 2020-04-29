@@ -53,7 +53,7 @@ public class User extends BaseUuidEntity implements UserDetails {
 
   @Column(name = "has_account")
   private boolean hasAccount = false;
-  // TODO move displayeNmae to user for displaying in review
+  // TODO move displayeNmae to user for displaying in reviews
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(
       name = EntityConstants.PREFIX + "user_role",

@@ -27,9 +27,8 @@ public class Vehicle extends BaseUuidEntity {
   private static final long serialVersionUID = -797198687403481966L;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @MapsId
   @JoinColumn(
-      name = "id",
+      name = "offer_id",
       nullable = false,
       referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "fk_vehicle_offer_id"))

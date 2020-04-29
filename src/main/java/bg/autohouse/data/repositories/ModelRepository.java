@@ -1,6 +1,5 @@
 package bg.autohouse.data.repositories;
 
-import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.Model;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
-
-  Stream<Model> findAllByMaker(Maker maker);
 
   @Query(
       "SELECT DISTINCT m "
@@ -27,7 +24,7 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
       value =
           "SELECT DISTINCT t.year "
               + "FROM auto_models as m "
-              + "LEFT JOIN auto_trims as t on m.id = t.model_id "
+              + "LEFT JOIN auto_trims as t on  m.id = t.model_id "
               + "WHERE m.id = :modelId order by t.year desc",
       nativeQuery = true)
   Stream<Object[]> findAllYearsByModelId(Long modelId);

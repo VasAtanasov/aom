@@ -3,15 +3,25 @@ package bg.autohouse.service.services.impl;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
+import bg.autohouse.data.models.account.Account;
+import bg.autohouse.data.models.geo.Location;
+import bg.autohouse.data.models.offer.Offer;
+import bg.autohouse.data.models.offer.Vehicle;
+import bg.autohouse.data.repositories.AccountRepository;
+import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.specifications.OfferSpecifications;
+import bg.autohouse.errors.AccountNotFoundException;
+import bg.autohouse.errors.LocationNotFoundException;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.FilterRequest;
+import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +38,8 @@ public class OfferServiceImpl implements OfferService {
 
   private final OfferRepository offerRepository;
   private final ModelMapperWrapper modelMapper;
+  private final LocationRepository locationRepository;
+  private final AccountRepository accountRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -59,9 +71,29 @@ public class OfferServiceImpl implements OfferService {
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
   }
 
-  // @Override
-  // public boolean createOffer(OfferCreateServiceModel offerCreateServiceModel, String
-  // userUsername) {
+  // TODO validate model
+  @Override
+  @Transactional
+  public OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId) {
+    Assert.notNull(creatorId, "User id is required");
+    Assert.notNull(request, "Offer model is required");
+    Account account =
+        accountRepository.findByUserId(creatorId).orElseThrow(AccountNotFoundException::new);
+    Location location =
+        locationRepository
+            .findById(request.getLocationId())
+            .orElseThrow(LocationNotFoundException::new);
+    Offer offer = modelMapper.map(request, Offer.class);
+    Vehicle vehicle = offer.getVehicle();
+    offer.setVehicle(null);
+    offer.setLocation(location);
+    offer.setAccount(account);
+    offer.setThumbnail("sdadadsa");
+    offer = offerRepository.save(offer);
+    offer.setVehicle(vehicle);
+    vehicle.setOffer(offer);
+    return modelMapper.map(offer, OfferServiceModel.class);
+  }
   //     VehicleCreateServiceModel vehicleCreateServiceModel = offerCreateServiceModel.getVehicle();
   //     EngineCreateServiceModel engineCreateServiceModel =
   // offerCreateServiceModel.getVehicle().getEngine();
