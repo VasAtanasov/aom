@@ -8,13 +8,12 @@ import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,9 +27,9 @@ public class OfferController extends BaseController {
 
   @PostMapping(
       produces = {APP_V1_MEDIA_TYPE_JSON},
-      consumes = {APP_V1_MEDIA_TYPE_JSON, MediaType.MULTIPART_FORM_DATA_VALUE})
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<?> createOffer(
-      @Valid @RequestBody OfferCreateRequest createRequest, @LoggedUser User creator) {
+      @ModelAttribute OfferCreateRequest createRequest, @LoggedUser User creator) {
     OfferServiceModel offerServiceModel = offerService.createOffer(createRequest, creator.getId());
     return ResponseEntity.ok(offerServiceModel);
   }

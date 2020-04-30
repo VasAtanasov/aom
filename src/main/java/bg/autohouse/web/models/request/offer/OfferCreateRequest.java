@@ -28,7 +28,7 @@ public class OfferCreateRequest {
   @Positive(message = ValidationMessages.INVALID_PRICE)
   private Integer price;
 
-  @NotBlank(message = ValidationMessages.MISSING_INVALID_DESCRIPTION)
+  // @NotBlank(message = ValidationMessages.MISSING_INVALID_DESCRIPTION)
   private String description;
 
   @NotNull @NotBlank private String contactDetailsPhoneNumber;

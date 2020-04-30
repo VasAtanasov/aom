@@ -16,7 +16,7 @@ Content-Type: {{content-type}}
 
 POST {{accounts}}/private-create HTTP/1.1
 Content-Type: {{content-type}}
-Authorization: {{token}}
+Authorization: Bearer {{token}}
 
 {
     "firstName": "Rhiannon",
@@ -33,7 +33,7 @@ Authorization: {{token}}
 
 POST {{accounts}}/dealer-request HTTP/1.1
 Content-Type: application/bg.autohouse.api-v1+json
-Authorization: {{token}}
+Authorization: Bearer {{token}}
 
 {
     "firstName": "Willa",
