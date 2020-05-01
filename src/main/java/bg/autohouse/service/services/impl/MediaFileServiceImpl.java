@@ -10,6 +10,7 @@ import bg.autohouse.util.Assert;
 import com.google.common.collect.Ordering;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -87,10 +88,10 @@ public class MediaFileServiceImpl implements MediaFileService {
   @Override
   @Transactional(rollbackFor = IOException.class)
   public UUID storeFile(
-      UUID fileUuid,
       MultipartFile file,
       String fileKey,
       MediaFunction function,
+      String contentType,
       String originalFilename,
       UUID referenceId) {
     final StorageService storage = getStorageOrFallback(function.storageType());
@@ -101,27 +102,68 @@ public class MediaFileServiceImpl implements MediaFileService {
         function,
         bucket,
         fileKey,
-        file.getContentType(),
-        file.getOriginalFilename());
+        contentType,
+        originalFilename);
     MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey);
     if (Assert.isEmpty(record)) {
       record =
           MediaFile.builder()
               .bucket(bucket)
               .storageType(function.storageType())
-              .contentType(file.getContentType())
+              .contentType(contentType)
               .size(file.getSize())
               .fileKey(fileKey)
-              .originalFilename(file.getOriginalFilename())
+              .originalFilename(originalFilename)
               .referenceId(referenceId)
               .build();
-
-      record.setId(fileUuid);
     }
     try (final InputStream fis = file.getInputStream();
         final BufferedInputStream bis = new BufferedInputStream(fis)) {
+      record = medialFileRepository.save(record);
       storage.storeFile(function, record, bis);
-      record = medialFileRepository.saveAndFlush(record);
+      log.info("media record stored and has mime type");
+      return record.getId();
+    } catch (IOException e) {
+      log.error("Error storing media file, returning null", e);
+      return null;
+    }
+  }
+
+  @Override
+  @Transactional(rollbackFor = IOException.class)
+  public UUID storeFile(
+      byte[] file,
+      String fileKey,
+      MediaFunction function,
+      String contentType,
+      String originalFilename,
+      UUID referenceId) {
+    final StorageService storage = getStorageOrFallback(function.storageType());
+    Assert.notNull(function, "Unspecified media function.");
+    String bucket = function.resolveBucketName();
+    log.info(
+        "storing a file, with function {}, bucket {}, file key {}, content type: {},  original name: {}",
+        function,
+        bucket,
+        fileKey,
+        contentType,
+        originalFilename);
+    MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey);
+    if (Assert.isEmpty(record)) {
+      record =
+          MediaFile.builder()
+              .bucket(bucket)
+              .storageType(function.storageType())
+              .contentType(contentType)
+              .size(file.length)
+              .fileKey(fileKey)
+              .originalFilename(originalFilename)
+              .referenceId(referenceId)
+              .build();
+    }
+    try (final InputStream fis = new ByteArrayInputStream(file)) {
+      record = medialFileRepository.save(record);
+      storage.storeFile(function, record, fis);
       log.info("media record stored and has mime type");
       return record.getId();
     } catch (IOException e) {

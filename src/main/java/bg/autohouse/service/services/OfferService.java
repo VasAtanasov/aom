@@ -3,6 +3,7 @@ package bg.autohouse.service.services;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.web.models.request.FilterRequest;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
@@ -13,5 +14,5 @@ public interface OfferService {
 
   Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable);
 
-  OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId);
+  OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId) throws IOException;
 }

@@ -41,9 +41,6 @@ public class Offer extends BaseUuidEntity {
       mappedBy = "offer")
   private Vehicle vehicle;
 
-  @Column(name = "thumbnail", nullable = false)
-  private String thumbnail;
-
   @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer price = 0;
 

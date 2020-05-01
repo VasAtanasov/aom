@@ -8,6 +8,7 @@ import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,7 +30,8 @@ public class OfferController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<?> createOffer(
-      @ModelAttribute OfferCreateRequest createRequest, @LoggedUser User creator) {
+      @ModelAttribute OfferCreateRequest createRequest, @LoggedUser User creator)
+      throws IOException {
     OfferServiceModel offerServiceModel = offerService.createOffer(createRequest, creator.getId());
     return ResponseEntity.ok(offerServiceModel);
   }
