@@ -4,7 +4,6 @@ import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.service.services.MediaFileService;
-import bg.autohouse.util.ImageUtil;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +38,20 @@ public class ImageFetchController extends BaseController {
     return convertRecordToResponse(record);
   }
 
+  @GetMapping(value = "/{folder}/{year}/{month}/{day}/{offerId}/{fileName:.+}")
+  public ResponseEntity<byte[]> fetchOfferImage(
+      @PathVariable String folder,
+      @PathVariable String year,
+      @PathVariable String month,
+      @PathVariable String day,
+      @PathVariable String offerId,
+      @PathVariable String fileName)
+      throws IOException {
+    String imageKey = String.join("/", folder, year, month, day, offerId, fileName);
+    MediaFile record = mediaFileService.load(MediaFunction.OFFER_IMAGE, imageKey);
+    return convertRecordToResponse(record);
+  }
+
   private ResponseEntity<byte[]> convertRecordToResponse(MediaFile record) throws IOException {
     byte[] data = mediaFileService.getBytes(record.getId());
     HttpHeaders headers = new HttpHeaders();
@@ -48,7 +61,7 @@ public class ImageFetchController extends BaseController {
       log.info("error processing mime type, record has: {}", record.getContentType());
       log.error("couldn't set MIME heading ...", e);
     }
-    String filename = ImageUtil.generateFileName(record);
+    String filename = record.getFileKey().substring(record.getFileKey().lastIndexOf("/") + 1);
     log.debug("file name : {}", filename);
     headers.setContentDispositionFormData(filename, filename);
     headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");

@@ -128,8 +128,8 @@ public class OfferRepositoryTest {
     List<Feature> features = Arrays.asList(Feature.CD_PLAYER);
     List<Feature> featuresWithNulls = Arrays.asList(Feature.CD_PLAYER, null, null);
 
-    Filter filter = Filter.builder().feature(features).build();
-    Filter filterFeaturesWithNulls = Filter.builder().feature(featuresWithNulls).build();
+    Filter filter = Filter.builder().features(features).build();
+    Filter filterFeaturesWithNulls = Filter.builder().features(featuresWithNulls).build();
 
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
     Specification<Offer> offerSpecificationFeaturesWithNulls =

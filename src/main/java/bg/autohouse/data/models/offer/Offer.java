@@ -41,6 +41,9 @@ public class Offer extends BaseUuidEntity {
       mappedBy = "offer")
   private Vehicle vehicle;
 
+  @Column(name = "primary_photo_key", nullable = false)
+  private String primaryPhotoKey;
+
   @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer price = 0;
 
@@ -56,7 +59,7 @@ public class Offer extends BaseUuidEntity {
   @Column(name = "is_active")
   private boolean isActive = true;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "location_id",
       nullable = false,
@@ -64,6 +67,10 @@ public class Offer extends BaseUuidEntity {
       referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "fk_offer_location_id"))
   private Location location;
+
+  // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  // @JoinColumn(name = "offer_id")
+  // private List<MediaFile> images = new ArrayList<>();
 
   @Embedded private ContactDetails contactDetails;
 

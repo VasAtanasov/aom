@@ -1,0 +1,17 @@
+@images = http://localhost:8007/api/images
+@auth = http://localhost:8007/api/auth
+@content-type = application/bg.autohouse.api-v1+json
+
+### Login
+# @name loggedUser
+POST {{auth}}/login HTTP/1.1
+Content-Type: {{content-type}}
+
+{
+    "username": "vas@mail.com",
+    "password": "123"
+}
+
+###
+
+GET {{images}}/offer-images-folder/2020/05/01/2f2e6b36-5e70-4f67-945b-2ad08ef43aad/2017_audi_a8_pic_1588320018375.jpg

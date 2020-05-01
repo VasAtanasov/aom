@@ -75,6 +75,7 @@ public class OfferServiceImpl implements OfferService {
         filter.setModelId(filterRequest.getModelId());
       }
     }
+    // List<MediaFile> images = mediaFileService.loadForReference(referenceId)
     return offerRepository
         .findAll(where(OfferSpecifications.getOffersByFilter(filter)), pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
@@ -142,7 +143,7 @@ public class OfferServiceImpl implements OfferService {
     LocalDate now = LocalDate.now();
     return String.join(
         "/",
-        "offer-images-folder",
+        "offer-images",
         Integer.toString(now.getYear()),
         String.format("%02d", now.getMonthValue()),
         String.format("%02d", now.getDayOfMonth()),

@@ -4,6 +4,7 @@ import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,6 +13,8 @@ public interface MediaFileService {
   public static final String DEFAULT_OFFER_IMAGE_BUCKET = "autohouse-offer-images";
 
   MediaFile load(UUID id);
+
+  List<MediaFile> loadForReference(UUID referenceId);
 
   MediaFile load(MediaFunction function, String imageKey);
 

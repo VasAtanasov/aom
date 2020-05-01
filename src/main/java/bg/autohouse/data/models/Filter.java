@@ -32,17 +32,20 @@ public class Filter extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1915410703216504289L;
 
-  @Column(name = "maker_name", nullable = false)
+  @Column(name = "maker_name")
   private String makerName;
 
-  @Column(name = "maker_id", nullable = false)
+  @Column(name = "maker_id")
   private Long makerId;
 
-  @Column(name = "model_name", nullable = false)
+  @Column(name = "model_name")
   private String modelName;
 
-  @Column(name = "model_id", nullable = false)
+  @Column(name = "model_id")
   private Long modelId;
+
+  @Column(name = "trim")
+  private String trim;
 
   @Column(name = "fuel_type")
   @Enumerated(EnumType.STRING)
@@ -89,25 +92,25 @@ public class Filter extends BaseUuidEntity {
   private RangeCriteria doors = RangeCriteria.of(MIN_VALUE, DOORS_TO);
 
   @AttributeOverrides({
-    @AttributeOverride(name = "from", column = @Column(name = "registrationYear_from")),
-    @AttributeOverride(name = "to", column = @Column(name = "registrationYear_to"))
+    @AttributeOverride(name = "from", column = @Column(name = "year_from")),
+    @AttributeOverride(name = "to", column = @Column(name = "year_to"))
   })
   @Embedded
   @Builder.Default
-  private RangeCriteria registrationYear = RangeCriteria.of(YEAR_FROM, YEAR_TO);
+  private RangeCriteria year = RangeCriteria.of(YEAR_FROM, YEAR_TO);
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
-      name = EntityConstants.PREFIX + "filter_feature",
+      name = EntityConstants.PREFIX + "filter_features",
       joinColumns =
           @JoinColumn(
               name = "filter_id",
               referencedColumnName = "id",
-              foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_feature_filter_id")))
+              foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_features_filter_id")))
   @Column(name = "feature")
   @Enumerated(value = EnumType.STRING)
   @Builder.Default
-  private List<Feature> feature = new ArrayList<>();
+  private List<Feature> features = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = AccountType.class)
   @JoinTable(

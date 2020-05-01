@@ -9,17 +9,23 @@ import lombok.*;
 @Builder
 public class OfferResponseModel {
   private String id;
-  private String vehicleState;
-  private Integer vehicleManufactureDateYear;
-  private String vehicleMakerName;
-  private String vehicleModelName;
-  private String vehicleEngineFuelType;
-  private Integer vehicleMileage;
   private Integer price;
-  private String vehicleTransmission;
-  private String locationName;
-  private String vehicleBodyStyle;
+  private String locationCity;
+  private String locationId;
   private String createdAT;
-  private String thumbnail;
-  private Integer vehicleEnginePower;
+  private String vehicleMakerName;
+  private Long vehicleMakerId;
+  private String vehicleModelName;
+  private Long vehicleModelId;
+  private String vehicleTrim;
+  private Integer vehicleYear;
+  private Integer vehicleMileage;
+  private Integer vehicleDoors;
+  private String vehicleState;
+  private String vehicleBodyStyle;
+  private String vehicleTransmission;
+  private String vehicleDrive;
+  private String vehicleColor;
+  private String vehicleFuelType;
+  private String vehicleHasAccident;
 }

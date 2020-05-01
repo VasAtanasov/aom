@@ -4,6 +4,7 @@ import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.data.models.media.StorageType;
 import bg.autohouse.data.repositories.MedialFileRepository;
+import bg.autohouse.errors.MediaNotFoundException;
 import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.StorageService;
 import bg.autohouse.util.Assert;
@@ -75,8 +76,16 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional(readOnly = true)
+  public List<MediaFile> loadForReference(UUID referenceId) {
+    return medialFileRepository.findAllByReferenceId(referenceId);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public MediaFile load(MediaFunction function, String imageKey) {
-    return medialFileRepository.findByBucketAndFileKey(function.resolveBucketName(), imageKey);
+    return medialFileRepository
+        .findByBucketAndFileKey(function.resolveBucketName(), imageKey)
+        .orElseThrow(MediaNotFoundException::new);
   }
 
   @Override
@@ -104,7 +113,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         fileKey,
         contentType,
         originalFilename);
-    MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey);
+    MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey).orElse(null);
     if (Assert.isEmpty(record)) {
       record =
           MediaFile.builder()
@@ -148,7 +157,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         fileKey,
         contentType,
         originalFilename);
-    MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey);
+    MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey).orElse(null);
     if (Assert.isEmpty(record)) {
       record =
           MediaFile.builder()

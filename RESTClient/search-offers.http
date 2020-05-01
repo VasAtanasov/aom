@@ -1,0 +1,12 @@
+@saerch_url = http://localhost:8007/api/vehicles/offers/search
+@content-type = application/bg.autohouse.api-v1+json
+
+###
+
+POST {{saerch_url}}?page=5 HTTP/1.1
+Content-Type: {{content-type}}
+
+{
+  "makerName": ""
+}
+

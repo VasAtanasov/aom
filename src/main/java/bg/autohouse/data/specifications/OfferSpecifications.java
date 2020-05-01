@@ -23,11 +23,13 @@ public class OfferSpecifications {
       List<Predicate> restrictions = new ArrayList<>();
 
       if (currentQueryIsCountRecords(query)) {
+        root.join(Offer_.vehicle, JoinType.LEFT);
         root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.features, JoinType.LEFT);
-        root.join(Offer_.account, JoinType.LEFT);
+        root.join(Offer_.location, JoinType.LEFT);
       } else {
+        root.fetch(Offer_.vehicle, JoinType.LEFT);
         root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.features, JoinType.LEFT);
-        root.fetch(Offer_.account, JoinType.LEFT);
+        root.fetch(Offer_.location, JoinType.LEFT);
       }
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
@@ -69,7 +71,7 @@ public class OfferSpecifications {
       }
 
       filter
-          .getFeature()
+          .getFeatures()
           .forEach(
               feature -> {
                 if (!Assert.has(feature)) return;
@@ -107,8 +109,8 @@ public class OfferSpecifications {
       restrictions.add(
           cb.between(
               root.get(Offer_.vehicle).get(Vehicle_.year),
-              filter.getRegistrationYear().getFrom(),
-              filter.getRegistrationYear().getTo()));
+              filter.getYear().getFrom(),
+              filter.getYear().getTo()));
 
       log.info(
           "Have generated {} predicates, look like: {}" + System.lineSeparator(),

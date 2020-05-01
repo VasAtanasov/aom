@@ -15,7 +15,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class FilterRequest {
+  private String makerName;
   private Long makerId;
+  private String modelName;
   private Long modelId;
   private String fuelType;
   private String transmission;
@@ -28,11 +30,9 @@ public class FilterRequest {
   private Integer mileageTo;
   private Integer doorsFrom;
   private Integer doorsTo;
-  private Integer seatsFrom;
-  private Integer seatsTo;
-  private Integer registrationYearFrom;
-  private Integer registrationYearTo;
-  @Builder.Default private List<String> feature = new ArrayList<>();
+  private Integer yearFrom;
+  private Integer yearTo;
+  @Builder.Default private List<String> features = new ArrayList<>();
   @Builder.Default private List<String> seller = new ArrayList<>();
   @Builder.Default private List<String> state = new ArrayList<>();
   private boolean hasAccident;

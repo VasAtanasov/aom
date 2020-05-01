@@ -48,10 +48,10 @@ public class FilterRequestTest {
         Arrays.asList(
             Feature.AIR_CONDITIONING.name(), Feature.DIGITAL_RADIO.name(), Feature.METALLIC.name());
 
-    FilterRequest filterRequestGasoline = FilterRequest.builder().feature(feature).build();
+    FilterRequest filterRequestGasoline = FilterRequest.builder().features(feature).build();
 
     Filter filter = modelMapper.map(filterRequestGasoline, Filter.class);
 
-    assertThat(filter.getFeature()).allMatch(f -> f != null);
+    assertThat(filter.getFeatures()).allMatch(f -> f != null);
   }
 }
