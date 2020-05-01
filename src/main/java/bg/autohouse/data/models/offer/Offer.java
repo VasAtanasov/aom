@@ -40,9 +40,9 @@ public class Offer extends BaseUuidEntity {
       orphanRemoval = true,
       mappedBy = "offer")
   private Vehicle vehicle;
-
+  // TODO set initial default value for primary photo
   @Column(name = "primary_photo_key", nullable = false)
-  private String primaryPhotoKey;
+  private String primaryPhotoKey = "no_photo";
 
   @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer price = 0;

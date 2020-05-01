@@ -4,6 +4,7 @@ import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.service.services.MediaFileService;
+import bg.autohouse.util.ImageResizer;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +22,15 @@ import org.springframework.web.bind.annotation.*;
 public class ImageFetchController extends BaseController {
 
   private final MediaFileService mediaFileService;
+  private final ImageResizer imageResizer;
 
   @GetMapping(value = "/user/{userUid}")
   public ResponseEntity<byte[]> viewProfileImage(@PathVariable String userUid) throws IOException {
     String imageKey = generateFileKey(USER_PROFILE_IMAGE_FOLDER, userUid);
+    // TODO if not found send default
     MediaFile userImg = mediaFileService.load(MediaFunction.USER_PROFILE_IMAGE, imageKey);
     log.info("Fetched record: {}", userImg);
-    return convertRecordToResponse(userImg);
+    return convertRecordToResponse(userImg, false);
   }
 
   @GetMapping(value = "/{mediaFunction}/{imageKey}")
@@ -35,7 +38,7 @@ public class ImageFetchController extends BaseController {
       @PathVariable MediaFunction mediaFunction, @PathVariable String imageKey) throws IOException {
     MediaFile record = mediaFileService.load(mediaFunction, imageKey);
     log.info("record retrieved: {}", record);
-    return convertRecordToResponse(record);
+    return convertRecordToResponse(record, false);
   }
 
   @GetMapping(value = "/{folder}/{year}/{month}/{day}/{offerId}/{fileName:.+}")
@@ -45,15 +48,18 @@ public class ImageFetchController extends BaseController {
       @PathVariable String month,
       @PathVariable String day,
       @PathVariable String offerId,
-      @PathVariable String fileName)
+      @PathVariable String fileName,
+      @RequestParam(required = false) boolean thumbnail)
       throws IOException {
-    String imageKey = String.join("/", folder, year, month, day, offerId, fileName);
+    String imageKey = generateFileKey(folder, year, month, day, offerId, fileName);
     MediaFile record = mediaFileService.load(MediaFunction.OFFER_IMAGE, imageKey);
-    return convertRecordToResponse(record);
+    return convertRecordToResponse(record, thumbnail);
   }
 
-  private ResponseEntity<byte[]> convertRecordToResponse(MediaFile record) throws IOException {
+  private ResponseEntity<byte[]> convertRecordToResponse(MediaFile record, boolean thumbnail)
+      throws IOException {
     byte[] data = mediaFileService.getBytes(record.getId());
+    if (thumbnail) data = imageResizer.createThumbnail(data, 320, 240);
     HttpHeaders headers = new HttpHeaders();
     try {
       headers.setContentType(MediaType.parseMediaType(record.getContentType()));

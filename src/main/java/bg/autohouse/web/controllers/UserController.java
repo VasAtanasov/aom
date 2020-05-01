@@ -5,6 +5,7 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.UserLogType;
+import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.services.AsyncUserLogger;
@@ -17,7 +18,6 @@ import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserChangePasswordRequest;
 import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
-import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class UserController extends BaseController {
     log.info("storing a media file, with mediaFunction = {}", MediaFunction.USER_PROFILE_IMAGE);
     String imageKey = generateFileKey(USER_PROFILE_IMAGE_FOLDER, user.getId().toString());
     byte[] biteArray = imageResizer.toJpgDownscaleToSize(photo.getInputStream());
-    UUID storedFileUid =
+    MediaFile storedFile =
         mediaFileService.storeFile(
             biteArray,
             imageKey,
@@ -63,7 +63,7 @@ public class UserController extends BaseController {
     userService.updateHasImage(user.getId(), true);
     userLogger.recordUserLog(user.getId(), UserLogType.USER_CHANGE_PROFILE_PHOTO, imageKey);
     return RestUtil.okResponse(
-        RestMessage.IMAGE_UPLOAD_SUCCESSFUL, toMap("mediaUid", storedFileUid));
+        RestMessage.IMAGE_UPLOAD_SUCCESSFUL, toMap("mediaUid", storedFile.getId()));
   }
 
   @PostMapping(

@@ -32,11 +32,16 @@ public class ImageResizer {
     return toJPG(resize(image, MAX_IMAGE_SIZE, MAX_IMAGE_SIZE, true));
   }
 
-  public static byte[] createThumbnail(InputStream inputStream, int width) throws IOException {
+  public byte[] createThumbnail(InputStream inputStream, int width, int height) throws IOException {
     BufferedImage img = ImageIO.read(inputStream);
-    BufferedImage thumbImg =
-        Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, width, Scalr.OP_ANTIALIAS);
-    return toJPG(thumbImg);
+    return toJPG(resizeAndCropCenter(img, width, height));
+  }
+
+  public byte[] createThumbnail(byte[] photoData, int width, int height) throws IOException {
+    try (InputStream is = new ByteArrayInputStream(photoData)) {
+      BufferedImage img = ImageIO.read(is);
+      return toJPG(resizeAndCropCenter(img, width, height));
+    }
   }
 
   public byte[] resize(

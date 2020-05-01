@@ -12,7 +12,8 @@ public class OfferServiceModel {
   private Integer price;
   private String locationCity;
   private String locationId;
-  private String createdAT;
+  private String createdAt;
+  private String primaryPhotoKey;
   private String vehicleMakerName;
   private Long vehicleMakerId;
   private String vehicleModelName;

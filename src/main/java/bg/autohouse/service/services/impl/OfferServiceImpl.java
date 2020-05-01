@@ -5,6 +5,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.geo.Location;
+import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.models.offer.Vehicle;
@@ -82,7 +83,11 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Override
+  // TODO implement main photo choose
   // TODO validate numbers
+  // TODO check is primary photo and return default
+  // TODO check are images
+  // TODO set initial default value for primary photo
   @Transactional(rollbackFor = IOException.class)
   public OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId)
       throws IOException {
@@ -109,6 +114,7 @@ public class OfferServiceImpl implements OfferService {
     offer = offerRepository.save(offer);
     offer.setVehicle(vehicle);
     vehicle.setOffer(offer);
+    MediaFile primaryPhoto = null;
     for (MultipartFile file : request.getImages()) {
       byte[] byteArray = imageResizer.toJpgDownscaleToSize(file.getInputStream());
       String fileName =
@@ -120,14 +126,17 @@ public class OfferServiceImpl implements OfferService {
               "pic",
               Long.toString(System.currentTimeMillis()));
       String fileKey = generateFileKey(offer.getId(), fileName);
-      mediaFileService.storeFile(
-          byteArray,
-          fileKey,
-          MediaFunction.OFFER_IMAGE,
-          file.getContentType(),
-          file.getOriginalFilename(),
-          offer.getId());
+      MediaFile mediaFile =
+          mediaFileService.storeFile(
+              byteArray,
+              fileKey,
+              MediaFunction.OFFER_IMAGE,
+              file.getContentType(),
+              file.getOriginalFilename(),
+              offer.getId());
+      if (!Assert.has(primaryPhoto)) primaryPhoto = mediaFile;
     }
+    offer.setPrimaryPhotoKey(primaryPhoto.getFileKey());
     return modelMapper.map(offer, OfferServiceModel.class);
   }
 

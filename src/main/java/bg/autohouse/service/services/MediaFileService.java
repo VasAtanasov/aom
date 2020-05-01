@@ -20,7 +20,7 @@ public interface MediaFileService {
 
   boolean doesFileExist(MediaFunction function, String imageKey);
 
-  UUID storeFile(
+  MediaFile storeFile(
       MultipartFile file,
       String fileKey,
       MediaFunction function,
@@ -28,7 +28,7 @@ public interface MediaFileService {
       String originalFilename,
       UUID referenceId);
 
-  UUID storeFile(
+  MediaFile storeFile(
       byte[] file,
       String fileKey,
       MediaFunction function,

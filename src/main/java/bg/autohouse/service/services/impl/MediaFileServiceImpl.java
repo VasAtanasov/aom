@@ -96,7 +96,7 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional(rollbackFor = IOException.class)
-  public UUID storeFile(
+  public MediaFile storeFile(
       MultipartFile file,
       String fileKey,
       MediaFunction function,
@@ -131,7 +131,7 @@ public class MediaFileServiceImpl implements MediaFileService {
       record = medialFileRepository.save(record);
       storage.storeFile(function, record, bis);
       log.info("media record stored and has mime type");
-      return record.getId();
+      return record;
     } catch (IOException e) {
       log.error("Error storing media file, returning null", e);
       return null;
@@ -140,7 +140,7 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional(rollbackFor = IOException.class)
-  public UUID storeFile(
+  public MediaFile storeFile(
       byte[] file,
       String fileKey,
       MediaFunction function,
@@ -174,7 +174,7 @@ public class MediaFileServiceImpl implements MediaFileService {
       record = medialFileRepository.save(record);
       storage.storeFile(function, record, fis);
       log.info("media record stored and has mime type");
-      return record.getId();
+      return record;
     } catch (IOException e) {
       log.error("Error storing media file, returning null", e);
       return null;
