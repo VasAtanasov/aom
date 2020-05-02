@@ -34,13 +34,13 @@ public class ImageResizer {
 
   public byte[] createThumbnail(InputStream inputStream, int width, int height) throws IOException {
     BufferedImage img = ImageIO.read(inputStream);
-    return toJPG(resizeAndCropCenter(img, width, height));
+    return toJPG(resizeProportional(img, width, height));
   }
 
   public byte[] createThumbnail(byte[] photoData, int width, int height) throws IOException {
     try (InputStream is = new ByteArrayInputStream(photoData)) {
       BufferedImage img = ImageIO.read(is);
-      return toJPG(resizeAndCropCenter(img, width, height));
+      return toJPG(resizeProportional(img, width, height));
     }
   }
 

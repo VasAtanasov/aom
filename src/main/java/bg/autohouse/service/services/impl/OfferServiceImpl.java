@@ -114,7 +114,7 @@ public class OfferServiceImpl implements OfferService {
     offer = offerRepository.save(offer);
     offer.setVehicle(vehicle);
     vehicle.setOffer(offer);
-    MediaFile primaryPhoto = null;
+    // MediaFile primaryPhoto = null;
     for (MultipartFile file : request.getImages()) {
       byte[] byteArray = imageResizer.toJpgDownscaleToSize(file.getInputStream());
       String fileName =
@@ -134,9 +134,10 @@ public class OfferServiceImpl implements OfferService {
               file.getContentType(),
               file.getOriginalFilename(),
               offer.getId());
-      if (!Assert.has(primaryPhoto)) primaryPhoto = mediaFile;
+      if (mediaFile.getOriginalFilename().equals(request.getMainPhoto())) {
+        offer.setPrimaryPhotoKey(mediaFile.getFileKey());
+      }
     }
-    offer.setPrimaryPhotoKey(primaryPhoto.getFileKey());
     return modelMapper.map(offer, OfferServiceModel.class);
   }
 
