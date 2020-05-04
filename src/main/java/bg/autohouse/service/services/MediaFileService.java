@@ -38,6 +38,8 @@ public interface MediaFileService {
 
   byte[] getBytes(final UUID uuid) throws IOException;
 
+  byte[] getBytes(final MediaFile mediaFile) throws IOException;
+
   void downloadTo(final UUID uuid, final Path targetPath) throws IOException;
 
   void remove(final UUID uuid);

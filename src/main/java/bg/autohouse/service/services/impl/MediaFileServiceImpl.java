@@ -185,6 +185,12 @@ public class MediaFileServiceImpl implements MediaFileService {
   @Transactional(readOnly = true, rollbackFor = IOException.class)
   public byte[] getBytes(final UUID uuid) throws IOException {
     final MediaFile mediaFile = medialFileRepository.getOne(uuid);
+    return getBytes(mediaFile);
+  }
+
+  @Override
+  @Transactional(readOnly = true, rollbackFor = IOException.class)
+  public byte[] getBytes(final MediaFile mediaFile) throws IOException {
     final StorageService storage = getStorage(mediaFile.getStorageType());
     try (final ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
       storage.retrieveFile(mediaFile, bos);

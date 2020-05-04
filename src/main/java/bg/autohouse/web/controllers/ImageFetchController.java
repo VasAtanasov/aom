@@ -58,7 +58,7 @@ public class ImageFetchController extends BaseController {
 
   private ResponseEntity<byte[]> convertRecordToResponse(MediaFile record, boolean thumbnail)
       throws IOException {
-    byte[] data = mediaFileService.getBytes(record.getId());
+    byte[] data = mediaFileService.getBytes(record);
     if (thumbnail) data = imageResizer.createThumbnail(data, 320, 240);
     HttpHeaders headers = new HttpHeaders();
     try {
