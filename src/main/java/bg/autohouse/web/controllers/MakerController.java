@@ -8,6 +8,7 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.models.ModelTrimsServicesModel;
 import bg.autohouse.service.services.MakerService;
+import bg.autohouse.util.Collect;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.MakerCreateRequestModel;
@@ -17,7 +18,7 @@ import bg.autohouse.web.models.response.MakerResponseWrapper;
 import bg.autohouse.web.models.response.ModelTrimsResponseModel;
 import bg.autohouse.web.util.RestUtil;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,11 @@ public class MakerController extends BaseController {
   @GetMapping(produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getMakers() {
     List<MakerModelServiceModel> makerServiceModels = makerService.getAllMakerWithModels();
-    List<MakerResponseWrapper> makers =
+    Map<String, MakerResponseWrapper> makers =
         makerServiceModels.stream()
             .map(model -> modelMapper.map(model, MakerResponseWrapper.class))
-            .collect(Collectors.toUnmodifiableList());
-    return RestUtil.okResponse(RestMessage.MAKERS_GET_SUCCESSFUL, toMap("makers", makers));
+            .collect(Collect.indexingBy(m -> m.getName()));
+    return RestUtil.okResponse(RestMessage.MAKERS_GET_SUCCESSFUL, makers);
   }
 
   @PreAuthorize("hasRole('ADMIN')")

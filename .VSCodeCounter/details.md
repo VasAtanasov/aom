@@ -1,10 +1,10 @@
 # Details
 
-Date : 2020-05-01 12:11:02
+Date : 2020-05-01 14:27:25
 
-Directory c:\Users\vasat\Desktop\GitHub\autohouse-server\src\main\java\bg\autohouse
+Directory c:\Users\vasat\Desktop\GitHub\autohouse-server\src
 
-Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
+Total : 318 files,  92115 codes, 632 comments, 2583 blanks, all 95330 lines
 
 [summary](results.md)
 
@@ -35,7 +35,7 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/data/models/BaseLongEntity.java](/src/main/java/bg/autohouse/data/models/BaseLongEntity.java) | Java | 21 | 0 | 5 | 26 |
 | [src/main/java/bg/autohouse/data/models/BaseUuidEntity.java](/src/main/java/bg/autohouse/data/models/BaseUuidEntity.java) | Java | 22 | 0 | 5 | 27 |
 | [src/main/java/bg/autohouse/data/models/EntityConstants.java](/src/main/java/bg/autohouse/data/models/EntityConstants.java) | Java | 36 | 0 | 8 | 44 |
-| [src/main/java/bg/autohouse/data/models/Filter.java](/src/main/java/bg/autohouse/data/models/Filter.java) | Java | 120 | 1 | 22 | 143 |
+| [src/main/java/bg/autohouse/data/models/Filter.java](/src/main/java/bg/autohouse/data/models/Filter.java) | Java | 122 | 1 | 23 | 146 |
 | [src/main/java/bg/autohouse/data/models/Identifiable.java](/src/main/java/bg/autohouse/data/models/Identifiable.java) | Java | 4 | 0 | 4 | 8 |
 | [src/main/java/bg/autohouse/data/models/Maker.java](/src/main/java/bg/autohouse/data/models/Maker.java) | Java | 38 | 0 | 7 | 45 |
 | [src/main/java/bg/autohouse/data/models/Model.java](/src/main/java/bg/autohouse/data/models/Model.java) | Java | 47 | 0 | 9 | 56 |
@@ -75,8 +75,7 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/data/models/media/MediaFile.java](/src/main/java/bg/autohouse/data/models/media/MediaFile.java) | Java | 51 | 0 | 13 | 64 |
 | [src/main/java/bg/autohouse/data/models/media/MediaFunction.java](/src/main/java/bg/autohouse/data/models/media/MediaFunction.java) | Java | 28 | 0 | 8 | 36 |
 | [src/main/java/bg/autohouse/data/models/media/StorageType.java](/src/main/java/bg/autohouse/data/models/media/StorageType.java) | Java | 6 | 0 | 2 | 8 |
-| [src/main/java/bg/autohouse/data/models/offer/Offer.java](/src/main/java/bg/autohouse/data/models/offer/Offer.java) | Java | 63 | 4 | 16 | 83 |
-| [src/main/java/bg/autohouse/data/models/offer/OfferImage.java](/src/main/java/bg/autohouse/data/models/offer/OfferImage.java) | Java | 2 | 0 | 2 | 4 |
+| [src/main/java/bg/autohouse/data/models/offer/Offer.java](/src/main/java/bg/autohouse/data/models/offer/Offer.java) | Java | 65 | 7 | 18 | 90 |
 | [src/main/java/bg/autohouse/data/models/offer/PriceChange.java](/src/main/java/bg/autohouse/data/models/offer/PriceChange.java) | Java | 26 | 0 | 7 | 33 |
 | [src/main/java/bg/autohouse/data/models/offer/Vehicle.java](/src/main/java/bg/autohouse/data/models/offer/Vehicle.java) | Java | 79 | 0 | 21 | 100 |
 | [src/main/java/bg/autohouse/data/projections/MakerNameProjection.java](/src/main/java/bg/autohouse/data/projections/MakerNameProjection.java) | Java | 4 | 0 | 2 | 6 |
@@ -89,7 +88,7 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/data/repositories/AddressRepository.java](/src/main/java/bg/autohouse/data/repositories/AddressRepository.java) | Java | 6 | 0 | 3 | 9 |
 | [src/main/java/bg/autohouse/data/repositories/LocationRepository.java](/src/main/java/bg/autohouse/data/repositories/LocationRepository.java) | Java | 10 | 0 | 3 | 13 |
 | [src/main/java/bg/autohouse/data/repositories/MakerRepository.java](/src/main/java/bg/autohouse/data/repositories/MakerRepository.java) | Java | 24 | 0 | 8 | 32 |
-| [src/main/java/bg/autohouse/data/repositories/MedialFileRepository.java](/src/main/java/bg/autohouse/data/repositories/MedialFileRepository.java) | Java | 13 | 0 | 6 | 19 |
+| [src/main/java/bg/autohouse/data/repositories/MedialFileRepository.java](/src/main/java/bg/autohouse/data/repositories/MedialFileRepository.java) | Java | 14 | 0 | 7 | 21 |
 | [src/main/java/bg/autohouse/data/repositories/ModelRepository.java](/src/main/java/bg/autohouse/data/repositories/ModelRepository.java) | Java | 43 | 0 | 12 | 55 |
 | [src/main/java/bg/autohouse/data/repositories/OfferRepository.java](/src/main/java/bg/autohouse/data/repositories/OfferRepository.java) | Java | 24 | 1 | 5 | 30 |
 | [src/main/java/bg/autohouse/data/repositories/PersistentFileContentRepository.java](/src/main/java/bg/autohouse/data/repositories/PersistentFileContentRepository.java) | Java | 8 | 0 | 3 | 11 |
@@ -99,7 +98,7 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/data/repositories/UserRequestRepository.java](/src/main/java/bg/autohouse/data/repositories/UserRequestRepository.java) | Java | 12 | 0 | 5 | 17 |
 | [src/main/java/bg/autohouse/data/repositories/VerificationTokenCodeRepository.java](/src/main/java/bg/autohouse/data/repositories/VerificationTokenCodeRepository.java) | Java | 10 | 0 | 5 | 15 |
 | [src/main/java/bg/autohouse/data/specifications/MakerSpecifications.java](/src/main/java/bg/autohouse/data/specifications/MakerSpecifications.java) | Java | 2 | 0 | 2 | 4 |
-| [src/main/java/bg/autohouse/data/specifications/OfferSpecifications.java](/src/main/java/bg/autohouse/data/specifications/OfferSpecifications.java) | Java | 105 | 1 | 25 | 131 |
+| [src/main/java/bg/autohouse/data/specifications/OfferSpecifications.java](/src/main/java/bg/autohouse/data/specifications/OfferSpecifications.java) | Java | 107 | 1 | 25 | 133 |
 | [src/main/java/bg/autohouse/data/specifications/UserLogSpecifications.java](/src/main/java/bg/autohouse/data/specifications/UserLogSpecifications.java) | Java | 24 | 1 | 8 | 33 |
 | [src/main/java/bg/autohouse/data/specifications/UserSpecifications.java](/src/main/java/bg/autohouse/data/specifications/UserSpecifications.java) | Java | 27 | 0 | 9 | 36 |
 | [src/main/java/bg/autohouse/errors/AccountDisabledOrClosed.java](/src/main/java/bg/autohouse/errors/AccountDisabledOrClosed.java) | Java | 8 | 0 | 5 | 13 |
@@ -147,7 +146,7 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/service/models/error/RestValidationError.java](/src/main/java/bg/autohouse/service/models/error/RestValidationError.java) | Java | 12 | 0 | 3 | 15 |
 | [src/main/java/bg/autohouse/service/models/geo/AddressServiceModel.java](/src/main/java/bg/autohouse/service/models/geo/AddressServiceModel.java) | Java | 14 | 0 | 3 | 17 |
 | [src/main/java/bg/autohouse/service/models/geo/LocationServiceModel.java](/src/main/java/bg/autohouse/service/models/geo/LocationServiceModel.java) | Java | 18 | 0 | 3 | 21 |
-| [src/main/java/bg/autohouse/service/models/offer/OfferServiceModel.java](/src/main/java/bg/autohouse/service/models/offer/OfferServiceModel.java) | Java | 21 | 0 | 3 | 24 |
+| [src/main/java/bg/autohouse/service/models/offer/OfferServiceModel.java](/src/main/java/bg/autohouse/service/models/offer/OfferServiceModel.java) | Java | 29 | 0 | 3 | 32 |
 | [src/main/java/bg/autohouse/service/models/user/AuthorizedUserServiceModel.java](/src/main/java/bg/autohouse/service/models/user/AuthorizedUserServiceModel.java) | Java | 42 | 1 | 7 | 50 |
 | [src/main/java/bg/autohouse/service/services/AccountService.java](/src/main/java/bg/autohouse/service/services/AccountService.java) | Java | 9 | 0 | 6 | 15 |
 | [src/main/java/bg/autohouse/service/services/AdminService.java](/src/main/java/bg/autohouse/service/services/AdminService.java) | Java | 11 | 0 | 5 | 16 |
@@ -156,7 +155,7 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/service/services/InitialStateService.java](/src/main/java/bg/autohouse/service/services/InitialStateService.java) | Java | 5 | 0 | 3 | 8 |
 | [src/main/java/bg/autohouse/service/services/LocationService.java](/src/main/java/bg/autohouse/service/services/LocationService.java) | Java | 6 | 0 | 3 | 9 |
 | [src/main/java/bg/autohouse/service/services/MakerService.java](/src/main/java/bg/autohouse/service/services/MakerService.java) | Java | 17 | 0 | 10 | 27 |
-| [src/main/java/bg/autohouse/service/services/MediaFileService.java](/src/main/java/bg/autohouse/service/services/MediaFileService.java) | Java | 31 | 0 | 11 | 42 |
+| [src/main/java/bg/autohouse/service/services/MediaFileService.java](/src/main/java/bg/autohouse/service/services/MediaFileService.java) | Java | 33 | 0 | 12 | 45 |
 | [src/main/java/bg/autohouse/service/services/OfferService.java](/src/main/java/bg/autohouse/service/services/OfferService.java) | Java | 14 | 0 | 5 | 19 |
 | [src/main/java/bg/autohouse/service/services/PasswordService.java](/src/main/java/bg/autohouse/service/services/PasswordService.java) | Java | 13 | 0 | 10 | 23 |
 | [src/main/java/bg/autohouse/service/services/RestErrorService.java](/src/main/java/bg/autohouse/service/services/RestErrorService.java) | Java | 13 | 0 | 7 | 20 |
@@ -173,8 +172,8 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/service/services/impl/LocalFolderStorageService.java](/src/main/java/bg/autohouse/service/services/impl/LocalFolderStorageService.java) | Java | 93 | 0 | 13 | 106 |
 | [src/main/java/bg/autohouse/service/services/impl/LocationServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/LocationServiceImpl.java) | Java | 17 | 0 | 5 | 22 |
 | [src/main/java/bg/autohouse/service/services/impl/MakerServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/MakerServiceImpl.java) | Java | 96 | 1 | 11 | 108 |
-| [src/main/java/bg/autohouse/service/services/impl/MediaFileServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/MediaFileServiceImpl.java) | Java | 192 | 0 | 16 | 208 |
-| [src/main/java/bg/autohouse/service/services/impl/OfferServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/OfferServiceImpl.java) | Java | 141 | 2 | 10 | 153 |
+| [src/main/java/bg/autohouse/service/services/impl/MediaFileServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/MediaFileServiceImpl.java) | Java | 197 | 0 | 17 | 214 |
+| [src/main/java/bg/autohouse/service/services/impl/OfferServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/OfferServiceImpl.java) | Java | 141 | 3 | 10 | 154 |
 | [src/main/java/bg/autohouse/service/services/impl/PasswordServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/PasswordServiceImpl.java) | Java | 138 | 2 | 11 | 151 |
 | [src/main/java/bg/autohouse/service/services/impl/RestErrorServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/RestErrorServiceImpl.java) | Java | 192 | 10 | 11 | 213 |
 | [src/main/java/bg/autohouse/service/services/impl/ThumbnailServiceImpl.java](/src/main/java/bg/autohouse/service/services/impl/ThumbnailServiceImpl.java) | Java | 52 | 0 | 10 | 62 |
@@ -271,11 +270,64 @@ Total : 266 files,  9354 codes, 557 comments, 2056 blanks, all 11967 lines
 | [src/main/java/bg/autohouse/web/models/response/ModelTrimsResponseModel.java](/src/main/java/bg/autohouse/web/models/response/ModelTrimsResponseModel.java) | Java | 20 | 0 | 3 | 23 |
 | [src/main/java/bg/autohouse/web/models/response/ResponseWrapper.java](/src/main/java/bg/autohouse/web/models/response/ResponseWrapper.java) | Java | 31 | 0 | 8 | 39 |
 | [src/main/java/bg/autohouse/web/models/response/TrimResponseModel.java](/src/main/java/bg/autohouse/web/models/response/TrimResponseModel.java) | Java | 16 | 0 | 3 | 19 |
-| [src/main/java/bg/autohouse/web/models/response/offer/OfferResponseModel.java](/src/main/java/bg/autohouse/web/models/response/offer/OfferResponseModel.java) | Java | 23 | 0 | 3 | 26 |
+| [src/main/java/bg/autohouse/web/models/response/offer/OfferResponseModel.java](/src/main/java/bg/autohouse/web/models/response/offer/OfferResponseModel.java) | Java | 29 | 0 | 3 | 32 |
 | [src/main/java/bg/autohouse/web/models/response/user/AuthorizedUserResponseModel.java](/src/main/java/bg/autohouse/web/models/response/user/AuthorizedUserResponseModel.java) | Java | 13 | 0 | 3 | 16 |
 | [src/main/java/bg/autohouse/web/models/wrappers/ListWrapper.java](/src/main/java/bg/autohouse/web/models/wrappers/ListWrapper.java) | Java | 15 | 0 | 3 | 18 |
 | [src/main/java/bg/autohouse/web/util/RestUtil.java](/src/main/java/bg/autohouse/web/util/RestUtil.java) | Java | 52 | 0 | 13 | 65 |
 | [src/main/java/bg/autohouse/web/validations/annotations/MatchingFieldsConstraint.java](/src/main/java/bg/autohouse/web/validations/annotations/MatchingFieldsConstraint.java) | Java | 14 | 0 | 7 | 21 |
 | [src/main/java/bg/autohouse/web/validations/annotations/MatchingFieldsValidator.java](/src/main/java/bg/autohouse/web/validations/annotations/MatchingFieldsValidator.java) | Java | 68 | 18 | 8 | 94 |
+| [src/main/resources/META-INF/additional-spring-configuration-metadata.json](/src/main/resources/META-INF/additional-spring-configuration-metadata.json) | JSON | 49 | 0 | 1 | 50 |
+| [src/main/resources/application-test.properties](/src/main/resources/application-test.properties) | Properties | 11 | 0 | 1 | 12 |
+| [src/main/resources/application.properties](/src/main/resources/application.properties) | Properties | 43 | 26 | 21 | 90 |
+| [src/main/resources/configuration/mail.properties](/src/main/resources/configuration/mail.properties) | Properties | 3 | 1 | 2 | 6 |
+| [src/main/resources/configuration/security.properties](/src/main/resources/configuration/security.properties) | Properties | 3 | 1 | 1 | 5 |
+| [src/main/resources/log4j.properties](/src/main/resources/log4j.properties) | Properties | 5 | 2 | 2 | 9 |
+| [src/main/resources/mail/html/email_verification.html](/src/main/resources/mail/html/email_verification.html) | HTML | 29 | 1 | 8 | 38 |
+| [src/main/resources/mail/html/password_reset.html](/src/main/resources/mail/html/password_reset.html) | HTML | 0 | 0 | 1 | 1 |
+| [src/test/java/bg/autohouse/HibernateValidatorTest.java](/src/test/java/bg/autohouse/HibernateValidatorTest.java) | Java | 43 | 0 | 15 | 58 |
+| [src/test/java/bg/autohouse/MvcPerformer.java](/src/test/java/bg/autohouse/MvcPerformer.java) | Java | 103 | 12 | 25 | 140 |
+| [src/test/java/bg/autohouse/SingletonModelMapper.java](/src/test/java/bg/autohouse/SingletonModelMapper.java) | Java | 12 | 0 | 4 | 16 |
+| [src/test/java/bg/autohouse/data/entities/MakerValidationTest.java](/src/test/java/bg/autohouse/data/entities/MakerValidationTest.java) | Java | 25 | 0 | 6 | 31 |
+| [src/test/java/bg/autohouse/data/entities/ModelValidationTest.java](/src/test/java/bg/autohouse/data/entities/ModelValidationTest.java) | Java | 35 | 0 | 9 | 44 |
+| [src/test/java/bg/autohouse/data/repositories/MakerRepositoryTest.java](/src/test/java/bg/autohouse/data/repositories/MakerRepositoryTest.java) | Java | 40 | 0 | 8 | 48 |
+| [src/test/java/bg/autohouse/data/repositories/ModelRepositoryTest.java](/src/test/java/bg/autohouse/data/repositories/ModelRepositoryTest.java) | Java | 41 | 0 | 8 | 49 |
+| [src/test/java/bg/autohouse/data/repositories/OfferRepositoryTest.java](/src/test/java/bg/autohouse/data/repositories/OfferRepositoryTest.java) | Java | 106 | 1 | 38 | 145 |
+| [src/test/java/bg/autohouse/data/repositories/TrimRepositoryTest.java](/src/test/java/bg/autohouse/data/repositories/TrimRepositoryTest.java) | Java | 24 | 0 | 5 | 29 |
+| [src/test/java/bg/autohouse/data/repositories/UserRepositoryTest.java](/src/test/java/bg/autohouse/data/repositories/UserRepositoryTest.java) | Java | 0 | 25 | 6 | 31 |
+| [src/test/java/bg/autohouse/data/repositories/UserRequestRepositoryTest.java](/src/test/java/bg/autohouse/data/repositories/UserRequestRepositoryTest.java) | Java | 41 | 0 | 12 | 53 |
+| [src/test/java/bg/autohouse/security/jwt/AuthorizationHeaderTest.java](/src/test/java/bg/autohouse/security/jwt/AuthorizationHeaderTest.java) | Java | 25 | 0 | 9 | 34 |
+| [src/test/java/bg/autohouse/security/jwt/JwtTokenServiceImplTest.java](/src/test/java/bg/autohouse/security/jwt/JwtTokenServiceImplTest.java) | Java | 57 | 0 | 9 | 66 |
+| [src/test/java/bg/autohouse/service/services/impl/AccountServiceImplTest.java](/src/test/java/bg/autohouse/service/services/impl/AccountServiceImplTest.java) | Java | 76 | 0 | 9 | 85 |
+| [src/test/java/bg/autohouse/service/services/impl/AdminServiceImplTest.java](/src/test/java/bg/autohouse/service/services/impl/AdminServiceImplTest.java) | Java | 61 | 0 | 9 | 70 |
+| [src/test/java/bg/autohouse/service/services/impl/MakerServiceImplTest.java](/src/test/java/bg/autohouse/service/services/impl/MakerServiceImplTest.java) | Java | 84 | 0 | 19 | 103 |
+| [src/test/java/bg/autohouse/service/services/impl/OfferServiceImplTest.java](/src/test/java/bg/autohouse/service/services/impl/OfferServiceImplTest.java) | Java | 61 | 1 | 15 | 77 |
+| [src/test/java/bg/autohouse/service/services/impl/PasswordServiceTest.java](/src/test/java/bg/autohouse/service/services/impl/PasswordServiceTest.java) | Java | 75 | 0 | 15 | 90 |
+| [src/test/java/bg/autohouse/service/services/impl/UserServiceImplTest.java](/src/test/java/bg/autohouse/service/services/impl/UserServiceImplTest.java) | Java | 137 | 0 | 36 | 173 |
+| [src/test/java/bg/autohouse/service/validation/FieldValidatorTest.java](/src/test/java/bg/autohouse/service/validation/FieldValidatorTest.java) | Java | 41 | 0 | 10 | 51 |
+| [src/test/java/bg/autohouse/utils/StringGenericUtilsTest.java](/src/test/java/bg/autohouse/utils/StringGenericUtilsTest.java) | Java | 11 | 0 | 6 | 17 |
+| [src/test/java/bg/autohouse/utils/TimingExtension.java](/src/test/java/bg/autohouse/utils/TimingExtension.java) | Java | 26 | 0 | 8 | 34 |
+| [src/test/java/bg/autohouse/utils/WithAutohouseUser.java](/src/test/java/bg/autohouse/utils/WithAutohouseUser.java) | Java | 9 | 0 | 4 | 13 |
+| [src/test/java/bg/autohouse/utils/WithAutohouseUserSecurityContextFactory.java](/src/test/java/bg/autohouse/utils/WithAutohouseUserSecurityContextFactory.java) | Java | 34 | 0 | 5 | 39 |
+| [src/test/java/bg/autohouse/validation/offer/BodyStyleValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/BodyStyleValidatorTest.java) | Java | 28 | 0 | 7 | 35 |
+| [src/test/java/bg/autohouse/validation/offer/ColorValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/ColorValidatorTest.java) | Java | 26 | 0 | 7 | 33 |
+| [src/test/java/bg/autohouse/validation/offer/DriveValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/DriveValidatorTest.java) | Java | 28 | 0 | 7 | 35 |
+| [src/test/java/bg/autohouse/validation/offer/FeatureValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/FeatureValidatorTest.java) | Java | 43 | 0 | 7 | 50 |
+| [src/test/java/bg/autohouse/validation/offer/FuelTypeValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/FuelTypeValidatorTest.java) | Java | 27 | 0 | 7 | 34 |
+| [src/test/java/bg/autohouse/validation/offer/NumberValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/NumberValidatorTest.java) | Java | 29 | 0 | 7 | 36 |
+| [src/test/java/bg/autohouse/validation/offer/StateValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/StateValidatorTest.java) | Java | 26 | 0 | 7 | 33 |
+| [src/test/java/bg/autohouse/validation/offer/TransmissionValidatorTest.java](/src/test/java/bg/autohouse/validation/offer/TransmissionValidatorTest.java) | Java | 26 | 0 | 7 | 33 |
+| [src/test/java/bg/autohouse/web/controllers/AccountControllerTest.java](/src/test/java/bg/autohouse/web/controllers/AccountControllerTest.java) | Java | 98 | 0 | 14 | 112 |
+| [src/test/java/bg/autohouse/web/controllers/AuthenticationControllerTest.java](/src/test/java/bg/autohouse/web/controllers/AuthenticationControllerTest.java) | Java | 199 | 0 | 30 | 229 |
+| [src/test/java/bg/autohouse/web/controllers/MakerControllerTest.java](/src/test/java/bg/autohouse/web/controllers/MakerControllerTest.java) | Java | 128 | 0 | 29 | 157 |
+| [src/test/java/bg/autohouse/web/controllers/ResponseBodyMatchers.java](/src/test/java/bg/autohouse/web/controllers/ResponseBodyMatchers.java) | Java | 33 | 0 | 9 | 42 |
+| [src/test/java/bg/autohouse/web/controllers/SearchControllerTest.java](/src/test/java/bg/autohouse/web/controllers/SearchControllerTest.java) | Java | 52 | 1 | 10 | 63 |
+| [src/test/java/bg/autohouse/web/controllers/UserControllerTest.java](/src/test/java/bg/autohouse/web/controllers/UserControllerTest.java) | Java | 75 | 0 | 13 | 88 |
+| [src/test/java/bg/autohouse/web/models/FilterRequestTest.java](/src/test/java/bg/autohouse/web/models/FilterRequestTest.java) | Java | 44 | 0 | 14 | 58 |
+| [src/test/java/bg/autohouse/web/models/offer/OfferCreateRequestTest.java](/src/test/java/bg/autohouse/web/models/offer/OfferCreateRequestTest.java) | Java | 142 | 0 | 10 | 152 |
+| [src/test/java/bg/autohouse/web/models/offer/VehicleCreateRequestTest.java](/src/test/java/bg/autohouse/web/models/offer/VehicleCreateRequestTest.java) | Java | 209 | 0 | 8 | 217 |
+| [src/test/resources/bg/autohouse/data/repositories/users.sql](/src/test/resources/bg/autohouse/data/repositories/users.sql) | SQL | 28 | 0 | 1 | 29 |
+| [src/test/resources/location.sql](/src/test/resources/location.sql) | SQL | 2,648 | 0 | 1 | 2,649 |
+| [src/test/resources/makersModelsTrims.sql](/src/test/resources/makersModelsTrims.sql) | SQL | 77,527 | 0 | 0 | 77,527 |
+| [src/test/resources/test.properties](/src/test/resources/test.properties) | Properties | 9 | 0 | 1 | 10 |
 
 [summary](results.md)

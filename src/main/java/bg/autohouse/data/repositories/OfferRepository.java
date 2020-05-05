@@ -26,4 +26,13 @@ public interface OfferRepository
       countQuery =
           "SELECT count(o) FROM Offer o " + "LEFT JOIN o.vehicle v " + "WHERE o.isActive = 1")
   Page<Offer> findLatestOffersPage(Pageable pageable);
+
+  @Query(
+      value =
+          "SELECT DISTINCT v.maker_name "
+              + "FROM auto_offers as o "
+              + "LEFT JOIN auto_vehicles as v on  o.id = v.offer_id "
+              + "ORDER BY t.maker_name asc",
+      nativeQuery = true)
+  Stream<Object[]> findAllMakersNames();
 }
