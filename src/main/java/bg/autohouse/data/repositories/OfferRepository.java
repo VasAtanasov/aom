@@ -14,17 +14,34 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OfferRepository
     extends JpaRepository<Offer, UUID>, JpaSpecificationExecutor<Offer> {
-  // TODO to format queries for new location entity
-  @Query(value = "SELECT o FROM Offer o " + "JOIN FETCH o.vehicle v " + "WHERE o.isActive = 1")
+
+  @Query(
+      value =
+          "SELECT o FROM Offer o "
+              + "JOIN FETCH o.vehicle v "
+              + "JOIN FETCH o.location lo "
+              + "WHERE o.isActive = 1")
   Stream<Offer> findLatestOffers(Pageable pageable);
 
-  @Query(value = "SELECT o FROM Offer o " + "JOIN FETCH o.vehicle v " + "WHERE o.isActive = 1")
+  @Query(
+      value =
+          "SELECT o FROM Offer o "
+              + "JOIN FETCH o.vehicle v "
+              + "JOIN FETCH o.location lo "
+              + "WHERE o.isActive = 1")
   List<Offer> findAll();
 
   @Query(
-      value = "SELECT o FROM Offer o " + "JOIN FETCH o.vehicle v " + "WHERE o.isActive = 1",
+      value =
+          "SELECT o FROM Offer o "
+              + "JOIN FETCH o.vehicle v "
+              + "JOIN FETCH o.location lo "
+              + "WHERE o.isActive = 1",
       countQuery =
-          "SELECT count(o) FROM Offer o " + "LEFT JOIN o.vehicle v " + "WHERE o.isActive = 1")
+          "SELECT count(o) FROM Offer o "
+              + "LEFT JOIN o.vehicle v "
+              + "LEFT JOIN o.location lo "
+              + "WHERE o.isActive = 1")
   Page<Offer> findLatestOffersPage(Pageable pageable);
 
   @Query(
@@ -35,4 +52,9 @@ public interface OfferRepository
               + "ORDER BY t.maker_name asc",
       nativeQuery = true)
   Stream<Object[]> findAllMakersNames();
+
+  @Query(
+      value = "SELECT MAX(o.price), MIN(o.price), COUNT(*) FROM auto_offers as o",
+      nativeQuery = true)
+  Object[] getMinMaxPrice();
 }
