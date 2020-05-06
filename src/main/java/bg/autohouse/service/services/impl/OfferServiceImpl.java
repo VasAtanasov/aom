@@ -53,7 +53,7 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<OfferServiceModel> getTopOffers() {
+  public List<OfferServiceModel> getLatestOffers() {
     Sort sort = Sort.by("createdAt").descending();
     Pageable pageable = PageRequest.of(0, 20, sort);
     List<OfferServiceModel> topOffers =

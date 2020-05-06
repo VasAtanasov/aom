@@ -4,6 +4,7 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
@@ -30,6 +31,7 @@ public class OfferController extends BaseController {
 
   private final OfferService offerService;
   private final ModelMapperWrapper modelMapper;
+  private final OfferRepository offerRepository;
 
   @PostMapping(
       produces = {APP_V1_MEDIA_TYPE_JSON},
@@ -44,9 +46,16 @@ public class OfferController extends BaseController {
   @GetMapping(
       value = "/top",
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> getTopOffers() {
+  public ResponseEntity<?> getLatestOffers() {
     List<OfferResponseModel> topOffers =
-        modelMapper.mapAll(offerService.getTopOffers(), OfferResponseModel.class);
+        modelMapper.mapAll(offerService.getLatestOffers(), OfferResponseModel.class);
     return RestUtil.okResponse(topOffers);
+  }
+
+  @GetMapping(
+      value = "/statistics",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getOfferStatistics() {
+    return ResponseEntity.ok(offerRepository.getStatistics());
   }
 }

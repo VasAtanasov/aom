@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface OfferService {
-  List<OfferServiceModel> getTopOffers();
+  List<OfferServiceModel> getLatestOffers();
 
   Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable);
 

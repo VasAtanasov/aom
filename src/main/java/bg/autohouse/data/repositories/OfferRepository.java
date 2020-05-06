@@ -1,6 +1,7 @@
 package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.offer.Offer;
+import bg.autohouse.data.projections.Statistics;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -51,10 +52,10 @@ public interface OfferRepository
               + "LEFT JOIN auto_vehicles as v on  o.id = v.offer_id "
               + "ORDER BY t.maker_name asc",
       nativeQuery = true)
-  Stream<Object[]> findAllMakersNames();
+  Stream<Object[]> findAllMakersNames();;
 
   @Query(
-      value = "SELECT MAX(o.price), MIN(o.price), COUNT(*) FROM auto_offers as o",
-      nativeQuery = true)
-  Object[] getMinMaxPrice();
+      value =
+          "SELECT MAX(o.price) as maxPrice, MIN(o.price) as minPrice, COUNT(*) as totalOffers FROM Offer as o")
+  Statistics getStatistics();
 }

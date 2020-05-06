@@ -2,7 +2,10 @@
 @users = http://localhost:8007/api/users
 @auth = http://localhost:8007/api/auth
 
-GET {{host}}/state  HTTP/1.1
+
+###
+
+GET {{host}}/offers/statistics  HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 
 ###

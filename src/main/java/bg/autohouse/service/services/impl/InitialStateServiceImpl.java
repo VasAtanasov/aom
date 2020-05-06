@@ -67,7 +67,7 @@ public class InitialStateServiceImpl implements InitialStateService {
             .map(maker -> modelMapper.map(maker, MakerServiceModel.class))
             .collect(Collectors.toUnmodifiableList());
 
-    List<OfferServiceModel> topOffers = offerService.getTopOffers();
+    List<OfferServiceModel> topOffers = offerService.getLatestOffers();
 
     InitialStateModel initialState =
         InitialStateModel.builder()

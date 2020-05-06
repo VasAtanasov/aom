@@ -61,7 +61,7 @@ public class WebSecurityConfiguration {
         "/api/vehicles/makers/**",
         "/api/app-health",
         "/api/locations/list",
-        "/api/vehicles/offers/top"
+        "/api/vehicles/offers/**"
       };
 
   public static final String H2_CONSOLE = "/h2-console/**";
