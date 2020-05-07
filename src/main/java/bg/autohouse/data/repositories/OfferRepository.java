@@ -1,7 +1,8 @@
 package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.offer.Offer;
-import bg.autohouse.data.projections.Statistics;
+import bg.autohouse.data.projections.offer.CountStatistics;
+import bg.autohouse.data.projections.offer.Statistics;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -18,7 +19,8 @@ public interface OfferRepository
 
   @Query(
       value =
-          "SELECT o FROM Offer o "
+          "SELECT o "
+              + "FROM Offer o "
               + "JOIN FETCH o.vehicle v "
               + "JOIN FETCH o.location lo "
               + "WHERE o.isActive = 1")
@@ -26,7 +28,8 @@ public interface OfferRepository
 
   @Query(
       value =
-          "SELECT o FROM Offer o "
+          "SELECT o "
+              + "FROM Offer o "
               + "JOIN FETCH o.vehicle v "
               + "JOIN FETCH o.location lo "
               + "WHERE o.isActive = 1")
@@ -34,12 +37,14 @@ public interface OfferRepository
 
   @Query(
       value =
-          "SELECT o FROM Offer o "
+          "SELECT o "
+              + "FROM Offer o "
               + "JOIN FETCH o.vehicle v "
               + "JOIN FETCH o.location lo "
               + "WHERE o.isActive = 1",
       countQuery =
-          "SELECT count(o) FROM Offer o "
+          "SELECT count(o) "
+              + "FROM Offer o "
               + "LEFT JOIN o.vehicle v "
               + "LEFT JOIN o.location lo "
               + "WHERE o.isActive = 1")
@@ -56,6 +61,16 @@ public interface OfferRepository
 
   @Query(
       value =
-          "SELECT MAX(o.price) as maxPrice, MIN(o.price) as minPrice, COUNT(*) as totalOffers FROM Offer as o")
+          "SELECT MAX(o.price) as maxPrice, MIN(o.price) as minPrice, COUNT(*) as totalOffers "
+              + "FROM Offer as o")
   Statistics getStatistics();
+
+  @Query(
+      value =
+          "SELECT v.bodyStyle as bodyStyle, COUNT(o) as offersCount "
+              + "FROM Offer as o "
+              + "LEFT JOIN o.vehicle v "
+              + "GROUP BY v.bodyStyle "
+              + "ORDER BY v.bodyStyle")
+  List<CountStatistics> getCountStatistics();
 }

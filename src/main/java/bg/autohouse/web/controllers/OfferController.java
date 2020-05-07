@@ -58,4 +58,11 @@ public class OfferController extends BaseController {
   public ResponseEntity<?> getOfferStatistics() {
     return ResponseEntity.ok(offerRepository.getStatistics());
   }
+
+  @GetMapping(
+      value = "/count/body-styles",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getBodyStylesOffersCount() {
+    return ResponseEntity.ok(offerRepository.getCountStatistics());
+  }
 }

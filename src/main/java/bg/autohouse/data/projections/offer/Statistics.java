@@ -1,4 +1,4 @@
-package bg.autohouse.data.projections;
+package bg.autohouse.data.projections.offer;
 
 public interface Statistics {
   Long getTotalOffers();
