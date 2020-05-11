@@ -52,6 +52,7 @@ public class WebSecurityConfiguration {
 
   private static final String[] PUBLIC_GET_URLS =
       new String[] {
+        "/api/state",
         "/api/auth/register/verify",
         "/api/auth/reset-password-validate",
         "/api/auth/password-reset-complete",

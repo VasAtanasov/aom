@@ -2,7 +2,24 @@
 @users = http://localhost:8007/api/users
 @auth = http://localhost:8007/api/auth
 
+###
 
+GET http://localhost:8007/api/state
+
+###
+
+curl https://api.autoscout24.com/vehicles/7e59591f-c5a3-974e-e452-2951040ae4ee/images \
+     -X GET \
+     -H "X-AS24-Version: 1.1" \
+     -H "Accept-Language: en-GB" \
+     -H "Authorization: Bearer e7c00b24-9f5f-4909-88de-38f8d7ca08bf"
+###
+
+
+curl https://api.autoscout24.com/makes \
+     -X GET \
+     -H "X-AS24-Version: 1.1" \
+     -H "Accept-Language: en-GB"
 ###
 
 GET {{host}}/offers/count/body-styles  HTTP/1.1
