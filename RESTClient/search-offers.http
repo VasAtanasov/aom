@@ -3,7 +3,7 @@
 
 ###
 
-POST {{saerch_url}} HTTP/1.1
+POST {{saerch_url}}?page=0 HTTP/1.1
 Content-Type: {{content-type}}
 
 {

@@ -29,6 +29,8 @@ public class InitialStateServiceImpl implements InitialStateService {
     Map<String, Object> criteria = new HashMap<>();
     List<String> searchCriteriaNamesForCheckboxCriteria = new ArrayList<>();
     List<String> searchCriteriaNamesForSelectCriteria = new ArrayList<>();
+    searchCriteriaNamesForSelectCriteria.add("makerName");
+    searchCriteriaNamesForSelectCriteria.add("modelName");
     List<String> searchCriteriaNamesForRangeCriteria =
         Arrays.asList("doors", "mileage", "price", "year");
 
