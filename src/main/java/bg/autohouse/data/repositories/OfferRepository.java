@@ -54,15 +54,22 @@ public interface OfferRepository
       value =
           "SELECT DISTINCT v.maker_name "
               + "FROM auto_offers as o "
-              + "LEFT JOIN auto_vehicles as v on  o.id = v.offer_id "
+              + "LEFT JOIN auto_vehicles as v on o.id = v.offer_id "
               + "ORDER BY t.maker_name asc",
       nativeQuery = true)
   Stream<Object[]> findAllMakersNames();;
 
   @Query(
       value =
-          "SELECT MAX(o.price) as maxPrice, MIN(o.price) as minPrice, COUNT(*) as totalOffers "
-              + "FROM Offer as o")
+          "SELECT "
+              + "MAX(o.price) as maxPrice, "
+              + "MIN(o.price) as minPrice, "
+              + "MAX(v.year) as maxYear, "
+              + "MIN(v.year) as minYear, "
+              + "COUNT(*) as totalOffers "
+              + "FROM auto_offers as o "
+              + "LEFT JOIN auto_vehicles as v on o.id = v.offer_id ",
+      nativeQuery = true)
   Statistics getStatistics();
 
   @Query(

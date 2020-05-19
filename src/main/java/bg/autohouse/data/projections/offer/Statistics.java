@@ -6,4 +6,8 @@ public interface Statistics {
   Long getMaxPrice();
 
   Long getMinPrice();
+
+  Long getMinYear();
+
+  Long getMaxYear();
 }
