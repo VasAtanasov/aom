@@ -79,9 +79,9 @@ public class OfferSpecifications {
                     cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.features)));
               });
 
-      if (!F.isNullOrEmpty(filter.getAccountTypes())) {
+      if (!F.isNullOrEmpty(filter.getSeller())) {
         List<AccountType> sellers =
-            F.filterToList(filter.getAccountTypes(), seller -> Assert.has(seller));
+            F.filterToList(filter.getSeller(), seller -> Assert.has(seller));
         restrictions.add(cb.isTrue(root.get(Offer_.account).get(Account_.accountType).in(sellers)));
       }
 

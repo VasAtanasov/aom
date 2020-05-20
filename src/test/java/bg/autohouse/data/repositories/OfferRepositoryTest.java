@@ -113,7 +113,7 @@ public class OfferRepositoryTest {
   @Test
   void whenOfferFilter_bySeller_shouldReturnCollection() {
     List<AccountType> accountTypes = Arrays.asList(AccountType.DEALER);
-    Filter filter = Filter.builder().accountTypes(accountTypes).build();
+    Filter filter = Filter.builder().seller(accountTypes).build();
 
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
 

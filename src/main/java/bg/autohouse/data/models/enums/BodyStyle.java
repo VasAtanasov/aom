@@ -17,13 +17,13 @@ public enum BodyStyle implements Textable {
   SEDAN("Sedan"),
   SUV("SUV"),
   VAN("Van"),
-  WAGON("Wagon"),
+  WAGON("Wagon");
   // TOOD remove below types
-  LUXURY("Luxury"),
-  MPV("MPV"),
-  TRUCK("Truck"),
-  SPORT("Sport"),
-  OTHER("Other");
+  // LUXURY("Luxury"),
+  // MPV("MPV"),
+  // TRUCK("Truck"),
+  // SPORT("Sport"),
+  // OTHER("Other");
 
   private final String text;
 

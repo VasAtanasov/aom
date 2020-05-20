@@ -66,9 +66,12 @@ public interface OfferRepository
               + "MIN(o.price) as minPrice, "
               + "MAX(v.year) as maxYear, "
               + "MIN(v.year) as minYear, "
+              + "MAX(v.mileage) as maxMileage, "
+              + "MIN(v.mileage) as minMileage, "
               + "COUNT(*) as totalOffers "
               + "FROM auto_offers as o "
-              + "LEFT JOIN auto_vehicles as v on o.id = v.offer_id ",
+              + "LEFT JOIN auto_vehicles as v on o.id = v.offer_id "
+              + "WHERE o.is_active = 1",
       nativeQuery = true)
   Statistics getStatistics();
 

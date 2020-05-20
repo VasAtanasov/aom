@@ -10,4 +10,8 @@ public interface Statistics {
   Long getMinYear();
 
   Long getMaxYear();
+
+  Long getMaxMileage();
+
+  Long getMinMileage();
 }

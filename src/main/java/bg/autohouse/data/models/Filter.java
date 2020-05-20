@@ -47,26 +47,6 @@ public class Filter extends BaseUuidEntity {
   @Column(name = "trim")
   private String trim;
 
-  @Column(name = "fuel_type")
-  @Enumerated(EnumType.STRING)
-  private FuelType fuelType;
-
-  @Column(name = "transmission")
-  @Enumerated(EnumType.STRING)
-  private Transmission transmission;
-
-  @Column(name = "body_style")
-  @Enumerated(EnumType.STRING)
-  private BodyStyle bodyStyle;
-
-  @Column(name = "color")
-  @Enumerated(EnumType.STRING)
-  private Color color;
-
-  @Column(name = "drive")
-  @Enumerated(EnumType.STRING)
-  private Drive drive;
-
   @AttributeOverrides({
     @AttributeOverride(name = "from", column = @Column(name = "price_from")),
     @AttributeOverride(name = "to", column = @Column(name = "price_to"))
@@ -99,6 +79,26 @@ public class Filter extends BaseUuidEntity {
   @Builder.Default
   private RangeCriteria year = RangeCriteria.of(YEAR_FROM, YEAR_TO);
 
+  @Column(name = "fuel_type")
+  @Enumerated(EnumType.STRING)
+  private FuelType fuelType;
+
+  @Column(name = "transmission")
+  @Enumerated(EnumType.STRING)
+  private Transmission transmission;
+
+  @Column(name = "body_style")
+  @Enumerated(EnumType.STRING)
+  private BodyStyle bodyStyle;
+
+  @Column(name = "color")
+  @Enumerated(EnumType.STRING)
+  private Color color;
+
+  @Column(name = "drive")
+  @Enumerated(EnumType.STRING)
+  private Drive drive;
+
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Feature.class)
   @JoinTable(
       name = EntityConstants.PREFIX + "filter_features",
@@ -124,7 +124,7 @@ public class Filter extends BaseUuidEntity {
   @Column(name = "account_type")
   @Enumerated(value = EnumType.STRING)
   @Builder.Default
-  private List<AccountType> accountTypes = new ArrayList<>();
+  private List<AccountType> seller = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = State.class)
   @JoinTable(
