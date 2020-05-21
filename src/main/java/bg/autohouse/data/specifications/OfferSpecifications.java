@@ -44,7 +44,9 @@ public class OfferSpecifications {
             cb.equal(root.get(Offer_.vehicle).get(Vehicle_.modelName), filter.getModelName()));
       }
 
-      // TODO add trim
+      if (Assert.has(filter.getTrim())) {
+        restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.trim), filter.getTrim()));
+      }
 
       if (Assert.has(filter.getFuelType())) {
         restrictions.add(
@@ -90,6 +92,11 @@ public class OfferSpecifications {
         restrictions.add(cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.state).in(states)));
       }
 
+      if (Assert.has(filter.getHasAccident())) {
+        restrictions.add(
+            cb.equal(root.get(Offer_.vehicle).get(Vehicle_.hasAccident), filter.getHasAccident()));
+      }
+
       restrictions.add(
           cb.between(
               root.get(Offer_.price), filter.getPrice().getFrom(), filter.getPrice().getTo()));
@@ -111,6 +118,8 @@ public class OfferSpecifications {
               root.get(Offer_.vehicle).get(Vehicle_.year),
               filter.getYear().getFrom(),
               filter.getYear().getTo()));
+
+      restrictions.add(cb.equal(root.get(Offer_.isActive), true));
 
       log.info(
           "Have generated {} predicates, look like: {}" + System.lineSeparator(),

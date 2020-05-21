@@ -140,6 +140,5 @@ public class Filter extends BaseUuidEntity {
   private List<State> state = new ArrayList<>();
 
   @Column(name = "has_accident")
-  @Builder.Default
-  private boolean hasAccident = false;
+  private Boolean hasAccident;
 }

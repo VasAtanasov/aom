@@ -35,5 +35,5 @@ public class FilterRequest {
   @Builder.Default private List<String> features = new ArrayList<>();
   @Builder.Default private List<String> seller = new ArrayList<>();
   @Builder.Default private List<String> state = new ArrayList<>();
-  private boolean hasAccident;
+  private Boolean hasAccident;
 }
