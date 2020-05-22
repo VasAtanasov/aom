@@ -71,13 +71,12 @@ public class PasswordServiceImpl implements PasswordService {
           "found an OTP, but it's stale, time now = {}, expiry time = {}",
           TimeUtils.now(),
           token.getExpiryDateTime().toString());
-      VerificationTokenCode newToken = new VerificationTokenCode(username, code, userId);
       Date now = TimeUtils.now();
       long defaultExpiration = Duration.ofMinutes(TOKEN_LIFE_SPAN_MINUTES).toMillis();
-      newToken.setExpiryDateTime(TimeUtils.dateOf(now.getTime() + defaultExpiration));
-      verificationTokenCodeRepository.delete(token);
-      verificationTokenCodeRepository.save(newToken);
-      return newToken;
+      token.setCode(code);
+      token.setExpiryDateTime(TimeUtils.dateOf(now.getTime() + defaultExpiration));
+      verificationTokenCodeRepository.save(token);
+      return token;
     }
     return token;
   }
