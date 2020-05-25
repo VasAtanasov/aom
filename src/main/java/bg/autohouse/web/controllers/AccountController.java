@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,15 @@ public class AccountController extends BaseController {
 
   private final AccountService accountService;
   private final ModelMapperWrapper modelMapper;
+
+  @GetMapping(
+      value = "user-account",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> fetchUserAccount(@LoggedUser User user) {
+    AccountServiceModel model =
+        modelMapper.map(accountService.loadAccountForUser(user.getId()), AccountServiceModel.class);
+    return RestUtil.okResponse(model);
+  }
 
   @PostMapping(
       value = "/private-create",
