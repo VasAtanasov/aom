@@ -5,7 +5,7 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.service.models.InitialStateModel;
 import bg.autohouse.service.services.InitialStateService;
-import bg.autohouse.service.services.LocationService;
+import bg.autohouse.service.services.ProvinceService;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.response.ResponseWrapper;
 import bg.autohouse.web.util.RestUtil;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController extends BaseController {
 
   private final InitialStateService initialStateService;
-  private final LocationService locationService;
+  private final ProvinceService provinceService;
 
   @GetMapping(
       value = "/state",
@@ -33,9 +33,9 @@ public class HomeController extends BaseController {
   }
 
   @GetMapping(
-      value = "/locations/list",
+      value = "/province/list",
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> getLocationsList() {
-    return RestUtil.okResponse(locationService.loadAllLocations());
+  public ResponseEntity<?> getProvinceList() {
+    return RestUtil.okResponse(provinceService.loadAllProvinces());
   }
 }

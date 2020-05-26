@@ -11,6 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AddressServiceModel {
   private Long locationId;
+  private Long locationProvinceId;
+  private String locationCity;
+  private String locationCityRegion;
   private String street;
   private String accountId;
 }
