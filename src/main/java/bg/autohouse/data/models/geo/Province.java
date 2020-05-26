@@ -27,5 +27,5 @@ public class Province extends BaseLongEntity {
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<Location> models = new ArrayList<>();
+  private List<Location> locations = new ArrayList<>();
 }

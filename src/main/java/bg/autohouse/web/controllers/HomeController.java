@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,5 +38,12 @@ public class HomeController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getProvinceList() {
     return RestUtil.okResponse(provinceService.loadAllProvinces());
+  }
+
+  @GetMapping(
+      value = "/province/{id}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getProvinceById(@PathVariable Long id) {
+    return RestUtil.okResponse(provinceService.loadProvinceById(id));
   }
 }

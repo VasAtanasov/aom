@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LocationServiceModel {
+  private Long id;
   private String provinceName;
   private String city;
   private String cityRegion;
