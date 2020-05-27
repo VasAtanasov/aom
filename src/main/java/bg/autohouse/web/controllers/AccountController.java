@@ -71,10 +71,6 @@ public class AccountController extends BaseController {
       log.error("Missing account data");
       return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);
     }
-    if (accountService.hasAccount(ownerId)) {
-      log.error("User already has set account");
-      return RestUtil.errorResponse(RestMessage.USER_ALREADY_HAS_ACCOUNT);
-    }
     AccountType accountType =
         EnumUtils.fromString(model.getAccountType(), AccountType.class)
             .orElseThrow(() -> new IllegalStateException(RestMessage.INVALID_ACCOUNT_TYPE.name()));

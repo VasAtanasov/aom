@@ -16,4 +16,5 @@ public class AddressServiceModel {
   private String locationCityRegion;
   private String street;
   private String accountId;
+  private Integer locationPostalCode;
 }

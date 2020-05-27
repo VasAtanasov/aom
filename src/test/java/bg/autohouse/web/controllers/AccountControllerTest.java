@@ -81,7 +81,7 @@ public class AccountControllerTest extends MvcPerformer {
             .displayName("displayedName")
             .description("description")
             .contactDetailsPhoneNumber("phoneNumber")
-            .addressLocationId(2L)
+            .addressLocationPostalCode(9000)
             .addressStreet("street")
             .accountType(AccountType.DEALER.name())
             .build();
@@ -99,7 +99,7 @@ public class AccountControllerTest extends MvcPerformer {
             .displayName("displayedName")
             .description("description")
             .contactDetailsPhoneNumber("phoneNumber")
-            .addressLocationId(2L)
+            .addressLocationPostalCode(9000)
             .addressStreet("street")
             .accountType(AccountType.DEALER.name())
             .build();

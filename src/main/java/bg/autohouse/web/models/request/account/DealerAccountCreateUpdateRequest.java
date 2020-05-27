@@ -17,7 +17,7 @@ public class DealerAccountCreateUpdateRequest {
   @NotNull @NotBlank private String description;
   @NotNull @NotBlank private String contactDetailsPhoneNumber;
   private String contactDetailsWebLink;
-  @NotNull private Long addressLocationId;
+  @NotNull private Integer addressLocationPostalCode;
   @NotNull @NotBlank private String addressStreet;
   @ValidAccountType private String accountType;
 }

@@ -44,8 +44,6 @@ public class AccountServiceImpl implements AccountService {
   private final AsyncUserLogger userLogger;
   private final FieldValidator fieldValidator;
 
-  // private final ApplicationEventPublisher applicationEventPublisher;
-
   @Override
   @Transactional(readOnly = true)
   public boolean hasAccount(UUID id) {
@@ -70,6 +68,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional
+  // TODO modify private account for update
   public AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
@@ -105,20 +104,31 @@ public class AccountServiceImpl implements AccountService {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
     User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);
-    if (owner.isHasAccount()) {
-      throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
-    }
     validateModel(model, DealerAccountRequiredFields.class);
     Location location =
         locationRepository
-            .findById(model.getAddress().getLocationId())
+            .findByPostalCode(model.getAddress().getLocationPostalCode())
             .orElseThrow(LocationNotFoundException::new);
-    Account dealerAccount = Account.createDealerAccount(model, owner);
-    String street = model.getAddress().getStreet();
-    Address.createAddress(location, street, dealerAccount);
+    Account dealerAccount = accountRepository.findByUserId(owner.getId()).orElse(null);
+    if (dealerAccount == null) {
+      dealerAccount = Account.createDealerAccount(model, owner);
+      String street = model.getAddress().getStreet();
+      Address.createAddress(location, street, dealerAccount);
+    } else {
+      dealerAccount.setFirstName(model.getFirstName());
+      dealerAccount.setLastName(model.getLastName());
+      dealerAccount.setDisplayName(model.getDisplayName());
+      dealerAccount.setDescription(model.getDescription());
+      dealerAccount.getContact().setPhoneNumber(model.getContactDetails().getPhoneNumber());
+      dealerAccount.getContact().setWebLink(model.getContactDetails().getWebLink());
+      Address address = dealerAccount.getAddress();
+      if (location.getId() != address.getLocation().getId()) {
+        address.setLocation(location);
+      }
+      address.setStreet(model.getAddress().getStreet());
+    }
     accountRepository.save(dealerAccount);
     logAccountCreate(AccountType.DEALER, owner);
-    // TODO notify admin when created
     return modelMapper.map(dealerAccount, AccountServiceModel.class);
   }
 
@@ -130,7 +140,7 @@ public class AccountServiceImpl implements AccountService {
     private String displayName;
     private String description;
     private String contactDetailsPhoneNumber;
-    private Long addressLocationId;
+    private Integer addressLocationPostalCode;
     private String addressStreet;
     private String accountType;
   }
