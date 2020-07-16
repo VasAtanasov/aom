@@ -16,8 +16,6 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
 
   private static final VehicleCreateRequest VALID_VEHICLE =
       VehicleCreateRequest.builder()
-          .makerId(1L)
-          .modelId(1L)
           .fuelType(FuelType.GASOLINE.name())
           .mileage(10)
           .doors(4)
@@ -37,8 +35,6 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
 
   private static final VehicleCreateRequest INVALID_VEHICLE_STATE =
       VehicleCreateRequest.builder()
-          .makerId(1L)
-          .modelId(1L)
           .fuelType(FuelType.GASOLINE.name())
           .mileage(10)
           .doors(4)
@@ -58,8 +54,6 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
 
   private static final VehicleCreateRequest INVALID_VEHICLE_ENGINE_FUEL_TYPE =
       VehicleCreateRequest.builder()
-          .makerId(1L)
-          .modelId(1L)
           .fuelType(INVALID_VALUE)
           .mileage(10)
           .doors(4)

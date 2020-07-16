@@ -16,9 +16,9 @@ public interface AccountRepository
   @Query(
       "SELECT acc "
           + "FROM Account acc "
-          + "JOIN FETCH acc.user usr "
-          + "JOIN FETCH acc.address adr "
-          + "JOIN FETCH adr.location loc "
+          + "LEFT JOIN FETCH acc.user usr "
+          + "LEFT JOIN FETCH acc.address adr "
+          + "LEFT JOIN FETCH adr.location loc "
           + "WHERE usr.id = :userId")
   Optional<Account> findByUserId(UUID userId);
 }

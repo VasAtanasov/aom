@@ -15,7 +15,6 @@ import bg.autohouse.errors.AccountDisabledOrClosed;
 import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.LocationNotFoundException;
 import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.service.models.account.*;
 import bg.autohouse.service.services.AccountService;
 import bg.autohouse.service.services.AsyncUserLogger;
@@ -68,19 +67,26 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional
-  // TODO modify private account for update
-  public AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, UUID ownerId) {
+  public AccountServiceModel createOrUpdatePrivateSellerAccount(
+      AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
     User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);
-    if (owner.isHasAccount()) {
-      throw new ResourceAlreadyExistsException(RestMessage.USER_ALREADY_HAS_ACCOUNT);
-    }
     validateModel(model, PrivateAccountRequiredFields.class);
     String displayNameToUse =
         Assert.has(model.getDisplayName()) ? model.getDisplayName() : generateRandomDisplayName();
     model.setDisplayName(displayNameToUse);
-    Account privateAccount = Account.createPrivateAccount(model, owner);
+    Account privateAccount = accountRepository.findByUserId(owner.getId()).orElse(null);
+    if (privateAccount == null) {
+      privateAccount = Account.createPrivateAccount(model, owner);
+    } else {
+      privateAccount.setFirstName(model.getFirstName());
+      privateAccount.setLastName(model.getLastName());
+      privateAccount.setDisplayName(model.getDisplayName());
+      privateAccount.setDescription(model.getDescription());
+      privateAccount.getContact().setPhoneNumber(model.getContactDetails().getPhoneNumber());
+      privateAccount.getContact().setWebLink(model.getContactDetails().getWebLink());
+    }
     accountRepository.save(privateAccount);
     logAccountCreate(AccountType.PRIVATE, owner);
     return modelMapper.map(privateAccount, AccountServiceModel.class);
@@ -100,7 +106,7 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional
-  public AccountServiceModel createDealerAccount(AccountServiceModel model, UUID ownerId) {
+  public AccountServiceModel createOrUpdateDealerAccount(AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
     User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);

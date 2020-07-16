@@ -43,7 +43,7 @@ public class AccountServiceImplTest {
     assertThat(user).isNotNull();
     AccountServiceModel model = AccountServiceModel.builder().firstName("firstName").build();
     Throwable thrown =
-        catchThrowable(() -> accountService.createDealerAccount(model, user.getId()));
+        catchThrowable(() -> accountService.createOrUpdateDealerAccount(model, user.getId()));
     assertThat(thrown)
         .isInstanceOf(RequiredFieldMissing.class)
         .hasMessageStartingWith("Required field missing");
@@ -55,7 +55,7 @@ public class AccountServiceImplTest {
     assertThat(user).isNotNull();
     AccountServiceModel model = AccountServiceModel.builder().firstName("firstName").build();
     Throwable thrown =
-        catchThrowable(() -> accountService.createDealerAccount(model, UUID.randomUUID()));
+        catchThrowable(() -> accountService.createOrUpdateDealerAccount(model, UUID.randomUUID()));
     assertThat(thrown)
         .isInstanceOf(NoSuchUserException.class)
         .hasMessageStartingWith(RestMessage.USER_NOT_FOUND.name());
@@ -77,7 +77,7 @@ public class AccountServiceImplTest {
             .accountType(AccountType.DEALER.name())
             .build();
     AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
-    AccountServiceModel account = accountService.createDealerAccount(model, user.getId());
+    AccountServiceModel account = accountService.createOrUpdateDealerAccount(model, user.getId());
 
     assertThat(account.getId()).isNotNull();
   }

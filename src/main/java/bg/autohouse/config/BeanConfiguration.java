@@ -20,7 +20,6 @@ public class BeanConfiguration {
 
   @Bean
   public ModelMapper modelMapper() {
-
     mapper
         .getConfiguration()
         .setAmbiguityIgnored(true)

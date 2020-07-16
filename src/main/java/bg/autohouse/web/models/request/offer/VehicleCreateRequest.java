@@ -25,9 +25,7 @@ import lombok.Setter;
 @Builder
 public class VehicleCreateRequest {
   @NotNull @NotEmpty private String makerName;
-  @NotNull private Long makerId;
   @NotNull @NotEmpty private String modelName;
-  @NotNull private Long modelId;
   @NotNull @NotEmpty private String trim;
 
   @ValidNumber(field = "year")

@@ -8,7 +8,7 @@ public interface AccountService {
 
   AccountServiceModel loadAccountForUser(UUID userId);
 
-  AccountServiceModel createPrivateSellerAccount(AccountServiceModel model, UUID ownerId);
+  AccountServiceModel createOrUpdatePrivateSellerAccount(AccountServiceModel model, UUID ownerId);
 
-  AccountServiceModel createDealerAccount(AccountServiceModel model, UUID ownerId);
+  AccountServiceModel createOrUpdateDealerAccount(AccountServiceModel model, UUID ownerId);
 }

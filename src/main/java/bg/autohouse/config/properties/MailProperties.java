@@ -1,9 +1,7 @@
 package bg.autohouse.config.properties;
 
 import java.util.Properties;
-
 import org.springframework.beans.factory.annotation.Value;
-// import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 

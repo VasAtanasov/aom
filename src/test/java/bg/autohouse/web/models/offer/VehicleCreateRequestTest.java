@@ -54,8 +54,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
     return Stream.of(
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(-10)
                 .doors(4)
@@ -70,8 +68,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             String.format(ERROR_MESSAGE, "mileage")),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(-4)
@@ -86,8 +82,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             String.format(ERROR_MESSAGE, "doors")),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(4)
@@ -102,8 +96,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             ValidationMessages.INVALID_STATE),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(4)
@@ -118,8 +110,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             ValidationMessages.INVALID_TRANSMISSION),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(4)
@@ -134,8 +124,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             ValidationMessages.INVALID_DRIVE),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(4)
@@ -150,8 +138,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             ValidationMessages.INVALID_COLOR),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(4)
@@ -166,8 +152,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             ValidationMessages.INVALID_BODY_STYLE),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType("Invalid Fuel")
                 .mileage(10)
                 .doors(4)
@@ -182,8 +166,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             ValidationMessages.INVALID_FUEL_TYPE_NULL),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(4)
@@ -198,8 +180,6 @@ public class VehicleCreateRequestTest extends HibernateValidatorTest {
             ValidationMessages.INVALID_FEATURE),
         Arguments.of(
             VehicleCreateRequest.builder()
-                .makerId(1L)
-                .modelId(1L)
                 .fuelType(FuelType.GASOLINE.name())
                 .mileage(10)
                 .doors(4)

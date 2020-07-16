@@ -7,7 +7,7 @@ POST {{auth}}/login HTTP/1.1
 Content-Type: {{content-type}}
 
 {
-    "username": "vas@mail.com",
+    "username": "username@mail.com",
     "password": "123"
 }
 
