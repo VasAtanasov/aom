@@ -15,6 +15,7 @@ import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.LocationNotFoundException;
+import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.OfferService;
@@ -64,7 +65,6 @@ public class OfferServiceImpl implements OfferService {
     return topOffers;
   }
 
-  // TODO refactor filter request to add maker and models names
   @Override
   @Transactional(readOnly = true)
   public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
@@ -76,10 +76,28 @@ public class OfferServiceImpl implements OfferService {
         filter.setModelId(filterRequest.getModelId());
       }
     }
-    // List<MediaFile> images = mediaFileService.loadForReference(referenceId)
     return offerRepository
         .findAll(where(OfferSpecifications.getOffersByFilter(filter)), pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public OfferServiceModel getOfferById(UUID id) {
+    return offerRepository
+        .findById(id)
+        .map(offer -> modelMapper.map(offer, OfferServiceModel.class))
+        .orElseThrow(OfferNotFoundException::new);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<String> fetchOfferImages(UUID offerId) {
+    boolean isOffer = offerRepository.existsById(offerId);
+    if (!isOffer) throw new OfferNotFoundException();
+    return mediaFileService.loadForReference(offerId).stream()
+        .map(media -> media.getFileKey())
+        .collect(Collectors.toList());
   }
 
   @Override
@@ -87,7 +105,7 @@ public class OfferServiceImpl implements OfferService {
   // TODO validate numbers
   // TODO check is primary photo and return default
   // TODO check are images
-  // TODO set initial default value for primary photo
+  // TODO add maker and model ids
   @Transactional(rollbackFor = IOException.class)
   public OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId)
       throws IOException {
@@ -97,7 +115,7 @@ public class OfferServiceImpl implements OfferService {
         accountRepository.findByUserId(creatorId).orElseThrow(AccountNotFoundException::new);
     Location location =
         locationRepository
-            .findById(request.getLocationId())
+            .findByPostalCode(request.getAddressLocationPostalCode())
             .orElseThrow(LocationNotFoundException::new);
     Vehicle vehicle = modelMapper.map(request.getVehicle(), Vehicle.class);
     Assert.notNull(vehicle.getBodyStyle(), RestMessage.INVALID_BODY_STYLE.name());
@@ -114,7 +132,6 @@ public class OfferServiceImpl implements OfferService {
     offer = offerRepository.save(offer);
     offer.setVehicle(vehicle);
     vehicle.setOffer(offer);
-    // MediaFile primaryPhoto = null;
     for (MultipartFile file : request.getImages()) {
       byte[] byteArray = imageResizer.toJpgDownscaleToSize(file.getInputStream());
       String fileName =

@@ -46,7 +46,7 @@ public class Vehicle extends BaseUuidEntity {
   @Column(name = "model_id", nullable = false)
   private Long modelId;
 
-  @Column(name = "trim", nullable = false)
+  @Column(name = "trim")
   private String trim;
 
   @Column(name = "year", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")

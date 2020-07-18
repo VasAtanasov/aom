@@ -1,0 +1,3 @@
+@base = http://localhost:8007/api
+
+GET  {{base}}/vehicles/offers/details/ec9a9fb8-4363-4314-bf85-0210282af6c7 HTTP/1.1

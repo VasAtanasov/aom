@@ -34,6 +34,6 @@ public class OfferCreateRequest {
   @NotNull @NotBlank private String contactDetailsPhoneNumber;
   private String contactDetailsWebLink;
 
-  @NotNull private Long locationId;
+  @NotNull private Integer addressLocationPostalCode;
   @Builder.Default private List<MultipartFile> images = new ArrayList<>();
 }

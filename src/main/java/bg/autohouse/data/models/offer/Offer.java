@@ -8,8 +8,8 @@ import bg.autohouse.data.models.geo.Location;
 import javax.persistence.*;
 import lombok.*;
 
-// TODO add named queries
 // TODO add validation annotations to entities
+// TODO list of price changes
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,8 +21,6 @@ import lombok.*;
       @Index(name = "idx_" + EntityConstants.OFFERS + "_account_id", columnList = "account_id")
     })
 public class Offer extends BaseUuidEntity {
-  // TODO list of images
-  // TODO list of price changes
 
   private static final long serialVersionUID = -2840866963962522737L;
 
@@ -40,9 +38,10 @@ public class Offer extends BaseUuidEntity {
       orphanRemoval = true,
       mappedBy = "offer")
   private Vehicle vehicle;
-  // TODO set initial default value for primary photo
+
   @Column(name = "primary_photo_key", nullable = false)
-  private String primaryPhotoKey = "no_photo";
+  private String primaryPhotoKey =
+      "https://www.dropbox.com/s/qp0hojikkgkc52s/no-photo-large.png?raw=1";
 
   @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
   private Integer price = 0;
@@ -67,10 +66,6 @@ public class Offer extends BaseUuidEntity {
       referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "fk_offer_location_id"))
   private Location location;
-
-  // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  // @JoinColumn(name = "offer_id")
-  // private List<MediaFile> images = new ArrayList<>();
 
   @Embedded private ContactDetails contactDetails;
 
