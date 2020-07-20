@@ -4,6 +4,7 @@ import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.projections.offer.CountStatistics;
 import bg.autohouse.data.projections.offer.Statistics;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
@@ -83,4 +84,17 @@ public interface OfferRepository
               + "GROUP BY v.bodyStyle "
               + "ORDER BY v.bodyStyle")
   List<CountStatistics> getCountStatistics();
+
+  @Query(
+      value =
+          "SELECT DISTINCT o "
+              + "FROM Offer o "
+              + "LEFT JOIN FETCH o.vehicle v "
+              + "LEFT JOIN FETCH o.location lo "
+              + "LEFT JOIN FETCH o.account acc "
+              + "LEFT JOIN FETCH acc.user usr "
+              + "LEFT JOIN FETCH acc.address adr "
+              + "LEFT JOIN FETCH adr.location loc "
+              + "WHERE o.isActive = 1 AND o.id = :id")
+  Optional<Offer> findOfferById(UUID id);
 }

@@ -16,6 +16,7 @@ import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.LocationNotFoundException;
 import bg.autohouse.errors.OfferNotFoundException;
+import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.OfferService;
@@ -83,10 +84,10 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(readOnly = true)
-  public OfferServiceModel getOfferById(UUID id) {
+  public OfferDetailsServiceModel getOfferById(UUID id) {
     return offerRepository
-        .findById(id)
-        .map(offer -> modelMapper.map(offer, OfferServiceModel.class))
+        .findOfferById(id)
+        .map(offer -> modelMapper.map(offer, OfferDetailsServiceModel.class))
         .orElseThrow(OfferNotFoundException::new);
   }
 

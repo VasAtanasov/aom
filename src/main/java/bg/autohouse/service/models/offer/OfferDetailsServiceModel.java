@@ -1,5 +1,6 @@
-package bg.autohouse.web.models.response.offer;
+package bg.autohouse.service.models.offer;
 
+import bg.autohouse.data.models.enums.Feature;
 import java.util.List;
 import lombok.*;
 
@@ -7,14 +8,14 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OfferDetailsResponseModel {
+public class OfferDetailsServiceModel {
   private String id;
   private Integer price;
   private String description;
   private String createdAt;
+  private String primaryPhotoKey;
   private String contactDetailsPhoneNumber;
   private String contactDetailsWebLink;
-  private String webLink;
   private String accountDisplayName;
   private String accountFirstName;
   private String accountLastName;
@@ -32,5 +33,5 @@ public class OfferDetailsResponseModel {
   private String vehicleColor;
   private String vehicleFuelType;
   private String vehicleHasAccident;
-  private List<String> vehicleFeatures;
+  private List<Feature> vehicleFeatures;
 }

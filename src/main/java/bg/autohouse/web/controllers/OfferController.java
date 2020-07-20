@@ -11,6 +11,7 @@ import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import bg.autohouse.web.models.response.offer.OfferDetailsResponseModel;
+import bg.autohouse.web.models.response.offer.OfferDetailsResponseWrapper;
 import bg.autohouse.web.models.response.offer.OfferResponseModel;
 import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
@@ -50,11 +51,11 @@ public class OfferController extends BaseController {
       value = "/details/{offerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> viewOffer(@PathVariable UUID offerId) {
-    OfferResponseModel offer =
-        modelMapper.map(offerService.getOfferById(offerId), OfferResponseModel.class);
+    OfferDetailsResponseModel offer =
+        modelMapper.map(offerService.getOfferById(offerId), OfferDetailsResponseModel.class);
     List<String> imagesKeys = offerService.fetchOfferImages(offerId);
     return RestUtil.okResponse(
-        OfferDetailsResponseModel.builder().offer(offer).images(imagesKeys).build());
+        OfferDetailsResponseWrapper.builder().offer(offer).images(imagesKeys).build());
   }
 
   @GetMapping(

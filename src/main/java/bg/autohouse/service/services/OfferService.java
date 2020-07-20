@@ -1,5 +1,6 @@
 package bg.autohouse.service.services;
 
+import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.web.models.request.FilterRequest;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
@@ -12,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 public interface OfferService {
   List<OfferServiceModel> getLatestOffers();
 
-  OfferServiceModel getOfferById(UUID id);
+  OfferDetailsServiceModel getOfferById(UUID id);
 
   List<String> fetchOfferImages(UUID offerId);
 
