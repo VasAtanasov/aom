@@ -3,6 +3,7 @@ package bg.autohouse.service.services.impl;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
+import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.models.media.MediaFile;
@@ -12,9 +13,11 @@ import bg.autohouse.data.models.offer.Vehicle;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.OfferRepository;
+import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.LocationNotFoundException;
+import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
@@ -46,6 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class OfferServiceImpl implements OfferService {
 
+  private final UserRepository userRepository;
   private final OfferRepository offerRepository;
   private final ModelMapperWrapper modelMapper;
   private final LocationRepository locationRepository;
@@ -177,5 +181,14 @@ public class OfferServiceImpl implements OfferService {
         String.format("%02d", now.getDayOfMonth()),
         referenceId.toString(),
         fileName);
+  }
+
+  @Override
+  @Transactional
+  public UUID addToFavorites(UUID userId, UUID offerId) {
+    User user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
+    Offer offer = offerRepository.findById(offerId).orElseThrow(OfferNotFoundException::new);
+    user.getFavorites().add(offer);
+    return offer.getId();
   }
 }

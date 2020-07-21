@@ -47,7 +47,7 @@ public class WebSecurityConfiguration {
         "/api/auth/register",
         "/api/auth/login-or-register",
         "/api/auth/password-reset-request",
-        "/api/vehicles/offers/search"
+        "/api/vehicles/offers/search",
       };
 
   private static final String[] PUBLIC_GET_URLS =
@@ -62,7 +62,7 @@ public class WebSecurityConfiguration {
         "/api/vehicles/makers/**",
         "/api/app-health",
         "/api/locations/list",
-        "/api/vehicles/offers/**"
+        "/api/vehicles/offers/**",
       };
 
   public static final String H2_CONSOLE = "/h2-console/**";

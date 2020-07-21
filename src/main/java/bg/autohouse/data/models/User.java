@@ -1,6 +1,7 @@
 package bg.autohouse.data.models;
 
 import bg.autohouse.data.models.enums.Role;
+import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.util.F;
 import java.util.Collection;
 import java.util.HashSet;
@@ -53,7 +54,7 @@ public class User extends BaseUuidEntity implements UserDetails {
 
   @Column(name = "has_account")
   private boolean hasAccount = false;
-  // TODO move displayeName to user for displaying in reviews
+
   @ElementCollection(fetch = FetchType.LAZY, targetClass = Role.class)
   @JoinTable(
       name = EntityConstants.PREFIX + "user_role",
@@ -65,6 +66,13 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Column(name = "role")
   @Enumerated(value = EnumType.STRING)
   private Set<Role> roles = new HashSet<>();
+
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(
+      name = "auto_user_saved_offer",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "offer_id"))
+  private Set<Offer> favorites = new HashSet<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

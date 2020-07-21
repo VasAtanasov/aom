@@ -2,9 +2,12 @@ package bg.autohouse.data.models.offer;
 
 import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
+import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.account.ContactDetails;
 import bg.autohouse.data.models.geo.Location;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import lombok.*;
 
@@ -68,6 +71,9 @@ public class Offer extends BaseUuidEntity {
   private Location location;
 
   @Embedded private ContactDetails contactDetails;
+
+  @ManyToMany(mappedBy = "favorites")
+  private Set<User> usersSaved = new HashSet<>();
 
   public void incrementHitCount() {
     hitCount += 1;
