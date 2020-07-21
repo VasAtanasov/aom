@@ -9,7 +9,6 @@ import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.ModelMapperWrapper;
-import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import bg.autohouse.web.models.response.offer.OfferDetailsResponseModel;
 import bg.autohouse.web.models.response.offer.OfferDetailsResponseWrapper;
@@ -80,13 +79,5 @@ public class OfferController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getBodyStylesOffersCount() {
     return ResponseEntity.ok(offerRepository.getCountStatistics());
-  }
-
-  @GetMapping(
-      value = "/add-to-favorites/{offerId}",
-      produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> addToFavorites(@PathVariable UUID offerId, @LoggedUser User creator) {
-    offerService.addToFavorites(creator.getId(), offerId);
-    return RestUtil.okResponse(RestMessage.OFFER_ADD_TO_FAVORITES);
   }
 }

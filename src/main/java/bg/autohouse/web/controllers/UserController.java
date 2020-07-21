@@ -18,12 +18,15 @@ import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserChangePasswordRequest;
 import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,6 +83,13 @@ public class UserController extends BaseController {
             user.getId(), request.getOldPassword(), request.getNewPassword());
     if (isChanged) return ResponseEntity.ok().build();
     return RestUtil.errorResponse(RestMessage.INVALID_PASSWORD);
+  }
+
+  @GetMapping(
+      value = "/offer/add-to-favorites/{offerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> addToFavorites(@PathVariable UUID offerId, @LoggedUser User creator) {
+    return ResponseEntity.ok(userService.addToFavorites(creator.getId(), offerId));
   }
 
   // TODO update user data

@@ -49,4 +49,13 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
   Optional<User> findByUsernameIgnoreCase(String username);
 
   boolean existsByUsernameIgnoreCase(String username);
+
+  @Query(
+      value =
+          "SELECT DISTINCT u "
+              + "FROM User u "
+              + "LEFT JOIN FETCH u.favorites off "
+              + "LEFT JOIN FETCH off.vehicle v "
+              + "WHERE u.id = :id")
+  Optional<User> findUserById(UUID id);
 }

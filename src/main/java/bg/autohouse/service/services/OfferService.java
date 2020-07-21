@@ -20,6 +20,4 @@ public interface OfferService {
   Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable);
 
   OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId) throws IOException;
-
-  UUID addToFavorites(UUID id, UUID offerId);
 }

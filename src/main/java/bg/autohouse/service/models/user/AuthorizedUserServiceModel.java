@@ -2,11 +2,13 @@ package bg.autohouse.service.models.user;
 
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.enums.Role;
+import bg.autohouse.data.models.offer.Offer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import lombok.*;
 
 @Getter
 public class AuthorizedUserServiceModel {
@@ -36,6 +38,7 @@ public class AuthorizedUserServiceModel {
   private List<Role> roles;
   private String role;
   private String token;
+  private List<UUID> favorites;
 
   @Builder
   public AuthorizedUserServiceModel(User user, String token) {
@@ -45,5 +48,6 @@ public class AuthorizedUserServiceModel {
     this.roles = new ArrayList<>(user.getRoles());
     this.role = user.getRoles().stream().max(SYSTEM_ROLE_COMPARATOR).map(r -> r.name()).orElse("");
     this.token = token;
+    this.favorites = user.getFavorites().stream().map(Offer::getId).collect(Collectors.toList());
   }
 }

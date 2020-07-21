@@ -6,11 +6,14 @@ import bg.autohouse.data.models.UserCreateRequest;
 import bg.autohouse.data.models.VerificationTokenCode;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.enums.UserLogType;
+import bg.autohouse.data.models.offer.Offer;
+import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.NoRegistrationRequestFoundException;
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.errors.NotFoundException;
+import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.errors.UsernamePasswordLoginFailedException;
 import bg.autohouse.security.jwt.JwtTokenCreateRequest;
@@ -49,6 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
+  private final OfferRepository offerRepository;
   private final UserRequestRepository userRequestRepository;
   private final PasswordService passwordService;
   private final ModelMapperWrapper modelMapper;
@@ -182,5 +186,15 @@ public class UserServiceImpl implements UserService {
     // TODO set account has image
     // user.setHasImage(hasImage);
     userRepository.save(user);
+  }
+
+  @Override
+  @Transactional
+  public List<UUID> addToFavorites(UUID userId, UUID offerId) {
+    User user = userRepository.findUserById(userId).orElseThrow(NoSuchUserException::new);
+    Offer offer = offerRepository.findOfferById(offerId).orElseThrow(OfferNotFoundException::new);
+    boolean isRemoved = user.getFavorites().removeIf(o -> o.getId().equals(offerId));
+    if (!isRemoved) user.getFavorites().add(offer);
+    return user.getFavorites().stream().map(o -> o.getId()).collect(Collectors.toList());
   }
 }
