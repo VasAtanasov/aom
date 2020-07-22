@@ -56,6 +56,7 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
               + "FROM User u "
               + "LEFT JOIN FETCH u.favorites off "
               + "LEFT JOIN FETCH off.vehicle v "
+              + "LEFT JOIN FETCH u.filters f "
               + "WHERE u.id = :id")
   Optional<User> findUserById(UUID id);
 }

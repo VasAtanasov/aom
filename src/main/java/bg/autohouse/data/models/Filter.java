@@ -141,4 +141,11 @@ public class Filter extends BaseUuidEntity {
 
   @Column(name = "has_accident")
   private Boolean hasAccident;
+
+  @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(
+      name = "user_id",
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_filter_user_id"))
+  private User user;
 }

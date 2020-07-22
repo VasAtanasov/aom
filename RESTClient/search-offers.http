@@ -36,3 +36,9 @@ Authorization: Bearer {{token}}
   "84eca97e-c3c1-4de8-92da-f59054c7a66a"
 ]
 
+
+###
+GET {{saerch_url}}/list HTTP/1.1
+Content-Type: {{content-type}}
+Authorization: Bearer {{token}}
+

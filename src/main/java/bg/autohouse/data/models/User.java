@@ -3,8 +3,10 @@ package bg.autohouse.data.models;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.util.F;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
@@ -73,6 +75,13 @@ public class User extends BaseUuidEntity implements UserDetails {
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "offer_id"))
   private Set<Offer> favorites = new HashSet<>();
+
+  @OneToMany(
+      mappedBy = "user",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
+  private List<Filter> filters = new ArrayList<>();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
