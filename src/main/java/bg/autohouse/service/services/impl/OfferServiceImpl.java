@@ -178,4 +178,13 @@ public class OfferServiceImpl implements OfferService {
         referenceId.toString(),
         fileName);
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable) {
+    if (offerIds.isEmpty()) return Page.empty();
+    return offerRepository
+        .findUserFavoriteOffers(offerIds, pageable)
+        .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
+  }
 }

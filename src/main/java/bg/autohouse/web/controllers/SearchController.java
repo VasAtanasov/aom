@@ -10,6 +10,8 @@ import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.FilterRequest;
 import bg.autohouse.web.models.response.ResponseWrapper;
 import bg.autohouse.web.models.response.offer.OfferResponseModel;
+import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +60,26 @@ public class SearchController extends BaseController {
     return ResponseEntity.ok()
         .headers(PaginationHeadersUtils.buildPaginationHeaders(page))
         .body(response);
+  }
+
+  @PostMapping(
+      value = "/search/favorites",
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> findOffersByIds(
+      @RequestBody List<UUID> offerIds,
+      @PageableDefault(
+              page = DEFAULT_PAGE_NUMBER,
+              size = DEFAULT_PAGE_SIZE,
+              sort = SORT,
+              direction = Sort.Direction.DESC)
+          Pageable pageable) {
+    Page<OfferResponseModel> page =
+        offerService
+            .searchOffersByIds(offerIds, pageable)
+            .map(o -> modelMapper.map(o, OfferResponseModel.class));
+    return ResponseEntity.ok()
+        .headers(PaginationHeadersUtils.buildPaginationHeaders(page))
+        .body(page);
   }
 }

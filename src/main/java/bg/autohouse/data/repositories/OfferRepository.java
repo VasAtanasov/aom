@@ -97,4 +97,19 @@ public interface OfferRepository
               + "LEFT JOIN FETCH adr.location loc "
               + "WHERE o.isActive = 1 AND o.id = :id")
   Optional<Offer> findOfferById(UUID id);
+
+  @Query(
+      value =
+          "SELECT o "
+              + "FROM Offer o "
+              + "JOIN FETCH o.vehicle v "
+              + "JOIN FETCH o.location lo "
+              + "WHERE o.isActive = 1 AND o.id IN :offerIds",
+      countQuery =
+          "SELECT count(o) "
+              + "FROM Offer o "
+              + "LEFT JOIN o.vehicle v "
+              + "LEFT JOIN o.location lo "
+              + "WHERE o.isActive = 1 AND o.id IN :offerIds")
+  Page<Offer> findUserFavoriteOffers(List<UUID> offerIds, Pageable pageable);
 }
