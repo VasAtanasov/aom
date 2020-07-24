@@ -48,29 +48,29 @@ public class OfferServiceImplTest {
     assertThat(page.getContent()).size().isEqualTo(offers.size());
   }
 
-  @Test
-  void whenSearchOffers_withValidMakerId_shouldMapCorrect() {
-    FilterRequest filterRequest = FilterRequest.builder().makerId(1L).build();
+  // @Test
+  // void whenSearchOffers_withValidMakerId_shouldMapCorrect() {
+  //   FilterRequest filterRequest = FilterRequest.builder().makerId(1L).build();
 
-    Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
-    List<Offer> offers =
-        offerRepository.findAll().stream()
-            .filter(offer -> offer.getVehicle().getMakerId().equals(1L))
-            .collect(Collectors.toList());
+  //   Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
+  //   List<Offer> offers =
+  //       offerRepository.findAll().stream()
+  //           .filter(offer -> offer.getVehicle().getMakerId().equals(1L))
+  //           .collect(Collectors.toList());
 
-    assertThat(page.getContent()).size().isEqualTo(offers.size());
-  }
+  //   assertThat(page.getContent()).size().isEqualTo(offers.size());
+  // }
 
-  @Test
-  void whenSearchOffers_withValidModelId_shouldMapCorrect() {
-    FilterRequest filterRequest = FilterRequest.builder().makerId(87L).modelId(1505L).build();
+  // @Test
+  // void whenSearchOffers_withValidModelId_shouldMapCorrect() {
+  //   FilterRequest filterRequest = FilterRequest.builder().makerId(87L).modelId(1505L).build();
 
-    Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
-    List<Offer> offers =
-        offerRepository.findAll().stream()
-            .filter(offer -> offer.getVehicle().getModelId().equals(1505L))
-            .collect(Collectors.toList());
+  //   Page<OfferServiceModel> page = offerService.searchOffers(filterRequest, pageable);
+  //   List<Offer> offers =
+  //       offerRepository.findAll().stream()
+  //           .filter(offer -> offer.getVehicle().getModelId().equals(1505L))
+  //           .collect(Collectors.toList());
 
-    assertThat(page.getContent()).size().isEqualTo(offers.size());
-  }
+  //   assertThat(page.getContent()).size().isEqualTo(offers.size());
+  // }
 }

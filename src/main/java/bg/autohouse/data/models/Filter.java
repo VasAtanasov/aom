@@ -35,14 +35,8 @@ public class Filter extends BaseUuidEntity {
   @Column(name = "maker_name")
   private String makerName;
 
-  @Column(name = "maker_id")
-  private Long makerId;
-
   @Column(name = "model_name")
   private String modelName;
-
-  @Column(name = "model_id")
-  private Long modelId;
 
   @Column(name = "trim")
   private String trim;

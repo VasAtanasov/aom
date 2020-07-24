@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
-import bg.autohouse.data.models.Maker;
 import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.enums.BodyStyle;
 import bg.autohouse.data.models.enums.Feature;
@@ -72,17 +71,19 @@ public class OfferRepositoryTest {
     assertThat(offers).allMatch(offer -> offer.getVehicle().getBodyStyle().equals(BodyStyle.SUV));
   }
 
-  @Test
-  void whenOfferFilter_byMaker_shouldReturnCollection() {
-    Maker maker = Maker.builder().id(23L).name("Cupra").build();
-    Filter filter = Filter.builder().makerName(maker.getName()).makerId(maker.getId()).build();
+  // @Test
+  // void whenOfferFilter_byMaker_shouldReturnCollection() {
+  //   Maker maker = Maker.builder().id(23L).name("Cupra").build();
+  //   Filter filter = Filter.builder().makerName(maker.getName()).makerId(maker.getId()).build();
 
-    Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
+  //   Specification<Offer> offerSpecification =
+  // where(OfferSpecifications.getOffersByFilter(filter));
 
-    List<Offer> offers = offerRepository.findAll(offerSpecification);
+  //   List<Offer> offers = offerRepository.findAll(offerSpecification);
 
-    assertThat(offers).allMatch(offer -> offer.getVehicle().getMakerName().equals(maker.getName()));
-  }
+  //   assertThat(offers).allMatch(offer ->
+  // offer.getVehicle().getMakerName().equals(maker.getName()));
+  // }
 
   @Test
   void whenOfferFilter_byState_shouldReturnCollection() {

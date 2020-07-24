@@ -23,13 +23,13 @@ public class OfferSpecifications {
       List<Predicate> restrictions = new ArrayList<>();
 
       if (currentQueryIsCountRecords(query)) {
-        root.join(Offer_.vehicle, JoinType.LEFT);
-        root.join(Offer_.vehicle, JoinType.LEFT).join(Vehicle_.features, JoinType.LEFT);
-        root.join(Offer_.location, JoinType.LEFT);
+        root.join(Offer_.vehicle, JoinType.INNER);
+        root.join(Offer_.vehicle, JoinType.INNER).join(Vehicle_.features, JoinType.INNER);
+        root.join(Offer_.location, JoinType.INNER);
       } else {
-        root.fetch(Offer_.vehicle, JoinType.LEFT);
-        root.fetch(Offer_.vehicle, JoinType.LEFT).fetch(Vehicle_.features, JoinType.LEFT);
-        root.fetch(Offer_.location, JoinType.LEFT);
+        root.fetch(Offer_.vehicle, JoinType.INNER);
+        root.fetch(Offer_.vehicle, JoinType.INNER).fetch(Vehicle_.features, JoinType.INNER);
+        root.fetch(Offer_.location, JoinType.INNER);
       }
 
       restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
@@ -72,14 +72,13 @@ public class OfferSpecifications {
         restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.drive), filter.getDrive()));
       }
 
-      filter
-          .getFeatures()
-          .forEach(
-              feature -> {
-                if (!Assert.has(feature)) return;
-                restrictions.add(
-                    cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.features)));
-              });
+      if (!F.isNullOrEmpty(filter.getFeatures())) {
+        List<Predicate> featuresPredicate = new ArrayList<>();
+        Expression<List<Feature>> offerFeatures = root.get(Offer_.vehicle).get(Vehicle_.features);
+        F.filterToList(filter.getFeatures(), feature -> Assert.has(feature))
+            .forEach(feature -> featuresPredicate.add(cb.isMember(feature, offerFeatures)));
+        restrictions.add(cb.and(featuresPredicate.toArray(new Predicate[0])));
+      }
 
       if (!F.isNullOrEmpty(filter.getSeller())) {
         List<AccountType> sellers =
@@ -137,5 +136,10 @@ public class OfferSpecifications {
   private static boolean currentQueryIsCountRecords(CriteriaQuery<?> criteriaQuery) {
     return criteriaQuery.getResultType() == Long.class
         || criteriaQuery.getResultType() == long.class;
+  }
+
+  public static Specification<Offer> withFeature(Feature feature) {
+    return (root, query, cb) ->
+        cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.features));
   }
 }

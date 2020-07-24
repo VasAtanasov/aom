@@ -38,6 +38,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -71,14 +72,9 @@ public class OfferServiceImpl implements OfferService {
   public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
     Objects.requireNonNull(filterRequest);
     Filter filter = modelMapper.map(filterRequest, Filter.class);
-    if (Assert.has(filterRequest.getMakerId())) {
-      filter.setMakerId(filterRequest.getMakerId());
-      if (Assert.has(filterRequest.getModelId())) {
-        filter.setModelId(filterRequest.getModelId());
-      }
-    }
+    Specification<Offer> specification = where(OfferSpecifications.getOffersByFilter(filter));
     return offerRepository
-        .findAll(where(OfferSpecifications.getOffersByFilter(filter)), pageable)
+        .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
   }
 

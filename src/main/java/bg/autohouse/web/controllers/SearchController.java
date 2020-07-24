@@ -11,6 +11,7 @@ import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.PaginationHeadersUtils;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.FilterRequest;
+import bg.autohouse.web.models.response.FilterResponseModel;
 import bg.autohouse.web.models.response.ResponseWrapper;
 import bg.autohouse.web.models.response.offer.OfferResponseModel;
 import java.util.List;
@@ -104,7 +105,10 @@ public class SearchController extends BaseController {
       value = "/search/list",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> listSavedSearches(@LoggedUser User user) {
-    return ResponseEntity.ok(filterService.listSavedSearches(user.getId()));
+    List<FilterResponseModel> savedSearches =
+        modelMapper.mapAll(
+            filterService.listSavedSearches(user.getId()), FilterResponseModel.class);
+    return ResponseEntity.ok(savedSearches);
   }
 
   @DeleteMapping(value = "/search/saved-search/{filterId}")

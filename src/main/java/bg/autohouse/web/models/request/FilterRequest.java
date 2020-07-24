@@ -16,9 +16,7 @@ import lombok.Setter;
 @Builder
 public class FilterRequest {
   private String makerName;
-  private Long makerId;
   private String modelName;
-  private Long modelId;
   private String fuelType;
   private String transmission;
   private String bodyStyle;

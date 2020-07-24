@@ -12,7 +12,6 @@ import bg.autohouse.web.models.request.FilterRequest;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,11 +38,8 @@ public class FilterServiceImpl implements FilterService {
   @Override
   @Transactional(readOnly = true)
   public List<FilterServiceModel> listSavedSearches(UUID userId) {
-    List<FilterServiceModel> savedSearches =
-        filterRepository.findAllByUserId(userId).stream()
-            .map(filter -> modelMapper.map(filter, FilterServiceModel.class))
-            .collect(Collectors.toList());
-    return savedSearches;
+    List<Filter> savedSearches = filterRepository.findAllByUserId(userId);
+    return modelMapper.mapAll(savedSearches, FilterServiceModel.class);
   }
 
   @Override
