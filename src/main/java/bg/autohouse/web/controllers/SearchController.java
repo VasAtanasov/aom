@@ -54,9 +54,10 @@ public class SearchController extends BaseController {
               sort = SORT,
               direction = Sort.Direction.DESC)
           Pageable pageable) {
+    UUID filterRequestId = filterService.createFilter(filterRequest);
     Page<OfferResponseModel> page =
         offerService
-            .searchOffers(filterRequest, pageable)
+            .searchOffers(filterRequestId, pageable)
             .map(o -> modelMapper.map(o, OfferResponseModel.class));
     ResponseWrapper response =
         ResponseWrapper.builder()

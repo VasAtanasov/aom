@@ -3,6 +3,7 @@ package bg.autohouse.data.repositories.impl;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.repositories.FilterRepositoryCustom;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -57,5 +58,45 @@ public class FilterRepositoryImpl implements FilterRepositoryCustom {
             .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
             .getResultList();
     return filters;
+  }
+
+  @Override
+  public Optional<Filter> findFilterById(UUID filterId) {
+    List<Filter> filters =
+        entityManager
+            .createQuery(
+                "SELECT DISTINCT f "
+                    + "FROM Filter f "
+                    + "LEFT JOIN FETCH f.features ft "
+                    + "WHERE f.id = :filterId ",
+                Filter.class)
+            .setParameter("filterId", filterId)
+            .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+            .getResultList();
+    filters =
+        entityManager
+            .createQuery(
+                "SELECT DISTINCT f "
+                    + "FROM Filter f "
+                    + "LEFT JOIN FETCH f.seller s "
+                    + "WHERE f IN :filters ",
+                Filter.class)
+            .setParameter("filters", filters)
+            .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+            .getResultList();
+
+    filters =
+        entityManager
+            .createQuery(
+                "SELECT DISTINCT f "
+                    + "FROM Filter f "
+                    + "LEFT JOIN FETCH f.state st "
+                    + "WHERE f IN :filters ",
+                Filter.class)
+            .setParameter("filters", filters)
+            .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
+            .getResultList();
+
+    return filters.stream().findFirst();
   }
 }

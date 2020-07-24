@@ -136,7 +136,7 @@ public class Filter extends BaseUuidEntity {
   @Column(name = "has_accident")
   private Boolean hasAccident;
 
-  @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY, optional = true)
   @JoinColumn(
       name = "user_id",
       referencedColumnName = "id",

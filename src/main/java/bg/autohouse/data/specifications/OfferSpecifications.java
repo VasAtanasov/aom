@@ -10,6 +10,7 @@ import bg.autohouse.util.Assert;
 import bg.autohouse.util.F;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.persistence.criteria.*;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +19,8 @@ import org.springframework.data.jpa.domain.Specification;
 @Slf4j
 public class OfferSpecifications {
 
-  public static Specification<Offer> getOffersByFilter(Filter filter) {
+  public static Specification<Offer> activeOffers() {
     return (root, query, cb) -> {
-      List<Predicate> restrictions = new ArrayList<>();
-
       if (currentQueryIsCountRecords(query)) {
         root.join(Offer_.vehicle, JoinType.INNER);
         root.join(Offer_.vehicle, JoinType.INNER).join(Vehicle_.features, JoinType.INNER);
@@ -31,8 +30,17 @@ public class OfferSpecifications {
         root.fetch(Offer_.vehicle, JoinType.INNER).fetch(Vehicle_.features, JoinType.INNER);
         root.fetch(Offer_.location, JoinType.INNER);
       }
+      return cb.equal(root.get(Offer_.isActive), true);
+    };
+  }
 
-      restrictions.add(cb.equal(root.get(Offer_.isActive), Boolean.TRUE));
+  public static Specification<Offer> uuidIn(List<UUID> offersIds) {
+    return (root, query, cb) -> root.get(Offer_.id).in(offersIds);
+  }
+
+  public static Specification<Offer> getOffersByFilter(Filter filter) {
+    return (root, query, cb) -> {
+      List<Predicate> restrictions = new ArrayList<>();
 
       if (Assert.has(filter.getMakerName())) {
         restrictions.add(
@@ -72,14 +80,6 @@ public class OfferSpecifications {
         restrictions.add(cb.equal(root.get(Offer_.vehicle).get(Vehicle_.drive), filter.getDrive()));
       }
 
-      if (!F.isNullOrEmpty(filter.getFeatures())) {
-        List<Predicate> featuresPredicate = new ArrayList<>();
-        Expression<List<Feature>> offerFeatures = root.get(Offer_.vehicle).get(Vehicle_.features);
-        F.filterToList(filter.getFeatures(), feature -> Assert.has(feature))
-            .forEach(feature -> featuresPredicate.add(cb.isMember(feature, offerFeatures)));
-        restrictions.add(cb.and(featuresPredicate.toArray(new Predicate[0])));
-      }
-
       if (!F.isNullOrEmpty(filter.getSeller())) {
         List<AccountType> sellers =
             F.filterToList(filter.getSeller(), seller -> Assert.has(seller));
@@ -117,8 +117,6 @@ public class OfferSpecifications {
               root.get(Offer_.vehicle).get(Vehicle_.year),
               filter.getYear().getFrom(),
               filter.getYear().getTo()));
-
-      restrictions.add(cb.equal(root.get(Offer_.isActive), true));
 
       log.info(
           "Have generated {} predicates, look like: {}" + System.lineSeparator(),

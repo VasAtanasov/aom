@@ -19,6 +19,8 @@ public interface OfferService {
 
   Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable);
 
+  Page<OfferServiceModel> searchOffers(UUID filterId, Pageable pageable);
+
   OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId) throws IOException;
 
   Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable);

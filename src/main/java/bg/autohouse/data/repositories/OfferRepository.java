@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -112,4 +113,28 @@ public interface OfferRepository
               + "LEFT JOIN o.location lo "
               + "WHERE o.isActive = 1 AND o.id IN :offerIds")
   Page<Offer> findUserFavoriteOffers(List<UUID> offerIds, Pageable pageable);
+
+  @Query(
+      value =
+          "SELECT DISTINCT * "
+              + "FROM "
+              + "auto_offers AS ao "
+              + "INNER JOIN "
+              + "auto_vehicles AS av ON ao.id = av.offer_id "
+              + "INNER JOIN "
+              + "auto_vehicles_features AS avf ON av.id = avf.vehicle_id "
+              + "INNER JOIN "
+              + "auto_locations AS al ON ao.location_id = al.id "
+              + "INNER JOIN "
+              + "auto_filter_features AS aff ON avf.feature = aff.feature "
+              + "WHERE "
+              + "aff.filter_id = :filterId "
+              + "GROUP BY av.id "
+              + "HAVING COUNT(DISTINCT avf.feature) >= (SELECT DISTINCT COUNT(*) "
+              + "FROM "
+              + "auto_filter_features AS aff2 "
+              + "WHERE "
+              + "aff2.filter_id = :filterId) ",
+      nativeQuery = true)
+  List<Offer> searchOffersIdsWithFeatures(@Param("filterId") UUID filterId);
 }

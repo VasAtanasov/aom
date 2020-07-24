@@ -27,6 +27,15 @@ public class FilterServiceImpl implements FilterService {
 
   @Override
   @Transactional
+  public UUID createFilter(FilterRequest filterRequest) {
+    Objects.requireNonNull(filterRequest);
+    Filter filter = modelMapper.map(filterRequest, Filter.class);
+    filterRepository.save(filter);
+    return filter.getId();
+  }
+
+  @Override
+  @Transactional
   public void saveSearch(FilterRequest filterRequest, UUID id) {
     Objects.requireNonNull(filterRequest);
     User user = userRepository.findUserById(id).orElseThrow(NotFoundException::new);

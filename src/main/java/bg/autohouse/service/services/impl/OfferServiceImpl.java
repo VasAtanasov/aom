@@ -10,11 +10,13 @@ import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.models.offer.Vehicle;
 import bg.autohouse.data.repositories.AccountRepository;
+import bg.autohouse.data.repositories.FilterRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.LocationNotFoundException;
+import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
@@ -48,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class OfferServiceImpl implements OfferService {
 
   private final OfferRepository offerRepository;
+  private final FilterRepository filterRepository;
   private final ModelMapperWrapper modelMapper;
   private final LocationRepository locationRepository;
   private final AccountRepository accountRepository;
@@ -72,10 +75,42 @@ public class OfferServiceImpl implements OfferService {
   public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
     Objects.requireNonNull(filterRequest);
     Filter filter = modelMapper.map(filterRequest, Filter.class);
-    Specification<Offer> specification = where(OfferSpecifications.getOffersByFilter(filter));
+    Specification<Offer> specification =
+        where(OfferSpecifications.activeOffers())
+            .and(OfferSpecifications.getOffersByFilter(filter));
     return offerRepository
         .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<OfferServiceModel> searchOffers(UUID filterId, Pageable pageable) {
+    Objects.requireNonNull(filterId);
+    Filter filter = filterRepository.findFilterById(filterId).orElseThrow(NotFoundException::new);
+
+    Specification<Offer> specification =
+        where(OfferSpecifications.activeOffers())
+            .and(OfferSpecifications.getOffersByFilter(filter));
+
+    if (!filter.getFeatures().isEmpty()) {
+      List<UUID> offersIds = offerIdsForFilterFeatures(filterId);
+      if (offersIds.isEmpty()) {
+        return Page.empty();
+      }
+      specification = specification.and(OfferSpecifications.uuidIn(offersIds));
+    }
+
+    return offerRepository
+        .findAll(specification, pageable)
+        .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
+  }
+
+  @Transactional(readOnly = true)
+  private List<UUID> offerIdsForFilterFeatures(UUID filterId) {
+    return offerRepository.searchOffersIdsWithFeatures(filterId).stream()
+        .map(o -> o.getId())
+        .collect(Collectors.toList());
   }
 
   @Override
