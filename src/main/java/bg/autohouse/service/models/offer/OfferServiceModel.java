@@ -29,4 +29,7 @@ public class OfferServiceModel {
   private String vehicleColor;
   private String vehicleFuelType;
   private String vehicleHasAccident;
+  private int hitCount;
+  private int savedCount;
+  private boolean isActive;
 }

@@ -8,14 +8,18 @@ import bg.autohouse.data.models.enums.UserLogType;
 import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.security.authentication.LoggedUser;
+import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.service.services.MediaFileService;
+import bg.autohouse.service.services.OfferService;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ImageResizer;
 import bg.autohouse.util.ImageUtil;
+import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserChangePasswordRequest;
+import bg.autohouse.web.models.response.offer.OfferResponseModel;
 import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
 import java.util.UUID;
@@ -23,6 +27,10 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +50,11 @@ public class UserController extends BaseController {
 
   private final PasswordService passwordService;
   private final UserService userService;
+  private final OfferService offerService;
   private final MediaFileService mediaFileService;
   private final AsyncUserLogger userLogger;
   private final ImageResizer imageResizer;
+  private final ModelMapperWrapper modelMapper;
 
   @PostMapping(value = "/image/change")
   public ResponseEntity<?> uploadProfileImage(
@@ -92,6 +102,28 @@ public class UserController extends BaseController {
     return ResponseEntity.ok(userService.addToFavorites(creator.getId(), offerId));
   }
 
-  // TODO update user data
+  @GetMapping(
+      value = "/offer/list",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getUserOffers(
+      @LoggedUser User creator,
+      @PageableDefault(
+              page = DEFAULT_PAGE_NUMBER,
+              size = 15,
+              sort = SORT,
+              direction = Sort.Direction.DESC)
+          Pageable pageable) {
+    Page<OfferServiceModel> userOffers = offerService.findUserOffers(creator.getId(), pageable);
+    return ResponseEntity.ok(
+        userOffers.map(offer -> modelMapper.map(offer, OfferResponseModel.class)));
+  }
+
+  @GetMapping(
+      value = "/offer/toggle-active/{offerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> toggleOfferActive(@PathVariable UUID offerId, @LoggedUser User creator) {
+    return ResponseEntity.ok(offerService.toggleActive(creator.getId(), offerId));
+  }
+
   // TODO delete user profile
 }

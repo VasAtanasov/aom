@@ -79,7 +79,7 @@ public class SearchController extends BaseController {
       @RequestBody List<UUID> offerIds,
       @PageableDefault(
               page = DEFAULT_PAGE_NUMBER,
-              size = DEFAULT_PAGE_SIZE,
+              size = 10,
               sort = SORT,
               direction = Sort.Direction.DESC)
           Pageable pageable) {

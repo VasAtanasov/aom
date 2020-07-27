@@ -34,4 +34,7 @@ public class OfferDetailsServiceModel {
   private String vehicleFuelType;
   private String vehicleHasAccident;
   private List<Feature> vehicleFeatures;
+  private int hitCount;
+  private int savedCount;
+  private boolean isActive;
 }

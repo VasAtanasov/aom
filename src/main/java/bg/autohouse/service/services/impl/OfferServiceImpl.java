@@ -76,8 +76,8 @@ public class OfferServiceImpl implements OfferService {
     Objects.requireNonNull(filterRequest);
     Filter filter = modelMapper.map(filterRequest, Filter.class);
     Specification<Offer> specification =
-        where(OfferSpecifications.activeOffers())
-            .and(OfferSpecifications.getOffersByFilter(filter));
+        where(OfferSpecifications.getOffersByFilter(filter))
+            .and(OfferSpecifications.activeOffers());
     return offerRepository
         .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
@@ -90,8 +90,8 @@ public class OfferServiceImpl implements OfferService {
     Filter filter = filterRepository.findFilterById(filterId).orElseThrow(NotFoundException::new);
 
     Specification<Offer> specification =
-        where(OfferSpecifications.activeOffers())
-            .and(OfferSpecifications.getOffersByFilter(filter));
+        where(OfferSpecifications.getOffersByFilter(filter))
+            .and(OfferSpecifications.activeOffers());
 
     if (!filter.getFeatures().isEmpty()) {
       List<UUID> offersIds = offerIdsForFilterFeatures(filterId);
@@ -114,12 +114,22 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Override
-  @Transactional(readOnly = true)
+  @Transactional
   public OfferDetailsServiceModel getOfferById(UUID id) {
-    return offerRepository
-        .findOfferById(id)
-        .map(offer -> modelMapper.map(offer, OfferDetailsServiceModel.class))
-        .orElseThrow(OfferNotFoundException::new);
+    Offer offer = offerRepository.findOfferById(id).orElseThrow(OfferNotFoundException::new);
+    offer.incrementHitCount();
+    offerRepository.save(offer);
+    return modelMapper.map(offer, OfferDetailsServiceModel.class);
+  }
+
+  @Override
+  @Transactional
+  public boolean toggleActive(UUID creatorId, UUID offerId) {
+    Specification<Offer> specification =
+        OfferSpecifications.oneWithIdAndOwnerId(offerId, creatorId);
+    Offer offer = offerRepository.findOne(specification).orElseThrow(OfferNotFoundException::new);
+    offer.toggleActive();
+    return offer.isActive();
   }
 
   @Override
@@ -214,8 +224,26 @@ public class OfferServiceImpl implements OfferService {
   @Transactional(readOnly = true)
   public Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable) {
     if (offerIds.isEmpty()) return Page.empty();
+    Specification<Offer> specification =
+        where(OfferSpecifications.uuidIn(offerIds)).and(OfferSpecifications.activeOffers());
     return offerRepository
-        .findUserFavoriteOffers(offerIds, pageable)
+        .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Page<OfferServiceModel> findUserOffers(UUID userId, Pageable pageable) {
+    UUID accountId =
+        accountRepository
+            .findByUserId(userId)
+            .map(acc -> acc.getId())
+            .orElseThrow(AccountNotFoundException::new);
+    Specification<Offer> specification = where(OfferSpecifications.withAccountId(accountId));
+    Page<OfferServiceModel> accountOffers =
+        offerRepository
+            .findAll(specification, pageable)
+            .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
+    return accountOffers;
   }
 }

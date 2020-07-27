@@ -50,7 +50,7 @@ public class OfferController extends BaseController {
   @GetMapping(
       value = "/details/{offerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> viewOffer(@PathVariable UUID offerId) {
+  public ResponseEntity<?> viewOffer(@PathVariable UUID offerId, @LoggedUser User user) {
     OfferDetailsResponseModel offer =
         modelMapper.map(offerService.getOfferById(offerId), OfferDetailsResponseModel.class);
     List<String> imagesKeys = offerService.fetchOfferImages(offerId);

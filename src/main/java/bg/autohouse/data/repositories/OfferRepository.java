@@ -101,21 +101,6 @@ public interface OfferRepository
 
   @Query(
       value =
-          "SELECT o "
-              + "FROM Offer o "
-              + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH o.location lo "
-              + "WHERE o.isActive = 1 AND o.id IN :offerIds",
-      countQuery =
-          "SELECT count(o) "
-              + "FROM Offer o "
-              + "LEFT JOIN o.vehicle v "
-              + "LEFT JOIN o.location lo "
-              + "WHERE o.isActive = 1 AND o.id IN :offerIds")
-  Page<Offer> findUserFavoriteOffers(List<UUID> offerIds, Pageable pageable);
-
-  @Query(
-      value =
           "SELECT DISTINCT * "
               + "FROM "
               + "auto_offers AS ao "
@@ -137,4 +122,27 @@ public interface OfferRepository
               + "aff2.filter_id = :filterId) ",
       nativeQuery = true)
   List<Offer> searchOffersIdsWithFeatures(@Param("filterId") UUID filterId);
+
+  @Query(
+      value =
+          "SELECT DISTINCT o "
+              + "FROM Offer o "
+              + "LEFT JOIN FETCH o.vehicle v "
+              + "LEFT JOIN FETCH o.location lo "
+              + "LEFT JOIN FETCH o.account acc "
+              + "LEFT JOIN FETCH acc.user usr "
+              + "LEFT JOIN FETCH acc.address adr "
+              + "LEFT JOIN FETCH adr.location loc "
+              + "WHERE o.isActive = 1 AND acc.id = :accountId",
+      countQuery =
+          "SELECT DISTINCT count(o) "
+              + "FROM Offer o "
+              + "LEFT JOIN o.vehicle v "
+              + "LEFT JOIN o.location lo "
+              + "LEFT JOIN o.account acc "
+              + "LEFT JOIN acc.user usr "
+              + "LEFT JOIN acc.address adr "
+              + "LEFT JOIN adr.location loc "
+              + "WHERE o.isActive = 1 AND acc.id = :accountId")
+  Page<Offer> findAllByAccountId(UUID accountId, Pageable pageable);
 }

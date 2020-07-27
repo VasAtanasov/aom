@@ -1,8 +1,10 @@
 package bg.autohouse.data.specifications;
 
 import bg.autohouse.data.models.Filter;
+import bg.autohouse.data.models.User_;
 import bg.autohouse.data.models.account.Account_;
 import bg.autohouse.data.models.enums.*;
+import bg.autohouse.data.models.geo.Address_;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.models.offer.Offer_;
 import bg.autohouse.data.models.offer.Vehicle_;
@@ -19,28 +21,49 @@ import org.springframework.data.jpa.domain.Specification;
 @Slf4j
 public class OfferSpecifications {
 
+  public static Specification<Offer> withOfferId(UUID offerId) {
+    return (root, query, cb) -> cb.equal(root.get(Offer_.id), offerId);
+  }
+
+  public static Specification<Offer> withOwnerId(UUID userId) {
+    return (root, query, cb) -> {
+      performJoins(root, query);
+      return cb.equal(root.get(Offer_.account).get(Account_.user).get(User_.id), userId);
+    };
+  }
+
+  public static Specification<Offer> oneWithIdAndOwnerId(UUID offerId, UUID userId) {
+    Specification<Offer> withId = OfferSpecifications.withOfferId(offerId);
+    Specification<Offer> withOwner = OfferSpecifications.withOwnerId(userId);
+    return Specification.where(withOwner).and(withId);
+  }
+
   public static Specification<Offer> activeOffers() {
     return (root, query, cb) -> {
-      if (currentQueryIsCountRecords(query)) {
-        root.join(Offer_.vehicle, JoinType.INNER);
-        root.join(Offer_.vehicle, JoinType.INNER).join(Vehicle_.features, JoinType.INNER);
-        root.join(Offer_.location, JoinType.INNER);
-      } else {
-        root.fetch(Offer_.vehicle, JoinType.INNER);
-        root.fetch(Offer_.vehicle, JoinType.INNER).fetch(Vehicle_.features, JoinType.INNER);
-        root.fetch(Offer_.location, JoinType.INNER);
-      }
       return cb.equal(root.get(Offer_.isActive), true);
     };
   }
 
   public static Specification<Offer> uuidIn(List<UUID> offersIds) {
-    return (root, query, cb) -> root.get(Offer_.id).in(offersIds);
+    return (root, query, cb) -> {
+      performJoins(root, query);
+      query.distinct(true);
+      return root.get(Offer_.id).in(offersIds);
+    };
+  }
+
+  public static Specification<Offer> withAccountId(UUID accountId) {
+    return (root, query, cb) -> {
+      performJoins(root, query);
+      query.distinct(true);
+      return cb.equal(root.get(Offer_.account).get(Account_.id), accountId);
+    };
   }
 
   public static Specification<Offer> getOffersByFilter(Filter filter) {
     return (root, query, cb) -> {
       List<Predicate> restrictions = new ArrayList<>();
+      performJoins(root, query);
 
       if (Assert.has(filter.getMakerName())) {
         restrictions.add(
@@ -136,8 +159,24 @@ public class OfferSpecifications {
         || criteriaQuery.getResultType() == long.class;
   }
 
-  public static Specification<Offer> withFeature(Feature feature) {
-    return (root, query, cb) ->
-        cb.isMember(feature, root.get(Offer_.vehicle).get(Vehicle_.features));
+  private static void performJoins(Root<Offer> root, CriteriaQuery<?> query) {
+    if (currentQueryIsCountRecords(query)) {
+      root.join(Offer_.vehicle, JoinType.INNER);
+      root.join(Offer_.vehicle, JoinType.INNER).join(Vehicle_.features, JoinType.INNER);
+      root.join(Offer_.location, JoinType.INNER);
+      root.join(Offer_.account, JoinType.INNER).join(Account_.user, JoinType.INNER);
+      root.join(Offer_.account, JoinType.INNER)
+          .join(Account_.address, JoinType.INNER)
+          .join(Address_.location, JoinType.INNER);
+    } else {
+      root.fetch(Offer_.vehicle, JoinType.INNER);
+      root.fetch(Offer_.vehicle, JoinType.INNER).fetch(Vehicle_.features, JoinType.INNER);
+      root.fetch(Offer_.location, JoinType.INNER);
+      root.fetch(Offer_.account, JoinType.INNER);
+      root.fetch(Offer_.account, JoinType.INNER).fetch(Account_.user, JoinType.INNER);
+      root.fetch(Offer_.account, JoinType.INNER)
+          .fetch(Account_.address, JoinType.INNER)
+          .fetch(Address_.location, JoinType.INNER);
+    }
   }
 }
