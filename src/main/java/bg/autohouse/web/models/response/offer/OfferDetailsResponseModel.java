@@ -9,6 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 public class OfferDetailsResponseModel {
   private String id;
+  private String accountId;
+  private String accountUserId;
+  private boolean accountUserEnabled;
   private Integer price;
   private String description;
   private String createdAt;

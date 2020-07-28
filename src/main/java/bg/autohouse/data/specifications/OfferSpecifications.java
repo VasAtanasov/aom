@@ -44,11 +44,23 @@ public class OfferSpecifications {
     };
   }
 
+  public static Specification<Offer> activeUser() {
+    return (root, query, cb) -> {
+      return cb.equal(root.get(Offer_.account).get(Account_.user).get(User_.enabled), true);
+    };
+  }
+
   public static Specification<Offer> uuidIn(List<UUID> offersIds) {
+    return (root, query, cb) -> {
+      return cb.isTrue(root.get(Offer_.id).in(offersIds));
+    };
+  }
+
+  public static Specification<Offer> favoriteWithIds(List<UUID> offersIds) {
     return (root, query, cb) -> {
       performJoins(root, query);
       query.distinct(true);
-      return root.get(Offer_.id).in(offersIds);
+      return cb.isTrue(root.get(Offer_.id).in(offersIds));
     };
   }
 
@@ -168,6 +180,7 @@ public class OfferSpecifications {
       root.join(Offer_.account, JoinType.INNER)
           .join(Account_.address, JoinType.INNER)
           .join(Address_.location, JoinType.INNER);
+
     } else {
       root.fetch(Offer_.vehicle, JoinType.INNER);
       root.fetch(Offer_.vehicle, JoinType.INNER).fetch(Vehicle_.features, JoinType.INNER);

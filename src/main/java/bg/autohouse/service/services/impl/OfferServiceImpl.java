@@ -1,5 +1,6 @@
 package bg.autohouse.service.services.impl;
 
+import static bg.autohouse.data.specifications.OfferSpecifications.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 import bg.autohouse.data.models.Filter;
@@ -13,7 +14,6 @@ import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.FilterRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.OfferRepository;
-import bg.autohouse.data.specifications.OfferSpecifications;
 import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.LocationNotFoundException;
 import bg.autohouse.errors.NotFoundException;
@@ -26,7 +26,6 @@ import bg.autohouse.util.Assert;
 import bg.autohouse.util.ImageResizer;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
-import bg.autohouse.web.models.request.FilterRequest;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -72,33 +71,19 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable) {
-    Objects.requireNonNull(filterRequest);
-    Filter filter = modelMapper.map(filterRequest, Filter.class);
-    Specification<Offer> specification =
-        where(OfferSpecifications.getOffersByFilter(filter))
-            .and(OfferSpecifications.activeOffers());
-    return offerRepository
-        .findAll(specification, pageable)
-        .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
-  }
-
-  @Override
-  @Transactional(readOnly = true)
   public Page<OfferServiceModel> searchOffers(UUID filterId, Pageable pageable) {
     Objects.requireNonNull(filterId);
     Filter filter = filterRepository.findFilterById(filterId).orElseThrow(NotFoundException::new);
 
     Specification<Offer> specification =
-        where(OfferSpecifications.getOffersByFilter(filter))
-            .and(OfferSpecifications.activeOffers());
+        where(getOffersByFilter(filter)).and(activeUser()).and(activeOffers());
 
     if (!filter.getFeatures().isEmpty()) {
       List<UUID> offersIds = offerIdsForFilterFeatures(filterId);
       if (offersIds.isEmpty()) {
         return Page.empty();
       }
-      specification = specification.and(OfferSpecifications.uuidIn(offersIds));
+      specification = specification.and(uuidIn(offersIds));
     }
 
     return offerRepository
@@ -125,8 +110,7 @@ public class OfferServiceImpl implements OfferService {
   @Override
   @Transactional
   public boolean toggleActive(UUID creatorId, UUID offerId) {
-    Specification<Offer> specification =
-        OfferSpecifications.oneWithIdAndOwnerId(offerId, creatorId);
+    Specification<Offer> specification = oneWithIdAndOwnerId(offerId, creatorId);
     Offer offer = offerRepository.findOne(specification).orElseThrow(OfferNotFoundException::new);
     offer.toggleActive();
     return offer.isActive();
@@ -225,7 +209,7 @@ public class OfferServiceImpl implements OfferService {
   public Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable) {
     if (offerIds.isEmpty()) return Page.empty();
     Specification<Offer> specification =
-        where(OfferSpecifications.uuidIn(offerIds)).and(OfferSpecifications.activeOffers());
+        where(favoriteWithIds(offerIds)).and(activeUser()).and(activeOffers());
     return offerRepository
         .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
@@ -239,7 +223,7 @@ public class OfferServiceImpl implements OfferService {
             .findByUserId(userId)
             .map(acc -> acc.getId())
             .orElseThrow(AccountNotFoundException::new);
-    Specification<Offer> specification = where(OfferSpecifications.withAccountId(accountId));
+    Specification<Offer> specification = where(withAccountId(accountId));
     Page<OfferServiceModel> accountOffers =
         offerRepository
             .findAll(specification, pageable)

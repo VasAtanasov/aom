@@ -69,7 +69,12 @@ public class User extends BaseUuidEntity implements UserDetails {
   @Enumerated(value = EnumType.STRING)
   private Set<Role> roles = new HashSet<>();
 
-  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @ManyToMany(
+      fetch = FetchType.LAZY,
+      cascade = {
+        CascadeType.PERSIST,
+        CascadeType.MERGE,
+      })
   @JoinTable(
       name = "auto_user_saved_offer",
       joinColumns = @JoinColumn(name = "user_id"),
@@ -130,19 +135,11 @@ public class User extends BaseUuidEntity implements UserDetails {
     return F.containsAll(roles, Role.ADMIN);
   }
 
-  public boolean isModerator() {
-    return F.containsAll(roles, Role.MODERATOR);
-  }
-
   public boolean isRoot() {
     return F.containsAll(roles, Role.ROOT);
   }
 
-  public boolean isModeratorOrAdmin() {
-    return isModerator() || isAdmin();
-  }
-
   public boolean canAcceptEmailToken() {
-    return isModeratorOrAdmin() || isNormalUser() || isRoot();
+    return isNormalUser() || isRoot();
   }
 }

@@ -20,9 +20,6 @@ import lombok.Setter;
 @Entity
 @Table(name = EntityConstants.ACCOUNTS)
 public class Account extends BaseUuidEntity {
-  // TODO add inventory url
-  // TODO add logo
-  // TODO add reviews
   private static final long serialVersionUID = -3845486410834998722L;
 
   @OneToOne(fetch = FetchType.LAZY, optional = false)

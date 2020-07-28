@@ -5,6 +5,7 @@ import bg.autohouse.data.models.User;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.account.AccountCreateServiceModel;
+import bg.autohouse.service.models.user.UserRowServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.models.request.account.AccountWrapper;
@@ -15,6 +16,10 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,14 +33,21 @@ import org.springframework.web.bind.annotation.RestController;
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping(WebConfiguration.URL_ADMIN_BASE)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class AdminController {
+public class AdminController extends BaseController {
 
   private final AdminService adminService;
   private final ModelMapperWrapper modelMapper;
 
   @GetMapping(value = "/users/list")
-  public ResponseEntity<?> getUsersList() {
-    return RestUtil.okResponse(adminService.loadAllUsers());
+  public ResponseEntity<?> getUsersList(
+      @PageableDefault(
+              page = DEFAULT_PAGE_NUMBER,
+              size = 50,
+              sort = SORT,
+              direction = Sort.Direction.DESC)
+          Pageable pageable) {
+    Page<UserRowServiceModel> usersPage = adminService.loadUsersPage(pageable);
+    return ResponseEntity.ok(usersPage);
   }
 
   @PostMapping(value = "/users/bulk")

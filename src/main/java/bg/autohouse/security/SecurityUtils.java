@@ -56,10 +56,6 @@ public final class SecurityUtils {
     return findAuthenticationAuthenticated().map(SecurityUtils::extractFrom);
   }
 
-  public boolean isModeratorOrAdmin() {
-    return findActiveUserInfo().map(User::isModeratorOrAdmin).orElse(false);
-  }
-
   public User getActiveUserInfoOrNull() {
     return findActiveUserInfo().orElse(null);
   }

@@ -2,7 +2,6 @@ package bg.autohouse.service.services;
 
 import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
-import bg.autohouse.web.models.request.FilterRequest;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import java.io.IOException;
 import java.util.List;
@@ -16,8 +15,6 @@ public interface OfferService {
   OfferDetailsServiceModel getOfferById(UUID id);
 
   List<String> fetchOfferImages(UUID offerId);
-
-  Page<OfferServiceModel> searchOffers(FilterRequest filterRequest, Pageable pageable);
 
   Page<OfferServiceModel> searchOffers(UUID filterId, Pageable pageable);
 

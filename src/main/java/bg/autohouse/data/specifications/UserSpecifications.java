@@ -5,6 +5,9 @@ import bg.autohouse.data.models.User_;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
+// import javax.persistence.criteria.CriteriaQuery;
+// import javax.persistence.criteria.JoinType;
+// import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecifications {
@@ -32,4 +35,17 @@ public class UserSpecifications {
   public static Specification<User> hasNoAccount() {
     return (root, query, cb) -> cb.isFalse(root.get(User_.hasAccount));
   }
+
+  // private static void performJoins(Root<User> root, CriteriaQuery<?> query) {
+  //   if (currentQueryIsCountRecords(query)) {
+  //     root.join(User_.roles, JoinType.LEFT);
+  //   } else {
+  //     root.fetch(User_.roles, JoinType.LEFT);
+  //   }
+  // }
+
+  // private static boolean currentQueryIsCountRecords(CriteriaQuery<?> criteriaQuery) {
+  //   return criteriaQuery.getResultType() == Long.class
+  //       || criteriaQuery.getResultType() == long.class;
+  // }
 }

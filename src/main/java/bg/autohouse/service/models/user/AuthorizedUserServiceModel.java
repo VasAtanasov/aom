@@ -22,12 +22,11 @@ public class AuthorizedUserServiceModel {
         switch (role) {
           case ROOT:
             return 1;
-          case ADMIN: // we know it's not equal or null
-            return t1.equals(Role.ADMIN) ? -1 : 1;
-          case USER: // we know it's not equal, and t1 is not null, so must be greater
+          case ADMIN:
+            return t1.equals(Role.ROOT) ? -1 : 1;
+          case USER:
             return -1;
-          default: // should never happen, but in case something strange added in future, put it
-            // last
+          default:
             return -1;
         }
       };

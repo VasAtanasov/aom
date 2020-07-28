@@ -8,7 +8,6 @@ import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.data.models.geo.Location;
-import bg.autohouse.data.projections.user.UserIdUsername;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
@@ -16,6 +15,7 @@ import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.account.AccountCreateServiceModel;
 import bg.autohouse.service.models.account.AccountServiceModel;
+import bg.autohouse.service.models.user.UserRowServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.Collect;
@@ -34,6 +34,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -53,8 +55,10 @@ public class AdminServiceImpl implements AdminService {
   private final AccountRepository accountRepository;
 
   @Override
-  public List<UserIdUsername> loadAllUsers() {
-    return userRepository.getAllUsers();
+  @Transactional(readOnly = true)
+  public Page<UserRowServiceModel> loadUsersPage(Pageable pageable) {
+    Page<User> users = userRepository.findUsersPage(pageable);
+    return users.map(u -> modelMapper.map(u, UserRowServiceModel.class));
   }
 
   // TODO not encoding password its degregating performance of application for batch

@@ -9,6 +9,9 @@ import lombok.*;
 @Builder
 public class OfferServiceModel {
   private String id;
+  private String accountId;
+  private String accountUserId;
+  private boolean accountUserEnabled;
   private Integer price;
   private String locationCity;
   private String locationId;

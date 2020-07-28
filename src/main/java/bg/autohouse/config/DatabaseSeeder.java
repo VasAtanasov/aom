@@ -27,7 +27,6 @@ public class DatabaseSeeder {
       Set<Role> roles = new HashSet<>();
       roles.add(Role.ROOT);
       roles.add(Role.ADMIN);
-      roles.add(Role.MODERATOR);
       roles.add(Role.USER);
       User user = new User();
       user.setUsername(ROOT_USERNAME);

@@ -61,9 +61,6 @@ public class Offer extends BaseUuidEntity {
   @Column(name = "is_active")
   private boolean isActive = true;
 
-  // @Column(name = "is_sold")
-  // private boolean isSold = false;
-
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "location_id",
@@ -86,7 +83,7 @@ public class Offer extends BaseUuidEntity {
     savedCount += 1;
   }
 
-  public void decrementSaveCount() {
+  public void decrementSavedCount() {
     savedCount -= 1;
     if (savedCount < 0) savedCount = 0;
   }

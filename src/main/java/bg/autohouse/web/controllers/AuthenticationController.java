@@ -82,7 +82,6 @@ public class AuthenticationController extends BaseController {
       value = WebConfiguration.URL_USER_LOGOUT,
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> logout(HttpServletRequest request, @LoggedUser User user) {
-    // TODO transfer logout into service
     AuthorizationHeader authHeader = new AuthorizationHeader(request);
     String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
     if (token == null) return RestUtil.errorResponse(RestMessage.INVALID_TOKEN);

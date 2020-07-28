@@ -195,7 +195,7 @@ public class UserServiceImpl implements UserService {
     Offer offer = offerRepository.findOfferById(offerId).orElseThrow(OfferNotFoundException::new);
     boolean isRemoved = user.getFavorites().removeIf(o -> o.getId().equals(offerId));
     if (isRemoved) {
-      offer.decrementSaveCount();
+      offer.decrementSavedCount();
     } else {
       user.getFavorites().add(offer);
       offer.incrementSavedCount();

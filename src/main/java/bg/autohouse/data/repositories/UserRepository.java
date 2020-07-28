@@ -11,6 +11,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Stream;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -26,6 +28,11 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
 
   @Query("SELECT u from User u")
   List<UserIdUsername> getAllUsers();
+
+  @Query(
+      value = "SELECT u from User u LEFT JOIN FETCH u.roles r",
+      countQuery = "SELECT count(u) from User u LEFT JOIN u.roles r")
+  Page<User> findUsersPage(Pageable pageable);
 
   @Query("SELECT u from User u")
   Set<UserUsername> getAllUsers(Specification<User> spec);
