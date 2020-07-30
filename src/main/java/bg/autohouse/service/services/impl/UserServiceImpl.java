@@ -173,7 +173,8 @@ public class UserServiceImpl implements UserService {
     return modelMapper.map(userEntity, UserServiceModel.class);
   }
 
-  private Set<Role> getInheritedRolesFromRole(Role role) {
+  @Override
+  public Set<Role> getInheritedRolesFromRole(Role role) {
     List<Role> allRoles = Arrays.stream(Role.values()).collect(Collectors.toList());
     int index = allRoles.indexOf(role);
     return new HashSet<>(allRoles.subList(index, allRoles.size()));

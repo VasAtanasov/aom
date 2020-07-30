@@ -62,4 +62,10 @@ public class ValidationMessages {
   public static final String INVALID_SELLER = "Invalid seller type.";
 
   public static final String INVALID_ACCOUNT_TYPE = "Invalid account type";
+
+  public static final String BLANK_USER_ID = "User ID must not be blank.";
+
+  public static final String BLANK_NEW_ROLE = "The new role must not be blank.";
+
+  public static final String BLANK_CURRENT_ROLE = "Current role must not be blank.";
 }

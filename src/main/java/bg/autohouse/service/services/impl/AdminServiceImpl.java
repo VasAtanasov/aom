@@ -6,17 +6,21 @@ import static org.springframework.data.jpa.domain.Specification.*;
 import bg.autohouse.data.models.User;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.enums.AccountType;
+import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.errors.NoSuchUserException;
+import bg.autohouse.errors.RoleChangeException;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.account.AccountCreateServiceModel;
 import bg.autohouse.service.models.account.AccountServiceModel;
+import bg.autohouse.service.models.user.ChangeRoleServiceModel;
 import bg.autohouse.service.models.user.UserRowServiceModel;
 import bg.autohouse.service.services.AdminService;
+import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.Collect;
 import bg.autohouse.util.EnumUtils;
@@ -50,6 +54,7 @@ public class AdminServiceImpl implements AdminService {
   private int batchSize;
 
   private final UserRepository userRepository;
+  private final UserService userService;
   private final LocationRepository locationRepository;
   private final ModelMapperWrapper modelMapper;
   private final AccountRepository accountRepository;
@@ -58,7 +63,20 @@ public class AdminServiceImpl implements AdminService {
   @Transactional(readOnly = true)
   public Page<UserRowServiceModel> loadUsersPage(Pageable pageable) {
     Page<User> users = userRepository.findUsersPage(pageable);
-    return users.map(u -> modelMapper.map(u, UserRowServiceModel.class));
+    return users.map(u -> UserRowServiceModel.builder().user(u).build());
+  }
+
+  @Override
+  @Transactional
+  public UserRowServiceModel changeRole(ChangeRoleServiceModel request, User user) {
+    if (request.getNewRole().equals(Role.ROOT) || request.getCurrentRole().equals(Role.ROOT)) {
+      throw new RoleChangeException();
+    }
+    validateAdminRole(user.getId());
+    User affectedUser =
+        userRepository.findByIdWithRoles(request.getUserId()).orElseThrow(NoSuchUserException::new);
+    affectedUser.setRoles(userService.getInheritedRolesFromRole(request.getNewRole()));
+    return UserRowServiceModel.builder().user(userRepository.save(affectedUser)).build();
   }
 
   // TODO not encoding password its degregating performance of application for batch

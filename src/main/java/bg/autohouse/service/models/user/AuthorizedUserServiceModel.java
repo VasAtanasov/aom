@@ -13,7 +13,7 @@ import lombok.*;
 @Getter
 public class AuthorizedUserServiceModel {
 
-  private static final Comparator<Role> SYSTEM_ROLE_COMPARATOR =
+  public static final Comparator<Role> SYSTEM_ROLE_COMPARATOR =
       (role, t1) -> {
         if (role.equals(t1)) {
           return 0;

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
 
+  @Query("SELECT u from User u LEFT JOIN FETCH u.roles r WHERE u.id = :id")
   Optional<User> findByIdWithRoles(UUID id);
 
   @Query("SELECT u from User u")

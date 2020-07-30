@@ -1,17 +1,26 @@
 package bg.autohouse.web.controllers;
 
+import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
+
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
+import bg.autohouse.errors.RoleChangeException;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.account.AccountCreateServiceModel;
+import bg.autohouse.service.models.account.AccountServiceModel;
+import bg.autohouse.service.models.user.ChangeRoleServiceModel;
 import bg.autohouse.service.models.user.UserRowServiceModel;
+import bg.autohouse.service.services.AccountService;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.RestMessage;
+import bg.autohouse.web.models.request.ChangeRoleRequest;
 import bg.autohouse.web.models.request.account.AccountWrapper;
 import bg.autohouse.web.models.wrappers.ListWrapper;
 import bg.autohouse.web.util.RestUtil;
 import java.util.List;
+import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +31,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,18 +47,47 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController extends BaseController {
 
   private final AdminService adminService;
+  private final AccountService accountService;
   private final ModelMapperWrapper modelMapper;
 
-  @GetMapping(value = "/users/list")
+  @GetMapping(
+      value = "/users/list",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getUsersList(
       @PageableDefault(
               page = DEFAULT_PAGE_NUMBER,
-              size = 50,
+              size = DEFAULT_PAGE_SIZE,
               sort = SORT,
               direction = Sort.Direction.DESC)
           Pageable pageable) {
     Page<UserRowServiceModel> usersPage = adminService.loadUsersPage(pageable);
     return ResponseEntity.ok(usersPage);
+  }
+
+  @GetMapping(
+      value = "/user-account/{userId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> fetchUserAccount(@PathVariable UUID userId) {
+    AccountServiceModel model =
+        modelMapper.map(accountService.loadAccountForUser(userId), AccountServiceModel.class);
+    return ResponseEntity.ok(model);
+  }
+
+  @PostMapping(
+      value = "/user/update-roles",
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> updateUserRoles(
+      @Valid @RequestBody ChangeRoleRequest request, @LoggedUser User user) {
+    ChangeRoleServiceModel serviceModel = modelMapper.map(request, ChangeRoleServiceModel.class);
+    UserRowServiceModel updatedUser = adminService.changeRole(serviceModel, user);
+    return ResponseEntity.ok(updatedUser);
+  }
+
+  @ExceptionHandler(RoleChangeException.class)
+  public ResponseEntity<?> notAllowedRoleChange(RoleChangeException e) {
+    log.error("Role change not allowed!", e);
+    return RestUtil.errorResponse(RestMessage.ROLE_CHANGE_NOT_ALLOWED);
   }
 
   @PostMapping(value = "/users/bulk")
