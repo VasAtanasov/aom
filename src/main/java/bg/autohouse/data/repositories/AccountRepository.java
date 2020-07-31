@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository
     extends JpaRepository<Account, UUID>, JpaSpecificationExecutor<Account> {
+
   boolean existsByUserId(UUID userId);
 
   @Query(

@@ -15,6 +15,7 @@ import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
+import bg.autohouse.errors.UserDisabledException;
 import bg.autohouse.errors.UsernamePasswordLoginFailedException;
 import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenService;
@@ -93,10 +94,9 @@ public class UserServiceImpl implements UserService {
         userRepository
             .findByUsernameIgnoreCase(username)
             .orElseThrow(UsernamePasswordLoginFailedException::new);
+    if (!user.isEnabled()) throw new UserDisabledException();
     boolean isValidCredentials = passwordService.validateCredentials(username, password);
-    if (!isValidCredentials) {
-      throw new UsernamePasswordLoginFailedException();
-    }
+    if (!isValidCredentials) throw new UsernamePasswordLoginFailedException();
     JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
     String token = jwtService.createJwt(tokenRequest);
     log.info("Generated a jwt token, on server is: {}", token);

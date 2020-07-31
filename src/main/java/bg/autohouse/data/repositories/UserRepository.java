@@ -24,15 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
 
-  @Query("SELECT u from User u LEFT JOIN FETCH u.roles r WHERE u.id = :id")
+  @Query("SELECT DISTINCT u from User u LEFT JOIN FETCH u.roles r WHERE u.id = :id")
   Optional<User> findByIdWithRoles(UUID id);
 
   @Query("SELECT u from User u")
   List<UserIdUsername> getAllUsers();
 
-  @Query(
-      value = "SELECT u from User u LEFT JOIN FETCH u.roles r",
-      countQuery = "SELECT count(u) from User u LEFT JOIN u.roles r")
+  @Query(value = "SELECT u FROM User u", countQuery = "SELECT COUNT(*) FROM User u")
   Page<User> findUsersPage(Pageable pageable);
 
   @Query("SELECT u from User u")

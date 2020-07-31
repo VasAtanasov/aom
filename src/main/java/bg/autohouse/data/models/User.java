@@ -142,4 +142,8 @@ public class User extends BaseUuidEntity implements UserDetails {
   public boolean canAcceptEmailToken() {
     return isNormalUser() || isRoot();
   }
+
+  public void toggleActive() {
+    enabled = !enabled;
+  }
 }

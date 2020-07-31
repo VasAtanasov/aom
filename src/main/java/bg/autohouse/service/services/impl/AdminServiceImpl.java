@@ -12,12 +12,14 @@ import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
+import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.errors.RoleChangeException;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.account.AccountCreateServiceModel;
 import bg.autohouse.service.models.account.AccountServiceModel;
 import bg.autohouse.service.models.user.ChangeRoleServiceModel;
+import bg.autohouse.service.models.user.UserAdminDetailsServiceModel;
 import bg.autohouse.service.models.user.UserRowServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.service.services.UserService;
@@ -67,6 +69,24 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public UserAdminDetailsServiceModel loadUserDetails(UUID userId, UUID adminId) {
+    validateAdminRole(adminId);
+    User targetUser =
+        userRepository.findByIdWithRoles(userId).orElseThrow(NoSuchUserException::new);
+    AccountServiceModel accountServiceModel = null;
+    if (targetUser.isHasAccount()) {
+      Account account =
+          accountRepository.findByUserId(userId).orElseThrow(AccountNotFoundException::new);
+      accountServiceModel = modelMapper.map(account, AccountServiceModel.class);
+    }
+    return UserAdminDetailsServiceModel.builder()
+        .user(targetUser)
+        .account(accountServiceModel)
+        .build();
+  }
+
+  @Override
   @Transactional
   public UserRowServiceModel changeRole(ChangeRoleServiceModel request, User user) {
     if (request.getNewRole().equals(Role.ROOT) || request.getCurrentRole().equals(Role.ROOT)) {
@@ -77,6 +97,16 @@ public class AdminServiceImpl implements AdminService {
         userRepository.findByIdWithRoles(request.getUserId()).orElseThrow(NoSuchUserException::new);
     affectedUser.setRoles(userService.getInheritedRolesFromRole(request.getNewRole()));
     return UserRowServiceModel.builder().user(userRepository.save(affectedUser)).build();
+  }
+
+  @Override
+  @Transactional
+  public boolean toggleActive(UUID userId, UUID adminId) {
+    validateAdminRole(adminId);
+    User targetUser =
+        userRepository.findByIdWithRoles(userId).orElseThrow(NoSuchUserException::new);
+    targetUser.toggleActive();
+    return targetUser.isEnabled();
   }
 
   // TODO not encoding password its degregating performance of application for batch

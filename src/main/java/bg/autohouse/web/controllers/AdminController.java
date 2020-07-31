@@ -8,10 +8,9 @@ import bg.autohouse.errors.RoleChangeException;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.account.AccountCreateServiceModel;
-import bg.autohouse.service.models.account.AccountServiceModel;
 import bg.autohouse.service.models.user.ChangeRoleServiceModel;
+import bg.autohouse.service.models.user.UserAdminDetailsServiceModel;
 import bg.autohouse.service.models.user.UserRowServiceModel;
-import bg.autohouse.service.services.AccountService;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
@@ -47,7 +46,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController extends BaseController {
 
   private final AdminService adminService;
-  private final AccountService accountService;
   private final ModelMapperWrapper modelMapper;
 
   @GetMapping(
@@ -65,12 +63,21 @@ public class AdminController extends BaseController {
   }
 
   @GetMapping(
-      value = "/user-account/{userId}",
+      value = "/user/details/{userId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> fetchUserAccount(@PathVariable UUID userId) {
-    AccountServiceModel model =
-        modelMapper.map(accountService.loadAccountForUser(userId), AccountServiceModel.class);
+  public ResponseEntity<?> fetchUserDetails(@PathVariable UUID userId, @LoggedUser User admin) {
+    UserAdminDetailsServiceModel model =
+        modelMapper.map(
+            adminService.loadUserDetails(userId, admin.getId()),
+            UserAdminDetailsServiceModel.class);
     return ResponseEntity.ok(model);
+  }
+
+  @GetMapping(
+      value = "/user/toggle-active/{userId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> toggleActive(@PathVariable UUID userId, @LoggedUser User admin) {
+    return ResponseEntity.ok(adminService.toggleActive(userId, admin.getId()));
   }
 
   @PostMapping(

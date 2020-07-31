@@ -2,6 +2,7 @@ package bg.autohouse.data.repositories.impl;
 
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.repositories.FilterRepositoryCustom;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class FilterRepositoryImpl implements FilterRepositoryCustom {
             .setParameter("userId", userId)
             .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
             .getResultList();
-
+    if (filters.isEmpty()) return Collections.emptyList();
     filters =
         entityManager
             .createQuery(
@@ -44,7 +45,7 @@ public class FilterRepositoryImpl implements FilterRepositoryCustom {
             .setParameter("filters", filters)
             .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
             .getResultList();
-
+    if (filters.isEmpty()) return Collections.emptyList();
     filters =
         entityManager
             .createQuery(
@@ -96,7 +97,6 @@ public class FilterRepositoryImpl implements FilterRepositoryCustom {
             .setParameter("filters", filters)
             .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
             .getResultList();
-
     return filters.stream().findFirst();
   }
 }
