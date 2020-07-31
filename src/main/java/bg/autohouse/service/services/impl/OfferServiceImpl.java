@@ -19,6 +19,7 @@ import bg.autohouse.errors.LocationNotFoundException;
 import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
+import bg.autohouse.service.models.offer.OfferEditServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.OfferService;
@@ -108,6 +109,16 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public OfferEditServiceModel loadOfferForEdit(UUID creatorId, UUID offerId) {
+    Offer offer =
+        offerRepository
+            .findOneByIdAndCreatorId(offerId, creatorId)
+            .orElseThrow(OfferNotFoundException::new);
+    return modelMapper.map(offer, OfferEditServiceModel.class);
+  }
+
+  @Override
   @Transactional
   public boolean toggleActive(UUID creatorId, UUID offerId) {
     Specification<Offer> specification = oneWithIdAndOwnerId(offerId, creatorId);
@@ -131,7 +142,6 @@ public class OfferServiceImpl implements OfferService {
   // TODO validate numbers
   // TODO check is primary photo and return default
   // TODO check are images
-  // TODO add maker and model ids
   @Transactional(rollbackFor = IOException.class)
   public OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId)
       throws IOException {

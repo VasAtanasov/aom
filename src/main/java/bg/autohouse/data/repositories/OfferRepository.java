@@ -101,6 +101,20 @@ public interface OfferRepository
 
   @Query(
       value =
+          "SELECT o "
+              + "FROM Offer o "
+              + "LEFT JOIN FETCH o.vehicle v "
+              + "LEFT JOIN FETCH v.features f "
+              + "LEFT JOIN FETCH o.location lo "
+              + "LEFT JOIN FETCH o.account acc "
+              + "LEFT JOIN FETCH acc.user usr "
+              + "LEFT JOIN FETCH acc.address adr "
+              + "LEFT JOIN FETCH adr.location loc "
+              + "WHERE o.isActive = 1 AND o.id = :id AND usr.id = :creatorId")
+  Optional<Offer> findOneByIdAndCreatorId(UUID id, UUID creatorId);
+
+  @Query(
+      value =
           "SELECT DISTINCT * "
               + "FROM "
               + "auto_offers AS ao "

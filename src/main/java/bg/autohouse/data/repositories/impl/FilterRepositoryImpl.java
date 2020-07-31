@@ -74,6 +74,7 @@ public class FilterRepositoryImpl implements FilterRepositoryCustom {
             .setParameter("filterId", filterId)
             .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
             .getResultList();
+    if (filters.isEmpty()) return Optional.empty();
     filters =
         entityManager
             .createQuery(
@@ -85,7 +86,7 @@ public class FilterRepositoryImpl implements FilterRepositoryCustom {
             .setParameter("filters", filters)
             .setHint(QueryHints.PASS_DISTINCT_THROUGH, false)
             .getResultList();
-
+    if (filters.isEmpty()) return Optional.empty();
     filters =
         entityManager
             .createQuery(

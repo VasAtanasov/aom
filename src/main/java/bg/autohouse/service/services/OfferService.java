@@ -1,6 +1,7 @@
 package bg.autohouse.service.services;
 
 import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
+import bg.autohouse.service.models.offer.OfferEditServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import java.io.IOException;
@@ -13,6 +14,8 @@ public interface OfferService {
   List<OfferServiceModel> getLatestOffers();
 
   OfferDetailsServiceModel getOfferById(UUID id);
+
+  OfferEditServiceModel loadOfferForEdit(UUID creatorId, UUID offerId);
 
   List<String> fetchOfferImages(UUID offerId);
 

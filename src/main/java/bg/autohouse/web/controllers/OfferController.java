@@ -48,6 +48,13 @@ public class OfferController extends BaseController {
   }
 
   @GetMapping(
+      value = "/load-for-edit/{offerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getOfferForEdit(@PathVariable UUID offerId, @LoggedUser User creator) {
+    return ResponseEntity.ok(offerService.loadOfferForEdit(creator.getId(), offerId));
+  }
+
+  @GetMapping(
       value = "/details/{offerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> viewOffer(@PathVariable UUID offerId, @LoggedUser User user) {
