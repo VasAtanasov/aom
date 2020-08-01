@@ -3,6 +3,16 @@
 ## Web API for managing automotive offers
 
   This is a defence project build for educational purpose in the course of SoftUni Jawa Web Developmnet with Spring.
+  
+  Main technologies used are:
+
+  - OpenJDK
+  - Maven
+  - Spring Boot
+  - MySQL
+  - ModelMapper
+  - Lombok
+  - Dropbox 
 
 ### Main featurea of the API are:
 
