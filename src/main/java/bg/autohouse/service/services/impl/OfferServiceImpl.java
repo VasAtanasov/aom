@@ -3,7 +3,9 @@ package bg.autohouse.service.services.impl;
 import static bg.autohouse.data.specifications.OfferSpecifications.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
+import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.Filter;
+import bg.autohouse.data.models.Model;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.models.media.MediaFile;
@@ -13,9 +15,12 @@ import bg.autohouse.data.models.offer.Vehicle;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.FilterRepository;
 import bg.autohouse.data.repositories.LocationRepository;
+import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.errors.AccountNotFoundException;
+import bg.autohouse.errors.InvalidOfferException;
 import bg.autohouse.errors.LocationNotFoundException;
+import bg.autohouse.errors.ModelNotFoundException;
 import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
@@ -51,6 +56,7 @@ public class OfferServiceImpl implements OfferService {
 
   private final OfferRepository offerRepository;
   private final FilterRepository filterRepository;
+  private final ModelRepository modelRepository;
   private final ModelMapperWrapper modelMapper;
   private final LocationRepository locationRepository;
   private final AccountRepository accountRepository;
@@ -138,10 +144,6 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Override
-  // TODO implement main photo choose
-  // TODO validate numbers
-  // TODO check is primary photo and return default
-  // TODO check are images
   @Transactional(rollbackFor = IOException.class)
   public OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId)
       throws IOException {
@@ -154,20 +156,25 @@ public class OfferServiceImpl implements OfferService {
             .findByPostalCode(request.getAddressLocationPostalCode())
             .orElseThrow(LocationNotFoundException::new);
     Vehicle vehicle = modelMapper.map(request.getVehicle(), Vehicle.class);
-    Assert.notNull(vehicle.getBodyStyle(), RestMessage.INVALID_BODY_STYLE.name());
-    Assert.notNull(vehicle.getColor(), RestMessage.INVALID_COLOR.name());
-    Assert.notNull(vehicle.getDrive(), RestMessage.INVALID_DRIVE.name());
-    Assert.notNull(vehicle.getFuelType(), RestMessage.INVALID_FUEL_TYPE.name());
-    Assert.notNull(vehicle.getState(), RestMessage.INVALID_VEHICLE_STATE.name());
-    Assert.notNull(vehicle.getTransmission(), RestMessage.INVALID_TRANSMISSION.name());
-    Assert.notNulls(vehicle.getFeatures(), RestMessage.INVALID_FEATURE.name());
+
     request.setVehicle(null);
+    Model model =
+        modelRepository
+            .findByNameAndMakerName(vehicle.getModelName(), vehicle.getMakerName())
+            .orElseThrow(ModelNotFoundException::new);
+    vehicle.setMakerId(model.getMaker().getId());
+    vehicle.setModelId(model.getId());
     Offer offer = modelMapper.map(request, Offer.class);
     offer.setLocation(location);
     offer.setAccount(account);
     offer = offerRepository.save(offer);
     offer.setVehicle(vehicle);
     vehicle.setOffer(offer);
+    assertNoNullValuesVehicle(vehicle);
+    assertNotNullOfferValues(offer);
+    validateNumericValues(offer);
+    if (request.getImages().isEmpty())
+      throw new InvalidOfferException(RestMessage.HAS_NO_IMAGES.name());
     for (MultipartFile file : request.getImages()) {
       byte[] byteArray = imageResizer.toJpgDownscaleToSize(file.getInputStream());
       String fileName =
@@ -215,6 +222,100 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Override
+  @Transactional
+  public OfferServiceModel updateOffer(OfferCreateRequest request, UUID offerId, UUID creatorId) {
+    Assert.notNull(creatorId, "User id is required");
+    Assert.notNull(offerId, "Offer id is required");
+    Assert.notNull(request, "Offer model is required");
+    boolean hasAccount = accountRepository.existsByUserId(creatorId);
+    if (!hasAccount) throw new AccountNotFoundException();
+    Vehicle updatedVehicle = modelMapper.map(request.getVehicle(), Vehicle.class);
+    Model model =
+        modelRepository
+            .findByNameAndMakerName(updatedVehicle.getModelName(), updatedVehicle.getMakerName())
+            .orElseThrow(ModelNotFoundException::new);
+    Offer updatedOffer = modelMapper.map(request, Offer.class);
+    Offer offer =
+        offerRepository
+            .findOneByIdAndCreatorId(offerId, creatorId)
+            .orElseThrow(OfferNotFoundException::new);
+    if (Assert.has(request.getAddressLocationPostalCode())
+        && !request.getAddressLocationPostalCode().equals(offer.getLocation().getPostalCode())) {
+      Location location =
+          locationRepository
+              .findByPostalCode(request.getAddressLocationPostalCode())
+              .orElseThrow(LocationNotFoundException::new);
+      offer.setLocation(location);
+    }
+    offer.getVehicle().setMakerName(updatedVehicle.getMakerName());
+    offer.getVehicle().setMakerId(model.getMaker().getId());
+    offer.getVehicle().setModelName(updatedVehicle.getModelName());
+    offer.getVehicle().setModelId(model.getId());
+    offer.getVehicle().setTrim(updatedVehicle.getTrim());
+    offer.getVehicle().setYear(updatedVehicle.getYear());
+    offer.getVehicle().setMileage(updatedVehicle.getMileage());
+    offer.getVehicle().setDoors(updatedVehicle.getDoors());
+    offer.getVehicle().setState(updatedVehicle.getState());
+    offer.getVehicle().setBodyStyle(updatedVehicle.getBodyStyle());
+    offer.getVehicle().setTransmission(updatedVehicle.getTransmission());
+    offer.getVehicle().setDrive(updatedVehicle.getDrive());
+    offer.getVehicle().setColor(updatedVehicle.getColor());
+    offer.getVehicle().setFuelType(updatedVehicle.getFuelType());
+    offer.getVehicle().setFeatures(updatedVehicle.getFeatures());
+    offer.getVehicle().setHasAccident(updatedVehicle.isHasAccident());
+    offer.setPrice(updatedOffer.getPrice());
+    offer.setDescription(updatedOffer.getDescription());
+    offer.getContactDetails().setPhoneNumber(updatedOffer.getContactDetails().getPhoneNumber());
+    offer.getContactDetails().setWebLink(updatedOffer.getContactDetails().getWebLink());
+    assertNoNullValuesVehicle(offer.getVehicle());
+    assertNotNullOfferValues(offer);
+    validateNumericValues(offer);
+    return modelMapper.map(offerRepository.save(offer), OfferServiceModel.class);
+  }
+
+  private void assertNotNullOfferValues(Offer offer) {
+    Assert.notNull(offer.getPrice(), RestMessage.INVALID_OFFER_PRICE.name());
+    Assert.notNull(offer.getDescription(), RestMessage.INVALID_OFFER_DESCRIPTION.name());
+    Assert.notNull(
+        offer.getContactDetails().getPhoneNumber(), RestMessage.INVALID_OFFER_PHONE_NUMBER.name());
+    Assert.notNull(offer.getAccount(), RestMessage.ACCOUNT_MISSING.name());
+    Assert.notNull(offer.getLocation(), RestMessage.LOCATION_MISSING.name());
+    Assert.notNull(offer.getVehicle(), RestMessage.VEHICLE_MISSING.name());
+  }
+
+  private void assertNoNullValuesVehicle(Vehicle vehicle) {
+    Assert.notNull(vehicle.getBodyStyle(), RestMessage.INVALID_BODY_STYLE.name());
+    Assert.notNull(vehicle.getColor(), RestMessage.INVALID_COLOR.name());
+    Assert.notNull(vehicle.getDrive(), RestMessage.INVALID_DRIVE.name());
+    Assert.notNull(vehicle.getFuelType(), RestMessage.INVALID_FUEL_TYPE.name());
+    Assert.notNull(vehicle.getState(), RestMessage.INVALID_VEHICLE_STATE.name());
+    Assert.notNull(vehicle.getTransmission(), RestMessage.INVALID_TRANSMISSION.name());
+    Assert.notNulls(vehicle.getFeatures(), RestMessage.INVALID_FEATURE.name());
+    Assert.notNull(vehicle.getYear(), RestMessage.INVALID_VEHICLE_YEAR.name());
+    Assert.notNull(vehicle.getMileage(), RestMessage.INVALID_VEHICLE_MILEAGE.name());
+    Assert.notNull(vehicle.getDoors(), RestMessage.INVALID_VEHICLE_DOORS.name());
+  }
+
+  private void validateNumericValues(Offer offer) {
+    if (offer.getPrice() < EntityConstants.MIN_VALUE
+        || offer.getPrice() > EntityConstants.PRICE_TO) {
+      throw new InvalidOfferException(RestMessage.INVALID_OFFER_PRICE.name());
+    }
+    if (offer.getVehicle().getYear() < EntityConstants.YEAR_FROM
+        || offer.getVehicle().getYear() > EntityConstants.YEAR_TO) {
+      throw new InvalidOfferException(RestMessage.INVALID_VEHICLE_YEAR.name());
+    }
+    if (offer.getVehicle().getMileage() < EntityConstants.MIN_VALUE
+        || offer.getVehicle().getMileage() > EntityConstants.MILEAGE_TO) {
+      throw new InvalidOfferException(RestMessage.INVALID_VEHICLE_MILEAGE.name());
+    }
+    if (offer.getVehicle().getDoors() < EntityConstants.MIN_VALUE
+        || offer.getVehicle().getDoors() > EntityConstants.DOORS_TO) {
+      throw new InvalidOfferException(RestMessage.INVALID_VEHICLE_DOORS.name());
+    }
+  }
+
+  @Override
   @Transactional(readOnly = true)
   public Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable) {
     if (offerIds.isEmpty()) return Page.empty();
@@ -239,5 +340,17 @@ public class OfferServiceImpl implements OfferService {
             .findAll(specification, pageable)
             .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
     return accountOffers;
+  }
+
+  @Override
+  public void deleteOffer(UUID userId, UUID offerId) {
+    Assert.notNull(userId, "User id is required");
+    Assert.notNull(offerId, "Offer id is required");
+    Offer offer =
+        offerRepository
+            .findOneByIdAndCreatorId(offerId, userId)
+            .orElseThrow(OfferNotFoundException::new);
+    List<MediaFile> mediaFiles = mediaFileService.loadForReference(offerId);
+    int a = 5;
   }
 }

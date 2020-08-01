@@ -43,4 +43,6 @@ public interface MediaFileService {
   void downloadTo(final UUID uuid, final Path targetPath) throws IOException;
 
   void remove(final UUID uuid);
+
+  void removeAll(final List<MediaFile> mediaFiles);
 }

@@ -12,7 +12,6 @@ import javax.persistence.*;
 import lombok.*;
 
 // TODO add validation annotations to entities
-// TODO list of price changes
 @Getter
 @Setter
 @NoArgsConstructor

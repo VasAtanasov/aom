@@ -216,4 +216,12 @@ public class MediaFileServiceImpl implements MediaFileService {
     getStorage(mediaFile.getStorageType()).removeFromStorage(mediaFile);
     medialFileRepository.delete(mediaFile);
   }
+
+  @Override
+  @Transactional
+  public void removeAll(List<MediaFile> mediaFiles) {
+    mediaFiles.forEach(
+        mediaFile -> getStorage(mediaFile.getStorageType()).removeFromStorage(mediaFile));
+    medialFileRepository.deleteAll(mediaFiles);
+  }
 }

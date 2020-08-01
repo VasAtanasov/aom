@@ -9,6 +9,7 @@ import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.util.ModelMapperWrapper;
+import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import bg.autohouse.web.models.response.offer.OfferDetailsResponseModel;
 import bg.autohouse.web.models.response.offer.OfferDetailsResponseWrapper;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +46,21 @@ public class OfferController extends BaseController {
       @ModelAttribute OfferCreateRequest createRequest, @LoggedUser User creator)
       throws IOException {
     OfferServiceModel offerServiceModel = offerService.createOffer(createRequest, creator.getId());
+    return RestUtil.createSuccessResponse(
+        offerServiceModel, RestMessage.OFFER_CREATED_SUCCESS, "/api/vehicles/offers");
+  }
+
+  @PostMapping(
+      value = "/update/{offerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON},
+      consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  public ResponseEntity<?> updateOffer(
+      @PathVariable UUID offerId,
+      @ModelAttribute OfferCreateRequest createRequest,
+      @LoggedUser User creator)
+      throws IOException {
+    OfferServiceModel offerServiceModel =
+        offerService.updateOffer(createRequest, offerId, creator.getId());
     return ResponseEntity.ok(offerServiceModel);
   }
 
@@ -63,6 +80,14 @@ public class OfferController extends BaseController {
     List<String> imagesKeys = offerService.fetchOfferImages(offerId);
     return RestUtil.okResponse(
         OfferDetailsResponseWrapper.builder().offer(offer).images(imagesKeys).build());
+  }
+
+  @DeleteMapping(
+      value = "/{offerId}",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> deleteOffer(@PathVariable UUID offerId, @LoggedUser User user) {
+    offerService.deleteOffer(user.getId(), offerId);
+    return ResponseEntity.ok(offerId);
   }
 
   @GetMapping(

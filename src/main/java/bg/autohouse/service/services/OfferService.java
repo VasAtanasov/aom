@@ -23,9 +23,13 @@ public interface OfferService {
 
   OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId) throws IOException;
 
+  OfferServiceModel updateOffer(OfferCreateRequest createRequest, UUID offerId, UUID id);
+
   Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable);
 
   Page<OfferServiceModel> findUserOffers(UUID userId, Pageable pageable);
 
   boolean toggleActive(UUID creatorId, UUID offerId);
+
+  void deleteOffer(UUID userId, UUID offerId);
 }
