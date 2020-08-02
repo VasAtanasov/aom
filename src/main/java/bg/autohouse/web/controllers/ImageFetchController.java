@@ -24,15 +24,6 @@ public class ImageFetchController extends BaseController {
   private final MediaFileService mediaFileService;
   private final ImageResizer imageResizer;
 
-  @GetMapping(value = "/user/{userUid}")
-  public ResponseEntity<byte[]> viewProfileImage(@PathVariable String userUid) throws IOException {
-    String imageKey = generateFileKey(USER_PROFILE_IMAGE_FOLDER, userUid);
-    // TODO if not found send default
-    MediaFile userImg = mediaFileService.load(MediaFunction.USER_PROFILE_IMAGE, imageKey);
-    log.info("Fetched record: {}", userImg);
-    return convertRecordToResponse(userImg, false);
-  }
-
   @GetMapping(value = "/{mediaFunction}/{imageKey}")
   public ResponseEntity<byte[]> fetchImage(
       @PathVariable MediaFunction mediaFunction, @PathVariable String imageKey) throws IOException {

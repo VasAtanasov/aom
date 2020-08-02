@@ -27,8 +27,6 @@ public interface UserService extends UserDetailsService {
 
   String regenerateUserVerifier(String username);
 
-  void updateHasImage(UUID id, boolean b);
-
   AuthorizedUserServiceModel tryLogin(String username, String password);
 
   List<UUID> addToFavorites(UUID id, UUID offerId);

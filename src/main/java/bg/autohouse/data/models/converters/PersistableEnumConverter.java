@@ -3,7 +3,6 @@ package bg.autohouse.data.models.converters;
 import bg.autohouse.data.models.PersistableEnum;
 import bg.autohouse.util.ClassUtils;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import javax.persistence.AttributeConverter;
 
 public interface PersistableEnumConverter<E extends PersistableEnum>
@@ -16,12 +15,12 @@ public interface PersistableEnumConverter<E extends PersistableEnum>
   }
 
   @Override
-  default String convertToDatabaseColumn(@Nullable final E enumValue) {
+  default String convertToDatabaseColumn(final E enumValue) {
     return enumValue == null ? null : enumValue.getDatabaseValue();
   }
 
   @Override
-  default E convertToEntityAttribute(@Nullable final String dbData) {
+  default E convertToEntityAttribute(final String dbData) {
     return dbData == null
         ? null
         : Stream.of(getEnumClass().getEnumConstants())

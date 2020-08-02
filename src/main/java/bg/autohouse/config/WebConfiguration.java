@@ -1,6 +1,10 @@
 package bg.autohouse.config;
 
+import bg.autohouse.service.services.AdminService;
+import bg.autohouse.web.interseptors.ApplicationRevisionHandlerInterceptor;
 import bg.autohouse.web.interseptors.SimpleLoggingInterceptor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class WebConfiguration implements WebMvcConfigurer {
 
   public static final String APP_V1_MEDIA_TYPE_JSON = "application/bg.autohouse.api-v1+json";
@@ -50,9 +55,16 @@ public class WebConfiguration implements WebMvcConfigurer {
 
   private static final long MAX_AGE_SECS = 3600;
 
+  private final AdminService adminService;
+
   @Bean
   public SimpleLoggingInterceptor loggingInterceptor() {
     return new SimpleLoggingInterceptor();
+  }
+
+  @Bean
+  public ApplicationRevisionHandlerInterceptor revisionInterceptor() {
+    return new ApplicationRevisionHandlerInterceptor(adminService);
   }
 
   @Override
@@ -73,5 +85,6 @@ public class WebConfiguration implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(loggingInterceptor());
+    registry.addInterceptor(revisionInterceptor());
   }
 }

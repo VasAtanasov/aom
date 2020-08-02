@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(HealthCheckController.URI_HEALTH_CHECK)
 public class HealthCheckController {
-  public static final String URI_HEALTH_CHECK = " /app-health";
+  public static final String URI_HEALTH_CHECK = "/health";
 
   private final JdbcTemplate jdbcTemplate;
 

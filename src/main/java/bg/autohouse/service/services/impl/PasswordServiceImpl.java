@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class PasswordServiceImpl implements PasswordService {
   private static final int TOKEN_LIFE_SPAN_MINUTES = 5;
-  // TODO change Objects.requireNonNull with Assert.NotNull
   private final VerificationTokenCodeRepository verificationTokenCodeRepository;
   private final UserLogRepository userLogRepository;
   private final UserRepository userRepository;

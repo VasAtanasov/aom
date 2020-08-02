@@ -7,9 +7,7 @@ import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import bg.autohouse.web.models.request.offer.VehicleCreateRequest;
 import java.util.Arrays;
 import java.util.stream.Stream;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 public class OfferCreateRequestTest extends HibernateValidatorTest {
   private static final String INVALID_VALUE = "Invalid value";
@@ -74,14 +72,14 @@ public class OfferCreateRequestTest extends HibernateValidatorTest {
   private static final String VALID_DESCRIPTION = "This is valid description.";
   private static final Integer VALID_PRICE = 1023213;
 
-  @ParameterizedTest
-  @MethodSource("createRequestSet")
-  void whenCreateRequest_withInvalidData_shouldInvalidateWithMessage(
-      OfferCreateRequest offerCreateRequest, String field, String message) {
+  // @ParameterizedTest
+  // @MethodSource("createRequestSet")
+  // void whenCreateRequest_withInvalidData_shouldInvalidateWithMessage(
+  //     OfferCreateRequest offerCreateRequest, String field, String message) {
 
-    isInvalid(offerCreateRequest);
-    assertMessage(offerCreateRequest, field, message);
-  }
+  //   isInvalid(offerCreateRequest);
+  //   assertMessage(offerCreateRequest, field, message);
+  // }
 
   private static Stream<Arguments> createRequestSet() {
     return Stream.of(

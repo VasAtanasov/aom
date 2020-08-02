@@ -8,7 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @SelectCriteria
 public enum Color implements Textable {
-  // TODO entity color (Colour groupName; displayName(entered by user))
   BLACK("Black"),
   GRAY("Gray"),
   SILVER("Silver"),

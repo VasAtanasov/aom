@@ -1,17 +1,10 @@
 package bg.autohouse.web.controllers;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import bg.autohouse.MvcPerformer;
-import bg.autohouse.data.models.enums.FuelType;
-import bg.autohouse.web.models.request.FilterRequest;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,29 +27,29 @@ public class SearchControllerTest extends MvcPerformer {
     return mockMvc;
   }
 
-  @Test
-  void whenSearchOffers_fuelType_shouldReturn200() throws Exception {
-    FilterRequest filterRequest =
-        FilterRequest.builder().fuelType(FuelType.ELECTRIC.name()).build();
+  // @Test
+  // void whenSearchOffers_fuelType_shouldReturn200() throws Exception {
+  //   FilterRequest filterRequest =
+  //       FilterRequest.builder().fuelType(FuelType.ELECTRIC.name()).build();
 
-    performPost(SEARCH_URL, filterRequest)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.success", is(true)))
-        .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
-        .andExpect(jsonPath("$.data.page.empty", is(Boolean.FALSE)));
-  }
+  //   performPost(SEARCH_URL, filterRequest)
+  //       .andExpect(status().isOk())
+  //       .andExpect(jsonPath("$.success", is(true)))
+  //       .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
+  //       .andExpect(jsonPath("$.data.page.empty", is(Boolean.FALSE)));
+  // }
 
-  @Test
-  void whenSearchOffers_withPageNumber_shouldReturn200() throws Exception {
-    FilterRequest filterRequest =
-        FilterRequest.builder().fuelType(FuelType.ELECTRIC.name()).build();
+  // @Test
+  // void whenSearchOffers_withPageNumber_shouldReturn200() throws Exception {
+  //   FilterRequest filterRequest =
+  //       FilterRequest.builder().fuelType(FuelType.ELECTRIC.name()).build();
 
-    performPost(SEARCH_URL + "?page=2&size=5", filterRequest)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.success", is(true)))
-        .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
-        .andExpect(jsonPath("$.data.page.number", is(2)))
-        .andExpect(jsonPath("$.data.page.size", is(5)))
-        .andExpect(jsonPath("$.data.page.empty", is(Boolean.FALSE)));
-  }
+  //   performPost(SEARCH_URL + "?page=2&size=5", filterRequest)
+  //       .andExpect(status().isOk())
+  //       .andExpect(jsonPath("$.success", is(true)))
+  //       .andExpect(jsonPath("$.status", is(HttpStatus.OK.value())))
+  //       .andExpect(jsonPath("$.data.page.number", is(2)))
+  //       .andExpect(jsonPath("$.data.page.size", is(5)))
+  //       .andExpect(jsonPath("$.data.page.empty", is(Boolean.FALSE)));
+  // }
 }

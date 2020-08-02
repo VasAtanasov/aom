@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface AdminService {
+  String getRevision();
+
   UserAdminDetailsServiceModel loadUserDetails(UUID userId, UUID adminId);
 
   UserRowServiceModel changeRole(ChangeRoleServiceModel request, User user);

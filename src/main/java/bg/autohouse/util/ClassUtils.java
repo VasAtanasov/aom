@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -60,7 +59,6 @@ public final class ClassUtils {
     return classes;
   }
 
-  @Nullable
   public static Class<?> resolveGenericType(@Nonnull final Field field) {
     Objects.requireNonNull(field);
     final Type[] actualTypeArgs =
@@ -149,7 +147,7 @@ public final class ClassUtils {
   }
 
   @Nonnull
-  public static <T> Optional<T> cast(@Nullable final Object obj, @Nonnull final Class<T> refClass) {
+  public static <T> Optional<T> cast(final Object obj, @Nonnull final Class<T> refClass) {
     Objects.requireNonNull(refClass, "refClass is null");
 
     return Optional.ofNullable(

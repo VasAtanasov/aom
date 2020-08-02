@@ -12,7 +12,6 @@ import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
 import bg.autohouse.errors.NoRegistrationRequestFoundException;
 import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.errors.NotFoundException;
 import bg.autohouse.errors.OfferNotFoundException;
 import bg.autohouse.errors.ResourceAlreadyExistsException;
 import bg.autohouse.errors.UserDisabledException;
@@ -178,15 +177,6 @@ public class UserServiceImpl implements UserService {
     List<Role> allRoles = Arrays.stream(Role.values()).collect(Collectors.toList());
     int index = allRoles.indexOf(role);
     return new HashSet<>(allRoles.subList(index, allRoles.size()));
-  }
-
-  @Override
-  @Transactional
-  public void updateHasImage(UUID userId, boolean hasImage) {
-    User user = userRepository.findByIdWithRoles(userId).orElseThrow(NotFoundException::new);
-    // TODO set account has image
-    // user.setHasImage(hasImage);
-    userRepository.save(user);
   }
 
   @Override

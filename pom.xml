@@ -15,14 +15,16 @@
 
   <properties>
     <java.version>11</java.version>
+    <maven.failsafe.version>3.0.0-M4</maven.failsafe.version>
+    <maven.surefire.version>3.0.0-M5</maven.surefire.version>
     <modelmapper.version>2.3.5</modelmapper.version>
-    <cloudinary.version>1.0.14</cloudinary.version>
-    <swagger.version>2.9.2</swagger.version>
     <jsonwebtoken.version>0.9.1</jsonwebtoken.version>
     <gson.version>2.8.5</gson.version>
     <dropbox.core.version>3.1.1</dropbox.core.version>
     <guava.version>28.2-jre</guava.version>
-    <findbugs.version>3.0.1</findbugs.version>
+    <hibernate.jpamodelgen.version>6.0.0.Alpha3</hibernate.jpamodelgen.version>
+    <imgscalr.version>4.2</imgscalr.version>
+    <jacoco.version>0.8.5</jacoco.version>
   </properties>
 
   <dependencies>
@@ -63,7 +65,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <scope>runtime</scope>
-      <!-- <optional>true</optional> -->
     </dependency>
     <dependency>
       <groupId>mysql</groupId>
@@ -103,23 +104,16 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
     <dependency>
       <groupId>org.jacoco</groupId>
       <artifactId>jacoco-maven-plugin</artifactId>
-      <version>0.8.5</version>
+      <version>${jacoco.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.modelmapper</groupId>
       <artifactId>modelmapper</artifactId>
       <version>${modelmapper.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.cloudinary</groupId>
-      <artifactId>cloudinary</artifactId>
-      <version>${cloudinary.version}</version>
     </dependency>
 
     <dependency>
@@ -146,74 +140,74 @@
       <version>${guava.version}</version>
     </dependency>
 
-    <!-- Guava interfaces use @Nullable -->
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>${findbugs.version}</version>
-    </dependency>
-
     <!-- Image resizer -->
     <dependency>
       <groupId>org.imgscalr</groupId>
       <artifactId>imgscalr-lib</artifactId>
-      <version>4.2</version>
+      <version>${imgscalr.version}</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-jpamodelgen -->
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-jpamodelgen</artifactId>
-      <version>6.0.0.Alpha3</version>
+      <version>${hibernate.jpamodelgen.version}</version>
     </dependency>
 
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <jvmArguments>${argLine}</jvmArguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.failsafe.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version>
+        <version>${jacoco.version}</version>
         <executions>
           <execution>
+            <id>default-prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
           </execution>
           <execution>
-            <id>report</id>
-            <phase>test</phase>
+            <id>default-report</id>
+            <phase>verify</phase>
             <goals>
               <goal>report</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
-    </plugins>
-  </build>
-
-  <reporting>
-    <plugins>
       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <!-- select non-aggregate reports -->
-              <report>report</report>
-            </reports>
-          </reportSet>
-        </reportSets>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.version}</version>
+        <configuration>
+          <forkedProcessExitTimeoutInSeconds>60</forkedProcessExitTimeoutInSeconds>
+          <forkCount>1</forkCount>
+        </configuration>
       </plugin>
     </plugins>
-  </reporting>
+  </build>
 
 </project>

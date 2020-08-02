@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerServiceImpl implements MakerService {
-  // TODO replace exception messages
   private final MakerRepository makerRepository;
   private final ModelRepository modelRepository;
   private final ModelMapperWrapper modelMapper;
@@ -61,7 +60,7 @@ public class MakerServiceImpl implements MakerService {
   @Transactional
   public MakerServiceModel addModelToMaker(
       @Nonnull Long makerId, @Nonnull ModelServiceModel modelServiceModel) {
-    Assert.notNull(modelServiceModel, "Model ise required");
+    Assert.notNull(modelServiceModel, "Model is required");
     modelServiceModel.setId(null); // modelMapper maps id to model
     Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
     boolean modelExists =

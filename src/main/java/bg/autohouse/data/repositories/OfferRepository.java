@@ -3,6 +3,7 @@ package bg.autohouse.data.repositories;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.projections.offer.CountStatistics;
 import bg.autohouse.data.projections.offer.Statistics;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,9 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface OfferRepository
@@ -159,4 +162,11 @@ public interface OfferRepository
               + "LEFT JOIN adr.location loc "
               + "WHERE o.isActive = 1 AND acc.id = :accountId")
   Page<Offer> findAllByAccountId(UUID accountId, Pageable pageable);
+
+  @Modifying(clearAutomatically = true)
+  @Transactional
+  @Query("UPDATE Offer o SET o.isActive = 0 WHERE o.updatedAt <= :before")
+  int setInactiveOffersBefore(Date before);
+
+  long countByAccountId(UUID accountId);
 }

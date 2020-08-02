@@ -55,11 +55,18 @@ public class AdminServiceImpl implements AdminService {
   @Value("${spring.jpa.properties.hibernate.jdbc.batch_size:50}")
   private int batchSize;
 
+  private static final long JVM_STARTUP_TIMESTAMP = System.currentTimeMillis();
+
   private final UserRepository userRepository;
   private final UserService userService;
   private final LocationRepository locationRepository;
   private final ModelMapperWrapper modelMapper;
   private final AccountRepository accountRepository;
+
+  @Override
+  public String getRevision() {
+    return Long.toHexString(JVM_STARTUP_TIMESTAMP);
+  }
 
   @Override
   @Transactional(readOnly = true)

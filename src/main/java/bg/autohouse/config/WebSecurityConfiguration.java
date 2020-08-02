@@ -60,7 +60,7 @@ public class WebSecurityConfiguration {
         "/api/auth/token/refresh",
         "/api/vehicles/state",
         "/api/vehicles/makers/**",
-        "/api/app-health",
+        "/api/health",
         "/api/locations/list",
         "/api/vehicles/offers/**",
       };

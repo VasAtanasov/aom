@@ -59,9 +59,7 @@ public class OfferController extends BaseController {
       @ModelAttribute OfferCreateRequest createRequest,
       @LoggedUser User creator)
       throws IOException {
-    OfferServiceModel offerServiceModel =
-        offerService.updateOffer(createRequest, offerId, creator.getId());
-    return ResponseEntity.ok(offerServiceModel);
+    return ResponseEntity.ok(offerService.updateOffer(createRequest, offerId, creator.getId()));
   }
 
   @GetMapping(
@@ -111,5 +109,12 @@ public class OfferController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getBodyStylesOffersCount() {
     return ResponseEntity.ok(offerRepository.getCountStatistics());
+  }
+
+  @GetMapping(
+      value = "/count/{accountId}/offers",
+      produces = {APP_V1_MEDIA_TYPE_JSON})
+  public ResponseEntity<?> getUserOffersCount(@PathVariable UUID accountId) {
+    return ResponseEntity.ok(offerRepository.countByAccountId(accountId));
   }
 }

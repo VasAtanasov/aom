@@ -27,6 +27,10 @@ Accept: application/bg.autohouse.api-v1+json
 
 ###
 
+GET http://localhost:8007/api/app-health  HTTP/1.1
+
+###
+
 ###
 
 GET {{host}}/offers/statistics  HTTP/1.1

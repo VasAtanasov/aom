@@ -8,7 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @CheckboxCriteria
 public enum Feature implements Textable {
-  // TODO to move to entity with search feature when typing feature
   ABS("ABS"),
   DRIVER_SIDE_AIRBAG("Driver-side airbag"),
   PASSENGER_SIDE_AIRBAG("Passenger-side airbag"),

@@ -14,7 +14,6 @@ class DropboxConfiguration {
 
   @Bean
   public DbxClientV2 dropboxClient() {
-    // TODO externalize folder
     DbxRequestConfig config = DbxRequestConfig.newBuilder("dropbox/autohouse").build();
     return new DbxClientV2(config, accessToken);
   }

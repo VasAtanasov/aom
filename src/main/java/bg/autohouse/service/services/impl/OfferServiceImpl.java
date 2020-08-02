@@ -151,12 +151,15 @@ public class OfferServiceImpl implements OfferService {
     Assert.notNull(request, "Offer model is required");
     Account account =
         accountRepository.findByUserId(creatorId).orElseThrow(AccountNotFoundException::new);
+    long currentOffersCount = offerRepository.countByAccountId(account.getId());
+    if (currentOffersCount >= account.getMaxOffersCount()) {
+      throw new IllegalArgumentException(RestMessage.MAX_OFFER_COUNT_REACHED.name());
+    }
     Location location =
         locationRepository
             .findByPostalCode(request.getAddressLocationPostalCode())
             .orElseThrow(LocationNotFoundException::new);
     Vehicle vehicle = modelMapper.map(request.getVehicle(), Vehicle.class);
-
     request.setVehicle(null);
     Model model =
         modelRepository

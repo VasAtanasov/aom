@@ -4,28 +4,19 @@ import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 
 import bg.autohouse.config.WebConfiguration;
 import bg.autohouse.data.models.User;
-import bg.autohouse.data.models.enums.UserLogType;
-import bg.autohouse.data.models.media.MediaFile;
-import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.offer.OfferServiceModel;
-import bg.autohouse.service.services.AsyncUserLogger;
-import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.OfferService;
 import bg.autohouse.service.services.PasswordService;
 import bg.autohouse.service.services.UserService;
-import bg.autohouse.util.ImageResizer;
-import bg.autohouse.util.ImageUtil;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.UserChangePasswordRequest;
 import bg.autohouse.web.models.response.offer.OfferResponseModel;
 import bg.autohouse.web.util.RestUtil;
-import java.io.IOException;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +30,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-@Slf4j
 @RestController
 @RequestMapping(WebConfiguration.URL_USER_BASE)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -51,33 +40,7 @@ public class UserController extends BaseController {
   private final PasswordService passwordService;
   private final UserService userService;
   private final OfferService offerService;
-  private final MediaFileService mediaFileService;
-  private final AsyncUserLogger userLogger;
-  private final ImageResizer imageResizer;
   private final ModelMapperWrapper modelMapper;
-
-  @PostMapping(value = "/image/change")
-  public ResponseEntity<?> uploadProfileImage(
-      @RequestBody MultipartFile photo, @LoggedUser User user) throws IOException {
-    String contentType = photo.getContentType();
-    boolean acceptable = ImageUtil.isAcceptedMimeType(contentType);
-    if (!acceptable) return RestUtil.errorResponse(RestMessage.INVALID_MEDIA_TYPE);
-    log.info("storing a media file, with mediaFunction = {}", MediaFunction.USER_PROFILE_IMAGE);
-    String imageKey = generateFileKey(USER_PROFILE_IMAGE_FOLDER, user.getId().toString());
-    byte[] biteArray = imageResizer.toJpgDownscaleToSize(photo.getInputStream());
-    MediaFile storedFile =
-        mediaFileService.storeFile(
-            biteArray,
-            imageKey,
-            MediaFunction.USER_PROFILE_IMAGE,
-            photo.getContentType(),
-            photo.getOriginalFilename(),
-            user.getId());
-    userService.updateHasImage(user.getId(), true);
-    userLogger.recordUserLog(user.getId(), UserLogType.USER_CHANGE_PROFILE_PHOTO, imageKey);
-    return RestUtil.okResponse(
-        RestMessage.IMAGE_UPLOAD_SUCCESSFUL, toMap("mediaUid", storedFile.getId()));
-  }
 
   @PostMapping(
       value = "/password/update",

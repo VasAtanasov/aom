@@ -30,7 +30,7 @@ public class SimpleLoggingInterceptor extends HandlerInterceptorAdapter {
       final HttpServletResponse response,
       final Object handler,
       final ModelAndView modelAndView) {
-    response.addHeader("X-Grassroot-Logged", "true");
+    response.addHeader("X-Autohouse-Logged", "true");
     final long startTime = (Long) request.getAttribute("startTime");
     final long endTime = System.currentTimeMillis();
     final long executeTime = endTime - startTime;

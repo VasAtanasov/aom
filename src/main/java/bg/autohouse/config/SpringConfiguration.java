@@ -6,11 +6,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
+@EnableScheduling
 @EnableAsync
 @EnableConfigurationProperties
 public class SpringConfiguration {
+
+  public static final long JVM_STARTUP_TIMESTAMP = System.currentTimeMillis();
 
   @Value("${app.time-zone}")
   private String timeZone = "UTC";

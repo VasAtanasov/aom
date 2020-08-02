@@ -12,7 +12,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -56,7 +55,7 @@ public final class ReflectionUtil {
   }
 
   @Nonnull
-  public static Set<Field> getAllFields(@Nullable final Class<?> type) {
+  public static Set<Field> getAllFields(final Class<?> type) {
     return getAllSuperTypes(type).stream()
         .flatMap(clazz -> getFields(clazz).stream())
         .collect(toSet());
@@ -69,26 +68,26 @@ public final class ReflectionUtil {
   }
 
   @Nonnull
-  public static Set<Method> getAllMethods(@Nullable final Class<?> type) {
+  public static Set<Method> getAllMethods(final Class<?> type) {
     return getAllMethods(type, DEFAULT_INCLUDE_JAVA_LANG_OBJECT);
   }
 
   @Nonnull
   public static Set<Method> getAllMethods(
-      @Nullable final Class<?> type, final boolean includeJavaLangObject) {
+      final Class<?> type, final boolean includeJavaLangObject) {
     return getAllSuperTypes(type, includeJavaLangObject).stream()
         .flatMap(clazz -> getMethods(clazz).stream())
         .collect(toSet());
   }
 
   @Nonnull
-  public static Set<Class<?>> getAllSuperTypes(@Nullable final Class<?> type) {
+  public static Set<Class<?>> getAllSuperTypes(final Class<?> type) {
     return getAllSuperTypes(type, DEFAULT_INCLUDE_JAVA_LANG_OBJECT);
   }
 
   @Nonnull
   public static Set<Class<?>> getAllSuperTypes(
-      @Nullable final Class<?> type, final boolean includeJavaLangObject) {
+      final Class<?> type, final boolean includeJavaLangObject) {
     if (type == null || !includeJavaLangObject && type.equals(Object.class)) {
       return Collections.emptySet();
     }

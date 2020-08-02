@@ -16,7 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// TODO refactor
 @Getter
 @Setter
 @NoArgsConstructor
