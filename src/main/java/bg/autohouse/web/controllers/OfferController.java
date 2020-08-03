@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -72,9 +73,21 @@ public class OfferController extends BaseController {
   @GetMapping(
       value = "/details/{offerId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> viewOffer(@PathVariable UUID offerId, @LoggedUser User user) {
-    OfferDetailsResponseModel offer =
-        modelMapper.map(offerService.getOfferById(offerId), OfferDetailsResponseModel.class);
+  public ResponseEntity<?> viewOffer(
+      @PathVariable UUID offerId,
+      @RequestParam(value = "pr", required = false, defaultValue = "false") boolean pr,
+      @LoggedUser User user) {
+    OfferDetailsResponseModel offer;
+    if (pr) {
+      offer =
+          modelMapper.map(
+              offerService.loadOfferByIdPrivateView(offerId, user.getId()),
+              OfferDetailsResponseModel.class);
+    } else {
+      offer =
+          modelMapper.map(
+              offerService.loadOfferByIdPublicView(offerId), OfferDetailsResponseModel.class);
+    }
     List<String> imagesKeys = offerService.fetchOfferImages(offerId);
     return RestUtil.okResponse(
         OfferDetailsResponseWrapper.builder().offer(offer).images(imagesKeys).build());
@@ -102,13 +115,6 @@ public class OfferController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getOfferStatistics() {
     return ResponseEntity.ok(offerRepository.getStatistics());
-  }
-
-  @GetMapping(
-      value = "/count/body-styles",
-      produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> getBodyStylesOffersCount() {
-    return ResponseEntity.ok(offerRepository.getCountStatistics());
   }
 
   @GetMapping(

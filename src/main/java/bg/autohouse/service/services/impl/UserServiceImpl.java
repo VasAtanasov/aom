@@ -183,7 +183,8 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public List<UUID> addToFavorites(UUID userId, UUID offerId) {
     User user = userRepository.findUserById(userId).orElseThrow(NoSuchUserException::new);
-    Offer offer = offerRepository.findOfferById(offerId).orElseThrow(OfferNotFoundException::new);
+    Offer offer =
+        offerRepository.findOfferByIdNoFeatures(offerId).orElseThrow(OfferNotFoundException::new);
     boolean isRemoved = user.getFavorites().removeIf(o -> o.getId().equals(offerId));
     if (isRemoved) {
       offer.decrementSavedCount();

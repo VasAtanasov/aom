@@ -44,5 +44,5 @@ public interface MediaFileService {
 
   void remove(final UUID uuid);
 
-  void removeAll(final List<MediaFile> mediaFiles);
+  void removeAllForReference(final UUID referenceId);
 }

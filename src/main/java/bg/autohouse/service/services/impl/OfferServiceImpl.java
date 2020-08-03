@@ -17,6 +17,7 @@ import bg.autohouse.data.repositories.FilterRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.ModelRepository;
 import bg.autohouse.data.repositories.OfferRepository;
+import bg.autohouse.data.repositories.VehicleRepository;
 import bg.autohouse.errors.AccountNotFoundException;
 import bg.autohouse.errors.InvalidOfferException;
 import bg.autohouse.errors.LocationNotFoundException;
@@ -35,6 +36,7 @@ import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -56,6 +58,7 @@ public class OfferServiceImpl implements OfferService {
 
   private final OfferRepository offerRepository;
   private final FilterRepository filterRepository;
+  private final VehicleRepository vehicleRepository;
   private final ModelRepository modelRepository;
   private final ModelMapperWrapper modelMapper;
   private final LocationRepository locationRepository;
@@ -69,8 +72,7 @@ public class OfferServiceImpl implements OfferService {
     Sort sort = Sort.by("createdAt").descending();
     Pageable pageable = PageRequest.of(0, 20, sort);
     List<OfferServiceModel> topOffers =
-        offerRepository
-            .findLatestOffers(pageable)
+        offerRepository.findPageWithActiveOffers(pageable).stream()
             .map(offer -> modelMapper.map(offer, OfferServiceModel.class))
             .collect(Collectors.toUnmodifiableList());
     return topOffers;
@@ -107,10 +109,20 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional
-  public OfferDetailsServiceModel getOfferById(UUID id) {
+  public OfferDetailsServiceModel loadOfferByIdPublicView(UUID id) {
     Offer offer = offerRepository.findOfferById(id).orElseThrow(OfferNotFoundException::new);
     offer.incrementHitCount();
     offerRepository.save(offer);
+    return modelMapper.map(offer, OfferDetailsServiceModel.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public OfferDetailsServiceModel loadOfferByIdPrivateView(UUID id, UUID creatorId) {
+    Offer offer =
+        offerRepository
+            .findOneByIdAndCreatorId(id, creatorId)
+            .orElseThrow(OfferNotFoundException::new);
     return modelMapper.map(offer, OfferDetailsServiceModel.class);
   }
 
@@ -346,6 +358,7 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Override
+  @Transactional
   public void deleteOffer(UUID userId, UUID offerId) {
     Assert.notNull(userId, "User id is required");
     Assert.notNull(offerId, "Offer id is required");
@@ -353,7 +366,11 @@ public class OfferServiceImpl implements OfferService {
         offerRepository
             .findOneByIdAndCreatorId(offerId, userId)
             .orElseThrow(OfferNotFoundException::new);
-    List<MediaFile> mediaFiles = mediaFileService.loadForReference(offerId);
-    int a = 5;
+    mediaFileService.removeAllForReference(offerId);
+    if (Assert.has(offer.getVehicle())) {
+      offer.getVehicle().setFeatures(new ArrayList<>());
+      vehicleRepository.deleteAllById(offer.getVehicle().getId());
+    }
+    offerRepository.deleteAllById(offer.getId());
   }
 }

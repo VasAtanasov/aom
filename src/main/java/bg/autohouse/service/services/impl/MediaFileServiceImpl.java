@@ -219,9 +219,10 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   @Override
   @Transactional
-  public void removeAll(List<MediaFile> mediaFiles) {
+  public void removeAllForReference(final UUID referenceId) {
+    List<MediaFile> mediaFiles = medialFileRepository.findAllByReferenceId(referenceId);
     mediaFiles.forEach(
         mediaFile -> getStorage(mediaFile.getStorageType()).removeFromStorage(mediaFile));
-    medialFileRepository.deleteAll(mediaFiles);
+    medialFileRepository.deleteAllByReferenceId(referenceId);
   }
 }

@@ -1,13 +1,11 @@
 package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.offer.Offer;
-import bg.autohouse.data.projections.offer.CountStatistics;
 import bg.autohouse.data.projections.offer.Statistics;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,45 +22,26 @@ public interface OfferRepository
 
   @Query(
       value =
-          "SELECT o "
+          "SELECT DISTINCT o "
               + "FROM Offer o "
-              + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH o.location lo "
-              + "WHERE o.isActive = 1")
-  Stream<Offer> findLatestOffers(Pageable pageable);
-
-  @Query(
-      value =
-          "SELECT o "
-              + "FROM Offer o "
-              + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH o.location lo "
-              + "WHERE o.isActive = 1")
-  List<Offer> findAll();
-
-  @Query(
-      value =
-          "SELECT o "
-              + "FROM Offer o "
-              + "JOIN FETCH o.vehicle v "
-              + "JOIN FETCH o.location lo "
+              + "LEFT JOIN FETCH o.vehicle v "
+              + "LEFT JOIN FETCH o.location lo "
+              + "LEFT JOIN FETCH o.account acc "
+              + "LEFT JOIN FETCH acc.user usr "
+              + "LEFT JOIN FETCH acc.address adr "
+              + "LEFT JOIN FETCH adr.location loc "
               + "WHERE o.isActive = 1",
       countQuery =
-          "SELECT count(o) "
+          "SELECT count(DISTINCT o) "
               + "FROM Offer o "
               + "LEFT JOIN o.vehicle v "
               + "LEFT JOIN o.location lo "
+              + "LEFT JOIN o.account acc "
+              + "LEFT JOIN acc.user usr "
+              + "LEFT JOIN acc.address adr "
+              + "LEFT JOIN adr.location loc "
               + "WHERE o.isActive = 1")
-  Page<Offer> findLatestOffersPage(Pageable pageable);
-
-  @Query(
-      value =
-          "SELECT DISTINCT v.maker_name "
-              + "FROM auto_offers as o "
-              + "LEFT JOIN auto_vehicles as v on o.id = v.offer_id "
-              + "ORDER BY t.maker_name asc",
-      nativeQuery = true)
-  Stream<Object[]> findAllMakersNames();;
+  Page<Offer> findPageWithActiveOffers(Pageable pageable);
 
   @Query(
       value =
@@ -82,12 +61,17 @@ public interface OfferRepository
 
   @Query(
       value =
-          "SELECT v.bodyStyle as bodyStyle, COUNT(o) as offersCount "
-              + "FROM Offer as o "
-              + "LEFT JOIN o.vehicle v "
-              + "GROUP BY v.bodyStyle "
-              + "ORDER BY v.bodyStyle")
-  List<CountStatistics> getCountStatistics();
+          "SELECT DISTINCT o "
+              + "FROM Offer o "
+              + "LEFT JOIN FETCH o.vehicle v "
+              + "LEFT JOIN FETCH v.features f "
+              + "LEFT JOIN FETCH o.location lo "
+              + "LEFT JOIN FETCH o.account acc "
+              + "LEFT JOIN FETCH acc.user usr "
+              + "LEFT JOIN FETCH acc.address adr "
+              + "LEFT JOIN FETCH adr.location loc "
+              + "WHERE o.isActive = 1 AND o.id = :id")
+  Optional<Offer> findOfferById(UUID id);
 
   @Query(
       value =
@@ -100,7 +84,7 @@ public interface OfferRepository
               + "LEFT JOIN FETCH acc.address adr "
               + "LEFT JOIN FETCH adr.location loc "
               + "WHERE o.isActive = 1 AND o.id = :id")
-  Optional<Offer> findOfferById(UUID id);
+  Optional<Offer> findOfferByIdNoFeatures(UUID id);
 
   @Query(
       value =
@@ -113,7 +97,7 @@ public interface OfferRepository
               + "LEFT JOIN FETCH acc.user usr "
               + "LEFT JOIN FETCH acc.address adr "
               + "LEFT JOIN FETCH adr.location loc "
-              + "WHERE o.isActive = 1 AND o.id = :id AND usr.id = :creatorId")
+              + "WHERE o.id = :id AND usr.id = :creatorId")
   Optional<Offer> findOneByIdAndCreatorId(UUID id, UUID creatorId);
 
   @Query(
@@ -169,4 +153,9 @@ public interface OfferRepository
   int setInactiveOffersBefore(Date before);
 
   long countByAccountId(UUID accountId);
+
+  @Transactional
+  @Modifying(clearAutomatically = true, flushAutomatically = true)
+  @Query("DELETE FROM Offer o WHERE o.id = :id")
+  void deleteAllById(UUID id);
 }

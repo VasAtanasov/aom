@@ -13,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 public interface OfferService {
   List<OfferServiceModel> getLatestOffers();
 
-  OfferDetailsServiceModel getOfferById(UUID id);
+  OfferDetailsServiceModel loadOfferByIdPublicView(UUID id);
+
+  OfferDetailsServiceModel loadOfferByIdPrivateView(UUID id, UUID creatorId);
 
   OfferEditServiceModel loadOfferForEdit(UUID creatorId, UUID offerId);
 
