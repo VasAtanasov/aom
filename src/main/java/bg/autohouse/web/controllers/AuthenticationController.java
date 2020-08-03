@@ -84,7 +84,6 @@ public class AuthenticationController extends BaseController {
   public ResponseEntity<?> logout(HttpServletRequest request, @LoggedUser User user) {
     AuthorizationHeader authHeader = new AuthorizationHeader(request);
     String token = authHeader.hasBearerToken() ? authHeader.getBearerToken() : null;
-    if (token == null) return RestUtil.errorResponse(RestMessage.INVALID_TOKEN);
     jwtService.blackListJwt(token);
     eventPublisher.publishEvent(UserLogoutEvent.of(user.getId()));
     return ResponseEntity.ok().build();
@@ -111,7 +110,6 @@ public class AuthenticationController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request) {
     UserRegisterServiceModel model = modelMapper.map(request, UserRegisterServiceModel.class);
-    // TODO check if already logged in
     if (ifExists(model.getUsername())) {
       log.info(
           "Creating a verifier for user with email ={}, user already exists.", model.getUsername());
@@ -178,16 +176,17 @@ public class AuthenticationController extends BaseController {
       @RequestParam("username") String username,
       @RequestParam("password") String newPassword,
       @RequestParam("code") String code) {
+    if (!ifExists(username)) {
+      log.info("Invalid user of passed username: {}", username);
+      return RestUtil.errResponse(HttpStatus.BAD_REQUEST, RestMessage.INVALID_USERNAME);
+    }
     boolean isVerified = passwordService.isShortLivedOtpValid(username, code);
     if (!isVerified) {
       log.info("Token verification for password reset failed");
       return RestUtil.errResponse(HttpStatus.UNAUTHORIZED, RestMessage.OTP_INVALID);
     }
     log.info("User code verified, now resetting user password");
-    boolean isReset = passwordService.resetPassword(username, code, newPassword);
-    if (!isReset) {
-      return RestUtil.errResponse(HttpStatus.UNAUTHORIZED, RestMessage.BAD_CREDENTIALS);
-    }
+    passwordService.resetPassword(username, code, newPassword);
     return RestUtil.okResponse(RestMessage.PASSWORD_RESET_SUCCESSFUL);
   }
 

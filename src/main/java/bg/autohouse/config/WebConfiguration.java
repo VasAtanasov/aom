@@ -26,8 +26,6 @@ public class WebConfiguration implements WebMvcConfigurer {
   public static final String URL_ADMIN_BASE = "/admin";
   public static final String URL_ADMIN_USERS = URL_ADMIN_BASE + "/users";
 
-  public static final String URL_VALIDATION = "/validation";
-
   public static final String URL_USER_BASE = "/users";
   public static final String URL_ACCOUNT_BASE = "/accounts";
   public static final String URL_USER_AUTH = "/auth";

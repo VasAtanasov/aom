@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 @Slf4j
 public class VehicleCreateRequestTest extends HibernateValidatorTest {
+
   private static final String ERROR_MESSAGE = "Positive value must be provided: %s";
   private static final String INVALID_VALUE = "Invalid value";
 

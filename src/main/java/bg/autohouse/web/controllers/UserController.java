@@ -48,9 +48,6 @@ public class UserController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> changeUserPassword(
       @Valid @RequestBody UserChangePasswordRequest request, @LoggedUser User user) {
-    if (!request.getNewPassword().equals(request.getConfirmPassword())) {
-      return RestUtil.errorResponse(RestMessage.INVALID_PASSWORD);
-    }
     boolean isChanged =
         passwordService.changeUserPassword(
             user.getId(), request.getOldPassword(), request.getNewPassword());
@@ -87,6 +84,4 @@ public class UserController extends BaseController {
   public ResponseEntity<?> toggleOfferActive(@PathVariable UUID offerId, @LoggedUser User creator) {
     return ResponseEntity.ok(offerService.toggleActive(creator.getId(), offerId));
   }
-
-  // TODO delete user profile
 }

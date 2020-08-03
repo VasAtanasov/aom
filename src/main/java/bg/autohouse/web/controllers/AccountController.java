@@ -8,7 +8,6 @@ import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.security.authentication.LoggedUser;
 import bg.autohouse.service.models.account.AccountServiceModel;
 import bg.autohouse.service.services.AccountService;
-import bg.autohouse.util.Assert;
 import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
@@ -67,22 +66,18 @@ public class AccountController extends BaseController {
 
   private ResponseEntity<?> createAccount(
       AccountServiceModel model, UUID ownerId, AccountType requiredAccountType) {
-    if (Assert.isEmpty(model) || Assert.isEmpty(ownerId)) {
-      log.error("Missing account data");
-      return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);
-    }
     AccountType accountType =
         EnumUtils.fromString(model.getAccountType(), AccountType.class)
             .orElseThrow(() -> new IllegalStateException(RestMessage.INVALID_ACCOUNT_TYPE.name()));
     if (AccountType.DEALER.equals(accountType) && requiredAccountType.equals(AccountType.DEALER)) {
       AccountServiceModel account = accountService.createOrUpdateDealerAccount(model, ownerId);
-      return RestUtil.okResponse(RestMessage.DEALER_ACCOUNT_REQUEST_CREATED, account);
+      return RestUtil.okResponse(RestMessage.DEALER_ACCOUNT_OPERATION_SUCCESSFUL, account);
     }
     if (AccountType.PRIVATE.equals(accountType)
         && requiredAccountType.equals(AccountType.PRIVATE)) {
       AccountServiceModel account =
           accountService.createOrUpdatePrivateSellerAccount(model, ownerId);
-      return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_CREATED, account);
+      return RestUtil.okResponse(RestMessage.PRIVATE_SELLER_ACCOUNT_OPERATION_SUCCESSFUL, account);
     }
     return RestUtil.errorResponse(RestMessage.INVALID_ACCOUNT_DATA);
   }

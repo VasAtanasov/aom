@@ -121,19 +121,4 @@ public abstract class MvcPerformer {
     if (authHeader != null) headers.add(HttpHeaders.AUTHORIZATION, authHeader);
     return headers;
   }
-
-  // public void should_get_the_preset_shop_list() throws Exception {
-  //     MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get("/api/shops")
-  //             .contentType(MediaType.APPLICATION_JSON))
-  //             .andExpect(status().isOk())
-  //             .andReturn();
-  //     List<ShopResponse> shops = this.objectMapper.readValue(
-  //             mvcResult.getResponse().getContentAsByteArray(),
-  //             new TypeReference<List<ShopResponse>>(){});
-  //     assertEquals(1, shops.size());
-
-  //     ShopResponse shop = shops.get(0);
-  //     assertEquals(shopName, shop.getName());
-
-  // }
 }

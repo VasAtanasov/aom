@@ -53,11 +53,6 @@ public class AdminServiceImplTest {
     adminService.bulkRegisterUsers(user.getId(), emails);
   }
 
-  // @Test
-  // void when_loadAllUsers_shouldGetAll() {
-  //   List<UserIdUsername> users = adminService.loadAllUsers();
-  //   assertThat(users).isNotEmpty();
-  // }
 
   static List<String> readSmallTextFile(Path path) throws IOException {
     return Files.lines(path)

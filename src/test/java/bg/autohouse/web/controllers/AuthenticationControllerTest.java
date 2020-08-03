@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.service.models.UserRegisterServiceModel;
+import bg.autohouse.service.models.user.AuthorizedUserServiceModel;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.utils.TimingExtension;
 import bg.autohouse.web.enums.ActionStatus;
@@ -155,9 +156,16 @@ public class AuthenticationControllerTest extends MvcPerformer {
   }
 
   @Test
+  void when_requestPasswordReset_InvalidUsername_shouldReturn400() throws Exception {
+    PasswordResetRequest resetRequest = PasswordResetRequest.of("Non existing username");
+    performPost(API_BASE + "/password-reset-request", resetRequest)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_USERNAME.name())));
+  }
+
+  @Test
   void when_resetPassword_validToken_shouldReturn200() throws Exception {
     String code = userService.regenerateUserVerifier(DatabaseSeeder.USERNAME);
-
     performGet(
             API_BASE
                 + "/password-reset-complete?username="
@@ -170,9 +178,35 @@ public class AuthenticationControllerTest extends MvcPerformer {
   }
 
   @Test
+  void when_resetPassword_InvalidUsername_shouldReturn400() throws Exception {
+    String code = userService.regenerateUserVerifier(DatabaseSeeder.USERNAME);
+    performGet(
+            API_BASE
+                + "/password-reset-complete?username="
+                + "Non existing username"
+                + "&code="
+                + code
+                + "&password=12345")
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_USERNAME.name())));
+  }
+
+  @Test
+  void when_resetPassword_InvalidCode_shouldReturn401() throws Exception {
+    performGet(
+            API_BASE
+                + "/password-reset-complete?username="
+                + DatabaseSeeder.USERNAME
+                + "&code="
+                + "invalid code"
+                + "&password=12345")
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.message", is(RestMessage.OTP_INVALID.name())));
+  }
+
+  @Test
   void when_validateOtp_validToken_shouldReturn200() throws Exception {
     String code = userService.regenerateUserVerifier(DatabaseSeeder.USERNAME);
-
     performGet(
             API_BASE
                 + "/reset-password-validate?username="
@@ -193,13 +227,6 @@ public class AuthenticationControllerTest extends MvcPerformer {
                 + "invalid_code")
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.OTP_INVALID.name())));
-  }
-
-  @Test
-  void when_validateToken_invalidToken_shouldReturn400() throws Exception {
-    performGet(API_BASE + "/token/validate?token=" + "invalid_code")
-        .andExpect(status().isExpectationFailed())
-        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
   }
 
   @Test
@@ -224,5 +251,35 @@ public class AuthenticationControllerTest extends MvcPerformer {
     HttpHeaders headers = getAuthHeadersFor(loginRequest);
     performGet(API_BASE + "/logout", headers).andExpect(status().isOk());
     performGet(API_BASE + "/logout", headers).andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void when_validateToken_invalidToken_shouldReturn400() throws Exception {
+    performGet(API_BASE + "/token/validate?token=" + "invalid_code")
+        .andExpect(status().isExpectationFailed())
+        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
+  }
+
+  @Test
+  void whenValidateToken_validToken_shouldReturn200() throws Exception {
+    AuthorizedUserServiceModel login = userService.tryLogin("vas@mail.com", "123");
+    performGet(API_BASE + "/token/validate?token=" + login.getToken())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(RestMessage.TOKEN_STILL_VALID.name())));
+  }
+
+  @Test
+  void whenRefreshToken_validToken_shouldReturn200() throws Exception {
+    AuthorizedUserServiceModel login = userService.tryLogin("vas@mail.com", "123");
+    performGet(API_BASE + "/token/refresh?oldToken=" + login.getToken())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(RestMessage.USER_LOGIN_SUCCESSFUL.name())));
+  }
+
+  @Test
+  void whenRefreshToken_InvalidToken_shouldReturn400() throws Exception {
+    performGet(API_BASE + "/token/refresh?oldToken=" + "invalid token")
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
   }
 }

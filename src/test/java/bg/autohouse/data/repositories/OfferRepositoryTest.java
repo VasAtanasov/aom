@@ -17,9 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -28,23 +25,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @DataJpaTest
 @ActiveProfiles("test")
 public class OfferRepositoryTest {
-  private static final int DEFAULT_SIZE = 20;
-
-  private static final Sort DEFAULT_SORT = Sort.by("createdAt").descending();
-  private static final Pageable DEFAULT_PAGEABLE = PageRequest.of(0, DEFAULT_SIZE, DEFAULT_SORT);
 
   @Autowired private OfferRepository offerRepository;
-
-  // @Test
-  // @Sql("/data.sql")
-  // void whenFindLatestOffers_shouldReturnCollection() {
-
-  //   Stream<Offer> offers = offerRepository.findLatestOffers(DEFAULT_PAGEABLE);
-  //   Page<Offer> offersPage = offerRepository.findLatestOffersPage(DEFAULT_PAGEABLE);
-
-  //   assertThat(offers).size().isEqualTo(DEFAULT_SIZE);
-  //   assertThat(offersPage.getTotalElements()).isEqualTo(100);
-  // }
 
   @Test
   void whenOfferFilter_byFuelType_shouldReturnCollection() {
@@ -69,20 +51,6 @@ public class OfferRepositoryTest {
     assertThat(offers).allMatch(offer -> offer.getVehicle().getBodyStyle().equals(BodyStyle.SUV));
   }
 
-  // @Test
-  // void whenOfferFilter_byMaker_shouldReturnCollection() {
-  //   Maker maker = Maker.builder().id(23L).name("Cupra").build();
-  //   Filter filter = Filter.builder().makerName(maker.getName()).makerId(maker.getId()).build();
-
-  //   Specification<Offer> offerSpecification =
-  // where(OfferSpecifications.getOffersByFilter(filter));
-
-  //   List<Offer> offers = offerRepository.findAll(offerSpecification);
-
-  //   assertThat(offers).allMatch(offer ->
-  // offer.getVehicle().getMakerName().equals(maker.getName()));
-  // }
-
   @Test
   void whenOfferFilter_byState_shouldReturnCollection() {
     List<State> state = Arrays.asList(State.NEW, State.USED);
@@ -94,21 +62,6 @@ public class OfferRepositoryTest {
 
     assertThat(offers).allMatch(offer -> state.contains(offer.getVehicle().getState()));
   }
-
-  // @Test
-  // void whenFilterOffer_pageable_shouldReturnCollection() {
-  //   List<State> state = Arrays.asList(State.NEW, State.USED);
-  //   Filter filter = Filter.builder().state(state).build();
-  //   Specification<Offer> offerSpecification =
-  // where(OfferSpecifications.getOffersByFilter(filter));
-
-  //   Sort sort = Sort.by("createdAt", "hitCount").descending();
-  //   Pageable pageable = PageRequest.of(0, 20, sort);
-
-  //   Page<Offer> offersPage = offerRepository.findAll(offerSpecification, pageable);
-
-  //   assertThat(offersPage.getContent()).isNotEmpty();
-  // }
 
   @Test
   void whenOfferFilter_bySeller_shouldReturnCollection() {

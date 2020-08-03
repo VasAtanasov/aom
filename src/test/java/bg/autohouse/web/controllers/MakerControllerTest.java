@@ -146,11 +146,17 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateMaker_withValidBody_shouldReturn201() throws Exception {
     final String MAKER_NAME = "New Maker";
-
     MakerCreateRequestModel createRequestModel = MakerCreateRequestModel.of(MAKER_NAME);
     performPost(API_BASE + "/makers", createRequestModel, headers)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.message", is(RestMessage.MAKER_CREATED.name())))
         .andExpect(jsonPath("$.data.maker.name", is(MAKER_NAME)));
+  }
+
+  @Test
+  public void whenGetTrimsForMakerModel_withValidMakerModel_shouldReturn200() throws Exception {
+    performGet(API_BASE + "/makers/Audi/A4")
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(RestMessage.MODEL_GET_SUCCESSFUL.name())));
   }
 }
