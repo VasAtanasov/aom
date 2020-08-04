@@ -4,11 +4,13 @@ import bg.autohouse.validation.ValidationMessages;
 import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class ChangeRoleRequest {
 
   @NotNull(message = ValidationMessages.BLANK_USER_ID)

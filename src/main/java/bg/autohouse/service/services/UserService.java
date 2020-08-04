@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
   UserDetails loadUserById(UUID id);
 
+  User fetchUserByUsername(String username);
+
   String generateUserRegistrationVerifier(UserRegisterServiceModel model);
 
   UserServiceModel completeRegistration(String username);

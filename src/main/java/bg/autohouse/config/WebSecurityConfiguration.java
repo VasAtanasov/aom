@@ -61,7 +61,7 @@ public class WebSecurityConfiguration {
         "/api/vehicles/state",
         "/api/vehicles/makers/**",
         "/api/health",
-        "/api/locations/list",
+        "/api/province/list/**",
         "/api/vehicles/offers/**",
       };
 

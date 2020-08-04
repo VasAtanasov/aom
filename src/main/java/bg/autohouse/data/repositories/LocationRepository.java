@@ -12,4 +12,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
   List<LocationId> getAllLocationIds();
 
   Optional<Location> findByPostalCode(Integer postalCode);
+
+  @Query("SELECT lo from Location lo WHERE lo.postalCode > 0")
+  List<Location> findAllLocations();
 }

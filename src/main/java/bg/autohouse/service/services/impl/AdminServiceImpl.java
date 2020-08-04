@@ -24,7 +24,6 @@ import bg.autohouse.service.models.user.UserRowServiceModel;
 import bg.autohouse.service.services.AdminService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.Assert;
-import bg.autohouse.util.Collect;
 import bg.autohouse.util.EnumUtils;
 import bg.autohouse.util.F;
 import bg.autohouse.util.ModelMapperWrapper;
@@ -96,6 +95,13 @@ public class AdminServiceImpl implements AdminService {
   @Override
   @Transactional
   public UserRowServiceModel changeRole(ChangeRoleServiceModel request, User user) {
+    if (!Assert.has(request.getNewRole()) || !Assert.has(request.getCurrentRole())) {
+      throw new RoleChangeException();
+    }
+    if (!EnumUtils.has(request.getNewRole(), Role.class)
+        || !EnumUtils.has(request.getCurrentRole(), Role.class)) {
+      throw new RoleChangeException();
+    }
     if (request.getNewRole().equals(Role.ROOT) || request.getCurrentRole().equals(Role.ROOT)) {
       throw new RoleChangeException();
     }
@@ -175,8 +181,7 @@ public class AdminServiceImpl implements AdminService {
     List<String> usernames = F.mapNonNullsToList(models, m -> m.getUsername());
     Map<UUID, User> usersById =
         userRepository.getAllMap(where(hasNoAccount()).and(idIn(ids)).and(usernameIn(usernames)));
-    Map<Long, Location> locationsById =
-        locationRepository.findAll().stream().collect(Collect.indexingBy(l -> l.getId()));
+    List<Location> locations = locationRepository.findAllLocations();
     List<Account> accounts = new ArrayList<>();
     for (int i = 0; i < models.size(); i++) {
       AccountCreateServiceModel model = models.get(i);
@@ -196,7 +201,11 @@ public class AdminServiceImpl implements AdminService {
       if (AccountType.DEALER.equals(accountType)) {
         account = Account.createDealerAccount(accountModel, owner);
         String street = accountModel.getAddress().getStreet();
-        Location location = locationsById.get(accountModel.getAddress().getLocationId());
+        Location location =
+            locations.stream()
+                .filter(l -> l.getPostalCode() == accountModel.getAddress().getLocationPostalCode())
+                .findFirst()
+                .orElse(locations.get(0));
         Address.createAddress(location, street, account);
       } else {
         account = Account.createPrivateAccount(accountModel, owner);

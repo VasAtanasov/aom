@@ -76,6 +76,13 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(readOnly = true)
+  public User fetchUserByUsername(String username) {
+    Assert.notNull(username, "username is required");
+    return userRepository.findByUsernameIgnoreCase(username).orElseThrow(NoSuchUserException::new);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public boolean userExist(String username) {
     return userRepository.existsByUsernameIgnoreCase(username);
   }

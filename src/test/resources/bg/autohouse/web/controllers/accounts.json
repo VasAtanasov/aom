@@ -1,0 +1,57 @@
+[
+    {
+        "firstName": "Aliza",
+        "lastName": "Ebert",
+        "displayName": "Barton and Sons Inc",
+        "description": "Tempore molestiae et qui quia nihil incidunt.",
+        "contactDetailsPhoneNumber": "1-214-397-6249 x25766",
+        "contactDetailsWebLink": "http://emmett.com",
+        "addressLocationPostalCode": 1000,
+        "addressStreet": "90265 Larkin Ford",
+        "accountType": "DEALER"
+    },
+    {
+        "firstName": "Torrey",
+        "lastName": "Mills",
+        "displayName": "Lubowitz - Gutmann LLC",
+        "description": "Et iste rerum consequuntur rem alias fuga minus quas cupiditate.",
+        "contactDetailsPhoneNumber": "841.280.1270",
+        "contactDetailsWebLink": "http://deangelo.org",
+        "addressLocationPostalCode": 1000,
+        "addressStreet": "9164 Juanita Row",
+        "accountType": "DEALER"
+    },
+    {
+        "firstName": "Jermaine",
+        "lastName": "Kub",
+        "displayName": "Deckow - Johnson and Sons",
+        "description": "Ratione repellat temporibus soluta veritatis aut aut quia in.",
+        "contactDetailsPhoneNumber": "217-015-8492",
+        "contactDetailsWebLink": "http://hermina.net",
+        "addressLocationPostalCode": 1000,
+        "addressStreet": "3943 Leanne Harbors",
+        "accountType": "DEALER"
+    },
+    {
+        "firstName": "Laurel",
+        "lastName": "Treutel",
+        "displayName": "Considine - Johns Inc",
+        "description": "Quibusdam exercitationem odio vel voluptas consequuntur temporibus corrupti sed.",
+        "contactDetailsPhoneNumber": "(666) 182-1527 x3464",
+        "contactDetailsWebLink": "https://isom.name",
+        "addressLocationPostalCode": 1000,
+        "addressStreet": "483 Koch Landing",
+        "accountType": "PRIVATE"
+    },
+    {
+        "firstName": "Rossie",
+        "lastName": "Streich",
+        "displayName": "Gulgowski - Zboncak LLC",
+        "description": "Aut veritatis velit quis nostrum cum assumenda possimus aut.",
+        "contactDetailsPhoneNumber": "187-438-7505",
+        "contactDetailsWebLink": "http://samir.info",
+        "addressLocationPostalCode": 1000,
+        "addressStreet": "490 O'Keefe Port",
+        "accountType": "PRIVATE"
+    }
+]

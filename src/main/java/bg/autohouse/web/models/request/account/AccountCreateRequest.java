@@ -19,6 +19,6 @@ public class AccountCreateRequest {
   private String contactDetailsPhoneNumber;
   private String contactDetailsWebLink;
   @ValidAccountType private String accountType;
-  private Long addressLocationId;
+  private Integer addressLocationPostalCode;
   private String addressStreet;
 }

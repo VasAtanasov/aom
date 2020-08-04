@@ -1,6 +1,7 @@
 package bg.autohouse.web.models.wrappers;
 
 import java.util.List;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,8 +11,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
 public class ListWrapper {
-  @NotNull private List<@NotBlank String> values;
+  @NotNull private List<@NotBlank @Email String> values;
 }

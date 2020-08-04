@@ -66,10 +66,7 @@ public class AdminController extends BaseController {
       value = "/user/details/{userId}",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> fetchUserDetails(@PathVariable UUID userId, @LoggedUser User admin) {
-    UserAdminDetailsServiceModel model =
-        modelMapper.map(
-            adminService.loadUserDetails(userId, admin.getId()),
-            UserAdminDetailsServiceModel.class);
+    UserAdminDetailsServiceModel model = adminService.loadUserDetails(userId, admin.getId());
     return ResponseEntity.ok(model);
   }
 
@@ -101,7 +98,7 @@ public class AdminController extends BaseController {
   public ResponseEntity<?> bulkInsert(@Valid @RequestBody ListWrapper list, @LoggedUser User user) {
     log.info("Inserting bulk emails");
     List<UserServiceModel> users = adminService.bulkRegisterUsers(user.getId(), list.getValues());
-    return RestUtil.okResponse(users);
+    return ResponseEntity.ok(users);
   }
 
   @PostMapping(value = "/accounts/bulk")
