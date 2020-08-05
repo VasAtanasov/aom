@@ -20,14 +20,9 @@ import bg.autohouse.web.models.request.account.AccountWrapper;
 import bg.autohouse.web.models.wrappers.ListWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,10 +93,7 @@ public class AdminControllerTest extends MvcPerformer {
     User user = userService.fetchUserByUsername(DatabaseSeeder.USERNAME);
     assertThat(user).isNotNull();
     assertThat(user.getId()).isNotNull();
-    performGet(API_BASE + "/user/details/" + user.getId(), headers)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(user.getId().toString())))
-        .andExpect(jsonPath("$.username", is(user.getUsername())));
+    performGet(API_BASE + "/user/details/" + user.getId(), headers).andExpect(status().isOk());
   }
 
   @Test
@@ -140,10 +132,7 @@ public class AdminControllerTest extends MvcPerformer {
             .currentRole(Role.USER.name())
             .newRole(Role.ADMIN.name())
             .build();
-    performPost(API_BASE + "/user/update-roles/", cRequest, headers)
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", is(user.getId().toString())))
-        .andExpect(jsonPath("$.username", is(user.getUsername())));
+    performPost(API_BASE + "/user/update-roles/", cRequest, headers).andExpect(status().isOk());
   }
 
   @Test
@@ -199,7 +188,7 @@ public class AdminControllerTest extends MvcPerformer {
     String contentAsString = result.getResponse().getContentAsString();
     List<UserServiceModel> registeredUsers =
         mapper.readValue(contentAsString, new TypeReference<List<UserServiceModel>>() {});
-    String content = readJsonContent("accounts.json");
+    String content = JsonReaderUtil.readJsonContent("accounts.json");
     AccountCreateRequest[] requests = mapper.readValue(content, AccountCreateRequest[].class);
     int[] index = {0};
     List<AccountWrapper> accounts =
@@ -215,16 +204,5 @@ public class AdminControllerTest extends MvcPerformer {
     performPost(API_BASE + "/accounts/bulk", accounts, headers)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", Matchers.greaterThan(0)));
-  }
-
-  static String readJsonContent(String fileName) {
-    Path source =
-        Paths.get("src", "test", "resources", "bg", "autohouse", "web", "controllers", fileName);
-    try (Stream<String> lines = Files.lines(source)) {
-      return String.join("\n", lines.collect(Collectors.toList()));
-    } catch (IOException e) {
-      System.err.format("IOException: %s%n", e);
-      return "";
-    }
   }
 }

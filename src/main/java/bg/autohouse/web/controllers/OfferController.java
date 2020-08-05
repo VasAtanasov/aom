@@ -18,6 +18,7 @@ import bg.autohouse.web.util.RestUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -44,7 +45,7 @@ public class OfferController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<?> createOffer(
-      @ModelAttribute OfferCreateRequest createRequest, @LoggedUser User creator)
+      @Valid @ModelAttribute OfferCreateRequest createRequest, @LoggedUser User creator)
       throws IOException {
     OfferServiceModel offerServiceModel = offerService.createOffer(createRequest, creator.getId());
     return RestUtil.createSuccessResponse(
@@ -57,7 +58,7 @@ public class OfferController extends BaseController {
       consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   public ResponseEntity<?> updateOffer(
       @PathVariable UUID offerId,
-      @ModelAttribute OfferCreateRequest createRequest,
+      @Valid @ModelAttribute OfferCreateRequest createRequest,
       @LoggedUser User creator)
       throws IOException {
     return ResponseEntity.ok(offerService.updateOffer(createRequest, offerId, creator.getId()));

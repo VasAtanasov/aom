@@ -4,6 +4,10 @@
 
 ###
 
+GET http://localhost:8007/api/health
+
+###
+
 GET http://localhost:8007/api/state
 
 ###
@@ -25,11 +29,6 @@ curl https://api.autoscout24.com/makes \
 GET {{host}}/offers/count/body-styles  HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 
-###
-
-GET http://localhost:8007/api/app-health  HTTP/1.1
-
-###
 
 ###
 
@@ -86,7 +85,7 @@ Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-  "fuelType": "ELECTRIC"
+  "fuelType": ""
 }
 
 
@@ -96,23 +95,24 @@ Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-  "username": "test@emai.com",
+  "username": "test1@emai.com",
   "password": "123456",
   "confirmPassword": "123456"
 }
 
 ###
-GET {{auth}}/register/verify?code=263580&username=test@emai.com
+GET {{auth}}/register/verify?code=649511&username=test@emai.com
 
 
 ###
 
 POST {{auth}}/login HTTP/1.1
-Content-Type: application/json
+Content-Type: application/bg.autohouse.api-v1+json
+
 
 {
-    "username": "test@mail.com",
-    "password": "123"
+    "username": "test@emai.com",
+    "password": "123456"
 }
 
 
