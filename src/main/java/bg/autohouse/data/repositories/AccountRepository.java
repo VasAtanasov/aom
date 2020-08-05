@@ -14,6 +14,8 @@ public interface AccountRepository
 
   boolean existsByUserId(UUID userId);
 
+  boolean existsByUserUsername(String userUsername);
+
   @Query(
       "SELECT acc "
           + "FROM Account acc "

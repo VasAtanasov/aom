@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 import java.util.function.Function;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -44,6 +45,15 @@ public abstract class MvcPerformer {
         .accept(APP_V1_MEDIA_TYPE_JSON);
   }
 
+  private MockHttpServletRequestBuilder callMultiPart(
+      HttpMethod method, String url, HttpHeaders headers) {
+    return methodsMap
+        .get(method)
+        .apply(url)
+        .headers(headers)
+        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE);
+  }
+
   public ResultActions performPost(final String url, final Object object) throws Exception {
     return performPost(url, object, new HttpHeaders());
   }
@@ -52,6 +62,13 @@ public abstract class MvcPerformer {
       throws Exception {
     return getMockMvc()
         .perform(call(HttpMethod.POST, url, headers).content(asJsonString(object)))
+        .andDo(print());
+  }
+
+  public ResultActions performPostFormData(
+      final String url, final Object object, HttpHeaders headers) throws Exception {
+    return getMockMvc()
+        .perform(callMultiPart(HttpMethod.POST, url, headers).content(asJsonString(object)))
         .andDo(print());
   }
 

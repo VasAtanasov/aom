@@ -30,9 +30,11 @@ node_modules
 build/
 
 ### VS Code ###
-.vscode/
-.VSCodeCounter/
+/.vscode/
+/.VSCodeCounter/
+
 
 ### logs ###
 
-logs/
+/logs/
+/authouse

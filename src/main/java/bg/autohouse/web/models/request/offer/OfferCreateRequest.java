@@ -1,6 +1,8 @@
 package bg.autohouse.web.models.request.offer;
 
 import bg.autohouse.validation.ValidationMessages;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -19,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @Builder
-public class OfferCreateRequest {
+public class OfferCreateRequest implements Serializable {
+
+  private static final long serialVersionUID = 8119956931745498408L;
+
   @NotNull(message = ValidationMessages.MISSING_VEHICLE_DATA)
   @Valid
   private VehicleCreateRequest vehicle;
@@ -37,5 +42,5 @@ public class OfferCreateRequest {
   private String contactDetailsWebLink;
 
   @NotNull private Integer addressLocationPostalCode;
-  @Builder.Default private List<MultipartFile> images = new ArrayList<>();
+  @JsonIgnore @Builder.Default private List<MultipartFile> images = new ArrayList<>();
 }

@@ -51,6 +51,12 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   @Transactional(readOnly = true)
+  public boolean hasAccount(String username) {
+    return accountRepository.existsByUserUsername(username);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public AccountServiceModel loadAccountForUser(UUID userId) {
     Assert.notNull(userId, "User id is required.");
     User user = userRepository.findByIdWithRoles(userId).orElseThrow(NoSuchUserException::new);

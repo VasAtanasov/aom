@@ -32,6 +32,8 @@ Main technologies used are:
 -   Can activate/disable their offers so they do not appear in searches;
 -   Have roles like "Administrator" and "User". Such with "Administrator" role can manage other users accounts.
 
+The API also supports versioning through Content-Type. For example now the available version is `application/bg.autohouse.api-v1+json`
+
 Web client built with React and Redux can be found at the following link: [autohouse-client](https://github.com/VasAtanasov/autohouse-client)
 
 To run the project you need to clone the repository

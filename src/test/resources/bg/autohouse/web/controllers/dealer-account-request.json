@@ -3,13 +3,9 @@
     "lastName": "Morissette",
     "displayName": "Morissette - Dooley Inc",
     "description": "Totam placeat ut consequatur magnam voluptatem reprehenderit.",
-    "contactDetails": {
-        "phoneNumber": "331-934-3630 x04999",
-        "webLink": "http://concepcion.biz"
-    },
-    "address": {
-        "locationPostalCode": 1000,
-        "street": "4040 Shyanne Garden"
-    },
+    "contactDetailsPhoneNumber": "331-934-3630 x04999",
+    "contactDetailsWebLink": "http://concepcion.biz",
+    "addressLocationId": 1751,
+    "addressStreet": "4040 Shyanne Garden",
     "accountType": "DEALER"
 }
