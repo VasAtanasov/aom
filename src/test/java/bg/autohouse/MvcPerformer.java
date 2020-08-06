@@ -2,7 +2,6 @@ package bg.autohouse;
 
 import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import bg.autohouse.web.models.request.UserLoginRequest;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -61,16 +60,13 @@ public abstract class MvcPerformer {
 
   public ResultActions performPost(final String url, final Object object, HttpHeaders headers)
       throws Exception {
-    return getMockMvc()
-        .perform(call(HttpMethod.POST, url, headers).content(asJsonString(object)))
-        .andDo(print());
+    return getMockMvc().perform(call(HttpMethod.POST, url, headers).content(asJsonString(object)));
   }
 
   public ResultActions performPostFormData(
       final String url, final Object object, HttpHeaders headers) throws Exception {
     return getMockMvc()
-        .perform(callMultiPart(HttpMethod.POST, url, headers).content(asJsonString(object)))
-        .andDo(print());
+        .perform(callMultiPart(HttpMethod.POST, url, headers).content(asJsonString(object)));
   }
 
   public ResultActions performPut(final String url, final Object object) throws Exception {
@@ -79,9 +75,7 @@ public abstract class MvcPerformer {
 
   public ResultActions performPut(final String url, final Object object, HttpHeaders headers)
       throws Exception {
-    return getMockMvc()
-        .perform(call(HttpMethod.PUT, url, headers).content(asJsonString(object)))
-        .andDo(print());
+    return getMockMvc().perform(call(HttpMethod.PUT, url, headers).content(asJsonString(object)));
   }
 
   public ResultActions performGet(final String url) throws Exception {
@@ -89,15 +83,15 @@ public abstract class MvcPerformer {
   }
 
   public ResultActions performGet(final String url, HttpHeaders headers) throws Exception {
-    return getMockMvc().perform(call(HttpMethod.GET, url, headers)).andDo(print());
+    return getMockMvc().perform(call(HttpMethod.GET, url, headers));
   }
 
   public ResultActions performDelete(final String url, HttpHeaders headers) throws Exception {
-    return getMockMvc().perform(call(HttpMethod.DELETE, url, headers)).andDo(print());
+    return getMockMvc().perform(call(HttpMethod.DELETE, url, headers));
   }
 
   public ResultActions performDelete(final String url) throws Exception {
-    return getMockMvc().perform(call(HttpMethod.DELETE, url, new HttpHeaders())).andDo(print());
+    return getMockMvc().perform(call(HttpMethod.DELETE, url, new HttpHeaders()));
   }
 
   public static String asJsonString(final Object obj) {

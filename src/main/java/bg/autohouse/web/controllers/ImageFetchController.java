@@ -24,14 +24,6 @@ public class ImageFetchController extends BaseController {
   private final MediaFileService mediaFileService;
   private final ImageResizer imageResizer;
 
-  @GetMapping(value = "/{mediaFunction}/{imageKey}")
-  public ResponseEntity<byte[]> fetchImage(
-      @PathVariable MediaFunction mediaFunction, @PathVariable String imageKey) throws IOException {
-    MediaFile record = mediaFileService.load(mediaFunction, imageKey);
-    log.info("record retrieved: {}", record);
-    return convertRecordToResponse(record, false);
-  }
-
   @GetMapping(value = "/{folder}/{year}/{month}/{day}/{offerId}/{fileName:.+}")
   public ResponseEntity<byte[]> fetchOfferImage(
       @PathVariable String folder,
