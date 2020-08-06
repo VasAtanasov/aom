@@ -1,5 +1,6 @@
 package bg.autohouse.web.enums;
 
+
 public enum RestMessage {
   REQUEST_SUCCESS,
 
@@ -90,5 +91,7 @@ public enum RestMessage {
   INVALID_VEHICLE_YEAR,
   INVALID_VEHICLE_MILEAGE,
   INVALID_VEHICLE_DOORS,
-  MAX_OFFER_COUNT_REACHED;
+  MAX_OFFER_COUNT_REACHED,
+  ACCOUNT_MISSING_FIST_NAME,
+  ACCOUNT_MISSING_LAST_NAME;
 }

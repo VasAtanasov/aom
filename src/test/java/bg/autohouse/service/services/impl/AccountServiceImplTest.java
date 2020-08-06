@@ -2,69 +2,104 @@ package bg.autohouse.service.services.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
-import bg.autohouse.config.DatabaseSeeder;
+import bg.autohouse.SingletonModelMapper;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.enums.AccountType;
+import bg.autohouse.data.models.geo.Location;
+import bg.autohouse.data.repositories.AccountLogRepository;
+import bg.autohouse.data.repositories.AccountRepository;
+import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
+import bg.autohouse.errors.AccountDisabledOrClosed;
 import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.errors.RequiredFieldMissing;
 import bg.autohouse.service.models.account.AccountServiceModel;
-import bg.autohouse.service.services.AccountService;
+import bg.autohouse.service.services.AsyncUserLogger;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.account.DealerAccountCreateUpdateRequest;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@ActiveProfiles("test")
-@Sql("/location.sql")
-@TestPropertySource("classpath:test.properties")
+@ExtendWith(MockitoExtension.class)
 public class AccountServiceImplTest {
 
-  @Autowired private AccountService accountService;
-  @Autowired private UserRepository userRepository;
-  @Autowired private ModelMapperWrapper modelMapper;
+  @InjectMocks AccountServiceImpl accountService;
+
+  @Mock AccountRepository accountRepository;
+  @Mock UserRepository userRepository;
+  @Mock LocationRepository locationRepository;
+  @Mock AccountLogRepository accountLogRepository;
+  @Mock ModelMapperWrapper modelMapper;
+  @Mock AsyncUserLogger userLogger;
+
+  @Test
+  void when_hasAccount_existingId_shouldReturnTrue() {
+    when(accountRepository.existsByUserId(any(UUID.class))).thenReturn(true);
+    boolean hasAccount = accountService.hasAccount(UUID.randomUUID());
+    assertThat(hasAccount).isTrue();
+  }
+
+  @Test
+  void when_hasAccount_existingUsername_shouldReturnTrue() {
+    when(accountRepository.existsByUserUsername(any(String.class))).thenReturn(true);
+    boolean hasAccount = accountService.hasAccount("Username");
+    assertThat(hasAccount).isTrue();
+  }
+
+  @Test
+  void when_loadAccountForUser_disabled_shouldThrow() {
+    User user = new User();
+    user.setId(UUID.randomUUID());
+    when(userRepository.findByIdWithRoles(any(UUID.class))).thenReturn(Optional.of(user));
+    Account account = new Account();
+    account.setEnabled(false);
+    when(accountRepository.findByUserId(any(UUID.class))).thenReturn(Optional.of(account));
+    Throwable thrown = catchThrowable(() -> accountService.loadAccountForUser(user.getId()));
+    assertThat(thrown)
+        .isInstanceOf(AccountDisabledOrClosed.class)
+        .hasMessageStartingWith(RestMessage.USER_ACCOUNT_DISABLED.name());
+  }
+
+  @Test
+  void when_loadAccountForUser_closed_shouldThrow() {
+    User user = new User();
+    user.setId(UUID.randomUUID());
+    when(userRepository.findByIdWithRoles(any(UUID.class))).thenReturn(Optional.of(user));
+    Account account = new Account();
+    account.setEnabled(true);
+    account.setClosed(true);
+    when(accountRepository.findByUserId(any(UUID.class))).thenReturn(Optional.of(account));
+    Throwable thrown = catchThrowable(() -> accountService.loadAccountForUser(user.getId()));
+    assertThat(thrown)
+        .isInstanceOf(AccountDisabledOrClosed.class)
+        .hasMessageStartingWith(RestMessage.USER_ACCOUNT_LOCKED.name());
+  }
 
   @Test
   void when_createDealerAccount_missingRequiredFields_shouldThrow() {
-    User user = userRepository.findByUsernameIgnoreCase(DatabaseSeeder.ROOT_USERNAME).orElse(null);
-    assertThat(user).isNotNull();
+    User user = new User();
+    user.setId(UUID.randomUUID());
     AccountServiceModel model = AccountServiceModel.builder().firstName("firstName").build();
     Throwable thrown =
         catchThrowable(() -> accountService.createOrUpdateDealerAccount(model, user.getId()));
     assertThat(thrown)
-        .isInstanceOf(RequiredFieldMissing.class)
-        .hasMessageStartingWith("Required field missing");
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageStartingWith(RestMessage.ACCOUNT_MISSING_LAST_NAME.name());
   }
 
   @Test
   void when_createDealerAccount_missingUser_shouldThrow() {
-    User user = userRepository.findByUsernameIgnoreCase(DatabaseSeeder.ROOT_USERNAME).orElse(null);
-    assertThat(user).isNotNull();
-    AccountServiceModel model = AccountServiceModel.builder().firstName("firstName").build();
-    Throwable thrown =
-        catchThrowable(() -> accountService.createOrUpdateDealerAccount(model, UUID.randomUUID()));
-    assertThat(thrown)
-        .isInstanceOf(NoSuchUserException.class)
-        .hasMessageStartingWith(RestMessage.USER_NOT_FOUND.name());
-  }
-
-  @Test
-  void when_createDealerAccount_validModel_shouldCreate() {
-    User user = userRepository.findByUsernameIgnoreCase(DatabaseSeeder.ROOT_USERNAME).orElse(null);
-    assertThat(user).isNotNull();
     DealerAccountCreateUpdateRequest request =
         DealerAccountCreateUpdateRequest.builder()
             .firstName("firstName")
@@ -76,9 +111,43 @@ public class AccountServiceImplTest {
             .addressStreet("street")
             .accountType(AccountType.DEALER.name())
             .build();
-    AccountServiceModel model = modelMapper.map(request, AccountServiceModel.class);
-    AccountServiceModel account = accountService.createOrUpdateDealerAccount(model, user.getId());
+    AccountServiceModel model =
+        SingletonModelMapper.mapper().map(request, AccountServiceModel.class);
+    Throwable thrown =
+        catchThrowable(() -> accountService.createOrUpdateDealerAccount(model, UUID.randomUUID()));
+    assertThat(thrown)
+        .isInstanceOf(NoSuchUserException.class)
+        .hasMessageStartingWith(RestMessage.USER_NOT_FOUND.name());
+  }
 
-    assertThat(account.getId()).isNotNull();
+  @Test
+  void when_createDealerAccount_validModel_shouldCreate() {
+    User user = new User();
+    user.setId(UUID.randomUUID());
+    when(userRepository.findByIdWithRoles(any(UUID.class))).thenReturn(Optional.of(user));
+    Location location = new Location();
+    when(locationRepository.findByPostalCode(anyInt())).thenReturn(Optional.of(location));
+    when(accountRepository.findByUserId(user.getId())).thenReturn(Optional.empty());
+    DealerAccountCreateUpdateRequest request =
+        DealerAccountCreateUpdateRequest.builder()
+            .firstName("firstName")
+            .lastName("lastName")
+            .displayName("displayedName")
+            .description("description")
+            .contactDetailsPhoneNumber("phoneNumber")
+            .addressLocationPostalCode(9000)
+            .addressStreet("street")
+            .accountType(AccountType.DEALER.name())
+            .build();
+    AccountServiceModel model =
+        SingletonModelMapper.mapper().map(request, AccountServiceModel.class);
+    when(modelMapper.map(any(Account.class), eq(AccountServiceModel.class)))
+        .thenAnswer(
+            invocationOnMock ->
+                SingletonModelMapper.mapper()
+                    .map(invocationOnMock.getArguments()[0], AccountServiceModel.class));
+    AccountServiceModel account = accountService.createOrUpdateDealerAccount(model, user.getId());
+    assertThat(account.getFirstName()).isEqualTo(request.getFirstName());
+    assertThat(account.getLastName()).isEqualTo(request.getLastName());
   }
 }

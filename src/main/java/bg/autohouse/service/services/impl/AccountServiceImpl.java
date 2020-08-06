@@ -18,20 +18,19 @@ import bg.autohouse.errors.NoSuchUserException;
 import bg.autohouse.service.models.account.*;
 import bg.autohouse.service.services.AccountService;
 import bg.autohouse.service.services.AsyncUserLogger;
-import bg.autohouse.service.validations.FieldValidator;
-import bg.autohouse.service.validations.annotations.Required;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
 import bg.autohouse.web.enums.RestMessage;
 import java.util.UUID;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AccountServiceImpl implements AccountService {
 
@@ -41,7 +40,6 @@ public class AccountServiceImpl implements AccountService {
   private final AccountLogRepository accountLogRepository;
   private final ModelMapperWrapper modelMapper;
   private final AsyncUserLogger userLogger;
-  private final FieldValidator fieldValidator;
 
   @Override
   @Transactional(readOnly = true)
@@ -77,8 +75,8 @@ public class AccountServiceImpl implements AccountService {
       AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
+    validateDealerAccount(model);
     User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);
-    validateModel(model, PrivateAccountRequiredFields.class);
     String displayNameToUse =
         Assert.has(model.getDisplayName()) ? model.getDisplayName() : generateRandomDisplayName();
     model.setDisplayName(displayNameToUse);
@@ -102,25 +100,20 @@ public class AccountServiceImpl implements AccountService {
     return "Auto" + StringGenericUtils.nextStringUpperDecimal(10);
   }
 
-  @Getter
-  @Required
-  private static class PrivateAccountRequiredFields {
-    private String firstName;
-    private String lastName;
-    private String accountType;
-  }
-
   @Override
   @Transactional
   public AccountServiceModel createOrUpdateDealerAccount(AccountServiceModel model, UUID ownerId) {
     Assert.notNull(model, "No account model found");
     Assert.notNull(ownerId, "Account owner must be provided");
+    validateDealerAccount(model);
     User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);
-    validateModel(model, DealerAccountRequiredFields.class);
     Location location =
         locationRepository
             .findByPostalCode(model.getAddress().getLocationPostalCode())
             .orElseThrow(LocationNotFoundException::new);
+    String displayNameToUse =
+        Assert.has(model.getDisplayName()) ? model.getDisplayName() : generateRandomDisplayName();
+    model.setDisplayName(displayNameToUse);
     Account dealerAccount = accountRepository.findByUserId(owner.getId()).orElse(null);
     if (dealerAccount == null) {
       dealerAccount = Account.createDealerAccount(model, owner);
@@ -144,21 +137,9 @@ public class AccountServiceImpl implements AccountService {
     return modelMapper.map(dealerAccount, AccountServiceModel.class);
   }
 
-  @Getter
-  @Required
-  private static class DealerAccountRequiredFields {
-    private String firstName;
-    private String lastName;
-    private String displayName;
-    private String description;
-    private String contactDetailsPhoneNumber;
-    private Integer addressLocationPostalCode;
-    private String addressStreet;
-    private String accountType;
-  }
-
-  private void validateModel(AccountServiceModel model, Class<?> target) {
-    fieldValidator.validate(modelMapper.map(model, target));
+  private void validateDealerAccount(AccountServiceModel model) {
+    Assert.notNull(model.getFirstName(), RestMessage.ACCOUNT_MISSING_FIST_NAME.name());
+    Assert.notNull(model.getLastName(), RestMessage.ACCOUNT_MISSING_LAST_NAME.name());
   }
 
   private void logAccountCreate(AccountType accountType, User owner) {
@@ -169,7 +150,6 @@ public class AccountServiceImpl implements AccountService {
             .user(owner)
             .build();
     accountLogRepository.save(accountLogCreate);
-
     switch (accountType) {
       case DEALER:
         userLogger.logUserAddDealerAccount(owner.getId());
