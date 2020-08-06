@@ -16,7 +16,6 @@ import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import java.util.List;
-import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,8 +57,7 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   @Transactional
-  public MakerServiceModel addModelToMaker(
-      @Nonnull Long makerId, @Nonnull ModelServiceModel modelServiceModel) {
+  public MakerServiceModel addModelToMaker(Long makerId, ModelServiceModel modelServiceModel) {
     Assert.notNull(modelServiceModel, "Model is required");
     modelServiceModel.setId(null); // modelMapper maps id to model
     Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
@@ -85,7 +83,7 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   @Transactional
-  public MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel) {
+  public MakerServiceModel createMaker(MakerServiceModel makerServiceModel) {
     if (makerRepository.existsByName(makerServiceModel.getName())) {
       throw new ResourceAlreadyExistsException(RestMessage.MAKER_ALREADY_EXISTS);
     }

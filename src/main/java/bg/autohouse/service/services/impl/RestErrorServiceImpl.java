@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -78,7 +77,7 @@ public class RestErrorServiceImpl implements RestErrorService {
           .put(IllegalStateException.class, HttpStatus.INTERNAL_SERVER_ERROR)
           .build();
 
-  private static HttpStatus getHttpStatusCode(final @Nonnull Throwable ex) {
+  private static HttpStatus getHttpStatusCode(final Throwable ex) {
     final ResponseStatus annotationStatusCode =
         AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
     if (annotationStatusCode != null) {

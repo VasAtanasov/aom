@@ -34,6 +34,7 @@ public abstract class MvcPerformer {
     methodsMap.put(HttpMethod.POST, url -> post(url));
     methodsMap.put(HttpMethod.GET, url -> get(url));
     methodsMap.put(HttpMethod.PUT, url -> put(url));
+    methodsMap.put(HttpMethod.DELETE, url -> delete(url));
   }
 
   private MockHttpServletRequestBuilder call(HttpMethod method, String url, HttpHeaders headers) {
@@ -89,6 +90,14 @@ public abstract class MvcPerformer {
 
   public ResultActions performGet(final String url, HttpHeaders headers) throws Exception {
     return getMockMvc().perform(call(HttpMethod.GET, url, headers)).andDo(print());
+  }
+
+  public ResultActions performDelete(final String url, HttpHeaders headers) throws Exception {
+    return getMockMvc().perform(call(HttpMethod.DELETE, url, headers)).andDo(print());
+  }
+
+  public ResultActions performDelete(final String url) throws Exception {
+    return getMockMvc().perform(call(HttpMethod.DELETE, url, new HttpHeaders())).andDo(print());
   }
 
   public static String asJsonString(final Object obj) {

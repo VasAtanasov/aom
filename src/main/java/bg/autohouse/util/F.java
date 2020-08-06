@@ -40,7 +40,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.annotation.Nonnull;
 import org.apache.commons.lang.StringUtils;
 
 /** F stands for utilities for functional programming style (mainly operating with collections). */
@@ -420,7 +419,7 @@ public final class F {
     return Optional.ofNullable(StringUtils.trimToNull(str));
   }
 
-  public static <T> List<T> listFromOptional(@Nonnull Optional<T> optional) {
+  public static <T> List<T> listFromOptional(Optional<T> optional) {
     return optional.map(ImmutableList::of).orElseGet(ImmutableList::of);
   }
 

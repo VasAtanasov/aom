@@ -1,22 +1,31 @@
 package bg.autohouse.web.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.data.models.User;
+import bg.autohouse.data.models.media.MediaFile;
+import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.service.models.account.AccountServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.service.services.AccountService;
+import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.ImageResizer;
 import bg.autohouse.utils.OfferCreateRequestWrapper;
 import bg.autohouse.web.models.request.UserLoginRequest;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
 import bg.autohouse.web.models.request.offer.VehicleCreateRequest;
+import bg.autohouse.web.models.response.offer.OfferDetailsResponseWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,6 +34,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +76,7 @@ public class OfferControllerTest extends MvcPerformer {
   @Autowired ObjectMapper mapper;
 
   @MockBean ImageResizer imageResizer;
+  @MockBean MediaFileService mediaFileService;
 
   HttpHeaders headers;
   User user;
@@ -93,53 +104,45 @@ public class OfferControllerTest extends MvcPerformer {
           mapper.readValue(content, OfferCreateRequestWrapper[].class);
       offersRequests.addAll(Arrays.asList(offersRequestString));
     }
+    when(imageResizer.toJpgDownscaleToSize(any(InputStream.class)))
+        .thenReturn("test image".getBytes());
+    MediaFile mediaFile = new MediaFile();
+    mediaFile.setOriginalFilename("image");
+    when(mediaFileService.storeFile(
+            any(byte[].class),
+            any(String.class),
+            any(MediaFunction.class),
+            any(String.class),
+            any(String.class),
+            any(UUID.class)))
+        .thenReturn(mediaFile);
     assertThat(user).isNotNull();
     assertThat(offersRequests).isNotEmpty();
   }
 
   @Test
   void when_createOffer_validOfferData_shouldReturn201() throws Exception {
-    ResultMatcher created = MockMvcResultMatchers.status().isCreated();
+    ResultMatcher ok = MockMvcResultMatchers.status().isOk();
     OfferCreateRequestWrapper createRequestWrapper = offersRequests.get(0);
-    MockMultipartHttpServletRequestBuilder performBuilder =
-        offerToFormData(createRequestWrapper, API_BASE);
-    when(imageResizer.toJpgDownscaleToSize(any(InputStream.class)))
-        .thenReturn("test image".getBytes());
-    ResultActions resultActions =
-        getMockMvc()
-            .perform(
-                performBuilder.headers(headers).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
-            .andExpect(created);
-    MvcResult result = resultActions.andReturn();
-    String contentAsString = result.getResponse().getContentAsString();
-    JsonNode node = mapper.readTree(contentAsString);
-    assertThat(node.has("data")).isTrue();
+    MvcResult result = createOffer(createRequestWrapper);
+    assertThat(result).isNotNull();
     OfferServiceModel offerServiceModel =
-        mapper.readValue(node.path("data").toString(), OfferServiceModel.class);
+        mapper.readValue(getStringContentDataNode(result), OfferServiceModel.class);
     assertThat(offerServiceModel).isNotNull();
     assertThat(offerServiceModel.getId()).isNotNull();
+    performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
   }
 
   @Test
   void when_updateOffer_validOfferData_shouldReturn200() throws Exception {
     ResultMatcher ok = MockMvcResultMatchers.status().isOk();
-    ResultMatcher created = MockMvcResultMatchers.status().isCreated();
     OfferCreateRequestWrapper createRequestWrapper = offersRequests.get(0);
-    MockMultipartHttpServletRequestBuilder performBuilder =
-        offerToFormData(createRequestWrapper, API_BASE);
-    when(imageResizer.toJpgDownscaleToSize(any(InputStream.class)))
-        .thenReturn("test image".getBytes());
-    ResultActions resultActions =
-        getMockMvc()
-            .perform(
-                performBuilder.headers(headers).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
-            .andExpect(created);
-    MvcResult result = resultActions.andReturn();
-    String contentAsString = result.getResponse().getContentAsString();
-    JsonNode node = mapper.readTree(contentAsString);
-    assertThat(node.has("data")).isTrue();
+    MvcResult result = createOffer(createRequestWrapper);
+    assertThat(result).isNotNull();
     OfferServiceModel offerServiceModel =
-        mapper.readValue(node.path("data").toString(), OfferServiceModel.class);
+        mapper.readValue(getStringContentDataNode(result), OfferServiceModel.class);
     assertThat(offerServiceModel).isNotNull();
     assertThat(offerServiceModel.getId()).isNotNull();
     createRequestWrapper.getOffer().setPrice(22000);
@@ -150,9 +153,140 @@ public class OfferControllerTest extends MvcPerformer {
         .perform(
             performBuilderUpdate.headers(headers).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
         .andExpect(ok);
+    performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
   }
 
-  static MockMultipartHttpServletRequestBuilder offerToFormData(
+  @Test
+  void when_loadOfferForEdit_validOfferId_shouldReturn200() throws Exception {
+    ResultMatcher ok = MockMvcResultMatchers.status().isOk();
+    OfferCreateRequestWrapper createRequestWrapper = offersRequests.get(0);
+    MvcResult result = createOffer(createRequestWrapper);
+    assertThat(result).isNotNull();
+    OfferServiceModel offerServiceModel =
+        mapper.readValue(getStringContentDataNode(result), OfferServiceModel.class);
+    assertThat(offerServiceModel).isNotNull();
+    assertThat(offerServiceModel.getId()).isNotNull();
+    performGet(API_BASE + "/load-for-edit/" + offerServiceModel.getId(), headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$.id", is(offerServiceModel.getId().toString())));
+    performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+  }
+
+  @Test
+  void when_viewOffer_validOfferId_shouldReturn200() throws Exception {
+    ResultMatcher ok = MockMvcResultMatchers.status().isOk();
+    OfferCreateRequestWrapper createRequestWrapper = offersRequests.get(0);
+    MvcResult result = createOffer(createRequestWrapper);
+    assertThat(result).isNotNull();
+    OfferServiceModel offerServiceModel =
+        mapper.readValue(getStringContentDataNode(result), OfferServiceModel.class);
+    assertThat(offerServiceModel).isNotNull();
+    assertThat(offerServiceModel.getId()).isNotNull();
+    MvcResult resultDetails =
+        performGet(API_BASE + "/details/" + offerServiceModel.getId(), headers)
+            .andExpect(ok)
+            .andExpect(jsonPath("$.data.offer.id", is(offerServiceModel.getId().toString())))
+            .andExpect(
+                jsonPath("$.data.offer.hitCount", greaterThan(offerServiceModel.getHitCount())))
+            .andReturn();
+    String jsonDetails = getStringContentDataNode(resultDetails);
+    OfferDetailsResponseWrapper wrapper =
+        convertJSONStringToObject(jsonDetails, OfferDetailsResponseWrapper.class);
+    performGet(API_BASE + "/details/" + offerServiceModel.getId() + "?pr=true", headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$.data.offer.id", is(offerServiceModel.getId().toString())))
+        .andExpect(jsonPath("$.data.offer.hitCount", equalTo(wrapper.getOffer().getHitCount())));
+    performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+  }
+
+  @Test
+  void when_getLatestOffers_shouldReturn200() throws Exception {
+    ResultMatcher ok = MockMvcResultMatchers.status().isOk();
+    List<String> offerIds = new ArrayList<>();
+    for (OfferCreateRequestWrapper createRequestWrapper : offersRequests) {
+      MvcResult result = createOffer(createRequestWrapper);
+      assertThat(result).isNotNull();
+      OfferServiceModel offerServiceModel =
+          mapper.readValue(getStringContentDataNode(result), OfferServiceModel.class);
+      assertThat(offerServiceModel).isNotNull();
+      assertThat(offerServiceModel.getId()).isNotNull();
+      offerIds.add(offerServiceModel.getId());
+    }
+    performGet(API_BASE + "/top", headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$.data", hasSize(offerIds.size())));
+    for (String id : offerIds) {
+      performDelete(API_BASE + "/" + id, headers).andExpect(ok).andExpect(jsonPath("$", is(id)));
+    }
+  }
+
+  @Test
+  void when_getOfferStatistics_shouldReturn200() throws Exception {
+    ResultMatcher ok = MockMvcResultMatchers.status().isOk();
+    OfferCreateRequestWrapper createRequestWrapper = offersRequests.get(0);
+    MvcResult result = createOffer(createRequestWrapper);
+    assertThat(result).isNotNull();
+    OfferServiceModel offerServiceModel =
+        mapper.readValue(getStringContentDataNode(result), OfferServiceModel.class);
+    assertThat(offerServiceModel).isNotNull();
+    assertThat(offerServiceModel.getId()).isNotNull();
+    performGet(API_BASE + "/statistics")
+        .andExpect(ok)
+        .andExpect(jsonPath("$.maxPrice", is(offerServiceModel.getPrice())));
+    performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+  }
+
+  @Test
+  void when_getUserOffersCount_shouldReturn200() throws Exception {
+    ResultMatcher ok = MockMvcResultMatchers.status().isOk();
+    OfferCreateRequestWrapper createRequestWrapper = offersRequests.get(0);
+    MvcResult result = createOffer(createRequestWrapper);
+    assertThat(result).isNotNull();
+    OfferServiceModel offerServiceModel =
+        mapper.readValue(getStringContentDataNode(result), OfferServiceModel.class);
+    assertThat(offerServiceModel).isNotNull();
+    assertThat(offerServiceModel.getId()).isNotNull();
+    AccountServiceModel account = accountService.loadAccountForUser(user.getId());
+    performGet(API_BASE + "/count/" + account.getId() + "/offers")
+        .andExpect(ok)
+        .andExpect(jsonPath("$", is(1)));
+    performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
+        .andExpect(ok)
+        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+  }
+
+  String getStringContentDataNode(MvcResult result) throws Exception {
+    String contentAsString = result.getResponse().getContentAsString();
+    JsonNode node = mapper.readTree(contentAsString);
+    assertThat(node.has("data")).isTrue();
+    return node.path("data").toString();
+  }
+
+  MvcResult createOffer(OfferCreateRequestWrapper createRequestWrapper) throws Exception {
+    if (createRequestWrapper == null) {
+      return null;
+    }
+    ResultMatcher created = MockMvcResultMatchers.status().isCreated();
+    MockMultipartHttpServletRequestBuilder performBuilder =
+        offerToFormData(createRequestWrapper, API_BASE);
+    ResultActions resultActions =
+        getMockMvc()
+            .perform(
+                performBuilder.headers(headers).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+            .andExpect(created);
+    MvcResult result = resultActions.andReturn();
+    return result;
+  }
+
+  MockMultipartHttpServletRequestBuilder offerToFormData(
       OfferCreateRequestWrapper createRequestWrapper, String url) {
     MockMultipartHttpServletRequestBuilder builder = multipart(url);
     OfferCreateRequest request = createRequestWrapper.getOffer();

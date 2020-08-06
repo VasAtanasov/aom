@@ -50,7 +50,7 @@ public final class ReflectionUtil {
   }
 
   @Nonnull
-  public static Set<Field> getFields(@Nonnull final Class<?> type) {
+  public static Set<Field> getFields(final Class<?> type) {
     return Sets.newHashSet(Objects.requireNonNull(type).getDeclaredFields());
   }
 
@@ -62,7 +62,7 @@ public final class ReflectionUtil {
   }
 
   @Nonnull
-  public static Set<Method> getMethods(@Nonnull final Class<?> type) {
+  public static Set<Method> getMethods(final Class<?> type) {
     Objects.requireNonNull(type);
     return Sets.newHashSet(type.isInterface() ? type.getMethods() : type.getDeclaredMethods());
   }

@@ -7,7 +7,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.annotation.Nonnull;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -45,10 +44,7 @@ public class ImageResizer {
   }
 
   public byte[] resize(
-      @Nonnull final byte[] photoData,
-      final int width,
-      final int height,
-      final boolean keepProportions)
+      final byte[] photoData, final int width, final int height, final boolean keepProportions)
       throws IOException {
     final BufferedImage inputImage = ImageIO.read(new ByteArrayInputStream(photoData));
     return toJPG(resize(inputImage, width, height, keepProportions));

@@ -5,7 +5,6 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.models.ModelTrimsServicesModel;
 import java.util.List;
-import javax.annotation.Nonnull;
 
 public interface MakerService {
   MakerModelServiceModel getOne(Long id);
@@ -16,11 +15,11 @@ public interface MakerService {
 
   boolean isMaker(Long id);
 
-  MakerServiceModel addModelToMaker(@Nonnull Long makerId, ModelServiceModel modelServiceModel);
+  MakerServiceModel addModelToMaker(Long makerId, ModelServiceModel modelServiceModel);
 
   List<ModelTrimsServicesModel> getMakerModelsTrims(Long makerId);
 
-  MakerServiceModel createMaker(@Nonnull MakerServiceModel makerServiceModel);
+  MakerServiceModel createMaker(MakerServiceModel makerServiceModel);
 
   ModelTrimsServicesModel getModel(String makerName, String modelName);
 }
