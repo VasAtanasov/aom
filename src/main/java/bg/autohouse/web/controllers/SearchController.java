@@ -48,11 +48,7 @@ public class SearchController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> findOffers(
       @Valid @RequestBody FilterRequest filterRequest,
-      @PageableDefault(
-              page = DEFAULT_PAGE_NUMBER,
-              size = DEFAULT_PAGE_SIZE,
-              sort = SORT,
-              direction = Sort.Direction.DESC)
+      @PageableDefault(size = DEFAULT_PAGE_SIZE, sort = SORT, direction = Sort.Direction.DESC)
           Pageable pageable) {
     UUID filterRequestId = filterService.createFilter(filterRequest);
     Page<OfferResponseModel> page =
@@ -77,12 +73,7 @@ public class SearchController extends BaseController {
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> findOffersByIds(
       @RequestBody List<UUID> offerIds,
-      @PageableDefault(
-              page = DEFAULT_PAGE_NUMBER,
-              size = 10,
-              sort = SORT,
-              direction = Sort.Direction.DESC)
-          Pageable pageable) {
+      @PageableDefault(sort = SORT, direction = Sort.Direction.DESC) Pageable pageable) {
     Page<OfferResponseModel> page =
         offerService
             .searchOffersByIds(offerIds, pageable)

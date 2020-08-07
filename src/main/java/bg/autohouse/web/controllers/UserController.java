@@ -67,12 +67,7 @@ public class UserController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getUserOffers(
       @LoggedUser User creator,
-      @PageableDefault(
-              page = DEFAULT_PAGE_NUMBER,
-              size = 15,
-              sort = SORT,
-              direction = Sort.Direction.DESC)
-          Pageable pageable) {
+      @PageableDefault(size = 15, sort = SORT, direction = Sort.Direction.DESC) Pageable pageable) {
     Page<OfferServiceModel> userOffers = offerService.findUserOffers(creator.getId(), pageable);
     return ResponseEntity.ok(
         userOffers.map(offer -> modelMapper.map(offer, OfferResponseModel.class)));

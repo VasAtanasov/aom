@@ -52,11 +52,7 @@ public class AdminController extends BaseController {
       value = "/users/list",
       produces = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> getUsersList(
-      @PageableDefault(
-              page = DEFAULT_PAGE_NUMBER,
-              size = DEFAULT_PAGE_SIZE,
-              sort = SORT,
-              direction = Sort.Direction.DESC)
+      @PageableDefault(size = DEFAULT_PAGE_SIZE, sort = SORT, direction = Sort.Direction.DESC)
           Pageable pageable) {
     Page<UserRowServiceModel> usersPage = adminService.loadUsersPage(pageable);
     return ResponseEntity.ok(usersPage);

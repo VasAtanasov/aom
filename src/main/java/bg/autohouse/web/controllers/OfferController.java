@@ -59,8 +59,7 @@ public class OfferController extends BaseController {
   public ResponseEntity<?> updateOffer(
       @PathVariable UUID offerId,
       @Valid @ModelAttribute OfferCreateRequest createRequest,
-      @LoggedUser User creator)
-      throws IOException {
+      @LoggedUser User creator) {
     return ResponseEntity.ok(offerService.updateOffer(createRequest, offerId, creator.getId()));
   }
 

@@ -265,14 +265,14 @@ public class AuthenticationControllerTest extends MvcPerformer {
   @Test
   void whenRefreshToken_validToken_shouldReturn200() throws Exception {
     AuthorizedUserServiceModel login = userService.tryLogin("vas@mail.com", "123");
-    performGet(API_BASE + "/token/refresh?oldToken=" + login.getToken())
+    performGet(API_BASE + "/token/refresh?token=" + login.getToken())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", is(RestMessage.USER_LOGIN_SUCCESSFUL.name())));
   }
 
   @Test
   void whenRefreshToken_InvalidToken_shouldReturn400() throws Exception {
-    performGet(API_BASE + "/token/refresh?oldToken=" + "invalid token")
+    performGet(API_BASE + "/token/refresh?token=" + "invalid token")
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.INVALID_TOKEN.name())));
   }

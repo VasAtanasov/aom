@@ -202,7 +202,7 @@ public class AuthenticationController extends BaseController {
   @GetMapping(
       value = WebConfiguration.URL_TOKEN_REFRESH,
       produces = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<ResponseWrapper> refreshToken(@RequestParam("oldToken") String oldToken) {
+  public ResponseEntity<ResponseWrapper> refreshToken(@RequestParam("token") String oldToken) {
     String newToken = jwtService.refreshToken(oldToken, JwtTokenType.API_CLIENT);
     if (newToken != null) {
       return RestUtil.okResponse(RestMessage.USER_LOGIN_SUCCESSFUL, newToken);

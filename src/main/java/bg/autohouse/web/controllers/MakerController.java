@@ -45,7 +45,7 @@ public class MakerController extends BaseController {
     Map<String, MakerResponseWrapper> makers =
         makerServiceModels.stream()
             .map(model -> modelMapper.map(model, MakerResponseWrapper.class))
-            .collect(Collect.indexingBy(m -> m.getName()));
+            .collect(Collect.indexingBy(MakerResponseWrapper::getName));
     return RestUtil.okResponse(RestMessage.MAKERS_GET_SUCCESSFUL, makers);
   }
 

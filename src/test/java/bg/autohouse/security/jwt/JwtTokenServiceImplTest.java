@@ -23,15 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class JwtTokenServiceImplTest {
   @Autowired private UserRepository userRepository;
   @Autowired private JwtTokenService tokenService;
-  private User user;
-  private JwtTokenCreateRequest tokenRequest;
   private String token;
 
   @BeforeEach
   void initUser() {
-    user = userRepository.findByUsernameIgnoreCase(DatabaseSeeder.ROOT_USERNAME).orElse(null);
+    User user = userRepository.findByUsernameIgnoreCase(DatabaseSeeder.ROOT_USERNAME).orElse(null);
     assertThat(user).isNotNull();
-    tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
+    JwtTokenCreateRequest tokenRequest = new JwtTokenCreateRequest(JwtTokenType.API_CLIENT, user);
     token = tokenService.createJwt(tokenRequest);
   }
 

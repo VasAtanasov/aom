@@ -1,6 +1,5 @@
 package bg.autohouse.web.enums;
 
-
 public enum RestMessage {
   REQUEST_SUCCESS,
 
