@@ -62,8 +62,7 @@ public class AuthenticationController extends BaseController {
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> login(
-      @Valid @RequestBody UserLoginRequest loginRequest, HttpServletResponse res)
-      throws IOException {
+      @Valid @RequestBody UserLoginRequest loginRequest, HttpServletResponse res) {
     long startTime = System.currentTimeMillis();
     AuthorizedUserServiceModel serviceModel =
         userService.tryLogin(loginRequest.getUsername(), loginRequest.getPassword());
