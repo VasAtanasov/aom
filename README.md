@@ -1,6 +1,7 @@
-# autohouse
+# Spring Boot, MySQL, Spring Security, JWT, JPA, Rest API
 
-## Web API for managing automotive offers
+## Autohouse - REST API for managing automotive offers
+
 
 This is a defence project build for educational purpose in the course of SoftUni Java Web Development with Spring.
 
@@ -34,13 +35,17 @@ Main technologies used are:
 
 The API also supports versioning through Content-Type. For example now the available version is `application/bg.autohouse.api-v1+json`
 
-Web client built with React and Redux can be found at the following link: [autohouse-client](https://github.com/VasAtanasov/autohouse-client)
+SPA web client built with React and Redux can be found at the following link: [autohouse-client](https://github.com/VasAtanasov/autohouse-client)
 
-To run the project you need to clone the repository
+## Steps to Setup
 
-`git clone https://github.com/VasAtanasov/autohouse-server.git`
+**1. Clone the application**
 
-Set env variables:
+```bash
+git clone https://github.com/VasAtanasov/autohouse-server.git
+```
+
+**2. Set env variables**
 
 ##### application.properties
 
@@ -70,13 +75,38 @@ MAIL_PASSWORD
 
 To run the test and check code coverage run:
 
-`mvn clean verify`
+```bash
+mvn clean verify
+```
 
 After all the tests complete successfully you can open `target/site/jacoco/index.html` in your browser to view the result from the tests.
 
+**3. Run the application**
+
 Before you run the app you need to set all the env variables stated above and then execute the command:
 
-`java -jar target/authouse-0.0.1-SNAPSHOT.jar`
+```bash
+java -jar target/authouse-0.0.1-SNAPSHOT.jar
+```
+
+or
+
+```bash
+mvn spring-boot:run
+```
+
+The app will start running at http://localhost:8007
+
+## Explore Rest APIs
+
+The app defines following CRUD APIs.
+
+### Auth
+
+| Method | Url | Decription | Sample Valid Request Body | 
+| ------ | --- | ---------- | --------------------------- |
+| POST   | /api/auth/register | Sign up | [JSON](#register) |
+| POST   | /api/auth/login | Log in | [JSON](#signin) |
 
 To test you can use VS Code extension "REST Client" to send http requests or any other http client like "Postman", "HTTPie" etc..
 
@@ -92,19 +122,22 @@ Open VSCode and create a file with extension `.http` for example `requests.http`
 
 Check is database up.
 
-`GET http://localhost:8007/api/health`
+```http request
+GET http://localhost:8007/api/health
+```
 
-```js
+```text
 HTTP/1.1 200
 
 ok
 ```
 
 Get latest offers.
+```http request
+GET http://localhost:8007/api/vehicles/offers/top
+```
 
-`http://localhost:8007/api/vehicles/offers/top`
-
-```js
+```json
 {
   "data": [
     {
@@ -164,15 +197,16 @@ Get latest offers.
       "hitCount": 1,
       "savedCount": 0,
       "active": true
-    },
-    ....
+    }
+  ]
+}
 ```
 
 Get list of all makers and their models.
 
 `GET http://localhost:8007/api/vehicles/makers`
 
-```js
+```json
 {
   "message": "MAKERS_GET_SUCCESSFUL",
   "data": {  "Seat": {
@@ -216,15 +250,15 @@ Get list of all makers and their models.
           "name": "Toledo"
         }
       ]
-    },
-    ....
-  }
+     }
+   }
+ }
 ```
 
 Register user and get verification token.
 
-```js
-
+##### <a id="register">Register user -> /api/auth/register</a>
+```http request
 POST http://localhost:8007/api/auth/register HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
@@ -234,15 +268,13 @@ Content-Type: application/bg.autohouse.api-v1+json
   "password": "123456",
   "confirmPassword": "123456"
 }
-
 ```
 
-```js
-
+```json
 {
   "message": "REGISTRATION_VERIFICATION_TOKEN_SENT",
   "data": {
-    "code": {verification code}
+    "code": 342556
   }
 }
 ```

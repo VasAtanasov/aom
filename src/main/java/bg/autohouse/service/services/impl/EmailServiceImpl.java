@@ -3,19 +3,20 @@ package bg.autohouse.service.services.impl;
 import bg.autohouse.service.models.EmailServiceModel;
 import bg.autohouse.service.models.EmailServiceModel.EmailServiceModelBuilder;
 import bg.autohouse.service.services.EmailService;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Service
@@ -24,7 +25,7 @@ public class EmailServiceImpl implements EmailService {
 
   private static final String BASE_URL = "http://localhost:8007/api";
 
-  private final JavaMailSender javaMailSender;
+  private final JavaMailSenderImpl javaMailSender;
 
   @Qualifier("emailTemplateEngine")
   private final TemplateEngine templateEngine;
@@ -59,21 +60,29 @@ public class EmailServiceImpl implements EmailService {
     try {
       log.info("Sending email with token for registration confirmation...");
       sendEmail(mail.build(), Boolean.TRUE);
-    } catch (MessagingException | IOException ex) {
+    } catch (MessagingException ex) {
       log.info("Email was not sent", ex);
     }
   }
 
+  @Override
   public void sendPasswordResetRequest(String firstName, String email, String token) {
-    String textBodyWithToken = PASSWORD_RESET_TEXT_BODY.replace("$tokenValue", token);
-    textBodyWithToken = textBodyWithToken.replace("$firstName", firstName);
-    log.info(textBodyWithToken);
-    log.info("Sending email with token for password reset...");
-    log.info("Email sent!");
+    EmailServiceModelBuilder mail =
+            EmailServiceModel.builder().subject(REGISTRATION_SUBJECT).toAddress(email);
+    Context context = new Context();
+    context.setVariable("token", token);
+    context.setVariable("firstName", firstName);
+    String html = templateEngine.process("html/password_reset", context);
+    mail.htmlContent(html);
+    try {
+      log.info("Sending email with token for password reset...");
+      sendEmail(mail.build(), Boolean.TRUE);
+    } catch (MessagingException ex) {
+      log.info("Email was not sent", ex);
+    }
   }
 
-  private void sendEmail(EmailServiceModel mail, boolean isHtml)
-      throws MessagingException, IOException {
+  private void sendEmail(EmailServiceModel mail, boolean isHtml) throws MessagingException {
     MimeMessage message = javaMailSender.createMimeMessage();
     MimeMessageHelper helper =
         new MimeMessageHelper(

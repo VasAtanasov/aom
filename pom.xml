@@ -25,6 +25,7 @@
     <hibernate.jpamodelgen.version>6.0.0.Alpha3</hibernate.jpamodelgen.version>
     <imgscalr.version>4.2</imgscalr.version>
     <jacoco.version>0.8.5</jacoco.version>
+    <greenmail.version>1.5.14</greenmail.version>
   </properties>
 
   <dependencies>
@@ -107,7 +108,12 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>com.icegreen</groupId>
+      <artifactId>greenmail</artifactId>
+      <version>${greenmail.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.jacoco</groupId>
       <artifactId>jacoco-maven-plugin</artifactId>

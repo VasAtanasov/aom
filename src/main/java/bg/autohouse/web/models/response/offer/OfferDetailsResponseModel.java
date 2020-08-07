@@ -5,8 +5,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class OfferDetailsResponseModel {
   private String id;
   private String accountId;

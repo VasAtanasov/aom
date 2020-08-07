@@ -1,14 +1,15 @@
 package bg.autohouse.web.models.request;
 
 import bg.autohouse.web.validations.annotations.MatchingFieldsConstraint;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Data;
 
-// TODO validate password length
-// TODO validate email
-@Data
+@Getter
+@Setter
 @Builder
 @MatchingFieldsConstraint(fields = {"password", "confirmPassword"})
 public class UserRegisterRequest {

@@ -1,21 +1,21 @@
 package bg.autohouse.config;
 
 import bg.autohouse.config.properties.MailProperties;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Properties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 import org.thymeleaf.templateresolver.StringTemplateResolver;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Properties;
 
 @Slf4j
 @Configuration
@@ -25,7 +25,7 @@ public class MailConfiguration {
   @Autowired private MailProperties mailProperties;
 
   @Bean
-  public JavaMailSender getJavaMailSender() {
+  public JavaMailSenderImpl getJavaMailSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
     mailSender.setHost("smtp.gmail.com");
     mailSender.setPort(587);

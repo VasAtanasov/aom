@@ -9,7 +9,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserAdminDetailsServiceModel {
@@ -26,7 +25,7 @@ public class UserAdminDetailsServiceModel {
     this.username = user.getUsername();
     this.hasAccount = user.isHasAccount();
     this.enabled = user.isEnabled();
-    this.role = user.getRoles().stream().max(SYSTEM_ROLE_COMPARATOR).map(r -> r.name()).orElse("");
+    this.role = user.getRoles().stream().max(SYSTEM_ROLE_COMPARATOR).map(Enum::name).orElse("");
     this.account = account;
   }
 }

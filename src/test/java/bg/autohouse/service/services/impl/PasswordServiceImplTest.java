@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @TestPropertySource("classpath:test.properties")
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PasswordServiceTest {
+public class PasswordServiceImplTest {
   private static final String VALID_USERNAME = DatabaseSeeder.ROOT_USERNAME;
   private static final String VALID_PASSWORD = "123";
 

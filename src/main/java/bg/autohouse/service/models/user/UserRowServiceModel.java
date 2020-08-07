@@ -6,8 +6,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class UserRowServiceModel {
   private UUID id;
@@ -15,7 +13,6 @@ public class UserRowServiceModel {
   private boolean hasAccount;
   private boolean enabled;
 
-  @Builder
   public UserRowServiceModel(User user) {
     this.id = user.getId();
     this.username = user.getUsername();

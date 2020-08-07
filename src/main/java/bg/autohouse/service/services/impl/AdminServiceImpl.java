@@ -9,6 +9,7 @@ import bg.autohouse.data.models.enums.AccountType;
 import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.data.models.geo.Address;
 import bg.autohouse.data.models.geo.Location;
+import bg.autohouse.data.projections.user.UserUsername;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.LocationRepository;
 import bg.autohouse.data.repositories.UserRepository;
@@ -29,11 +30,8 @@ import bg.autohouse.util.F;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.util.StringGenericUtils;
 import bg.autohouse.web.enums.RestMessage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,7 +69,7 @@ public class AdminServiceImpl implements AdminService {
   @Transactional(readOnly = true)
   public Page<UserRowServiceModel> loadUsersPage(Pageable pageable) {
     Page<User> users = userRepository.findUsersPage(pageable);
-    return users.map(u -> UserRowServiceModel.builder().user(u).build());
+    return users.map(UserRowServiceModel::new);
   }
 
   @Override
@@ -109,7 +107,7 @@ public class AdminServiceImpl implements AdminService {
     User affectedUser =
         userRepository.findByIdWithRoles(request.getUserId()).orElseThrow(NoSuchUserException::new);
     affectedUser.setRoles(userService.getInheritedRolesFromRole(request.getNewRole()));
-    return UserRowServiceModel.builder().user(userRepository.save(affectedUser)).build();
+    return new UserRowServiceModel(userRepository.save(affectedUser));
   }
 
   @Override
@@ -131,7 +129,7 @@ public class AdminServiceImpl implements AdminService {
     validateAdminRole(adminId);
     Set<String> existingUsers =
         F.mapNonNullsToSet(
-            userRepository.getAllUsers(usernameIn(usernames)), user -> user.getUsername());
+            userRepository.getAllUsers(usernameIn(usernames)), UserUsername::getUsername);
     List<User> users = new ArrayList<>();
     List<User> registered = new ArrayList<>();
     long startNanos = System.nanoTime();
@@ -171,16 +169,17 @@ public class AdminServiceImpl implements AdminService {
     Assert.notNull(models, "Invalid accounts collection");
     validateAdminRole(adminId);
     List<UserServiceModel> users = bulkCreateAccountsInternally(models);
-    return updateHasAccount(F.mapNonNullsToList(users, u -> u.getId()));
+    return updateHasAccount(F.mapNonNullsToList(users, UserServiceModel::getId));
   }
 
   @Transactional
-  private List<UserServiceModel> bulkCreateAccountsInternally(
-      List<AccountCreateServiceModel> models) {
-    List<UUID> ids = F.mapNonNullsToList(models, m -> m.getId());
-    List<String> usernames = F.mapNonNullsToList(models, m -> m.getUsername());
+  List<UserServiceModel> bulkCreateAccountsInternally(List<AccountCreateServiceModel> models) {
+    List<UUID> ids = F.mapNonNullsToList(models, AccountCreateServiceModel::getId);
+    List<String> usernames = F.mapNonNullsToList(models, AccountCreateServiceModel::getUsername);
     Map<UUID, User> usersById =
-        userRepository.getAllMap(where(hasNoAccount()).and(idIn(ids)).and(usernameIn(usernames)));
+        userRepository.getAllMap(
+            Objects.requireNonNull(where(hasNoAccount()).and(idIn(ids)))
+                .and(usernameIn(usernames)));
     List<Location> locations = locationRepository.findAllLocations();
     List<Account> accounts = new ArrayList<>();
     for (int i = 0; i < models.size(); i++) {
@@ -203,7 +202,9 @@ public class AdminServiceImpl implements AdminService {
         String street = accountModel.getAddress().getStreet();
         Location location =
             locations.stream()
-                .filter(l -> l.getPostalCode() == accountModel.getAddress().getLocationPostalCode())
+                .filter(
+                    l ->
+                        l.getPostalCode().equals(accountModel.getAddress().getLocationPostalCode()))
                 .findFirst()
                 .orElse(locations.get(0));
         Address.createAddress(location, street, account);
@@ -221,11 +222,11 @@ public class AdminServiceImpl implements AdminService {
       accounts.clear();
     }
     return modelMapper.mapAll(
-        F.filterToStream(usersById.values(), u -> u.isHasAccount()), UserServiceModel.class);
+        F.filterToStream(usersById.values(), User::isHasAccount), UserServiceModel.class);
   }
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
-  private int updateHasAccount(List<UUID> ids) {
+  int updateHasAccount(List<UUID> ids) {
     return userRepository.updateHasAccount(ids);
   }
 
