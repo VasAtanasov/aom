@@ -130,7 +130,7 @@ The app defines following CRUD APIs.
 | ------ | --- | ---------- | --------------------------- |
 | GET    | /api/accounts/user-account | Gets user account information if he has one | |
 | POST   | /api/accounts/private-create | Creates privet seller account | [JSON](#create-private) |
-| POST   | /api/accounts/private-create | Creates privet seller account | [JSON](#create-dealer) |
+| POST   | /api/accounts/dealer-create | Creates dealer account | [JSON](#create-dealer) |
 
 ### Images
 | Method | Url | Description | Sample Valid Request Body | 
@@ -225,7 +225,7 @@ Authorization: Bearer {{token}}
 
 ##### <a id="create-dealer">Create dealer's account</a>
 ```http request
-POST http://localhost:8007/api/accounts/private-create HTTP/1.1
+POST http://localhost:8007/api/accounts/dealer-create HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 Authorization: Bearer {{token}}
