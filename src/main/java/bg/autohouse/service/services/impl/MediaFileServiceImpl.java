@@ -9,38 +9,32 @@ import bg.autohouse.service.services.MediaFileService;
 import bg.autohouse.service.services.StorageService;
 import bg.autohouse.util.Assert;
 import com.google.common.collect.Ordering;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.io.*;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MediaFileServiceImpl implements MediaFileService {
   private final MedialFileRepository medialFileRepository;
-  private final List<StorageService> storages;
+  private final List<StorageService> storage;
 
   private static Supplier<IllegalStateException> notConfigured(final StorageType storageType) {
     return () -> new IllegalStateException("Storage is not configured: " + storageType);
   }
 
   private Optional<StorageService> findStorage(final StorageType storageType) {
-    return storages.stream()
+    return storage.stream()
         .filter(fss -> fss.getType() == storageType && fss.isConfigured())
         .findAny();
   }
@@ -59,11 +53,9 @@ public class MediaFileServiceImpl implements MediaFileService {
                           StorageType.LOCAL_FOLDER,
                           StorageType.LOCAL_DATABASE)
                       .onResultOf(StorageService::getType);
-
-              return storages.stream()
+              return storage.stream()
                   .filter(StorageService::isConfigured)
-                  .sorted(explicit)
-                  .findFirst()
+                  .min(explicit)
                   .orElseThrow(notConfigured(preferredType));
             });
   }
@@ -92,50 +84,6 @@ public class MediaFileServiceImpl implements MediaFileService {
   @Transactional(readOnly = true)
   public boolean doesFileExist(MediaFunction function, String imageKey) {
     return medialFileRepository.existsByBucketAndFileKey(function.resolveBucketName(), imageKey);
-  }
-
-  @Override
-  @Transactional(rollbackFor = IOException.class)
-  public MediaFile storeFile(
-      MultipartFile file,
-      String fileKey,
-      MediaFunction function,
-      String contentType,
-      String originalFilename,
-      UUID referenceId) {
-    final StorageService storage = getStorageOrFallback(function.storageType());
-    Assert.notNull(function, "Unspecified media function.");
-    String bucket = function.resolveBucketName();
-    log.info(
-        "storing a file, with function {}, bucket {}, file key {}, content type: {},  original name: {}",
-        function,
-        bucket,
-        fileKey,
-        contentType,
-        originalFilename);
-    MediaFile record = medialFileRepository.findByBucketAndFileKey(bucket, fileKey).orElse(null);
-    if (Assert.isEmpty(record)) {
-      record =
-          MediaFile.builder()
-              .bucket(bucket)
-              .storageType(function.storageType())
-              .contentType(contentType)
-              .size(file.getSize())
-              .fileKey(fileKey)
-              .originalFilename(originalFilename)
-              .referenceId(referenceId)
-              .build();
-    }
-    try (final InputStream fis = file.getInputStream();
-        final BufferedInputStream bis = new BufferedInputStream(fis)) {
-      record = medialFileRepository.save(record);
-      storage.storeFile(function, record, bis);
-      log.info("media record stored and has mime type");
-      return record;
-    } catch (IOException e) {
-      log.error("Error storing media file, returning null", e);
-      return null;
-    }
   }
 
   @Override

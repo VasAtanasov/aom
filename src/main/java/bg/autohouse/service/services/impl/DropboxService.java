@@ -10,16 +10,16 @@ import com.dropbox.core.util.IOUtil.ProgressListener;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.UploadBuilder;
-import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.files.WriteMode;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 @Slf4j
 @Service
@@ -47,26 +47,20 @@ public class DropboxService implements StorageService {
     String dropboxPath = getUploadPath(record);
     log.info(
         "storing a media file in bucket {}, with key {}", record.getBucket(), record.getFileKey());
-    try {
+    try (inputStream) {
       ProgressListener progressListener = l -> printProgress(l, record.getSize());
       UploadBuilder upload =
-          client.files().uploadBuilder(dropboxPath).withMode(WriteMode.OVERWRITE);
+              client.files().uploadBuilder(dropboxPath).withMode(WriteMode.OVERWRITE);
       FileMetadata metadata = upload.uploadAndFinish(inputStream, progressListener);
       System.out.println(metadata.toStringMultiline());
-      if (metadata != null) {
-        record.setContentHash(metadata.getContentHash());
-        record.setSize(metadata.getSize());
-      }
+      record.setContentHash(metadata.getContentHash());
+      record.setSize(metadata.getSize());
       log.info("upload meta data =====> {}", metadata.toString());
-    } catch (UploadErrorException ex) {
-      log.error("Error uploading to Dropbox: " + ex.getMessage());
     } catch (DbxException ex) {
       log.error("Error uploading to Dropbox: " + ex.getMessage());
     } catch (IOException ex) {
       log.error(
-          "Error reading from file \"" + record.getOriginalFilename() + "\": " + ex.getMessage());
-    } finally {
-      inputStream.close();
+              "Error reading from file \"" + record.getOriginalFilename() + "\": " + ex.getMessage());
     }
   }
 

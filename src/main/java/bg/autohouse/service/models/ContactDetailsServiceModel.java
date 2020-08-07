@@ -1,12 +1,10 @@
 package bg.autohouse.service.models;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ContactDetailsServiceModel {
   private String phoneNumber;
   private String webLink;

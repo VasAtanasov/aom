@@ -15,7 +15,9 @@ import bg.autohouse.service.services.MakerService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,81 +26,81 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class MakerServiceImpl implements MakerService {
-  private final MakerRepository makerRepository;
-  private final ModelRepository modelRepository;
-  private final ModelMapperWrapper modelMapper;
+    private final MakerRepository makerRepository;
+    private final ModelRepository modelRepository;
+    private final ModelMapperWrapper modelMapper;
 
-  @Override
-  @Transactional(readOnly = true)
-  public MakerModelServiceModel getOne(Long id) {
-    return makerRepository
-        .findById(id)
-        .map(maker -> modelMapper.map(maker, MakerModelServiceModel.class))
-        .orElseThrow(MakerNotFoundException::new);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<MakerServiceModel> getAllMakers() {
-    return modelMapper.mapAll(makerRepository.findAll(), MakerServiceModel.class);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<MakerModelServiceModel> getAllMakerWithModels() {
-    return modelMapper.mapAll(makerRepository.findAllWithModels(), MakerModelServiceModel.class);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public boolean isMaker(Long id) {
-    return makerRepository.existsById(id);
-  }
-
-  @Override
-  @Transactional
-  public MakerServiceModel addModelToMaker(Long makerId, ModelServiceModel modelServiceModel) {
-    Assert.notNull(modelServiceModel, "Model is required");
-    modelServiceModel.setId(null); // modelMapper maps id to model
-    Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
-    boolean modelExists =
-        modelRepository.existsByNameAndMakerId(modelServiceModel.getName(), makerId);
-    if (modelExists) {
-      throw new ResourceAlreadyExistsException(RestMessage.MODEL_ALREADY_EXISTS);
+    @Override
+    @Transactional(readOnly = true)
+    public MakerModelServiceModel getOne(Long id) {
+        return makerRepository
+                .findById(id)
+                .map(maker -> modelMapper.map(maker, MakerModelServiceModel.class))
+                .orElseThrow(MakerNotFoundException::new);
     }
-    Model model = modelMapper.map(modelServiceModel, Model.class);
-    model.setMaker(maker);
-    maker.getModels().add(model);
-    modelRepository.save(model);
-    makerRepository.save(maker);
-    return modelMapper.map(maker, MakerServiceModel.class);
-  }
 
-  @Override
-  @Transactional(readOnly = true)
-  public List<ModelTrimsServicesModel> getMakerModelsTrims(Long makerId) {
-    return modelMapper.mapAll(
-        modelRepository.findAllByMakerId(makerId), ModelTrimsServicesModel.class);
-  }
-
-  @Override
-  @Transactional
-  public MakerServiceModel createMaker(MakerServiceModel makerServiceModel) {
-    if (makerRepository.existsByName(makerServiceModel.getName())) {
-      throw new ResourceAlreadyExistsException(RestMessage.MAKER_ALREADY_EXISTS);
+    @Override
+    @Transactional(readOnly = true)
+    public List<MakerServiceModel> getAllMakers() {
+        return modelMapper.mapAll(makerRepository.findAll(), MakerServiceModel.class);
     }
-    Maker maker = modelMapper.map(makerServiceModel, Maker.class);
-    makerRepository.save(maker);
-    return modelMapper.map(maker, MakerServiceModel.class);
-  }
 
-  @Override
-  @Transactional(readOnly = true)
-  public ModelTrimsServicesModel getModel(String makerName, String modelName) {
-    Model model =
-        modelRepository
-            .findByNameAndMakerName(modelName, makerName)
-            .orElseThrow(NotFoundException::new);
-    return modelMapper.map(model, ModelTrimsServicesModel.class);
-  }
+    @Override
+    @Transactional(readOnly = true)
+    public List<MakerModelServiceModel> getAllMakerWithModels() {
+        return modelMapper.mapAll(makerRepository.findAllWithModels(), MakerModelServiceModel.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isMaker(Long id) {
+        return makerRepository.existsById(id);
+    }
+
+    @Override
+    @Transactional
+    public MakerServiceModel addModelToMaker(Long makerId, ModelServiceModel modelServiceModel) {
+        Assert.notNull(modelServiceModel, "Model is required");
+        modelServiceModel.setId(null); // modelMapper maps id to model
+        Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
+        boolean modelExists =
+                modelRepository.existsByNameAndMakerId(modelServiceModel.getName(), makerId);
+        if (modelExists) {
+            throw new ResourceAlreadyExistsException(RestMessage.MODEL_ALREADY_EXISTS);
+        }
+        Model model = modelMapper.map(modelServiceModel, Model.class);
+        model.setMaker(maker);
+        maker.getModels().add(model);
+        modelRepository.save(model);
+        makerRepository.save(maker);
+        return modelMapper.map(maker, MakerServiceModel.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ModelTrimsServicesModel> getMakerModelsTrims(Long makerId) {
+        return modelMapper.mapAll(
+                modelRepository.findAllByMakerId(makerId), ModelTrimsServicesModel.class);
+    }
+
+    @Override
+    @Transactional
+    public MakerServiceModel createMaker(MakerServiceModel makerServiceModel) {
+        if (makerRepository.existsByName(makerServiceModel.getName())) {
+            throw new ResourceAlreadyExistsException(RestMessage.MAKER_ALREADY_EXISTS);
+        }
+        Maker maker = modelMapper.map(makerServiceModel, Maker.class);
+        makerRepository.save(maker);
+        return modelMapper.map(maker, MakerServiceModel.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ModelTrimsServicesModel getModel(String makerName, String modelName) {
+        Model model =
+                modelRepository
+                        .findByNameAndMakerName(modelName, makerName)
+                        .orElseThrow(NotFoundException::new);
+        return modelMapper.map(model, ModelTrimsServicesModel.class);
+    }
 }

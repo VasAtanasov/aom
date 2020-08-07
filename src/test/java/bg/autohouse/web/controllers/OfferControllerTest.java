@@ -88,7 +88,7 @@ public class OfferControllerTest extends MvcPerformer {
   }
 
   @BeforeEach
-  void initHeaders() throws Exception, JsonMappingException, JsonProcessingException {
+  void initHeaders() throws Exception {
     if (headers == null) headers = getAuthHeadersFor(LOGIN_REQUEST_ROOT);
     if (user == null) {
       user = userService.fetchUserByUsername(DatabaseSeeder.ROOT_USERNAME);
@@ -132,7 +132,7 @@ public class OfferControllerTest extends MvcPerformer {
     assertThat(offerServiceModel.getId()).isNotNull();
     performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+        .andExpect(jsonPath("$", is(offerServiceModel.getId())));
   }
 
   @Test
@@ -148,14 +148,14 @@ public class OfferControllerTest extends MvcPerformer {
     createRequestWrapper.getOffer().setPrice(22000);
     MockMultipartHttpServletRequestBuilder performBuilderUpdate =
         offerToFormData(
-            createRequestWrapper, API_BASE + "/update/" + offerServiceModel.getId().toString());
+            createRequestWrapper, API_BASE + "/update/" + offerServiceModel.getId());
     getMockMvc()
         .perform(
             performBuilderUpdate.headers(headers).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
         .andExpect(ok);
     performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+        .andExpect(jsonPath("$", is(offerServiceModel.getId())));
   }
 
   @Test
@@ -170,10 +170,10 @@ public class OfferControllerTest extends MvcPerformer {
     assertThat(offerServiceModel.getId()).isNotNull();
     performGet(API_BASE + "/load-for-edit/" + offerServiceModel.getId(), headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$.id", is(offerServiceModel.getId().toString())));
+        .andExpect(jsonPath("$.id", is(offerServiceModel.getId())));
     performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+        .andExpect(jsonPath("$", is(offerServiceModel.getId())));
   }
 
   @Test
@@ -189,7 +189,7 @@ public class OfferControllerTest extends MvcPerformer {
     MvcResult resultDetails =
         performGet(API_BASE + "/details/" + offerServiceModel.getId(), headers)
             .andExpect(ok)
-            .andExpect(jsonPath("$.data.offer.id", is(offerServiceModel.getId().toString())))
+            .andExpect(jsonPath("$.data.offer.id", is(offerServiceModel.getId())))
             .andExpect(
                 jsonPath("$.data.offer.hitCount", greaterThan(offerServiceModel.getHitCount())))
             .andReturn();
@@ -198,11 +198,11 @@ public class OfferControllerTest extends MvcPerformer {
         convertJSONStringToObject(jsonDetails, OfferDetailsResponseWrapper.class);
     performGet(API_BASE + "/details/" + offerServiceModel.getId() + "?pr=true", headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$.data.offer.id", is(offerServiceModel.getId().toString())))
+        .andExpect(jsonPath("$.data.offer.id", is(offerServiceModel.getId())))
         .andExpect(jsonPath("$.data.offer.hitCount", equalTo(wrapper.getOffer().getHitCount())));
     performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+        .andExpect(jsonPath("$", is(offerServiceModel.getId())));
   }
 
   @Test
@@ -241,7 +241,7 @@ public class OfferControllerTest extends MvcPerformer {
         .andExpect(jsonPath("$.maxPrice", is(offerServiceModel.getPrice())));
     performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+        .andExpect(jsonPath("$", is(offerServiceModel.getId())));
   }
 
   @Test
@@ -260,7 +260,7 @@ public class OfferControllerTest extends MvcPerformer {
         .andExpect(jsonPath("$", is(1)));
     performDelete(API_BASE + "/" + offerServiceModel.getId(), headers)
         .andExpect(ok)
-        .andExpect(jsonPath("$", is(offerServiceModel.getId().toString())));
+        .andExpect(jsonPath("$", is(offerServiceModel.getId())));
   }
 
   String getStringContentDataNode(MvcResult result) throws Exception {
@@ -282,8 +282,7 @@ public class OfferControllerTest extends MvcPerformer {
             .perform(
                 performBuilder.headers(headers).contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
             .andExpect(created);
-    MvcResult result = resultActions.andReturn();
-    return result;
+    return resultActions.andReturn();
   }
 
   MockMultipartHttpServletRequestBuilder offerToFormData(

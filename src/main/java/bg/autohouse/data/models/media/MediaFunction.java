@@ -5,7 +5,7 @@ import bg.autohouse.service.services.MediaFileService;
 public enum MediaFunction {
   OFFER_IMAGE(StorageType.LOCAL_FOLDER),
   OFFER_THUMBNAIL_IMAGE(StorageType.DROPBOX_BUCKET),
-  USER_PROFILE_IMAGE(StorageType.LOCAL_FOLDER),
+  USER_PROFILE_IMAGE(StorageType.LOCAL_DATABASE),
   GENERAL_UNKNOWN(StorageType.LOCAL_FOLDER);
 
   private final StorageType storageType;

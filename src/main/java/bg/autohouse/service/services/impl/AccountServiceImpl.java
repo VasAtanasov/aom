@@ -127,7 +127,7 @@ public class AccountServiceImpl implements AccountService {
       dealerAccount.getContact().setPhoneNumber(model.getContactDetails().getPhoneNumber());
       dealerAccount.getContact().setWebLink(model.getContactDetails().getWebLink());
       Address address = dealerAccount.getAddress();
-      if (location.getId() != address.getLocation().getId()) {
+      if (location.getId() != null && !location.getId().equals(address.getLocation().getId())) {
         address.setLocation(location);
       }
       address.setStreet(model.getAddress().getStreet());

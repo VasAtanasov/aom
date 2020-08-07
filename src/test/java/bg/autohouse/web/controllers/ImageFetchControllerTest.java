@@ -1,25 +1,9 @@
 package bg.autohouse.web.controllers;
 
-import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.media.MediaFunction;
 import bg.autohouse.service.services.MediaFileService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import javax.imageio.ImageIO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +17,21 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static bg.autohouse.config.WebConfiguration.APP_V1_MEDIA_TYPE_JSON;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 @AutoConfigureMockMvc
@@ -56,7 +55,7 @@ public class ImageFetchControllerTest extends MvcPerformer {
   }
 
   @BeforeEach
-  void initHeaders() throws Exception, JsonMappingException, JsonProcessingException {
+  void initHeaders() throws Exception {
     byte[] imageBytes = extractBytes("00002.jpg");
     when(mediaFileService.getBytes(any(MediaFile.class))).thenReturn(imageBytes);
     MediaFile mediaFile = new MediaFile();
@@ -89,15 +88,14 @@ public class ImageFetchControllerTest extends MvcPerformer {
         .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
   }
 
-  byte[] extractBytes(String imageName) throws IOException {
+  public static byte[] extractBytes(String imageName) throws IOException {
     Path sourcePath =
         Paths.get("src", "test", "resources", "bg", "autohouse", "web", "controllers", imageName);
     File imageFile = sourcePath.toFile();
     BufferedImage bufferedImage = ImageIO.read(imageFile);
     try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
       ImageIO.write(bufferedImage, "jpg", baos);
-      byte[] imageInByte = baos.toByteArray();
-      return imageInByte;
+      return baos.toByteArray();
     }
   }
 }

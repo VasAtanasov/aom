@@ -3,6 +3,7 @@ package bg.autohouse.service.services.impl;
 import static bg.autohouse.data.specifications.OfferSpecifications.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
+import bg.autohouse.data.models.BaseUuidEntity;
 import bg.autohouse.data.models.EntityConstants;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.Model;
@@ -71,11 +72,9 @@ public class OfferServiceImpl implements OfferService {
   public List<OfferServiceModel> getLatestOffers() {
     Sort sort = Sort.by("createdAt").descending();
     Pageable pageable = PageRequest.of(0, 20, sort);
-    List<OfferServiceModel> topOffers =
-        offerRepository.findPageWithActiveOffers(pageable).stream()
-            .map(offer -> modelMapper.map(offer, OfferServiceModel.class))
-            .collect(Collectors.toUnmodifiableList());
-    return topOffers;
+    return offerRepository.findPageWithActiveOffers(pageable).stream()
+        .map(offer -> modelMapper.map(offer, OfferServiceModel.class))
+        .collect(Collectors.toUnmodifiableList());
   }
 
   @Override
@@ -85,14 +84,14 @@ public class OfferServiceImpl implements OfferService {
     Filter filter = filterRepository.findFilterById(filterId).orElseThrow(NotFoundException::new);
 
     Specification<Offer> specification =
-        where(getOffersByFilter(filter)).and(activeUser()).and(activeOffers());
+        Objects.requireNonNull(where(getOffersByFilter(filter)).and(activeUser())).and(activeOffers());
 
     if (!filter.getFeatures().isEmpty()) {
       List<UUID> offersIds = offerIdsForFilterFeatures(filterId);
       if (offersIds.isEmpty()) {
         return Page.empty();
       }
-      specification = specification.and(uuidIn(offersIds));
+      specification = Objects.requireNonNull(specification).and(uuidIn(offersIds));
     }
 
     return offerRepository
@@ -101,9 +100,9 @@ public class OfferServiceImpl implements OfferService {
   }
 
   @Transactional(readOnly = true)
-  private List<UUID> offerIdsForFilterFeatures(UUID filterId) {
+  List<UUID> offerIdsForFilterFeatures(UUID filterId) {
     return offerRepository.searchOffersIdsWithFeatures(filterId).stream()
-        .map(o -> o.getId())
+        .map(BaseUuidEntity::getId)
         .collect(Collectors.toList());
   }
 
@@ -151,7 +150,7 @@ public class OfferServiceImpl implements OfferService {
     boolean isOffer = offerRepository.existsById(offerId);
     if (!isOffer) throw new OfferNotFoundException();
     return mediaFileService.loadForReference(offerId).stream()
-        .map(media -> media.getFileKey())
+        .map(MediaFile::getFileKey)
         .collect(Collectors.toList());
   }
 
@@ -335,7 +334,7 @@ public class OfferServiceImpl implements OfferService {
   public Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable) {
     if (offerIds.isEmpty()) return Page.empty();
     Specification<Offer> specification =
-        where(favoriteWithIds(offerIds)).and(activeUser()).and(activeOffers());
+        Objects.requireNonNull(where(favoriteWithIds(offerIds)).and(activeUser())).and(activeOffers());
     return offerRepository
         .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
@@ -347,14 +346,12 @@ public class OfferServiceImpl implements OfferService {
     UUID accountId =
         accountRepository
             .findByUserId(userId)
-            .map(acc -> acc.getId())
+            .map(BaseUuidEntity::getId)
             .orElseThrow(AccountNotFoundException::new);
     Specification<Offer> specification = where(withAccountId(accountId));
-    Page<OfferServiceModel> accountOffers =
-        offerRepository
-            .findAll(specification, pageable)
-            .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
-    return accountOffers;
+    return offerRepository
+        .findAll(specification, pageable)
+        .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
   }
 
   @Override

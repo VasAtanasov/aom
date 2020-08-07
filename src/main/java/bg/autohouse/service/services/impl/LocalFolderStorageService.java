@@ -60,12 +60,10 @@ public class LocalFolderStorageService implements StorageService {
     mediaFile.setResourceUrl(storageFile.toUri().toURL());
     if (!Files.exists(storageFile)) {
       Files.createDirectories(storageFile.getParent());
-      log.info("Directory created", storageFile.getParent().toString());
+      log.info("Directory created {}", storageFile.getParent().toString());
     }
-    try {
+    try (inputStream) {
       Files.copy(inputStream, storageFile, StandardCopyOption.REPLACE_EXISTING);
-    } finally {
-      inputStream.close();
     }
   }
 

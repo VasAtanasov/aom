@@ -10,7 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id", callSuper = false)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseUuidEntity extends BaseEntity<UUID> {

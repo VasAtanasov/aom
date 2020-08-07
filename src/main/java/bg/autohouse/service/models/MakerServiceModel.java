@@ -1,12 +1,10 @@
 package bg.autohouse.service.models;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
-@Builder
 public class MakerServiceModel {
   private Long id;
   private String name;

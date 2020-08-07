@@ -19,9 +19,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(callSuper = false)
 @AllArgsConstructor(staticName = "of")
-@EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
 @Table(name = EntityConstants.MODELS)
 public class Model extends BaseLongEntity {

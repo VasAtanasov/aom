@@ -20,13 +20,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// TODO add location
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Builder
 @Table(name = EntityConstants.FILTERS)
 public class Filter extends BaseUuidEntity {
 
@@ -46,7 +43,7 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "price_to"))
   })
   @Embedded
-  @Builder.Default
+  
   private RangeCriteria price = RangeCriteria.of(MIN_VALUE, PRICE_TO);
 
   @AttributeOverrides({
@@ -54,7 +51,7 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "mileage_to"))
   })
   @Embedded
-  @Builder.Default
+  
   private RangeCriteria mileage = RangeCriteria.of(MIN_VALUE, MILEAGE_TO);
 
   @AttributeOverrides({
@@ -62,7 +59,7 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "doors_to"))
   })
   @Embedded
-  @Builder.Default
+  
   private RangeCriteria doors = RangeCriteria.of(MIN_VALUE, DOORS_TO);
 
   @AttributeOverrides({
@@ -70,7 +67,7 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "year_to"))
   })
   @Embedded
-  @Builder.Default
+  
   private RangeCriteria year = RangeCriteria.of(YEAR_FROM, YEAR_TO);
 
   @Column(name = "fuel_type")
@@ -103,7 +100,7 @@ public class Filter extends BaseUuidEntity {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_features_filter_id")))
   @Column(name = "feature")
   @Enumerated(value = EnumType.STRING)
-  @Builder.Default
+  
   private List<Feature> features = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = AccountType.class)
@@ -117,7 +114,7 @@ public class Filter extends BaseUuidEntity {
                   @ForeignKey(name = EntityConstants.PREFIX + "fk_account_type_filter_id")))
   @Column(name = "account_type")
   @Enumerated(value = EnumType.STRING)
-  @Builder.Default
+  
   private List<AccountType> seller = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = State.class)
@@ -130,7 +127,7 @@ public class Filter extends BaseUuidEntity {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_state_filter_id")))
   @Column(name = "state")
   @Enumerated(value = EnumType.STRING)
-  @Builder.Default
+  
   private List<State> state = new ArrayList<>();
 
   @Column(name = "has_accident")

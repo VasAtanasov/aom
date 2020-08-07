@@ -33,34 +33,26 @@ public class InitialStateServiceImpl implements InitialStateService {
     searchCriteriaNamesForSelectCriteria.add("modelName");
     List<String> searchCriteriaNamesForRangeCriteria =
         Arrays.asList("doors", "mileage", "price", "year");
-
     ClassUtils.find(ENUM_PACKAGE).stream()
         .filter(cls -> cls.isEnum() && Textable.class.isAssignableFrom(cls))
         .forEach(
             cls -> {
               String className = lowerFirstLetter(cls.getSimpleName());
-
               SelectCriteria selectAnnotation = cls.getAnnotation(SelectCriteria.class);
               CheckboxCriteria checkBoxAnnotation = cls.getAnnotation(CheckboxCriteria.class);
-
               if (checkBoxAnnotation != null) {
                 searchCriteriaNamesForCheckboxCriteria.add(className);
               } else if (selectAnnotation != null) {
                 searchCriteriaNamesForSelectCriteria.add(className);
               }
-
               criteria.put(className, EnumUtils.ENUM_MAP_OF_TEXTABLE(cls));
             });
-
-    InitialStateModel initialState =
-        InitialStateModel.builder()
-            .metadata(criteria)
-            .searchCriteriaNamesForCheckboxCriteria(searchCriteriaNamesForCheckboxCriteria)
-            .searchCriteriaNamesForSelectCriteria(searchCriteriaNamesForSelectCriteria)
-            .searchCriteriaNamesForRangeCriteria(searchCriteriaNamesForRangeCriteria)
-            .build();
-
-    return initialState;
+      return InitialStateModel.builder()
+          .metadata(criteria)
+          .searchCriteriaNamesForCheckboxCriteria(searchCriteriaNamesForCheckboxCriteria)
+          .searchCriteriaNamesForSelectCriteria(searchCriteriaNamesForSelectCriteria)
+          .searchCriteriaNamesForRangeCriteria(searchCriteriaNamesForRangeCriteria)
+          .build();
   }
 
   private String lowerFirstLetter(String word) {

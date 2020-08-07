@@ -16,9 +16,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(callSuper = false)
-@AllArgsConstructor(staticName = "of")
-@EqualsAndHashCode(of = "name", callSuper = true)
 @Entity
 @Table(name = EntityConstants.MAKERS)
 public class Maker extends BaseLongEntity {

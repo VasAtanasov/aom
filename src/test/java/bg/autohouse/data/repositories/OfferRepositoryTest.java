@@ -12,6 +12,7 @@ import bg.autohouse.data.models.enums.State;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.specifications.OfferSpecifications;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,68 +31,58 @@ public class OfferRepositoryTest {
 
   @Test
   void whenOfferFilter_byFuelType_shouldReturnCollection() {
-    Filter filter = Filter.builder().fuelType(FuelType.GASOLINE).build();
-
+    Filter filter = new Filter();
+    filter.setFuelType(FuelType.GASOLINE);
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
-
     List<Offer> offers = offerRepository.findAll(offerSpecification);
-
     assertThat(offers)
         .allMatch(offer -> offer.getVehicle().getFuelType().equals(FuelType.GASOLINE));
   }
 
   @Test
   void whenOfferFilter_byBodyStyle_shouldReturnCollection() {
-    Filter filter = Filter.builder().bodyStyle(BodyStyle.SUV).build();
-
+    Filter filter = new Filter();
+    filter.setBodyStyle(BodyStyle.SUV);
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
-
     List<Offer> offers = offerRepository.findAll(offerSpecification);
-
     assertThat(offers).allMatch(offer -> offer.getVehicle().getBodyStyle().equals(BodyStyle.SUV));
   }
 
   @Test
   void whenOfferFilter_byState_shouldReturnCollection() {
+    Filter filter = new Filter();
     List<State> state = Arrays.asList(State.NEW, State.USED);
-    Filter filter = Filter.builder().state(state).build();
-
+    filter.setState(state);
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
-
     List<Offer> offers = offerRepository.findAll(offerSpecification);
-
     assertThat(offers).allMatch(offer -> state.contains(offer.getVehicle().getState()));
   }
 
   @Test
   void whenOfferFilter_bySeller_shouldReturnCollection() {
-    List<AccountType> accountTypes = Arrays.asList(AccountType.DEALER);
-    Filter filter = Filter.builder().seller(accountTypes).build();
-
+    List<AccountType> accountTypes = Collections.singletonList(AccountType.DEALER);
+    Filter filter = new Filter();
+    filter.setSeller(accountTypes);
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
-
     List<Offer> offers = offerRepository.findAll(offerSpecification);
-
     assertThat(offers)
         .allMatch(offer -> accountTypes.contains(offer.getAccount().getAccountType()));
   }
 
   @Test
   void whenOfferFilter_byFeatureWithNullValues_shouldReturnSameCollectionWithoutNulls() {
-    List<Feature> features = Arrays.asList(Feature.CD_PLAYER);
+    List<Feature> features = Collections.singletonList(Feature.CD_PLAYER);
     List<Feature> featuresWithNulls = Arrays.asList(Feature.CD_PLAYER, null, null);
-
-    Filter filter = Filter.builder().features(features).build();
-    Filter filterFeaturesWithNulls = Filter.builder().features(featuresWithNulls).build();
-
+    Filter filter = new Filter();
+    filter.setFeatures(features);
+    Filter filterFeaturesWithNulls = new Filter();
+    filterFeaturesWithNulls.setFeatures(featuresWithNulls);
     Specification<Offer> offerSpecification = where(OfferSpecifications.getOffersByFilter(filter));
     Specification<Offer> offerSpecificationFeaturesWithNulls =
         where(OfferSpecifications.getOffersByFilter(filterFeaturesWithNulls));
-
     List<Offer> offers = offerRepository.findAll(offerSpecification);
     List<Offer> offersFeaturesWithNulls =
         offerRepository.findAll(offerSpecificationFeaturesWithNulls);
-
     assertThat(offers).size().isEqualTo(offersFeaturesWithNulls.size());
   }
 }

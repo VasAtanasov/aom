@@ -1,65 +1,26 @@
 package bg.autohouse.util;
 
-import static java.util.Collections.addAll;
-import static java.util.Comparator.naturalOrder;
-import static java.util.Comparator.nullsFirst;
-import static java.util.Comparator.nullsLast;
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-
 import bg.autohouse.data.models.Identifiable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.collect.Sets;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.Set;
-import java.util.TreeSet;
+
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import org.apache.commons.lang.StringUtils;
+
+import static java.util.Collections.addAll;
+import static java.util.Comparator.*;
+import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.*;
 
 /** F stands for utilities for functional programming style (mainly operating with collections). */
 public final class F {
-
-  /**
-   * Lazily evaluate given suppliers as long as supplier returns Optional having value present.
-   *
-   * @param suppliers
-   * @param <T>
-   * @return
-   */
-  @SafeVarargs
-  public static <T> Optional<T> optionalFromSuppliers(Supplier<Optional<T>>... suppliers) {
-    return Arrays.stream(suppliers)
-        .map(Supplier::get)
-        .filter(Optional::isPresent)
-        .map(Optional::get)
-        .findFirst();
-  }
 
   @SafeVarargs
   public static <T> T firstNonNull(T... objects) {
@@ -73,37 +34,34 @@ public final class F {
     return null;
   }
 
-  @SafeVarargs
   public static boolean anyNull(Object... objects) {
     return objects == null || Arrays.stream(objects).anyMatch(Objects::isNull);
   }
 
-  @SafeVarargs
   public static boolean anyNonNull(Object... objects) {
     return firstNonNull(objects) != null;
   }
 
-  @SafeVarargs
   public static boolean allNull(Object... objects) {
     return objects == null
         || objects.length > 0 && Arrays.stream(objects).allMatch(Objects::isNull);
   }
 
-  @SafeVarargs
   public static boolean allNotNull(Object... objects) {
     return !isNullOrEmpty(objects) && Arrays.stream(objects).allMatch(Objects::nonNull);
-  }
-
-  @SafeVarargs
-  public static <T> TreeSet<T> newSortedSet(T... values) {
-    return values == null
-        ? new TreeSet<>()
-        : Arrays.stream(values).collect(toCollection(TreeSet::new));
   }
 
   public static <T> ArrayList<T> newListWithCapacityOf(Iterable<?> iterable) {
     final OptionalInt sizeOpt = sizeMaybe(iterable);
     return sizeOpt.isPresent() ? new ArrayList<>(sizeOpt.getAsInt()) : new ArrayList<>();
+  }
+
+  @SuppressWarnings("SortedCollectionWithNonComparableKeys")
+  @SafeVarargs
+  public static <T> TreeSet<T> newSortedSet(T... values) {
+    return values == null
+            ? new TreeSet<>()
+            : Arrays.stream(values).collect(toCollection(TreeSet::new));
   }
 
   public static <T> HashSet<T> newSetWithExpectedSizeOf(Iterable<?> iterable) {
@@ -143,21 +101,16 @@ public final class F {
 
   public static <T> List<T> filterToList(
       Iterable<? extends T> iterable, Predicate<? super T> predicate) {
-
     requireNonNull(iterable, "iterable is null");
     requireNonNull(predicate, "predicate is null");
-
     return stream(iterable).filter(predicate).collect(toList());
   }
 
   public static <E extends Enum<E>> EnumSet<E> filterToEnumSet(
       Class<E> enumType, Predicate<? super E> predicate) {
-
     requireNonNull(enumType, "enumType is null");
     requireNonNull(predicate, "predicate is null");
-
     final EnumSet<E> result = EnumSet.noneOf(enumType);
-
     for (final E enumValue : enumType.getEnumConstants()) {
       if (predicate.test(enumValue)) {
         result.add(enumValue);
@@ -169,54 +122,42 @@ public final class F {
 
   public static <T> Set<T> filterToSet(
       Iterable<? extends T> iterable, Predicate<? super T> predicate) {
-
     requireNonNull(iterable, "iterable is null");
     requireNonNull(predicate, "predicate is null");
-
     return stream(iterable).filter(predicate).collect(toSet());
   }
 
   public static <S, T, C extends Collection<T>> C mapNonNulls(
       Iterable<? extends S> iterable, C destination, Function<? super S, ? extends T> mapper) {
-
     requireNonNull(iterable, "iterable is null");
     requireNonNull(destination, "destination is null");
     requireNonNull(mapper, "mapper is null");
-
     return mapNonNullsInternal(stream(iterable), mapper, () -> destination);
   }
 
   public static <S, T> ArrayList<T> mapNonNullsToList(
       Iterable<? extends S> iterable, Function<? super S, T> mapper) {
-
     requireNonNull(iterable, "iterable is null");
     requireNonNull(mapper, "mapper is null");
-
     return mapNonNullsInternal(stream(iterable), mapper, () -> newListWithCapacityOf(iterable));
   }
 
   public static <S, T> HashSet<T> mapNonNullsToSet(
       Iterable<? extends S> iterable, Function<? super S, T> mapper) {
-
     requireNonNull(iterable, "iterable is null");
     requireNonNull(mapper, "mapper is null");
-
     return mapNonNullsInternal(stream(iterable), mapper, () -> newSetWithExpectedSizeOf(iterable));
   }
 
   public static <S, T> ArrayList<T> mapNonNullsToList(
       S[] array, Function<? super S, ? extends T> mapper) {
-
     requireNonNull(array, "array is null");
-
     return mapNonNullsInternal(Arrays.stream(array), mapper, () -> new ArrayList<>(array.length));
   }
 
   public static <S, T> HashSet<T> mapNonNullsToSet(
       S[] array, Function<? super S, ? extends T> mapper) {
-
     requireNonNull(array, "array is null");
-
     return mapNonNullsInternal(
         Arrays.stream(array), mapper, () -> Sets.newHashSetWithExpectedSize(array.length));
   }
@@ -233,10 +174,8 @@ public final class F {
 
   public static <T> Map<Boolean, List<T>> partition(
       Iterable<? extends T> iterable, Predicate<? super T> predicate) {
-
     requireNonNull(iterable, "iterable is null");
     requireNonNull(predicate, "predicate is null");
-
     return stream(iterable).collect(partitioningBy(predicate));
   }
 
@@ -264,9 +203,7 @@ public final class F {
   @SafeVarargs
   public static <T extends Comparable<? super T>> T getFirst(
       Comparator<T> comparator, final boolean nullsFirst, T... values) {
-
     requireNonNull(comparator, "comparator is null");
-
     return values == null || values.length == 0
         ? null
         : Arrays.stream(values)
@@ -283,7 +220,6 @@ public final class F {
   @SafeVarargs
   public static <T> boolean containsAny(Iterable<? extends T> iterable, T... values) {
     requireNonNull(iterable, "iterable is null");
-
     if (values != null) {
       for (final T value : values) {
         if (Iterables.contains(iterable, value)) {
@@ -297,7 +233,6 @@ public final class F {
   public static <T> boolean containsAny(Iterable<T> iterable, Iterable<T> values) {
     requireNonNull(iterable, "iterable is null");
     requireNonNull(values, "values is null");
-
     for (final T value : values) {
       if (Iterables.contains(iterable, value)) {
         return true;
@@ -309,7 +244,6 @@ public final class F {
   @SafeVarargs
   public static <T> boolean containsAll(Iterable<? extends T> iterable, T... values) {
     requireNonNull(iterable, "iterable is null");
-
     if (values != null) {
       for (final T value : values) {
         if (!Iterables.contains(iterable, value)) {
@@ -323,7 +257,6 @@ public final class F {
   public static <T> boolean containsAll(Iterable<T> iterable, Iterable<T> values) {
     requireNonNull(iterable, "iterable is null");
     requireNonNull(values, "values is null");
-
     for (final T value : values) {
       if (!Iterables.contains(iterable, value)) {
         return false;
@@ -359,10 +292,8 @@ public final class F {
 
   public static <T, U extends Comparable<? super U>> U max(
       Iterable<? extends T> iterable, Function<? super T, ? extends U> extractor) {
-
     requireNonNull(iterable, "iterable is null");
     requireNonNull(extractor, "extractor is null");
-
     return stream(iterable)
         .filter(Objects::nonNull)
         .map(extractor)
@@ -371,21 +302,16 @@ public final class F {
         .orElse(null);
   }
 
-  public static <T, U extends Comparable<? super U>> U nullsafeMax(
+  public static <T, U extends Comparable<? super U>> U nullSafeMax(
       final T first, T second, Function<? super T, ? extends U> mapper) {
-
     requireNonNull(mapper, "mapper is null");
-
     final Optional<U> secondValueOpt = Optional.ofNullable(second).map(mapper);
-
     return Optional.ofNullable(first)
         .map(mapper)
         .map(
             firstValue -> {
               return secondValueOpt
-                  .map(
-                      secondValue ->
-                          firstValue.compareTo(secondValue) > 0 ? firstValue : secondValue)
+                  .filter(secondValue -> firstValue.compareTo(secondValue) <= 0)
                   .orElse(firstValue);
             })
         .orElseGet(() -> secondValueOpt.orElse(null));
@@ -397,30 +323,18 @@ public final class F {
 
   public static <T, U> Map<U, Long> countByApplication(
       Stream<? extends T> stream, Function<? super T, U> classifier) {
-
     requireNonNull(stream, "stream is null");
     requireNonNull(classifier, "classifier is null");
-
     return stream.collect(groupingBy(classifier, counting()));
   }
 
   public static <T> void consumeIfNonEmpty(
       Collection<T> collection, Consumer<Collection<T>> consumer) {
-
     requireNonNull(collection, "collection is null");
     requireNonNull(consumer, "consumer is null");
-
     if (!collection.isEmpty()) {
       consumer.accept(collection);
     }
-  }
-
-  public static Optional<String> trimToOptional(String str) {
-    return Optional.ofNullable(StringUtils.trimToNull(str));
-  }
-
-  public static <T> List<T> listFromOptional(Optional<T> optional) {
-    return optional.map(ImmutableList::of).orElseGet(ImmutableList::of);
   }
 
   public static <ID> ID getId(Identifiable<ID> identifiable) {

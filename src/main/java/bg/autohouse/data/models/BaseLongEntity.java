@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "id", callSuper = false)
 @MappedSuperclass
 public abstract class BaseLongEntity extends BaseEntity<Long> {
 

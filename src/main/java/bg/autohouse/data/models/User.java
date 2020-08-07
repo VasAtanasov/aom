@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = EntityConstants.USERS)
 @NamedQueries({
   @NamedQuery(

@@ -46,8 +46,10 @@ public class ImageResizer {
   public byte[] resize(
       final byte[] photoData, final int width, final int height, final boolean keepProportions)
       throws IOException {
-    final BufferedImage inputImage = ImageIO.read(new ByteArrayInputStream(photoData));
-    return toJPG(resize(inputImage, width, height, keepProportions));
+    try (ByteArrayInputStream imageStream = new ByteArrayInputStream(photoData)) {
+      final BufferedImage inputImage = ImageIO.read(imageStream);
+      return toJPG(resize(inputImage, width, height, keepProportions));
+    }
   }
 
   private static BufferedImage resize(

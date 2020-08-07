@@ -38,13 +38,11 @@ public class MakerServiceImplTest {
 
   @Test
   void whenFindById_withNonExistingMaker_shouldThrow() {
-
     Throwable thrown =
         catchThrowable(
             () -> {
               makerService.getOne(1000L);
             });
-
     assertThat(thrown)
         .isInstanceOf(MakerNotFoundException.class)
         .hasMessage(RestMessage.MAKER_NOT_FOUND.name());
@@ -57,7 +55,6 @@ public class MakerServiceImplTest {
             () -> {
               makerService.addModelToMaker(1000L, ModelServiceModel.of(1L, "name", 1000L));
             });
-
     assertThat(thrown)
         .isInstanceOf(MakerNotFoundException.class)
         .hasMessage(RestMessage.MAKER_NOT_FOUND.name());
@@ -66,13 +63,11 @@ public class MakerServiceImplTest {
   @Test
   void whenAddModelToMaker_withExistingModelName_shouldThrow() {
     ModelServiceModel model = ModelServiceModel.builder().name("ILX").makerId(2L).build();
-
     Throwable thrown =
         catchThrowable(
             () -> {
               makerService.addModelToMaker(2L, model);
             });
-
     assertThat(thrown)
         .isInstanceOf(ResourceAlreadyExistsException.class)
         .hasMessage(RestMessage.MODEL_ALREADY_EXISTS.name());
@@ -82,9 +77,7 @@ public class MakerServiceImplTest {
   void whenAddModelToMaker_withValidData_shouldAdd() {
     Maker maker = Maker.builder().id(1L).name("Audi").build();
     ModelServiceModel model = ModelServiceModel.of(1L, "Q5", maker.getId());
-
     MakerServiceModel updatedMaker = makerService.addModelToMaker(maker.getId(), model);
-
     assertThat(updatedMaker).isNotNull();
   }
 

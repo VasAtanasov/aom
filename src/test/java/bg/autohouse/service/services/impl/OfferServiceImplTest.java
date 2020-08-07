@@ -10,6 +10,7 @@ import bg.autohouse.SingletonModelMapper;
 import bg.autohouse.data.models.Filter;
 import bg.autohouse.data.models.account.Account;
 import bg.autohouse.data.models.enums.Feature;
+import bg.autohouse.data.models.media.MediaFile;
 import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.repositories.AccountRepository;
 import bg.autohouse.data.repositories.FilterRepository;
@@ -23,10 +24,9 @@ import bg.autohouse.util.ImageResizer;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -101,5 +101,21 @@ public class OfferServiceImplTest {
     assertThat(thrown)
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageStartingWith(RestMessage.MAX_OFFER_COUNT_REACHED.name());
+  }
+
+  @Test
+  void when_fetchOfferImages_validId_shouldReturn200() {
+    Offer offer = new Offer();
+    offer.setId(UUID.randomUUID());
+    assertThat(offer.getId()).isNotNull();
+    when(offerRepository.existsById(offer.getId())).thenReturn(true);
+    MediaFile mediaFile1 = new MediaFile();
+    mediaFile1.setFileKey("key1");
+    MediaFile mediaFile2 = new MediaFile();
+    mediaFile2.setFileKey("key2");
+    List<MediaFile> mediaFiles = Arrays.asList(mediaFile1, mediaFile2);
+    when(mediaFileService.loadForReference(offer.getId())).thenReturn(mediaFiles);
+    List<String> imagesKeys = offerService.fetchOfferImages(offer.getId());
+    assertThat(imagesKeys).hasSize(2);
   }
 }

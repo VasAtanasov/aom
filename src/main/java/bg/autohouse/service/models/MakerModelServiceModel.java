@@ -7,10 +7,8 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class MakerModelServiceModel {
   private Long id;
   private String name;
-  @Builder.Default private List<ModelServiceModel> models = new ArrayList<>();
+  private List<ModelServiceModel> models = new ArrayList<>();
 }

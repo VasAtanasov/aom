@@ -1,10 +1,5 @@
 package bg.autohouse.web.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.service.models.UserRegisterServiceModel;
@@ -31,6 +26,11 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(TimingExtension.class)
 @Transactional
@@ -61,7 +61,6 @@ public class AuthenticationControllerTest extends MvcPerformer {
   @Test
   void when_loginOrRegister_withNonExistingUsername_thenReturns200() throws Exception {
     LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
-
     performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.action.type", is(ActionType.LOGIN_OR_REGISTER.name())))
@@ -73,7 +72,6 @@ public class AuthenticationControllerTest extends MvcPerformer {
     userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
     userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
     LoginOrRegisterRequest request = LoginOrRegisterRequest.of("username@mail.com");
-
     performPost(API_BASE + "/login-or-register", request)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.action.type", is(ActionType.LOGIN_OR_REGISTER.name())))
@@ -92,7 +90,6 @@ public class AuthenticationControllerTest extends MvcPerformer {
   void when_register_withExistingUser_thenReturns409() throws Exception {
     userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
     userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
-
     performPost(API_BASE + "/register", VALID_USER_REGISTER_MODEL)
         .andExpect(status().isConflict())
         .andExpect(jsonPath("$.message", is(RestMessage.USER_ALREADY_EXISTS.name())));
@@ -109,7 +106,6 @@ public class AuthenticationControllerTest extends MvcPerformer {
   @Test
   void when_verifyRegistration_withValidToken_thenReturns200() throws Exception {
     String code = userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
-
     performGet(
             API_BASE
                 + "/register/verify?code="
@@ -128,7 +124,6 @@ public class AuthenticationControllerTest extends MvcPerformer {
             .password("password")
             .confirmPassword("password")
             .build();
-
     performPost(API_BASE + "/register", invalidModel).andExpect(status().isBadRequest());
   }
 
@@ -148,7 +143,6 @@ public class AuthenticationControllerTest extends MvcPerformer {
     userService.generateUserRegistrationVerifier(VALID_REGISTER_MODEL);
     userService.completeRegistration(VALID_REGISTER_MODEL.getUsername());
     PasswordResetRequest resetRequest = PasswordResetRequest.of(VALID_REGISTER_MODEL.getUsername());
-
     performPost(API_BASE + "/password-reset-request", resetRequest)
         .andExpect(status().isOk())
         .andExpect(
