@@ -15,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(
-    name = EntityConstants.VERIFICATION_TOKEN_CODES,
-    indexes = {@Index(name = "idx_code_username", columnList = "username, code")})
+@Table(name = EntityConstants.VERIFICATION_TOKEN_CODES)
 public class VerificationTokenCode extends BaseLongEntity {
 
   private static final long serialVersionUID = -1263466037844427469L;
