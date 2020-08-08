@@ -1,5 +1,5 @@
-@accounts = http://localhost:8007/api/accounts
-@auth = http://localhost:8007/api/auth
+@accounts = https://autohouse-server.herokuapp.com/api/accounts
+@auth = https://autohouse-server.herokuapp.com/api/auth
 @content-type = application/bg.autohouse.api-v1+json
 ### Login
 # @name loggedUser
@@ -7,7 +7,7 @@ POST {{auth}}/login HTTP/1.1
 Content-Type: {{content-type}}
 
 {
-    "username": "username@mail.com",
+    "username": "vas@mail.com",
     "password": "123"
 }
 
@@ -31,7 +31,7 @@ Authorization: Bearer {{token}}
 
 ###
 
-POST {{accounts}}/dealer-request HTTP/1.1
+POST {{accounts}}/dealer-create HTTP/1.1
 Content-Type: application/bg.autohouse.api-v1+json
 Authorization: Bearer {{token}}
 
@@ -42,7 +42,7 @@ Authorization: Bearer {{token}}
     "description": "Nostrum saepe ut perferendis aperiam similique ipsum et.",
     "contactDetailsPhoneNumber": "970.105.0507",
     "contactDetailsWebLink": "http://wilbert.biz",
-    "addressLocationId": 2521,
+    "addressLocationPostalCode": 1000,
     "addressStreet": "5505 N. Summit Street",
     "accountType": "DEALER"
 }

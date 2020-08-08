@@ -1,6 +1,8 @@
-@host = http://localhost:8007/api/vehicles
+# @host = http://localhost:8007/api/vehicles
+@host = https://autohouse-server.herokuapp.com/api/vehicles
 @users = http://localhost:8007/api/users
-@auth = http://localhost:8007/api/auth
+# @auth = http://localhost:8007/api/auth
+@auth =https://autohouse-server.herokuapp.com/api/auth
 
 ###
 
@@ -123,11 +125,20 @@ Authorization: Bearer eyJraWQiOiI5NmQ4YTU1NC04NjM1LTQwMTktYTUzZC1mNGQ4NWY5MzE2NT
 
 ###
 
+POST {{auth}}/login-or-register HTTP/1.1
+Content-Type: application/bg.autohouse.api-v1+json
+
+{
+    "username": "vas@mail.com"
+}
+
+###
+
 POST {{auth}}/login HTTP/1.1
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-    "username": "simple_user@mail.com",
+    "username": "vas@mail.com",
     "password": "123"
 }
 
