@@ -42,13 +42,13 @@ public class Offer extends BaseUuidEntity {
   private String primaryPhotoKey =
       "https://www.dropbox.com/s/qp0hojikkgkc52s/no-photo-large.png?raw=1";
 
-  @Column(name = "price", nullable = false, columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  @Column(name = "price", nullable = false)
   private Integer price = 0;
 
-  @Column(name = "hit_count", columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  @Column(name = "hit_count")
   private Integer hitCount = 0;
 
-  @Column(name = "saved_count", columnDefinition = "INT UNSIGNED DEFAULT(0)")
+  @Column(name = "saved_count")
   private Integer savedCount = 0;
 
   @Column(name = "description", columnDefinition = "TEXT")
