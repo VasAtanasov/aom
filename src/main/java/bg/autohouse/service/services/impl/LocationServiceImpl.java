@@ -1,5 +1,6 @@
 package bg.autohouse.service.services.impl;
 
+import bg.autohouse.data.models.geo.Location;
 import bg.autohouse.data.models.geo.Province;
 import bg.autohouse.data.projections.geo.LocationId;
 import bg.autohouse.data.repositories.LocationRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +37,16 @@ public class LocationServiceImpl implements LocationService {
   public int createProvincesBulk(List<ProvinceLocationsCreateRequest> provincesRequest) {
     for (ProvinceLocationsCreateRequest provinceLocationsCreateRequest : provincesRequest) {
       Province province = modelMapper.map(provinceLocationsCreateRequest, Province.class);
-      provinceRepository.save(province);
+      List<Location> locations = province.getLocations();
+      province.setId(null);
+      province.setLocations(new ArrayList<>());
+      province = provinceRepository.save(province);
+      for (Location location : locations) {
+        location.setId(null);
+        location.setProvince(province);
+        province.getLocations().add(location);
+        provinceRepository.save(province);
+      }
     }
     return (int) locationRepository.count();
   }
