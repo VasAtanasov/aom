@@ -12,9 +12,11 @@ import bg.autohouse.service.models.user.ChangeRoleServiceModel;
 import bg.autohouse.service.models.user.UserAdminDetailsServiceModel;
 import bg.autohouse.service.models.user.UserRowServiceModel;
 import bg.autohouse.service.services.AdminService;
+import bg.autohouse.service.services.LocationService;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
 import bg.autohouse.web.models.request.ChangeRoleRequest;
+import bg.autohouse.web.models.request.ProvinceLocationsCreateRequest;
 import bg.autohouse.web.models.request.account.AccountWrapper;
 import bg.autohouse.web.models.wrappers.ListWrapper;
 import bg.autohouse.web.util.RestUtil;
@@ -47,6 +49,7 @@ public class AdminController extends BaseController {
 
   private final AdminService adminService;
   private final ModelMapperWrapper modelMapper;
+  private final LocationService locationService;
 
   @GetMapping(
       value = "/users/list",
@@ -104,6 +107,13 @@ public class AdminController extends BaseController {
         adminService.bulkCreateAccounts(
             user.getId(), modelMapper.mapAll(accounts, AccountCreateServiceModel.class));
     log.info("Update: {} users", created);
+    return ResponseEntity.ok(created);
+  }
+
+  @PostMapping(value = "/provinces/bulk")
+  public ResponseEntity<?> createProvinceLocations(
+      @Valid @RequestBody List<ProvinceLocationsCreateRequest> provinces) {
+    int created = locationService.createProvincesBulk(provinces);
     return ResponseEntity.ok(created);
   }
 }
