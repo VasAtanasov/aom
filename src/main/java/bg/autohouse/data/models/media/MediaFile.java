@@ -14,13 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(
-    name = EntityConstants.MEDIA_FILE,
-    uniqueConstraints = {
-      @UniqueConstraint(
-          columnNames = {"bucket", "file_key"},
-          name = "uk_media_file_bucket_file_key")
-    })
+@Table(name = EntityConstants.MEDIA_FILE)
 public class MediaFile extends BaseUuidEntity {
 
   private static final long serialVersionUID = 1L;
