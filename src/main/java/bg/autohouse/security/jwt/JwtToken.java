@@ -18,14 +18,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(
-    name = EntityConstants.TOKENS,
-    indexes = {
-      @Index(
-          name = "idx_token_username_token_uid",
-          columnList = "username, token_uid",
-          unique = false)
-    })
+@Table(name = EntityConstants.TOKENS)
 @NamedQuery(
     name = JwtToken.DELETE_TOKEN,
     query = "DELETE FROM JwtToken t where t.expirationTime <= :now")

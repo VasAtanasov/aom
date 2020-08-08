@@ -16,14 +16,6 @@ import lombok.*;
 @Entity
 @Table(
     name = EntityConstants.MEDIA_FILE,
-    indexes = {
-      @Index(
-          name = "idx_" + EntityConstants.MEDIA_FILE + "_reference_id",
-          columnList = "reference_id"),
-      @Index(
-          name = "idx_" + EntityConstants.MEDIA_FILE + "_storage_type",
-          columnList = "storage_type")
-    },
     uniqueConstraints = {
       @UniqueConstraint(
           columnNames = {"bucket", "file_key"},

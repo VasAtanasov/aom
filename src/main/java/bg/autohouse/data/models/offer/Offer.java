@@ -8,17 +8,12 @@ import bg.autohouse.data.models.geo.Location;
 import javax.persistence.*;
 import lombok.*;
 
-// TODO add validation annotations to entities
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(
-    name = EntityConstants.OFFERS,
-    indexes = {
-      @Index(name = "idx_" + EntityConstants.OFFERS + "_account_id", columnList = "account_id")
-    })
+@Table(name = EntityConstants.OFFERS)
 public class Offer extends BaseUuidEntity {
 
   private static final long serialVersionUID = -2840866963962522737L;
