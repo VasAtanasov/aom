@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ProvinceLocationsCreateRequest {
+  @NonNull private Long id;
   @NonNull private String name;
   @NonNull private Integer ekatte;
   private List<LocationCreateRequest> locations = new ArrayList<>();

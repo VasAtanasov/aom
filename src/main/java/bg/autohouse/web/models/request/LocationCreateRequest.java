@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LocationCreateRequest {
+  @NonNull private Long id;
   @NonNull private String city;
   @NonNull private String cityRegion;
   @NonNull private String country;
