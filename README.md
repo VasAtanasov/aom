@@ -133,9 +133,33 @@ The app defines following CRUD APIs.
 | POST   | /api/accounts/dealer-create | Creates dealer account | [JSON](#create-dealer) |
 
 ### Images
+
 | Method | Url | Description | Sample Valid Request Body | 
 | ------ | --- | ---------- | --------------------------- |
 | GET    | /api/images/{folder}/{year}/{month}/{day}/{offerId}/{fileName:.+} | Serves offers images by image key from offer entity | |
+
+### Search
+
+| Method | Url | Description | Sample Valid Request Body | 
+| ------ | --- | ---------- | --------------------------- |
+| POST   | /api/vehicles/offers/search | Filter available offers | |
+| POST   | /api/vehicles/offers/search/favorites | Get user's favorites offers by ids |  |
+| POST   | /api/vehicles/offers/search/save | Saves filter for later easy seaech |  |
+| GET    | /api/vehicles/offers/search/list | List saved searches |  |
+| DEL    | /api/vehicles/offers/search/saved-search/{offerId} | Delete saved search |  |
+
+### Offer
+
+| Method | Url | Description | Sample Valid Request Body | 
+| ------ | --- | ---------- | --------------------------- |
+| POST   | /api/vehicles/offers | Create offer | |
+| POST   | /api/vehicles/offers/update/{offerId} | Update offer |  |
+| GET    | /api/vehicles/offers/load-for-edit/{offerId} | Load offer for update |  |
+| GET    | /api/vehicles/offers/details/{offerId} | Load offer for detailed view |  |
+| DEL    | /api/vehicles/offers/{offerId} | Delete offer by id |  |
+| GET    | /api/vehicles/offers/top | Get list of latest offers |   |
+| GET    | /api/vehicles/offers/statistics | Get general data like total active offers, max price, min price etc. |  |
+| GET    | /api/vegicles/offers/{accountId}/count | Get user's taken offers slots |   |
 
 
 ## Sample Valid JSON Request Bodies
