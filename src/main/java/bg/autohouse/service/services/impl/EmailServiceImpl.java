@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -15,7 +15,6 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
@@ -25,7 +24,7 @@ public class EmailServiceImpl implements EmailService {
 
   private static final String BASE_URL = "http://localhost:8007/api";
 
-  private final JavaMailSenderImpl javaMailSender;
+  private final JavaMailSender javaMailSender;
 
   @Qualifier("emailTemplateEngine")
   private final TemplateEngine templateEngine;
@@ -68,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
   @Override
   public void sendPasswordResetRequest(String firstName, String email, String token) {
     EmailServiceModelBuilder mail =
-            EmailServiceModel.builder().subject(REGISTRATION_SUBJECT).toAddress(email);
+        EmailServiceModel.builder().subject(REGISTRATION_SUBJECT).toAddress(email);
     Context context = new Context();
     context.setVariable("token", token);
     context.setVariable("firstName", firstName);

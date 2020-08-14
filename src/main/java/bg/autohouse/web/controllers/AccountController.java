@@ -53,7 +53,7 @@ public class AccountController extends BaseController {
   }
 
   @PostMapping(
-      value = "/dealer-create",
+        value = "/dealer-create",
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
   public ResponseEntity<?> createOrUpdateDealerAccount(

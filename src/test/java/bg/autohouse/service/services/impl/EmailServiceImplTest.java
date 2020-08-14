@@ -22,6 +22,8 @@ import org.thymeleaf.TemplateEngine;
 import javax.mail.Message;
 import javax.mail.internet.MimeMessage;
 
+import java.util.Properties;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
@@ -30,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EmailServiceImplTest {
 
-  @Autowired JavaMailSenderImpl emailSender;
   @Autowired MailProperties mailProperties;
 
   @Autowired
@@ -45,8 +46,14 @@ public class EmailServiceImplTest {
     testSmtp = new GreenMail(ServerSetupTest.SMTP_IMAP);
     testSmtp.setUser(mailProperties.getDefaultFromAddress(), mailProperties.getPassword());
     testSmtp.start();
+    JavaMailSenderImpl emailSender = new JavaMailSenderImpl();
     emailSender.setPort(3025);
     emailSender.setHost("localhost");
+    emailSender.setProtocol("smtp");
+    emailSender.setUsername(mailProperties.getDefaultFromAddress());
+    emailSender.setPassword(mailProperties.getPassword());
+    Properties props = mailProperties.getJavaMailProperties();
+    emailSender.setJavaMailProperties(props);
     emailService = new EmailServiceImpl(emailSender, templateEngine);
   }
 

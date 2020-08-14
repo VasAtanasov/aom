@@ -126,7 +126,7 @@ public class AccountServiceImplTest {
     user.setId(UUID.randomUUID());
     when(userRepository.findByIdWithRoles(any(UUID.class))).thenReturn(Optional.of(user));
     Location location = new Location();
-    when(locationRepository.findByPostalCode(anyInt())).thenReturn(Optional.of(location));
+    when(locationRepository.findFirstByPostalCode(anyInt())).thenReturn(Optional.of(location));
     when(accountRepository.findByUserId(user.getId())).thenReturn(Optional.empty());
     DealerAccountCreateUpdateRequest request =
         DealerAccountCreateUpdateRequest.builder()

@@ -11,7 +11,7 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
   @Query("SELECT lo from Location lo")
   List<LocationId> getAllLocationIds();
 
-  Optional<Location> findByPostalCode(Integer postalCode);
+  Optional<Location> findFirstByPostalCode(Integer postalCode);
 
   @Query("SELECT lo from Location lo WHERE lo.postalCode > 0")
   List<Location> findAllLocations();

@@ -53,7 +53,7 @@ public class MakerController extends BaseController {
   @PostMapping(
       produces = {APP_V1_MEDIA_TYPE_JSON},
       consumes = {APP_V1_MEDIA_TYPE_JSON})
-  public ResponseEntity<?> createMaker(@Valid @RequestBody MakerCreateRequestModel createRequest) {
+  public ResponseEntity<?> createMaker(@Valid @RequestBody  MakerCreateRequestModel createRequest) {
     MakerServiceModel makerServiceModel = modelMapper.map(createRequest, MakerServiceModel.class);
     MakerServiceModel createdMaker = makerService.createMaker(makerServiceModel);
     MakerResponseModel data = modelMapper.map(createdMaker, MakerResponseModel.class);

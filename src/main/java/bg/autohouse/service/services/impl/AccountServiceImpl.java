@@ -109,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
     User owner = userRepository.findByIdWithRoles(ownerId).orElseThrow(NoSuchUserException::new);
     Location location =
         locationRepository
-            .findByPostalCode(model.getAddress().getLocationPostalCode())
+            .findFirstByPostalCode(model.getAddress().getLocationPostalCode())
             .orElseThrow(LocationNotFoundException::new);
     String displayNameToUse =
         Assert.has(model.getDisplayName()) ? model.getDisplayName() : generateRandomDisplayName();

@@ -168,7 +168,7 @@ public class OfferServiceImpl implements OfferService {
     }
     Location location =
         locationRepository
-            .findByPostalCode(request.getAddressLocationPostalCode())
+            .findFirstByPostalCode(request.getAddressLocationPostalCode())
             .orElseThrow(LocationNotFoundException::new);
     Vehicle vehicle = modelMapper.map(request.getVehicle(), Vehicle.class);
     request.setVehicle(null);
@@ -257,7 +257,7 @@ public class OfferServiceImpl implements OfferService {
         && !request.getAddressLocationPostalCode().equals(offer.getLocation().getPostalCode())) {
       Location location =
           locationRepository
-              .findByPostalCode(request.getAddressLocationPostalCode())
+              .findFirstByPostalCode(request.getAddressLocationPostalCode())
               .orElseThrow(LocationNotFoundException::new);
       offer.setLocation(location);
     }
