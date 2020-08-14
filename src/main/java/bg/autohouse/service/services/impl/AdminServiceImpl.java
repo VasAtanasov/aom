@@ -120,7 +120,7 @@ public class AdminServiceImpl implements AdminService {
     return targetUser.isEnabled();
   }
 
-  // TODO not encoding password its degregating performance of application for batch
+  // TODO not encoding password its deteriorate performance of application for batch
   @Override
   @Transactional
   public List<UserServiceModel> bulkRegisterUsers(UUID adminId, List<String> usernames) {

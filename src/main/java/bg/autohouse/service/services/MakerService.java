@@ -4,6 +4,9 @@ import bg.autohouse.service.models.MakerModelServiceModel;
 import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.models.ModelTrimsServicesModel;
+import bg.autohouse.web.models.request.MakerModelsTrimsCreateRequest;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 public interface MakerService {
@@ -22,4 +25,6 @@ public interface MakerService {
   MakerServiceModel createMaker(MakerServiceModel makerServiceModel);
 
   ModelTrimsServicesModel getModel(String makerName, String modelName);
+
+  int createMakerModelsTrimsBulk(List<MakerModelsTrimsCreateRequest> makersRequest);
 }
