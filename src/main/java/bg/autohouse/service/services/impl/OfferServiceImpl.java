@@ -44,6 +44,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +60,11 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class OfferServiceImpl implements OfferService {
 
+  public static final String LATEST_OFFERS_CACHE = "latestOffers";
+  public static final String FILTERED_ACTIVE_OFFERS = "filteredActiveOffers";
+  public static final String USER_OFFERS_CACHE = "userOffersCache";
+  public static final String OFFERS_BY_IDS_CACHE = "offersByIdsCache";
+
   private final OfferRepository offerRepository;
   private final FilterRepository filterRepository;
   private final VehicleRepository vehicleRepository;
@@ -69,6 +77,7 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(value = LATEST_OFFERS_CACHE)
   public List<OfferServiceModel> getLatestOffers() {
     Sort sort = Sort.by("createdAt").descending();
     Pageable pageable = PageRequest.of(0, 20, sort);
@@ -79,13 +88,13 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(value = FILTERED_ACTIVE_OFFERS, keyGenerator = "searchOffersKeyGenerator")
   public Page<OfferServiceModel> searchOffers(UUID filterId, Pageable pageable) {
     Objects.requireNonNull(filterId);
     Filter filter = filterRepository.findFilterById(filterId).orElseThrow(NotFoundException::new);
-
     Specification<Offer> specification =
-        Objects.requireNonNull(where(getOffersByFilter(filter)).and(activeUser())).and(activeOffers());
-
+        Objects.requireNonNull(where(getOffersByFilter(filter)).and(activeUser()))
+            .and(activeOffers());
     if (!filter.getFeatures().isEmpty()) {
       List<UUID> offersIds = offerIdsForFilterFeatures(filterId);
       if (offersIds.isEmpty()) {
@@ -93,14 +102,13 @@ public class OfferServiceImpl implements OfferService {
       }
       specification = Objects.requireNonNull(specification).and(uuidIn(offersIds));
     }
-
     return offerRepository
         .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
   }
 
   @Transactional(readOnly = true)
-  List<UUID> offerIdsForFilterFeatures(UUID filterId) {
+  public List<UUID> offerIdsForFilterFeatures(UUID filterId) {
     return offerRepository.searchOffersIdsWithFeatures(filterId).stream()
         .map(BaseUuidEntity::getId)
         .collect(Collectors.toList());
@@ -137,6 +145,13 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional
+  @Caching(
+      evict = {
+        @CacheEvict(value = LATEST_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = FILTERED_ACTIVE_OFFERS, allEntries = true),
+        @CacheEvict(value = USER_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = OFFERS_BY_IDS_CACHE, allEntries = true),
+      })
   public boolean toggleActive(UUID creatorId, UUID offerId) {
     Specification<Offer> specification = oneWithIdAndOwnerId(offerId, creatorId);
     Offer offer = offerRepository.findOne(specification).orElseThrow(OfferNotFoundException::new);
@@ -156,6 +171,13 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(rollbackFor = IOException.class)
+  @Caching(
+      evict = {
+        @CacheEvict(value = LATEST_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = FILTERED_ACTIVE_OFFERS, allEntries = true),
+        @CacheEvict(value = USER_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = OFFERS_BY_IDS_CACHE, allEntries = true),
+      })
   public OfferServiceModel createOffer(OfferCreateRequest request, UUID creatorId)
       throws IOException {
     Assert.notNull(creatorId, "User id is required");
@@ -193,24 +215,23 @@ public class OfferServiceImpl implements OfferService {
       byte[] byteArray = imageResizer.toJpgDownscaleToSize(file.getInputStream());
       String fileName =
           generateFileName(
-              file.getContentType(),
+              Objects.requireNonNull(file.getContentType()),
               Integer.toString(vehicle.getYear()),
               vehicle.getMakerName(),
               vehicle.getModelName(),
               "pic",
               Long.toString(System.currentTimeMillis()));
-      String fileKey = generateFileKey(offer.getId(), fileName);
-      MediaFile mediaFile =
-          mediaFileService.storeFile(
-              byteArray,
-              fileKey,
-              MediaFunction.OFFER_IMAGE,
-              file.getContentType(),
-              file.getOriginalFilename(),
-              offer.getId());
-      if (mediaFile.getOriginalFilename().equals(request.getMainPhoto())) {
-        offer.setPrimaryPhotoKey(mediaFile.getFileKey());
+      String fileKey = generateFileKey(Objects.requireNonNull(offer.getId()), fileName);
+      if (Objects.equals(file.getOriginalFilename(), request.getMainPhoto())) {
+        offer.setPrimaryPhotoKey(fileKey);
       }
+      mediaFileService.storeFile(
+          byteArray,
+          fileKey,
+          MediaFunction.OFFER_IMAGE,
+          file.getContentType(),
+          file.getOriginalFilename(),
+          offer.getId());
     }
     return modelMapper.map(offer, OfferServiceModel.class);
   }
@@ -237,6 +258,13 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional
+  @Caching(
+      evict = {
+        @CacheEvict(value = LATEST_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = FILTERED_ACTIVE_OFFERS, allEntries = true),
+        @CacheEvict(value = USER_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = OFFERS_BY_IDS_CACHE, allEntries = true),
+      })
   public OfferServiceModel updateOffer(OfferCreateRequest request, UUID offerId, UUID creatorId) {
     Assert.notNull(creatorId, "User id is required");
     Assert.notNull(offerId, "Offer id is required");
@@ -331,10 +359,12 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(value = OFFERS_BY_IDS_CACHE, keyGenerator = "pageableKeyGenerator")
   public Page<OfferServiceModel> searchOffersByIds(List<UUID> offerIds, Pageable pageable) {
     if (offerIds.isEmpty()) return Page.empty();
     Specification<Offer> specification =
-        Objects.requireNonNull(where(favoriteWithIds(offerIds)).and(activeUser())).and(activeOffers());
+        Objects.requireNonNull(where(favoriteWithIds(offerIds)).and(activeUser()))
+            .and(activeOffers());
     return offerRepository
         .findAll(specification, pageable)
         .map(offer -> modelMapper.map(offer, OfferServiceModel.class));
@@ -342,6 +372,7 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(value = USER_OFFERS_CACHE, keyGenerator = "pageableKeyGenerator")
   public Page<OfferServiceModel> findUserOffers(UUID userId, Pageable pageable) {
     UUID accountId =
         accountRepository
@@ -356,6 +387,13 @@ public class OfferServiceImpl implements OfferService {
 
   @Override
   @Transactional
+  @Caching(
+      evict = {
+        @CacheEvict(value = LATEST_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = FILTERED_ACTIVE_OFFERS, allEntries = true),
+        @CacheEvict(value = USER_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = OFFERS_BY_IDS_CACHE, allEntries = true),
+      })
   public void deleteOffer(UUID userId, UUID offerId) {
     Assert.notNull(userId, "User id is required");
     Assert.notNull(offerId, "Offer id is required");

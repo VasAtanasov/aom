@@ -13,7 +13,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = EntityConstants.OFFERS)
+@Table(
+    name = EntityConstants.OFFERS,
+    indexes = {
+      @Index(name = "idx_" + EntityConstants.OFFERS + "_account_id", columnList = "account_id")
+    })
 public class Offer extends BaseUuidEntity {
 
   private static final long serialVersionUID = -2840866963962522737L;

@@ -1,6 +1,7 @@
 package bg.autohouse.service.services.impl;
 
 import static bg.autohouse.data.specifications.UserSpecifications.*;
+import static bg.autohouse.service.services.impl.OfferServiceImpl.*;
 import static org.springframework.data.jpa.domain.Specification.*;
 
 import bg.autohouse.data.models.User;
@@ -37,6 +38,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -112,6 +115,13 @@ public class AdminServiceImpl implements AdminService {
 
   @Override
   @Transactional
+  @Caching(
+      evict = {
+        @CacheEvict(value = LATEST_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = FILTERED_ACTIVE_OFFERS, allEntries = true),
+        @CacheEvict(value = USER_OFFERS_CACHE, allEntries = true),
+        @CacheEvict(value = OFFERS_BY_IDS_CACHE, allEntries = true),
+      })
   public boolean toggleActive(UUID userId, UUID adminId) {
     validateAdminRole(adminId);
     User targetUser =

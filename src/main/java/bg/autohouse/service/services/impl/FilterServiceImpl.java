@@ -55,7 +55,6 @@ public class FilterServiceImpl implements FilterService {
   @Transactional
   public boolean deleteSavedSearch(UUID filterId, UUID userId) {
     User user = userRepository.findUserById(userId).orElseThrow(NotFoundException::new);
-    boolean isRemoved = user.getFilters().removeIf(f -> f.getId().equals(filterId));
-    return isRemoved;
+    return user.getFilters().removeIf(f -> Objects.requireNonNull(f.getId()).equals(filterId));
   }
 }

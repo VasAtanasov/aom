@@ -43,7 +43,6 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "price_to"))
   })
   @Embedded
-  
   private RangeCriteria price = RangeCriteria.of(MIN_VALUE, PRICE_TO);
 
   @AttributeOverrides({
@@ -51,7 +50,6 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "mileage_to"))
   })
   @Embedded
-  
   private RangeCriteria mileage = RangeCriteria.of(MIN_VALUE, MILEAGE_TO);
 
   @AttributeOverrides({
@@ -59,7 +57,6 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "doors_to"))
   })
   @Embedded
-  
   private RangeCriteria doors = RangeCriteria.of(MIN_VALUE, DOORS_TO);
 
   @AttributeOverrides({
@@ -67,7 +64,6 @@ public class Filter extends BaseUuidEntity {
     @AttributeOverride(name = "to", column = @Column(name = "year_to"))
   })
   @Embedded
-  
   private RangeCriteria year = RangeCriteria.of(YEAR_FROM, YEAR_TO);
 
   @Column(name = "fuel_type")
@@ -100,7 +96,6 @@ public class Filter extends BaseUuidEntity {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_features_filter_id")))
   @Column(name = "feature")
   @Enumerated(value = EnumType.STRING)
-  
   private List<Feature> features = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = AccountType.class)
@@ -114,7 +109,6 @@ public class Filter extends BaseUuidEntity {
                   @ForeignKey(name = EntityConstants.PREFIX + "fk_account_type_filter_id")))
   @Column(name = "account_type")
   @Enumerated(value = EnumType.STRING)
-  
   private List<AccountType> seller = new ArrayList<>();
 
   @ElementCollection(fetch = FetchType.LAZY, targetClass = State.class)
@@ -127,7 +121,6 @@ public class Filter extends BaseUuidEntity {
               foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_state_filter_id")))
   @Column(name = "state")
   @Enumerated(value = EnumType.STRING)
-  
   private List<State> state = new ArrayList<>();
 
   @Column(name = "has_accident")

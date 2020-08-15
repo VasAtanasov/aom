@@ -1,10 +1,5 @@
 package bg.autohouse.web.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import bg.autohouse.MvcPerformer;
 import bg.autohouse.config.DatabaseSeeder;
 import bg.autohouse.data.models.User;
@@ -19,11 +14,6 @@ import bg.autohouse.web.models.request.account.AccountWrapper;
 import bg.autohouse.web.models.wrappers.ListWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +30,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 @AutoConfigureMockMvc
@@ -217,6 +216,35 @@ public class AdminControllerTest extends MvcPerformer {
     MakerModelsTrimsCreateRequest maker2 =
         MakerModelsTrimsCreateRequest.of("Maker2", List.of(model1, model2));
     performPost(API_BASE + "/makers/bulk", List.of(maker1, maker2), headers)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", Matchers.greaterThan(0)));
+  }
+
+  @Test
+  void when_bulkInsertProvinces_shouldReturn200() throws Exception {
+    LocationCreateRequest location1 =
+        LocationCreateRequest.of(
+            1L,
+            "BG",
+            "Blagoevgrad",
+            "Ablanitsa",
+            2932,
+            41.5378,
+            23.9341,
+            "https://www.google.com/maps/?q=41.5378,23.9341");
+    LocationCreateRequest location2 =
+        LocationCreateRequest.of(
+            2L,
+            "BG",
+            "Blagoevgrad",
+            "Avramovo",
+            2795,
+            42.0333,
+            23.6667,
+            "https://www.google.com/maps/?q=42.0333,23.6667");
+    ProvinceLocationsCreateRequest province1 =
+        ProvinceLocationsCreateRequest.of(1L, 4279, "Blagoevgrad", List.of(location1, location2));
+    performPost(API_BASE + "/provinces/bulk", List.of(province1), headers)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", Matchers.greaterThan(0)));
   }

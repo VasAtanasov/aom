@@ -1,18 +1,20 @@
 package bg.autohouse.web.models.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor(staticName = "of")
 public class LocationCreateRequest {
-  @NonNull private Long id;
-  @NonNull private String city;
-  @NonNull private String cityRegion;
+  private Long id;
   @NonNull private String country;
+  @NonNull private String cityRegion;
+  @NonNull private String city;
   @NonNull private Integer postalCode;
-  @NonNull private String mapsUrl;
   private double geoLatitude;
   private double geoLongitude;
+  @NonNull private String mapsUrl;
 }
