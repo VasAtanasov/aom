@@ -10,12 +10,7 @@ import bg.autohouse.data.models.offer.Offer;
 import bg.autohouse.data.repositories.OfferRepository;
 import bg.autohouse.data.repositories.UserRepository;
 import bg.autohouse.data.repositories.UserRequestRepository;
-import bg.autohouse.errors.NoRegistrationRequestFoundException;
-import bg.autohouse.errors.NoSuchUserException;
-import bg.autohouse.errors.OfferNotFoundException;
-import bg.autohouse.errors.ResourceAlreadyExistsException;
-import bg.autohouse.errors.UserDisabledException;
-import bg.autohouse.errors.UsernamePasswordLoginFailedException;
+import bg.autohouse.errors.*;
 import bg.autohouse.security.jwt.JwtTokenCreateRequest;
 import bg.autohouse.security.jwt.JwtTokenService;
 import bg.autohouse.security.jwt.JwtTokenType;
@@ -28,14 +23,6 @@ import bg.autohouse.service.services.UserService;
 import bg.autohouse.util.Assert;
 import bg.autohouse.util.ModelMapperWrapper;
 import bg.autohouse.web.enums.RestMessage;
-import bg.autohouse.web.models.request.UserDetailsUpdateRequest;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +32,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service

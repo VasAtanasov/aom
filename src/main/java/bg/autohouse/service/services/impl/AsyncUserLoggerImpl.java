@@ -4,15 +4,14 @@ import bg.autohouse.data.models.UserLog;
 import bg.autohouse.data.models.enums.UserLogType;
 import bg.autohouse.data.repositories.UserLogRepository;
 import bg.autohouse.service.services.AsyncUserLogger;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Slf4j
 @Service

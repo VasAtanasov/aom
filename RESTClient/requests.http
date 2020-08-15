@@ -6,16 +6,12 @@
 
 ###
 
-GET http://localhost:8007/api/health
+GET https://autohouse-server.herokuapp.com/api/health
 
 ###
 
-GET http://localhost:8007/api/state
+GET https://autohouse-server.herokuapp.com/api/state
 
-###
-
-GET {{host}}/offers/count/body-styles  HTTP/1.1
-Accept: application/bg.autohouse.api-v1+json
 
 ###
 

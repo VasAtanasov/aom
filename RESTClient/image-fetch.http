@@ -19,10 +19,3 @@ GET {{images}}/offer-images/2020/05/02/ec9a9fb8-4363-4314-bf85-0210282af6c7/2018
 
 ###
 GET {{images}}/offer-images/2020/05/02/ec9a9fb8-4363-4314-bf85-0210282af6c7/2018_cadillac_xts_pic_1588401239124.jpg?thumbnail=true
-
-
-###
-
-
-GET http://localhost:8007/site/images/body-styles/sedan.jpg
-###

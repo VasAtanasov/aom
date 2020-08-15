@@ -1,17 +1,40 @@
 @accounts = https://autohouse-server.herokuapp.com/api/accounts
 @auth = https://autohouse-server.herokuapp.com/api/auth
 @content-type = application/bg.autohouse.api-v1+json
+
+@email = test_username@mail.com
+@password = 123456
+###
+# @name registerRequestResponse
+POST {{auth}}/register HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json
+
+{
+  "username": "{{email}}",
+  "password": "{{password}}",
+  "confirmPassword": "{{password}}"
+}
+
+@verificationToken = {{registerRequestResponse.response.body.$.data.code}}
+
+###
+
+GET {{auth}}/register/verify?code={{verificationToken}}&username={{email}}
+
 ### Login
 # @name loggedUser
 POST {{auth}}/login HTTP/1.1
 Content-Type: {{content-type}}
 
 {
-    "username": "test1@mail.com",
-    "password": "123456"
+    "username": "{{email}}",
+    "password": "{{password}}"
 }
 
 @token = {{loggedUser.response.body.$.data.token}}
+
+
 ###
 
 POST {{accounts}}/private-create HTTP/1.1
