@@ -274,25 +274,25 @@ Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 
 {
-   "bodyStyle": "SEDAN"
-   "color": ""
-   "doorsFrom": null
-   "doorsTo": null
-   "drive": ""
-   "features": []
-   "fuelType": ""
-   "hasAccident": ""
-   "makerName": "BMW"
-   "mileageFrom": "245"
-   "mileageTo": "266899"
-   "modelName": ""
-   "priceFrom": "1988"
-   "priceTo": "145000"
-   "seller": []
-   "state": []
-   "transmission": ""
-   "trim": null
-   "yearFrom": "1991"
+   "bodyStyle": "SEDAN",
+   "color": "",
+   "doorsFrom": null,
+   "doorsTo": null,
+   "drive": "",
+   "features": [],
+   "fuelType": "",
+   "hasAccident": "",
+   "makerName": "BMW",
+   "mileageFrom": "245",
+   "mileageTo": "266899",
+   "modelName": "",
+   "priceFrom": "1988",
+   "priceTo": "145000",
+   "seller": [],
+   "state": [],
+   "transmission": "",
+   "trim": null,
+   "yearFrom": "1991",
    "yearTo": "2020"
 }
 ```
@@ -305,9 +305,9 @@ Content-Type: application/bg.autohouse.api-v1+json
 Authorization: Bearer {{token}}
 
 [
-    "e5bca629-b61d-4e73-bb34-1111cccfe04e"
-    "6101918a-65ae-40bd-9c56-aed6bf22ef52"
-    "5d8136a8-2085-4cef-93ba-046c66645fe6"
+    "e5bca629-b61d-4e73-bb34-1111cccfe04e",
+    "6101918a-65ae-40bd-9c56-aed6bf22ef52",
+    "5d8136a8-2085-4cef-93ba-046c66645fe6",
     "c3b3d007-bce7-4e28-b12f-5b9863e2f9bd"
 ]
 ```
@@ -320,30 +320,30 @@ Content-Type: application/bg.autohouse.api-v1+json
 Authorization: Bearer {{token}}
 
 {
-   "bodyStyle": "SEDAN"
-   "color": ""
-   "doorsFrom": null
-   "doorsTo": null
-   "drive": ""
-   "features": []
-   "fuelType": ""
-   "hasAccident": ""
-   "makerName": "BMW"
-   "mileageFrom": "245"
-   "mileageTo": "266899"
-   "modelName": ""
-   "priceFrom": "1988"
-   "priceTo": "145000"
-   "seller": []
-   "state": []
-   "transmission": ""
-   "trim": null
-   "yearFrom": "1991"
+   "bodyStyle": "SEDAN",
+   "color": "",
+   "doorsFrom": null,
+   "doorsTo": null,
+   "drive": "",
+   "features": [],
+   "fuelType": "",
+   "hasAccident": "",
+   "makerName": "BMW",
+   "mileageFrom": "245",
+   "mileageTo": "266899",
+   "modelName": "",
+   "priceFrom": "1988",
+   "priceTo": "145000",
+   "seller": [],
+   "state": [],
+   "transmission": "",
+   "trim": null,
+   "yearFrom": "1991",
    "yearTo": "2020"
 }
 ```
 
-##### <a id="save-offer-create">Create offer</a>
+##### <a id="offer-create">Create offer</a>
 ```http request
 POST http://localhost:8007/api/vehicles/offers HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
@@ -357,7 +357,7 @@ Authorization: Bearer {{token}}
     "description": "Price includes warranty!  Fuel economy up to 38 MPG featuring a Power Moonroof, Backup Camera,...",
     "hasAccident": "false",
     "price": "10495",
-    "images": [image_file1, image_file2],
+    "images": ["multipart_file1", "multipart_file1"],
     "vehicle": {
         "bodyStyle": "SEDAN",
         "color": "BLACK",
@@ -383,9 +383,9 @@ Authorization: Bearer {{token}}
 }
 ```
 
-##### <a id="save-offer-update">Update offer</a>
+##### <a id="offer-update">Update offer</a>
 ```http request
-POST http://localhost:8007/api/vehicles/offers/{offerId} HTTP/1.1
+POST http://localhost:8007/api/vehicles/offers/859c62a7-d4a2-41b7-86dc-2baed439707a HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
 Content-Type: application/bg.autohouse.api-v1+json
 Authorization: Bearer {{token}}
@@ -397,7 +397,7 @@ Authorization: Bearer {{token}}
     "description": "Price includes warranty!  Fuel economy up to 38 MPG featuring a Power Moonroof, Backup Camera,...",
     "hasAccident": "false",
     "price": "10495",
-    "images": [image_file1, image_file2],
+    "images": ["multipart_file1", "multipart_file1"],
     "vehicle": {
         "bodyStyle": "SEDAN",
         "color": "BLACK",
