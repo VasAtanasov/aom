@@ -1,6 +1,7 @@
 package bg.autohouse.service.services;
 
-import bg.autohouse.service.models.account.*;
+import bg.autohouse.service.models.account.AccountServiceModel;
+
 import java.util.UUID;
 
 public interface AccountService {

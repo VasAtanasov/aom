@@ -32,8 +32,8 @@ public class UIDUtil {
 
   public static UUID getUUIDFromBytes(byte[] bytes) {
     ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-    Long high = byteBuffer.getLong();
-    Long low = byteBuffer.getLong();
+    long high = byteBuffer.getLong();
+    long low = byteBuffer.getLong();
     return new UUID(high, low);
   }
 }

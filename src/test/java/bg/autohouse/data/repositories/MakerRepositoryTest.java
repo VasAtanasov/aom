@@ -41,7 +41,7 @@ public class MakerRepositoryTest {
 
   @Test
   void whenFindById_ShouldReturnAll() {
-    Optional<Maker> maker = makerRepository.findById(2L);
+    Optional<Maker> maker = makerRepository.findMakerById(2L);
     assertThat(maker).isNotEmpty();
   }
 }

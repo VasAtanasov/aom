@@ -106,7 +106,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
       log.error("Token validation failed, wrong signature. Exception: {}", e.getMessage());
       return false;
     } catch (Exception e) {
-      log.error("Unexpected token validation error.", e.getMessage());
+      log.error("Unexpected token validation error. {}", e.getMessage());
       return false;
     }
   }
@@ -132,7 +132,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     final String tokenTypeString = getTokenTypeFromJWT(token);
     if (!Assert.has(tokenTypeString)) return false;
     JwtTokenType tokenType = EnumUtils.fromString(tokenTypeString, JwtTokenType.class).orElse(null);
-    if (!Assert.has(expectType)) return false;
     return expectType.equals(tokenType);
   }
 

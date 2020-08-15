@@ -116,13 +116,12 @@ public class OfferSpecifications {
       }
 
       if (!F.isNullOrEmpty(filter.getSeller())) {
-        List<AccountType> sellers =
-            F.filterToList(filter.getSeller(), seller -> Assert.has(seller));
+        List<AccountType> sellers = F.filterToList(filter.getSeller(), Assert::has);
         restrictions.add(cb.isTrue(root.get(Offer_.account).get(Account_.accountType).in(sellers)));
       }
 
       if (!F.isNullOrEmpty(filter.getState())) {
-        List<State> states = F.filterToList(filter.getState(), state -> Assert.has(state));
+        List<State> states = F.filterToList(filter.getState(), Assert::has);
         restrictions.add(cb.isTrue(root.get(Offer_.vehicle).get(Vehicle_.state).in(states)));
       }
 

@@ -50,23 +50,6 @@ public class AsyncUserLoggerImpl implements AsyncUserLogger {
 
   @Async
   @Override
-  public void storeUserLogs(Set<UserLog> userLogSet) {
-    userLogRepository.saveAll(userLogSet);
-  }
-
-  @Override
-  public void removeAllUserInfoLogs(UUID userId) {
-    userLogRepository.deleteAllByUserIdAndUserLogTypeIn(
-        userId,
-        Arrays.asList(
-            UserLogType.CHANGED_ADDRESS,
-            UserLogType.USER_DETAILS_CHANGED,
-            UserLogType.USER_EMAIL_CHANGED,
-            UserLogType.USER_PHONE_CHANGED));
-  }
-
-  @Async
-  @Override
   public void auditLogoutEvent(UUID userId) {
     userLogRepository.save(new UserLog(userId, UserLogType.USER_LOGOUT_SESSION, ""));
   }

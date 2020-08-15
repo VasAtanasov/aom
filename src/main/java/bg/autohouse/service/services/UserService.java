@@ -5,12 +5,12 @@ import bg.autohouse.data.models.enums.Role;
 import bg.autohouse.service.models.UserRegisterServiceModel;
 import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.user.AuthorizedUserServiceModel;
-import bg.autohouse.web.models.request.UserDetailsUpdateRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
   UserDetails loadUserById(UUID id);
@@ -21,11 +21,7 @@ public interface UserService extends UserDetailsService {
 
   UserServiceModel completeRegistration(String username);
 
-  UserServiceModel updateUser(UUID userId, UserDetailsUpdateRequest user, User loggedUser);
-
   boolean userExist(String username);
-
-  boolean requestExists(String username);
 
   String regenerateUserVerifier(String username);
 

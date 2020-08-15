@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -27,7 +29,7 @@ public final class ClassUtils {
     }
     File scannedDir = new File(scannedUrl.getFile());
     List<Class<?>> classes = new ArrayList<Class<?>>();
-    for (File file : scannedDir.listFiles()) {
+    for (File file : Objects.requireNonNull(scannedDir.listFiles())) {
       classes.addAll(find(file, scannedPackage));
     }
     return classes;
@@ -37,7 +39,7 @@ public final class ClassUtils {
     List<Class<?>> classes = new ArrayList<Class<?>>();
     String resource = scannedPackage + PKG_SEPARATOR + file.getName();
     if (file.isDirectory()) {
-      for (File child : file.listFiles()) {
+      for (File child : Objects.requireNonNull(file.listFiles())) {
         classes.addAll(find(child, resource));
       }
     } else if (resource.endsWith(CLASS_FILE_SUFFIX)) {

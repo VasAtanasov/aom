@@ -45,15 +45,9 @@ public class MakerServiceImpl implements MakerService {
   @Transactional(readOnly = true)
   public MakerModelServiceModel getOne(Long id) {
     return makerRepository
-        .findById(id)
+        .findMakerById(id)
         .map(maker -> modelMapper.map(maker, MakerModelServiceModel.class))
         .orElseThrow(MakerNotFoundException::new);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<MakerServiceModel> getAllMakers() {
-    return modelMapper.mapAll(makerRepository.findAll(), MakerServiceModel.class);
   }
 
   @Override
@@ -63,17 +57,11 @@ public class MakerServiceImpl implements MakerService {
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public boolean isMaker(Long id) {
-    return makerRepository.existsById(id);
-  }
-
-  @Override
   @Transactional
   public MakerServiceModel addModelToMaker(Long makerId, ModelServiceModel modelServiceModel) {
     Assert.notNull(modelServiceModel, "Model is required");
     modelServiceModel.setId(null); // modelMapper maps id to model
-    Maker maker = makerRepository.findById(makerId).orElseThrow(MakerNotFoundException::new);
+    Maker maker = makerRepository.findMakerById(makerId).orElseThrow(MakerNotFoundException::new);
     boolean modelExists =
         modelRepository.existsByNameAndMakerId(modelServiceModel.getName(), makerId);
     if (modelExists) {

@@ -6,10 +6,11 @@ import bg.autohouse.service.models.account.AccountCreateServiceModel;
 import bg.autohouse.service.models.user.ChangeRoleServiceModel;
 import bg.autohouse.service.models.user.UserAdminDetailsServiceModel;
 import bg.autohouse.service.models.user.UserRowServiceModel;
-import java.util.List;
-import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.UUID;
 
 public interface AdminService {
   String getRevision();

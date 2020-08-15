@@ -4,11 +4,12 @@ import bg.autohouse.service.models.offer.OfferDetailsServiceModel;
 import bg.autohouse.service.models.offer.OfferEditServiceModel;
 import bg.autohouse.service.models.offer.OfferServiceModel;
 import bg.autohouse.web.models.request.offer.OfferCreateRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 public interface OfferService {
   List<OfferServiceModel> getLatestOffers();

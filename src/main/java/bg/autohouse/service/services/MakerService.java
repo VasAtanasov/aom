@@ -5,18 +5,13 @@ import bg.autohouse.service.models.MakerServiceModel;
 import bg.autohouse.service.models.ModelServiceModel;
 import bg.autohouse.service.models.ModelTrimsServicesModel;
 import bg.autohouse.web.models.request.MakerModelsTrimsCreateRequest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface MakerService {
   MakerModelServiceModel getOne(Long id);
 
-  List<MakerServiceModel> getAllMakers();
-
   List<MakerModelServiceModel> getAllMakerWithModels();
-
-  boolean isMaker(Long id);
 
   MakerServiceModel addModelToMaker(Long makerId, ModelServiceModel modelServiceModel);
 

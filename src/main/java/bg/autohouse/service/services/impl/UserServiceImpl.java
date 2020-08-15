@@ -89,12 +89,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional(readOnly = true)
-  public boolean requestExists(String username) {
-    return userRequestRepository.existsByUsernameIgnoreCase(username);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
   public AuthorizedUserServiceModel tryLogin(String username, String password) {
     User user =
         userRepository
@@ -164,19 +158,6 @@ public class UserServiceImpl implements UserService {
     if (!userExist(username)) throw new NoSuchUserException();
     VerificationTokenCode newTokenCode = passwordService.generateShortLivedOTP(username);
     return newTokenCode.getCode();
-  }
-
-  @Override
-  @Transactional
-  public UserServiceModel updateUser(UUID userId, UserDetailsUpdateRequest user, User loggedUser) {
-    User userEntity =
-        userRepository.findByIdWithRoles(userId).orElseThrow(NoSuchUserException::new);
-    if (!userEntity.getUsername().equals(loggedUser.getUsername())) {
-      throw new IllegalStateException(RestMessage.INVALID_UPDATE_OPERATION.name());
-    }
-    // TODO update User profile
-    userRepository.save(userEntity);
-    return modelMapper.map(userEntity, UserServiceModel.class);
   }
 
   @Override

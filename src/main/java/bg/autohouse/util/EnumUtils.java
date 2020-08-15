@@ -1,9 +1,10 @@
 package bg.autohouse.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.stream.Stream;
-import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class EnumUtils {
@@ -40,8 +41,6 @@ public class EnumUtils {
 
   public static <T extends Enum<T>> boolean has(T enumType, Class<T> enumClass) {
     return Stream.of(enumClass.getEnumConstants())
-        .filter(t -> t.name().equalsIgnoreCase(enumType.name()))
-        .findAny()
-        .isPresent();
+        .anyMatch(t -> t.name().equalsIgnoreCase(enumType.name()));
   }
 }

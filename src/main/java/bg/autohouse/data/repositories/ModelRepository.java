@@ -1,11 +1,12 @@
 package bg.autohouse.data.repositories;
 
 import bg.autohouse.data.models.Model;
-import java.util.Optional;
-import java.util.stream.Stream;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Repository
 public interface ModelRepository extends JpaRepository<Model, Long> {
@@ -37,12 +38,6 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
   Stream<Model> findAllByModelIdAndModelYear(Long modelId, Integer year);
 
   boolean existsByNameAndMakerId(String name, Long makerId);
-
-  boolean existsByIdAndMakerId(Long id, Long makerId);
-
-  Optional<Model> findByIdAndMakerId(Long id, Long makerId);
-
-  Model findByName(String name);
 
   @Query(
       "SELECT DISTINCT m "

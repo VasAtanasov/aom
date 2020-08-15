@@ -1,5 +1,6 @@
 package bg.autohouse.util;
 
+import java.util.Arrays;
 import java.util.Random;
 import lombok.experimental.UtilityClass;
 
@@ -45,7 +46,7 @@ public class StringGenericUtils {
     return nextString(length, symbols);
   }
 
-  private static final String nextString(final int length, final char[] chars) {
+  private static String nextString(final int length, final char[] chars) {
     if (length < 1 || chars.length < 1) {
       throw new IllegalArgumentException("length < 1: " + length);
     }
@@ -84,7 +85,7 @@ public class StringGenericUtils {
         hasUpper = true;
       } else if (Character.isLowerCase(c)) {
         hasLower = true;
-      } else if (specials.toString().contains("" + c)) {
+      } else if (Arrays.toString(specials).contains("" + c)) {
         hasSpecial = true;
       }
     }
