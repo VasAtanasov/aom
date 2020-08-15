@@ -58,7 +58,6 @@ public class MakerControllerTest extends MvcPerformer {
 
   @Test
   void whenGetMakers_thenReturns200() throws Exception {
-
     performGet(API_BASE + "/makers")
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", is(RestMessage.MAKERS_GET_SUCCESSFUL.name())))
@@ -67,8 +66,7 @@ public class MakerControllerTest extends MvcPerformer {
 
   @Test
   void whenGetMaker_withValidId_thenReturns200() throws Exception {
-    Long makerId = 1L;
-
+    long makerId = 1L;
     performGet(API_BASE + "/makers/" + makerId)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", is(RestMessage.MAKER_GET_SUCCESSFUL.name())))
@@ -77,7 +75,6 @@ public class MakerControllerTest extends MvcPerformer {
 
   @Test
   void whenInvalidId_thenReturns404() throws Exception {
-
     performGet(API_BASE + "/makers/" + 1290L)
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.message", is(RestMessage.MAKER_NOT_FOUND.name())));
@@ -85,7 +82,6 @@ public class MakerControllerTest extends MvcPerformer {
 
   @Test
   void whenInvalidMediaType_thenReturns406() throws Exception {
-
     mockMvc
         .perform(get(API_BASE + "/makers/").accept(MediaType.APPLICATION_JSON))
         .andDo(print())
@@ -94,7 +90,6 @@ public class MakerControllerTest extends MvcPerformer {
 
   @Test
   public void whenCreateModel_withValidBody_shouldReturn201() throws Exception {
-
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("New Model", 1L);
     performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isCreated())
@@ -103,9 +98,7 @@ public class MakerControllerTest extends MvcPerformer {
 
   @Test
   public void whenCreateModel_withEmptyName_shouldReturn400() throws Exception {
-
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("", 1L);
-
     performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.PARAMETER_VALIDATION_FAILURE.name())))
@@ -115,7 +108,6 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withNullName_shouldReturn400() throws Exception {
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of(null, 1L);
-
     performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.PARAMETER_VALIDATION_FAILURE.name())))
@@ -126,7 +118,6 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_withNullId_shouldReturn400() throws Exception {
     ModelCreateRequestModel createRequestModel = ModelCreateRequestModel.of("A4", null);
-
     performPost(API_BASE + "/makers/1", createRequestModel, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.PARAMETER_VALIDATION_FAILURE.name())))
@@ -137,7 +128,6 @@ public class MakerControllerTest extends MvcPerformer {
   @Test
   public void whenCreateModel_witInvalidTypeId_shouldReturn400() throws Exception {
     String createModelJson = "{\"name\":\"A4\",\"makerId\":\"invalid_id\"}";
-
     performPost(API_BASE + "/makers/1", createModelJson, headers)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.message", is(RestMessage.SOMETHING_WENT_WRONG.name())));

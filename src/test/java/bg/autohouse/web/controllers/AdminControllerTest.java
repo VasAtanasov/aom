@@ -13,13 +13,14 @@ import bg.autohouse.service.models.UserServiceModel;
 import bg.autohouse.service.models.user.UserRowServiceModel;
 import bg.autohouse.service.services.UserService;
 import bg.autohouse.utils.RestResponsePage;
-import bg.autohouse.web.models.request.ChangeRoleRequest;
-import bg.autohouse.web.models.request.UserLoginRequest;
+import bg.autohouse.web.models.request.*;
 import bg.autohouse.web.models.request.account.AccountCreateRequest;
 import bg.autohouse.web.models.request.account.AccountWrapper;
 import bg.autohouse.web.models.wrappers.ListWrapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -200,8 +201,22 @@ public class AdminControllerTest extends MvcPerformer {
                   return AccountWrapper.of(u.getId(), u.getUsername(), request);
                 })
             .collect(Collectors.toList());
-    System.out.println(requests);
     performPost(API_BASE + "/accounts/bulk", accounts, headers)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", Matchers.greaterThan(0)));
+  }
+
+  @Test
+  void when_bulkInsertMakers_shouldReturn200() throws Exception {
+    TrimCreateRequest trim1 = TrimCreateRequest.of(2000, "Trim1");
+    TrimCreateRequest trim2 = TrimCreateRequest.of(2001, "Trim2");
+    ModelTrimsCreateRequest model1 = ModelTrimsCreateRequest.of("Model1", List.of(trim1, trim2));
+    ModelTrimsCreateRequest model2 = ModelTrimsCreateRequest.of("Model2", List.of(trim1, trim2));
+    MakerModelsTrimsCreateRequest maker1 =
+        MakerModelsTrimsCreateRequest.of("Maker1", List.of(model1, model2));
+    MakerModelsTrimsCreateRequest maker2 =
+        MakerModelsTrimsCreateRequest.of("Maker2", List.of(model1, model2));
+    performPost(API_BASE + "/makers/bulk", List.of(maker1, maker2), headers)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", Matchers.greaterThan(0)));
   }
