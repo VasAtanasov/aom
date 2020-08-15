@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
     log.debug("request method: {}", request.getMethod());
-    if ("OPTIONS".equals(request.getMethod())) { // to handle CORS
+    if ("OPTIONS".equals(request.getMethod())) {
       filterChain.doFilter(request, response);
       return;
     }

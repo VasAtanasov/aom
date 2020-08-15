@@ -1,10 +1,16 @@
-@accounts = https://autohouse-server.herokuapp.com/api/accounts
-@auth = https://autohouse-server.herokuapp.com/api/auth
+@host =  https://autohouse-server.herokuapp.com/api
+@accounts = {{host}}/accounts
+@auth = {{host}}/auth
 @content-type = application/bg.autohouse.api-v1+json
 
-@email = test_username@mail.com
-@password = 123456
 ###
+
+GET {{host}}/health
+
+###
+
+@email = test_username@mail.com
+@password = 123
 # @name registerRequestResponse
 POST {{auth}}/register HTTP/1.1
 Accept: application/bg.autohouse.api-v1+json
