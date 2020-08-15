@@ -142,9 +142,9 @@ The app defines following CRUD APIs.
 
 | Method | Url | Description | Sample Valid Request Body | 
 | ------ | --- | ---------- | --------------------------- |
-| POST   | /api/vehicles/offers/search | Filter available offers | |
-| POST   | /api/vehicles/offers/search/favorites | Get user's favorites offers by ids |  |
-| POST   | /api/vehicles/offers/search/save | Saves filter for later easy seaech |  |
+| POST   | /api/vehicles/offers/search | Filter available offers | [JSON](#filter) |
+| POST   | /api/vehicles/offers/search/favorites | Get user's favorites offers by ids | [JSON](#favorites) |
+| POST   | /api/vehicles/offers/search/save | Saves filter for later easy search | [JSON](#save-filter) |
 | GET    | /api/vehicles/offers/search/list | List saved searches |  |
 | DEL    | /api/vehicles/offers/search/saved-search/{offerId} | Delete saved search |  |
 
@@ -152,14 +152,14 @@ The app defines following CRUD APIs.
 
 | Method | Url | Description | Sample Valid Request Body | 
 | ------ | --- | ---------- | --------------------------- |
-| POST   | /api/vehicles/offers | Create offer | |
-| POST   | /api/vehicles/offers/update/{offerId} | Update offer |  |
+| POST   | /api/vehicles/offers | Create offer | [JSON](#offer-create) |
+| POST   | /api/vehicles/offers/update/{offerId} | Update offer | [JSON](#offer-update) |
 | GET    | /api/vehicles/offers/load-for-edit/{offerId} | Load offer for update |  |
 | GET    | /api/vehicles/offers/details/{offerId} | Load offer for detailed view |  |
 | DEL    | /api/vehicles/offers/{offerId} | Delete offer by id |  |
 | GET    | /api/vehicles/offers/top | Get list of latest offers |   |
 | GET    | /api/vehicles/offers/statistics | Get general data like total active offers, max price, min price etc. |  |
-| GET    | /api/vegicles/offers/{accountId}/count | Get user's taken offers slots |   |
+| GET    | /api/vehicles/offers/{accountId}/count | Get user's taken offers slots |   |
 
 
 ## Sample Valid JSON Request Bodies
@@ -264,5 +264,161 @@ Authorization: Bearer {{token}}
     "addressLocationId": 2521,
     "addressStreet": "5505 N. Summit Street",
     "accountType": "DEALER"
+}
+```
+
+##### <a id="filter">Search active offers</a>
+```http request
+POST http://localhost:8007/api/vehicles/offers/search?page=0&size=20&sort=createdAt,desc HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json
+
+{
+   "bodyStyle": "SEDAN"
+   "color": ""
+   "doorsFrom": null
+   "doorsTo": null
+   "drive": ""
+   "features": []
+   "fuelType": ""
+   "hasAccident": ""
+   "makerName": "BMW"
+   "mileageFrom": "245"
+   "mileageTo": "266899"
+   "modelName": ""
+   "priceFrom": "1988"
+   "priceTo": "145000"
+   "seller": []
+   "state": []
+   "transmission": ""
+   "trim": null
+   "yearFrom": "1991"
+   "yearTo": "2020"
+}
+```
+
+##### <a id="favorites">Search favorite offers</a>
+```http request
+POST http://localhost:8007/api/vehicles/offers/search/favorites?page=0&size=20&sort=createdAt,desc HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json
+Authorization: Bearer {{token}}
+
+[
+    "e5bca629-b61d-4e73-bb34-1111cccfe04e"
+    "6101918a-65ae-40bd-9c56-aed6bf22ef52"
+    "5d8136a8-2085-4cef-93ba-046c66645fe6"
+    "c3b3d007-bce7-4e28-b12f-5b9863e2f9bd"
+]
+```
+
+##### <a id="save-filter">Saves current filter</a>
+```http request
+POST http://localhost:8007/api/vehicles/offers/search/save HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json
+Authorization: Bearer {{token}}
+
+{
+   "bodyStyle": "SEDAN"
+   "color": ""
+   "doorsFrom": null
+   "doorsTo": null
+   "drive": ""
+   "features": []
+   "fuelType": ""
+   "hasAccident": ""
+   "makerName": "BMW"
+   "mileageFrom": "245"
+   "mileageTo": "266899"
+   "modelName": ""
+   "priceFrom": "1988"
+   "priceTo": "145000"
+   "seller": []
+   "state": []
+   "transmission": ""
+   "trim": null
+   "yearFrom": "1991"
+   "yearTo": "2020"
+}
+```
+
+##### <a id="save-offer-create">Create offer</a>
+```http request
+POST http://localhost:8007/api/vehicles/offers HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json
+Authorization: Bearer {{token}}
+
+{
+    "contactDetailsPhoneNumber": "(875) 156-5031 x7090",
+    "contactDetailsWebLink": "https://emiliano.org",
+    "addressLocationPostalCode": "5791",
+    "description": "Price includes warranty!  Fuel economy up to 38 MPG featuring a Power Moonroof, Backup Camera,...",
+    "hasAccident": "false",
+    "price": "10495",
+    "images": [image_file1, image_file2],
+    "vehicle": {
+        "bodyStyle": "SEDAN",
+        "color": "BLACK",
+        "doors": "4",
+        "drive": "FRONT_WHEEL_DRIVE",
+        "fuelType": "GASOLINE",
+        "makerName": "Volkswagen",
+        "mileage": "40000",
+        "modelName": "Jetta",
+        "state": "USED",
+        "transmission": "AUTOMATIC",
+        "trim": "1.4T SE FWD",
+        "year": "2017",
+        "features": [
+            "CD_PLAYER",
+            "CLOTH",
+            "DAYTIME_RUNNING_LIGHTS",
+            "ELECTRONIC_STABILITY_CONTROL",
+            "PASSENGER_SIDE_AIRBAG",
+            "TRAILER_HITCH"
+        ]
+    }
+}
+```
+
+##### <a id="save-offer-update">Update offer</a>
+```http request
+POST http://localhost:8007/api/vehicles/offers/{offerId} HTTP/1.1
+Accept: application/bg.autohouse.api-v1+json
+Content-Type: application/bg.autohouse.api-v1+json
+Authorization: Bearer {{token}}
+
+{
+    "contactDetailsPhoneNumber": "(875) 156-5031 x7090",
+    "contactDetailsWebLink": "https://emiliano.org",
+    "addressLocationPostalCode": "5791",
+    "description": "Price includes warranty!  Fuel economy up to 38 MPG featuring a Power Moonroof, Backup Camera,...",
+    "hasAccident": "false",
+    "price": "10495",
+    "images": [image_file1, image_file2],
+    "vehicle": {
+        "bodyStyle": "SEDAN",
+        "color": "BLACK",
+        "doors": "4",
+        "drive": "FRONT_WHEEL_DRIVE",
+        "fuelType": "GASOLINE",
+        "makerName": "Volkswagen",
+        "mileage": "40000",
+        "modelName": "Jetta",
+        "state": "USED",
+        "transmission": "AUTOMATIC",
+        "trim": "1.4T SE FWD",
+        "year": "2017",
+        "features": [
+            "CD_PLAYER",
+            "CLOTH",
+            "DAYTIME_RUNNING_LIGHTS",
+            "ELECTRONIC_STABILITY_CONTROL",
+            "PASSENGER_SIDE_AIRBAG",
+            "TRAILER_HITCH"
+        ]
+    }
 }
 ```
