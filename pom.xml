@@ -9,7 +9,7 @@
   </parent>
   <groupId>bg.autohouse</groupId>
   <artifactId>autohouse</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>autohouse</name>
   <description>Project for Java Web Spring MVC course november 2019</description>
 
