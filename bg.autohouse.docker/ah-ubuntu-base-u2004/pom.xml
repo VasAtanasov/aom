@@ -3,19 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>docker-dev</artifactId>
+        <artifactId>bg.autohouse.docker</artifactId>
         <groupId>bg.autohouse</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ah-mysql-dev-u2004-80</artifactId>
+    <artifactId>ah-ubuntu-base-u2004</artifactId>
     <packaging>pom</packaging>
 
     <properties>
-        <BASE_IMAGE_TAG>u20.04</BASE_IMAGE_TAG>
-        <image.name>ah-mysql-base</image.name>
-        <image.tag.prefix>u20.04-8.0</image.tag.prefix>
+        <BASE_IMAGE_TAG>20.04</BASE_IMAGE_TAG>
+        <image.name>ah-ubuntu-base</image.name>
+        <image.tag.prefix>u20.04</image.tag.prefix>
     </properties>
 
     <build>
@@ -30,7 +30,7 @@
                             <build>
                                 <dockerFile>Dockerfile</dockerFile>
                                 <tags>
-                                    <!--                                    <tag>${image.tag.prefix}-${additional.tag}</tag>-->
+                                    <!--                                    <tag>${additional.tag}</tag>-->
                                 </tags>
                             </build>
                         </image>
@@ -55,15 +55,5 @@
             </plugin>
         </plugins>
     </build>
-
-
-    <dependencies>
-        <dependency>
-            <groupId>bg.autohouse</groupId>
-            <artifactId>ah-ubuntu-base-u2004</artifactId>
-            <version>${project.version}</version>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
 
 </project>

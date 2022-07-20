@@ -9,29 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bg.autohouse.webapp</artifactId>
+    <artifactId>bg.autohouse.spider</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>bg.autohouse</groupId>
-            <artifactId>bg.autohouse.core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>bg.autohouse</groupId>
             <artifactId>bg.autohouse.integration</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

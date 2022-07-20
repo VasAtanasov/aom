@@ -10,7 +10,7 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>docker-dev</artifactId>
+    <artifactId>bg.autohouse.docker</artifactId>
 
     <modules>
         <module>ah-mysql-dev-u2004-80</module>
@@ -20,9 +20,6 @@
     <packaging>pom</packaging>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <version.docker-maven-plugin>0.40.1</version.docker-maven-plugin>
