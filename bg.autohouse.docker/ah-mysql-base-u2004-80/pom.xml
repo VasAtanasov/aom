@@ -9,13 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ah-ubuntu-base-u2004</artifactId>
+    <artifactId>ah-mysql-base-u2004-80</artifactId>
     <packaging>pom</packaging>
 
     <properties>
-        <BASE_IMAGE_TAG>20.04</BASE_IMAGE_TAG>
-        <image.name>ah-ubuntu-base</image.name>
-        <image.tag.prefix>u20.04</image.tag.prefix>
+        <BASE_IMAGE_TAG>u20.04</BASE_IMAGE_TAG>
+        <image.name>ah-mysql-base</image.name>
+        <image.tag.prefix>u20.04-8.0</image.tag.prefix>
     </properties>
 
     <build>
@@ -52,5 +52,15 @@
             </plugin>
         </plugins>
     </build>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>bg.autohouse</groupId>
+            <artifactId>ah-ubuntu-base-u2004</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
 
 </project>

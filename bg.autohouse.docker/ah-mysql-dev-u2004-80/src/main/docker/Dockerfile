@@ -1,33 +1,21 @@
-FROM ${ID_DOCKER_REGISTRY}/ah-ubuntu-base:${BASE_IMAGE_TAG}
+FROM ${ID_DOCKER_REGISTRY}/ah-mysql-base:${BASE_IMAGE_TAG}
 
-# install MySql and disable autostart. The run script will start it later.
-ARG MYSQL_VERSION=8.0.29*
-RUN apt-get update \
-    && apt-get --no-install-recommends --allow-downgrades -y install \
-       mysql-client=${MYSQL_VERSION} mysql-server=${MYSQL_VERSION} \
-       perl perl-base \
-       net-tools \
-       sudo \
-    && apt-get -y autoremove \
-    && apt-get -y autoclean \
-    && rm -rf /var/lib/apt/lists/*
+# MySql
+ENV MYSQL_HOST ''
+ENV MYSQL_PORT ''
+ENV MYSQL_DB ''
+ENV MYSQL_USER ''
+ENV MYSQL_PASSWORD ''
+ENV MYSQL_ROOT_PASSWORD ''
+ENV MYSQL_CONNECTION_OPTS ''
 
 ENV DB_HOST ${DB_HOST:-localhost}
 ENV DB_PORT ${DB_PORT:-3306}
+ENV DB_NAME ${DB_NAME:-db_bm_dev}
+ENV DB_USER ${DB_USER:-bm_dev}
+ENV DB_PASSWORD ${DB_PASSWORD:-bm_dev}
 ENV DB_ROOT_PASSWORD ${DB_ROOT_PASSWORD:-root}
-
-COPY assets/mysql/config/mysqld.cnf /etc/mysql/mysql.conf.d/
-COPY scripts /scripts
-COPY assets /assets
-
-RUN mkdir -p /var/run/mysqld \
-    && chown -R mysql:mysql /var/run/mysqld \
-    && chown -R mysql:mysql /var/lib/mysql \
-    && chmod -R 655 /etc/mysql/mysql.conf.d/ \
-    && chmod a+x /scripts/mysql/*.sh \
-    && echo "mysql user home (before): " && grep mysql /etc/passwd \
-    && usermod -d /var/lib/mysql/ mysql \
-    && echo "mysql user home (after): " && grep mysql /etc/passwd
+ENV DB_CONNECTION_OPTS ''
 
 EXPOSE 3306
 

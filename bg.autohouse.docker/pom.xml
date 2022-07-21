@@ -14,6 +14,7 @@
 
     <modules>
         <module>ah-mysql-dev-u2004-80</module>
+        <module>ah-mysql-base-u2004-80</module>
         <module>ah-ubuntu-base-u2004</module>
     </modules>
 

@@ -13,9 +13,11 @@
     <packaging>pom</packaging>
 
     <properties>
-        <BASE_IMAGE_TAG>u20.04</BASE_IMAGE_TAG>
-        <image.name>ah-mysql-base</image.name>
-        <image.tag.prefix>u20.04-8.0</image.tag.prefix>
+        <BASE_IMAGE_TAG>u20.04-8.0</BASE_IMAGE_TAG>
+        <image.name>ah-mysql-dev</image.name>
+        <image.tag>${BASE_IMAGE_TAG}-${project.version}</image.tag>
+        <!-- default value, may be overwritten by CLI -->
+        <additional.tag>${image.tag}</additional.tag>
     </properties>
 
     <build>
@@ -26,11 +28,11 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>${ID_DOCKER_REGISTRY}/${image.name}:${image.tag.prefix}</name>
+                            <name>${ID_DOCKER_REGISTRY}/${image.name}:${image.tag}</name>
                             <build>
                                 <dockerFile>Dockerfile</dockerFile>
                                 <tags>
-                                    <!--                                    <tag>${image.tag.prefix}-${additional.tag}</tag>-->
+                                    <!--                                    <tag>${additional.tag}</tag>-->
                                 </tags>
                             </build>
                         </image>
@@ -60,7 +62,7 @@
     <dependencies>
         <dependency>
             <groupId>bg.autohouse</groupId>
-            <artifactId>ah-ubuntu-base-u2004</artifactId>
+            <artifactId>ah-mysql-base-u2004-80</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
