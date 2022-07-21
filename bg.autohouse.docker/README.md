@@ -15,6 +15,3 @@ mvn -f ah-ubuntu-base-u2004/pom.xml clean install -Ddocker.nocache=true
 ```
 
 >**NOTE** that all dependent images must exit in local docker in the remote registry.
-
-
-## Build on remote docker
