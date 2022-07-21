@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>bg.autohouse.docker</artifactId>
+    <version>2.0.0</version>
 
     <modules>
         <module>ah-mysql-dev-u2004-80</module>
