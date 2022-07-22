@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: vasatanasov/ah-mysql-dev:${AH_MYSQL_IMAGE_TAG}
+    environment:
+      - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - DB_NAME=${PRODUCT_DB_NAME}
+      - DB_USER=${PRODUCT_DB_USER}
+      - DB_PASSWORD=${PRODUCT_DB_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - network
+
+  product:
+    image: vasatanasov/ah-product-dev:${AH_PRODUCT_IMAGE_TAG}
+    depends_on:
+      - mysql
+    environment:
+      # RDBMS
+      - DB_HOST=${PRODUCT_DB_HOST}
+      - DB_PORT=${PRODUCT_DB_PORT}
+      - DB_NAME=${PRODUCT_DB_NAME}
+      - DB_USER=${PRODUCT_DB_USER}
+      - DB_PASSWORD=${PRODUCT_DB_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - DDL_STRATEGY=none
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+
+volumes:
+  mysql:
+
+networks:
+  network:

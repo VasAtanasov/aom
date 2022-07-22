@@ -1,0 +1,22 @@
+server:
+  port: ${SERVER_PORT:8080}
+  compression:
+    enabled: true
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: bg.autohouse.core.config.MySQL8UnicodeDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: ${DDL_STRATEGY}
+    open-in-view: false
+    generate-ddl: true
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: ${DB_PASSWORD}
+    username: ${DB_USER}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=TRUE
+  sql:
+    init:
+      platform: mysql

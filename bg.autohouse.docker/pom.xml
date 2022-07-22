@@ -17,17 +17,14 @@
         <module>ah-mysql-dev-u2004-80</module>
         <module>ah-mysql-base-u2004-80</module>
         <module>ah-ubuntu-base-u2004</module>
+        <module>ah-jdk-base-u2004-jdk17</module>
+        <module>ah-jdk-base-u2004-jdk11</module>
     </modules>
 
     <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <version.docker-maven-plugin>0.40.1</version.docker-maven-plugin>
-        <ID_DOCKER_REGISTRY>docker.io/vasatanasov</ID_DOCKER_REGISTRY>
-        <docker.nocache>true</docker.nocache>
-        <additional.tag>${project.version}</additional.tag>
     </properties>
 
     <build>
@@ -57,15 +54,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>DockerHub</id>
-            <name>DockerHub</name>
-            <uniqueVersion>false</uniqueVersion>
-            <url>https://index.docker.io/v2/</url>
-        </repository>
-    </distributionManagement>
-
 
 </project>

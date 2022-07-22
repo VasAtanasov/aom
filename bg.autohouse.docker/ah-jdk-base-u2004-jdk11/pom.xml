@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>bg.autohouse.docker</artifactId>
+        <groupId>bg.autohouse</groupId>
+        <version>2.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ah-jdk-base-u2004-jdk11</artifactId>
+    <packaging>pom</packaging>
+
+    <properties>
+        <BASE_IMAGE_TAG>u20.04</BASE_IMAGE_TAG>
+        <image.name>ah-jdk-base</image.name>
+        <image.tag.prefix>u20.04-jdk11</image.tag.prefix>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${ID_DOCKER_REGISTRY}/${image.name}:${image.tag.prefix}</name>
+                            <build>
+                                <dockerFile>Dockerfile</dockerFile>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker:build</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>docker:push</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>bg.autohouse</groupId>
+            <artifactId>ah-ubuntu-base-u2004</artifactId>
+            <version>2.0.0</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
+</project>

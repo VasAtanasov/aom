@@ -11,4 +11,6 @@
 
     <artifactId>bg.autohouse.api</artifactId>
 
+    <dependencies></dependencies>
+
 </project>

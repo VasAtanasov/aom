@@ -11,6 +11,17 @@
 
     <artifactId>bg.autohouse.webapp</artifactId>
 
+    <properties>
+        <publishName>autohouse</publishName>
+
+        <BASE_IMAGE_TAG>u20.04-jdk11</BASE_IMAGE_TAG>
+        <image.name>ah-product-dev</image.name>
+        <!--        <image.tag>${BASE_IMAGE_TAG}-${project.version}</image.tag>-->
+        <image.tag>${BASE_IMAGE_TAG}-2.0.0</image.tag>
+        <!-- default value, may be overwritten by CLI -->
+        <additional.tag>${image.tag}</additional.tag>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -31,6 +42,16 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -38,6 +59,49 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${version.docker-maven-plugin}</version>
+                <configuration>
+                    <pushRegistry>${ID_DOCKER_REGISTRY}</pushRegistry>
+                    <verbose>true</verbose>
+                    <useColor>true</useColor>
+                    <images>
+                        <image>
+                            <name>${ID_DOCKER_REGISTRY}/${image.name}:${image.tag}</name>
+                            <build>
+                                <dockerFile>Dockerfile</dockerFile>
+                                <contextDir>${project.basedir}</contextDir>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker:build</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>docker:push</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

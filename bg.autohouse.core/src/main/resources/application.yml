@@ -1,0 +1,11 @@
+spring:
+  liquibase:
+    enabled: false
+  jpa:
+    open-in-view: false
+
+  main:
+    banner-mode: off
+  sql:
+    init:
+      mode: never
