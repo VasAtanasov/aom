@@ -3,7 +3,7 @@ package bg.autohouse.spider.client;
 import java.net.URL;
 import java.util.Collection;
 
-public class Request<T> {
+public class Request {
 
 //  private final String method;
 //  private final Collection<? extends Parameter<?>> params;
