@@ -17,7 +17,7 @@ public class SpiderApplication
     {
         log.info("Running SpiderApplication");
         log.info("Initializing CG Client");
-        CGClient client = new CGClient(Constant.CG_CORE_ENDPOINT);
+        CGClient client = new CGClient();
         var makers = client.makers().httpCollectionGet()
                 .stream()
                 .filter(MakerDTO::isPopular)

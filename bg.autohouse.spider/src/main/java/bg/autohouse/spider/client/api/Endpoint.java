@@ -1,9 +1,6 @@
 package bg.autohouse.spider.client.api;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
+import bg.autohouse.spider.client.HttpExecutor;
 
 public abstract class Endpoint
 {

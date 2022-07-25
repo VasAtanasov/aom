@@ -24,8 +24,9 @@ public class MakerCollectionCGEndpoint extends Endpoint implements GetCollection
     {
         URI uri = URI.create(getEndpoint());
         HttpResponse<String> response = RequestUtil.getAsString(uri);
-        MakersModelsWrapper collection = RequestUtil.fromJSON(getClient().getMapper(), new TypeReference<>() {}, response.body());
-        return collection.getAllMakerModels().get("makers");
+//        MakersModelsWrapper collection = RequestUtil.fromJSON(getClient().getMapper(), new TypeReference<>() {}, response.body());
+//        return collection.getAllMakerModels().get("makers");
 
+        return List.of();
     }
 }
