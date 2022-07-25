@@ -6,19 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class AbstractCoreClient implements CoreClient
 {
-    private HttpExecutor httpExecutor = new JavaHttpClientStringExecutor();
+    private HttpStrategy httpStrategy = new JavaHttpClientStrategy();
     private final ObjectMapper mapper = ObjectMapperFactory.mapper();
 
-    @Override
-    public HttpExecutor http()
+    public AbstractCoreClient()
     {
-        return httpExecutor;
     }
 
-    @Override
-    public void setHttpExecutor(HttpExecutor httpExecutor)
+    public AbstractCoreClient(HttpStrategy httpStrategy)
     {
-        this.httpExecutor = httpExecutor;
+        this.httpStrategy = httpStrategy;
     }
 
     @Override
@@ -26,4 +23,15 @@ public abstract class AbstractCoreClient implements CoreClient
     {
         return mapper;
     }
+
+    public HttpStrategy http()
+    {
+        return httpStrategy;
+    }
+
+    public void setHttpStrategy(HttpStrategy httpStrategy)
+    {
+        this.httpStrategy = httpStrategy;
+    }
+
 }

@@ -6,7 +6,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-public class JavaHttpClientStringExecutor extends AbstractHttpExecutor
+public class JavaHttpClientStrategy
 {
     private final HttpClient http = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
@@ -49,5 +49,4 @@ public class JavaHttpClientStringExecutor extends AbstractHttpExecutor
 
         return null;
     }
-
 }
