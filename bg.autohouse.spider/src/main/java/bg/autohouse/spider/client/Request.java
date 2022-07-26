@@ -1,17 +1,18 @@
 package bg.autohouse.spider.client;
 
-import java.net.URL;
+import bg.autohouse.spider.client.api.HttpMethod;
+
+import java.net.URI;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 public class Request
 {
 
-    private final String method;
+    private final HttpMethod method;
     private final Collection<? extends Parameter<?>> params;
-    private final URL url;
-    private final RequestBody<?> body;
+    private final URI url;
+    private final RequestBody body;
     private final Charset charset;
     private final int socksTimeout;
     private final int connectTimeout;
@@ -23,11 +24,11 @@ public class Request
         this.body = builder.body;
         this.socksTimeout = builder.socksTimeout;
         this.connectTimeout = builder.connectTimeout;
-        this.url = builder.url;
+        this.url = builder.uri;
         this.params = builder.params;
     }
 
-    public String method()
+    public HttpMethod method()
     {
         return method;
     }
@@ -37,12 +38,12 @@ public class Request
         return params;
     }
 
-    public URL url()
+    public URI url()
     {
         return url;
     }
 
-    public RequestBody<?> body()
+    public RequestBody body()
     {
         return body;
     }

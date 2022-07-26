@@ -1,12 +1,13 @@
 package bg.autohouse.spider.client;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-public class JavaHttpClientStrategy
+public class JavaHttpClientStrategy extends AbstractHttpStrategy
 {
     private final HttpClient http = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
@@ -14,10 +15,10 @@ public class JavaHttpClientStrategy
             .connectTimeout(Duration.ofSeconds(20))
             .build();
 
-    protected  <T> Response<T> call(RequestMetadata metadata)
+    @Override
+    protected RawResponse call(RequestMetadata metadata)
     {
         HttpRequest.Builder builder = HttpRequest.newBuilder();
-        builder.header("Content-Type", metadata.mediaType());
         builder.uri(metadata.uri());
         switch (metadata.method())
         {
@@ -25,7 +26,8 @@ public class JavaHttpClientStrategy
                 builder.GET();
                 break;
             case POST:
-                //                builder.POST()
+                builder.header("Content-Type", metadata.body().getContentType().value());
+                builder.POST(HttpRequest.BodyPublishers.ofInputStream(() -> metadata.body().getBody()));
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported method: " + metadata.method());
@@ -35,18 +37,16 @@ public class JavaHttpClientStrategy
 
         try
         {
-            HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
-            response.body();
-            //            Response<String> resp = new Response<>();
-            //            res
-
+            HttpResponse.BodyHandler<InputStream> bodyHandler = HttpResponse.BodyHandlers.ofInputStream();
+//            HttpResponse.BodyHandler<InputStream> bodyHandler = HttpResponse.BodyHandlers.ofString();
+            HttpResponse<InputStream> response = http.send(request, bodyHandler);
+            InputStream body = response.body();
+            return new RawResponse(metadata.uri().toString(), response.statusCode(), body);
         }
         catch (IOException | InterruptedException e)
         {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-
-        return null;
     }
 }

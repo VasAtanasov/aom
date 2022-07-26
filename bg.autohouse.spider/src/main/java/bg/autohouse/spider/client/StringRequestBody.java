@@ -1,9 +1,13 @@
 package bg.autohouse.spider.client;
 
-class StringRequestBody extends RequestBody<String> {
+import java.io.InputStream;
 
-  StringRequestBody(String body) {
-    super(body, "plain/text");
-  }
+class StringRequestBody extends RequestBody
+{
+
+    StringRequestBody(InputStream body)
+    {
+        super(body, "plain/text");
+    }
 
 }

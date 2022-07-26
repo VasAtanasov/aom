@@ -1,36 +1,27 @@
 package bg.autohouse.spider.client.endpoint;
 
-import bg.autohouse.spider.client.JavaHttpClientStringExecutor;
-import bg.autohouse.spider.client.Request;
-import bg.autohouse.spider.client.RequestUtil;
+import bg.autohouse.spider.client.RequestBuilder;
 import bg.autohouse.spider.client.Response;
-import bg.autohouse.spider.client.api.CoreClient;
-import bg.autohouse.spider.client.api.Endpoint;
-import bg.autohouse.spider.client.api.GetOperation;
+import bg.autohouse.spider.client.ResponseBodyHandler;
+import bg.autohouse.spider.client.api.ApiClient;
+import bg.autohouse.spider.client.api.AbstractEndpoint;
 import bg.autohouse.spider.domain.dto.cg.MakerDTO;
-import com.fasterxml.jackson.core.type.TypeReference;
+import bg.autohouse.spider.util.json.JsonUtil;
 
-import java.net.URI;
-import java.net.http.HttpResponse;
-import java.util.List;
-
-public class MakerCGEndpoint extends Endpoint implements GetOperation<MakerDTO>
+public class MakerCGEndpoint extends AbstractEndpoint
 {
-    public MakerCGEndpoint(CoreClient client, String url, String makerId)
+    private static final String MODELS_FOR_MAKER_URL = "getSelectedMakerModelCarsAJAX.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&maker=";
+
+    public MakerCGEndpoint(ApiClient client, String makerId)
     {
-        super(client, url + "/" + makerId);
+        super(client, String.join(MODELS_FOR_MAKER_URL, SEPARATOR, makerId));
     }
 
-    @Override
-    public MakerDTO httpGet()
+    public MakerDTO getMaker()
     {
-        URI uri = URI.create(getEndpoint());
-        HttpResponse<String> response = RequestUtil.getAsString(uri);
-
-        JavaHttpClientStringExecutor executor = new JavaHttpClientStringExecutor();
-        //        Response<String> response1 =executor.execute(new Request());
-        //
-        //        return RequestUtil.fromJSON(getClient().getMapper(), new TypeReference<>() {}, response.body());
-        return null;
+        var metadata = RequestBuilder.get(endpoint()).build();
+        ResponseBodyHandler<MakerDTO> handler = in -> JsonUtil.fromJSON(in, MakerDTO.class);
+        Response<MakerDTO> response = client().http().call(metadata, handler);
+        return response.body();
     }
 }

@@ -1,8 +1,10 @@
 package bg.autohouse.spider.client;
 
-class JsonRequestBody<T> extends RequestBody<T> {
+import java.io.InputStream;
 
-  JsonRequestBody(T body) {
+class JsonRequestBody<T> extends RequestBody {
+
+  JsonRequestBody(InputStream body) {
     super(body, "application/json");
   }
 

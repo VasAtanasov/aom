@@ -1,25 +1,27 @@
 package bg.autohouse.spider.client.api;
 
-import bg.autohouse.spider.client.HttpExecutor;
 
-public abstract class Endpoint
+public abstract class AbstractEndpoint
 {
-    private final CoreClient client;
+    protected static final String SEPARATOR = "/";
+
+    private final ApiClient client;
     private final String url;
 
-    public Endpoint(CoreClient client, String url)
+    public AbstractEndpoint(ApiClient client, String url)
     {
         this.client = client;
-        this.url = url;
+        this.url = String.join(SEPARATOR, client().apiBaseUrl(), url);
     }
 
-    public String getEndpoint()
+    public String endpoint()
     {
         return url;
     }
 
-    public CoreClient getClient()
+    public ApiClient client()
     {
         return client;
     }
+
 }

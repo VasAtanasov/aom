@@ -1,4 +1,4 @@
-package com.piconsult.util;
+package bg.autohouse.spider.util.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,14 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.piconsult.util.coverters.FormatLoader;
-import com.piconsult.util.coverters.FormatLoaderFactoryDefault;
-import com.piconsult.util.coverters.jackson.*;
-import org.apache.log4j.Logger;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJacksonValue;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Collections;
@@ -24,66 +20,50 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+
+@Slf4j
 public class JsonUtil
 {
-    private static Logger logger = Logger.getLogger(JsonUtil.class);
     private static final String ERROR_DESERIALIZING = "Error deserializing object";
-    
+
     private static ObjectMapper objectMapper = null;
-    
+
     private static ObjectMapper getMapper()
     {
-        if(objectMapper == null)
+        if (objectMapper == null)
         {
-            objectMapper = Jackson2ObjectMapperBuilder.json().build();
-            objectMapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
-            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            registerSerializersDeserializersModule(objectMapper);
+            objectMapper = ObjectMapperFactory.mapper();
         }
-        
+
         return objectMapper;
     }
-    
-    
-    private static String toJSON(Object object,  boolean ignoreNulls)
+
+
+    private static String toJSON(Object object, boolean ignoreNulls)
     {
         if (ignoreNulls)
         {
             ObjectMapper mapper = getMapper().copy();
-            
+
             mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
             mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-            
+
             return toJSON(object, mapper);
         }
-        
+
         return toJSON(object, getMapper());
     }
 
     private static String toJSON(Object object, ObjectMapper objectMapper)
     {
-        ObjectWriter objectWriter;
-        Object value;
-        if (object instanceof MappingJacksonValue)
-        {
-            MappingJacksonValue container = (MappingJacksonValue) object;
-            value = container.getValue();
-            Class<?> serializationView = container.getSerializationView();
-            objectWriter = objectMapper.writerWithView(serializationView);
-        }
-        else {
-            objectWriter = objectMapper.writer();
-            value = object;
-        }
-
+        ObjectWriter objectWriter = objectMapper.writer();
         try
         {
-            return objectWriter.writeValueAsString(value);
+            return objectWriter.writeValueAsString(object);
         }
         catch (JsonProcessingException e)
         {
-            logger.error(e);
+            log.error(e.toString());
         }
         return null;
     }
@@ -92,12 +72,12 @@ public class JsonUtil
     {
         return toJSON(object, false);
     }
-    
+
     public static String toJSONNoNulls(Object object)
     {
         return toJSON(object, true);
     }
-    
+
 
     public static Object fromJSON(String input)
     {
@@ -113,11 +93,39 @@ public class JsonUtil
         }
         catch (IOException e)
         {
-            logger.error(ERROR_DESERIALIZING, e);
+            log.error(ERROR_DESERIALIZING, e);
         }
         return null;
     }
-    
+
+    public static <T> T fromJSON(InputStream input, Class<T> clazz)
+    {
+        try
+        {
+
+            return getMapper().readValue(input, clazz);
+        }
+        catch (IOException e)
+        {
+            log.error(ERROR_DESERIALIZING, e);
+        }
+        return null;
+    }
+
+    public static <T> T fromJSON(InputStream input, TypeReference<T> clazz)
+    {
+        try
+        {
+
+            return getMapper().readValue(input, clazz);
+        }
+        catch (IOException e)
+        {
+            log.error(ERROR_DESERIALIZING, e);
+        }
+        return null;
+    }
+
     public static <T> T fromJSON(String input, TypeReference<T> reference)
     {
         try
@@ -126,7 +134,7 @@ public class JsonUtil
         }
         catch (IOException e)
         {
-            logger.error(ERROR_DESERIALIZING, e);
+            log.error(ERROR_DESERIALIZING, e);
         }
         return null;
     }
@@ -139,7 +147,7 @@ public class JsonUtil
         }
         catch (IOException e)
         {
-            logger.error(ERROR_DESERIALIZING, e);
+            log.error(ERROR_DESERIALIZING, e);
         }
         return Collections.emptyList();
     }
@@ -152,7 +160,7 @@ public class JsonUtil
         }
         catch (IOException e)
         {
-            logger.error(ERROR_DESERIALIZING, e);
+            log.error(ERROR_DESERIALIZING, e);
         }
         return Collections.emptyList();
     }
@@ -165,11 +173,11 @@ public class JsonUtil
         }
         catch (IOException e)
         {
-            logger.error(ERROR_DESERIALIZING, e);
+            log.error(ERROR_DESERIALIZING, e);
         }
         return null;
     }
-    
+
     public static <T> Map<T, Object> fromJSONMap(String input)
     {
         try
@@ -178,7 +186,7 @@ public class JsonUtil
         }
         catch (IOException e)
         {
-            logger.error(ERROR_DESERIALIZING, e);
+            log.error(ERROR_DESERIALIZING, e);
         }
         return null;
     }
@@ -196,30 +204,7 @@ public class JsonUtil
             return false;
         }
     }
-    
-    
-    public ObjectMapper getObjectMapper()
-    {
-        return getMapper();
-    }
-    
-    
-    private static void registerSerializersDeserializersModule(ObjectMapper mapper)
-    {
-        SimpleModule module = new SimpleModule("customSer", Version.unknownVersion());
-        module.addSerializer(Date.class, new JsonDateSerializer());
-        module.addSerializer(Number.class, new JsonNumberSerializer());
-        module.addSerializer(ZonedDateTime.class, new JsonZonedDateTimeSerializer());
-        module.addSerializer(LocalDateTime.class, new JsonLocalDateTimeSerializer());
-        
-        FormatLoader formatLoader = FormatLoaderFactoryDefault.getInstance();
-        module.addDeserializer(Date.class, new JsonDateDeserializer(formatLoader));
-        module.addDeserializer(ZonedDateTime.class, new JsonZonedDateTimeDeserializer());
-        module.addDeserializer(LocalDateTime.class, new JsonLocalDateTimeDeserializer());
-        
-        mapper.registerModule(module);
-    }
-   
+
 
 }
 

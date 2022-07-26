@@ -1,22 +1,41 @@
 package bg.autohouse.spider.client;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
-public abstract class RequestBody<T> implements Serializable {
+public abstract class RequestBody implements Serializable
+{
+    private InputStream body;
+    private Header contentType;
 
-  private final T body;
-  private final String contentType;
+    protected RequestBody(InputStream body, String contentType)
+    {
+        this.body = body;
+        setContentType(contentType);
+    }
 
-  protected RequestBody(T body, String contentType) {
-    this.body = body;
-    this.contentType = contentType;
-  }
+    public void setContentType(Header contentType)
+    {
+        this.contentType = contentType;
+    }
 
-  public T body() {
-    return this.body;
-  }
+    public void setContentType(String contentType)
+    {
+        Header header = null;
+        if (contentType != null)
+        {
+            header = new Header("Content-Type", contentType);
+        }
+        this.setContentType(header);
+    }
 
-  public String contentType() {
-    return this.contentType;
-  }
+    public InputStream getBody()
+    {
+        return body;
+    }
+
+    public Header getContentType()
+    {
+        return contentType;
+    }
 }

@@ -1,19 +1,19 @@
 package bg.autohouse.spider.client;
 
-import bg.autohouse.spider.client.api.CoreClient;
+import bg.autohouse.spider.client.api.ApiClient;
 import bg.autohouse.spider.util.json.ObjectMapperFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public abstract class AbstractCoreClient implements CoreClient
+public abstract class AbstractApiClient implements ApiClient
 {
     private HttpStrategy httpStrategy = new JavaHttpClientStrategy();
     private final ObjectMapper mapper = ObjectMapperFactory.mapper();
 
-    public AbstractCoreClient()
+    public AbstractApiClient()
     {
     }
 
-    public AbstractCoreClient(HttpStrategy httpStrategy)
+    public AbstractApiClient(HttpStrategy httpStrategy)
     {
         this.httpStrategy = httpStrategy;
     }

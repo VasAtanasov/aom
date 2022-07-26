@@ -1,8 +1,7 @@
 package bg.autohouse.spider;
 
 
-import bg.autohouse.spider.client.CGClient;
-import bg.autohouse.spider.constants.Constant;
+import bg.autohouse.spider.client.CGApiClient;
 import bg.autohouse.spider.domain.dto.cg.MakerDTO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +16,9 @@ public class SpiderApplication
     {
         log.info("Running SpiderApplication");
         log.info("Initializing CG Client");
-        CGClient client = new CGClient();
+        CGApiClient client = new CGApiClient();
+
+
         var makers = client.makers().httpCollectionGet()
                 .stream()
                 .filter(MakerDTO::isPopular)

@@ -1,25 +1,31 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.client.api.HttpMethod;
-import bg.autohouse.spider.client.api.MediaType;
 
 import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
 
 public class RequestMetadata
 {
-    private HttpMethod httpMethod = HttpMethod.GET;
-    private String mediaType = MediaType.APPLICATION_JSON_VALUE;
-    private final boolean isAsyncCall = false;
-    private URI uri;
+    private final HttpMethod httpMethod;
+    private final Collection<? extends Parameter<?>> params;
+    private final RequestBody body;
+    private final boolean async;
+    private final URI uri;
+
+    public RequestMetadata(RequestBuilder builder)
+    {
+        this.httpMethod = builder.method;
+        this.params = builder.params;
+        this.async = builder.async;
+        this.uri = builder.uri;
+        this.body = builder.body;
+    }
 
     public HttpMethod method()
     {
         return httpMethod;
-    }
-
-    public String mediaType()
-    {
-        return mediaType;
     }
 
     public URI uri()
@@ -27,18 +33,18 @@ public class RequestMetadata
         return uri;
     }
 
-    public void setHttpMethod(HttpMethod httpMethod)
+    public boolean isAsync()
     {
-        this.httpMethod = httpMethod;
+        return async;
     }
 
-    public void setMediaType(String mediaType)
+    public Collection<? extends Parameter<?>> params()
     {
-        this.mediaType = mediaType;
+        return Collections.unmodifiableCollection(params);
     }
 
-    public void setUri(URI uri)
+    public RequestBody body()
     {
-        this.uri = uri;
+        return body;
     }
 }

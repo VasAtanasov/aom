@@ -49,11 +49,6 @@ public class RequestUtil
         return execute(request, handler);
     }
 
-    public static HttpResponse<String> getAsString(URI uri)
-    {
-        return get(uri, HttpResponse.BodyHandlers.ofString());
-    }
-
     public static <T> T fromJSON(ObjectMapper objectMapper, TypeReference<T> type, String jsonPacket)
     {
         if (jsonPacket == null)

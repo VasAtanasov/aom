@@ -1,5 +1,10 @@
 package bg.autohouse.spider.client;
 
-public class ResponseHandler
+import java.io.InputStream;
+import java.nio.charset.Charset;
+
+@FunctionalInterface
+public interface ResponseBodyHandler<T>
 {
+    T handle(InputStream inputStream);
 }
