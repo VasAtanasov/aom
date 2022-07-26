@@ -1,8 +1,6 @@
 package bg.autohouse.spider.client.endpoint;
 
-
 import bg.autohouse.spider.client.HttpStrategy;
-import bg.autohouse.spider.client.RequestBuilder;
 import bg.autohouse.spider.client.api.ApiClient;
 
 public class AbstractEndpoint

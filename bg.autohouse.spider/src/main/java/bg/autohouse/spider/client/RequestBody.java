@@ -45,7 +45,7 @@ public abstract class RequestBody implements Serializable
 
     public static class JsonRequestBody extends RequestBody
     {
-        JsonRequestBody(InputStream body)
+        public JsonRequestBody(InputStream body)
         {
             super(body, MediaType.APPLICATION_JSON_VALUE);
         }
@@ -53,9 +53,17 @@ public abstract class RequestBody implements Serializable
 
     public static class StringRequestBody extends RequestBody
     {
-        StringRequestBody(InputStream body)
+        public StringRequestBody(InputStream body)
         {
-            super(body, MediaType.APPLICATION_TEXT_VALUE);
+            super(body, MediaType.TEXT_PLAIN_VALUE);
+        }
+    }
+
+    public static class FormRequestBody extends RequestBody
+    {
+        public FormRequestBody(InputStream body)
+        {
+            super(body, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         }
     }
 }

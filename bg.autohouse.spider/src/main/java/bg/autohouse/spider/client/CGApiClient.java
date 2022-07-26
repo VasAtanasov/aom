@@ -37,6 +37,11 @@ public class CGApiClient extends AbstractApiClient
         return new TrimEngineEndpoint(this, trimId);
     }
 
+    public OptionsEndpoint trimOptions(String trimId)
+    {
+        return new OptionsEndpoint(this, trimId);
+    }
+
     @Override
     public String apiBaseUrl()
     {

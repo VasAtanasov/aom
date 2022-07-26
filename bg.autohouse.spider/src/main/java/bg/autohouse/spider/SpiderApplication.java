@@ -65,6 +65,7 @@ public class SpiderApplication
                         var trimName = trim.getName();
                         var transmission = cg.trimTransmissions(trimId).transmissions();
                         var engines = cg.trimEngines(trimId).engines();
+                        var options = cg.trimOptions(trimId).options();
                         int a = 5;
                         break;
                     }
