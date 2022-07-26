@@ -1,4 +1,4 @@
-package bg.autohouse.spider.client.endpoint;
+package bg.autohouse.spider.client.endpoint.cg;
 
 import bg.autohouse.spider.client.RequestBuilder;
 import bg.autohouse.spider.client.Response;
@@ -6,26 +6,25 @@ import bg.autohouse.spider.client.ResponseBodyHandler;
 import bg.autohouse.spider.client.api.AbstractEndpoint;
 import bg.autohouse.spider.client.api.ApiClient;
 import bg.autohouse.spider.domain.dto.cg.MakerDTO;
+import bg.autohouse.spider.domain.dto.cg.MakersModelsWrapper;
 import bg.autohouse.spider.util.json.JsonUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
 
-public class MakerCollectionCGEndpoint extends AbstractEndpoint
+public class MakersCollectionEndpoint extends AbstractEndpoint
 {
     private static final String MAKER_MODEL_URL = "getCarPickerReferenceDataAJAX.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT";
 
-    public MakerCollectionCGEndpoint(ApiClient client)
+    public MakersCollectionEndpoint(ApiClient client)
     {
         super(client, MAKER_MODEL_URL);
     }
 
-    public List<MakerDTO> httpCollectionGet()
+    public List<MakerDTO> makers()
     {
         var metadata = RequestBuilder.get(endpoint()).build();
-        ResponseBodyHandler<List<MakerDTO>> handler = in -> JsonUtil.fromJSON(in, new TypeReference<List<MakerDTO>>() {});
-        Response<List<MakerDTO>> response = client().http().call(metadata, handler);
-        return response.body();
-//        return List.of();
+        ResponseBodyHandler<MakersModelsWrapper> handler = in -> JsonUtil.fromJSON(in, MakersModelsWrapper.class);
+        Response<MakersModelsWrapper> response = http().call(metadata, handler);
+        return response.body().makers();
     }
 }

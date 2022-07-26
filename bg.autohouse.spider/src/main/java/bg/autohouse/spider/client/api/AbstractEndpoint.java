@@ -1,6 +1,8 @@
 package bg.autohouse.spider.client.api;
 
 
+import bg.autohouse.spider.client.HttpStrategy;
+
 public abstract class AbstractEndpoint
 {
     protected static final String SEPARATOR = "/";
@@ -22,6 +24,11 @@ public abstract class AbstractEndpoint
     public ApiClient client()
     {
         return client;
+    }
+
+    protected HttpStrategy http()
+    {
+        return this.client.http();
     }
 
 }

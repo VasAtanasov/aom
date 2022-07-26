@@ -1,14 +1,16 @@
 package bg.autohouse.spider.client;
 
-public abstract class AbstractResponse
+abstract class AbstractResponse<T>
 {
-    protected final String url;
-    protected final int statusCode;
+    private final String url;
+    private final int statusCode;
+    private final T body;
 
-    protected AbstractResponse(String url, int statusCode)
+    protected AbstractResponse(String url, int statusCode, T body)
     {
         this.url = url;
         this.statusCode = statusCode;
+        this.body = body;
     }
 
     public String url()
@@ -19,5 +21,10 @@ public abstract class AbstractResponse
     public int statusCode()
     {
         return statusCode;
+    }
+
+    public T body()
+    {
+        return body;
     }
 }

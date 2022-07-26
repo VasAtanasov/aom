@@ -1,5 +1,6 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -7,15 +8,18 @@ import java.util.Map;
 
 public class MakersModelsWrapper
 {
-    private final Map<String, List<MakerDTO>> allMakerModels;
+    private static final String MAKERS_KEY = "makers";
 
-    public Map<String, List<MakerDTO>> getAllMakerModels()
-    {
-        return allMakerModels;
-    }
+    private final Map<String, List<MakerDTO>> allMakerModels;
 
     public MakersModelsWrapper(@JsonProperty("allMakerModels") Map<String, List<MakerDTO>> allMakerModels)
     {
         this.allMakerModels = allMakerModels;
+    }
+
+    @JsonIgnore
+    public List<MakerDTO> makers()
+    {
+        return this.allMakerModels.computeIfAbsent(MAKERS_KEY, k -> List.of());
     }
 }

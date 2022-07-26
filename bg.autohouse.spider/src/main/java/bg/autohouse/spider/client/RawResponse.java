@@ -4,19 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 
-public class RawResponse extends AbstractResponse implements AutoCloseable
+public class RawResponse extends AbstractResponse<InputStream> implements AutoCloseable
 {
-    private final InputStream body;
-
     protected RawResponse(String url, int statusCode, InputStream body)
     {
-        super(url, statusCode);
-        this.body = body;
-    }
-
-    public InputStream body()
-    {
-        return body;
+        super(url, statusCode, body);
     }
 
     @Override
@@ -24,7 +16,7 @@ public class RawResponse extends AbstractResponse implements AutoCloseable
     {
         try
         {
-            this.body.close();
+            this.body().close();
         }
         catch (IOException e)
         {

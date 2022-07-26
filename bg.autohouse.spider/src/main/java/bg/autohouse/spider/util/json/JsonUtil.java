@@ -2,23 +2,16 @@ package bg.autohouse.spider.util.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 @Slf4j
@@ -28,7 +21,7 @@ public class JsonUtil
 
     private static ObjectMapper objectMapper = null;
 
-    private static ObjectMapper getMapper()
+    private static ObjectMapper mapper()
     {
         if (objectMapper == null)
         {
@@ -43,15 +36,12 @@ public class JsonUtil
     {
         if (ignoreNulls)
         {
-            ObjectMapper mapper = getMapper().copy();
-
-            mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+            ObjectMapper mapper = mapper().copy();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-
             return toJSON(object, mapper);
         }
 
-        return toJSON(object, getMapper());
+        return toJSON(object, mapper());
     }
 
     private static String toJSON(Object object, ObjectMapper objectMapper)
@@ -89,7 +79,7 @@ public class JsonUtil
         try
         {
 
-            return getMapper().readValue(input, clazz);
+            return mapper().readValue(input, clazz);
         }
         catch (IOException e)
         {
@@ -103,7 +93,7 @@ public class JsonUtil
         try
         {
 
-            return getMapper().readValue(input, clazz);
+            return mapper().readValue(input, clazz);
         }
         catch (IOException e)
         {
@@ -117,7 +107,7 @@ public class JsonUtil
         try
         {
 
-            return getMapper().readValue(input, clazz);
+            return mapper().readValue(input, clazz);
         }
         catch (IOException e)
         {
@@ -130,7 +120,7 @@ public class JsonUtil
     {
         try
         {
-            return getMapper().readValue(input, reference);
+            return mapper().readValue(input, reference);
         }
         catch (IOException e)
         {
@@ -139,24 +129,11 @@ public class JsonUtil
         return null;
     }
 
-    public static List<Object> fromJSONList(String input)
-    {
-        try
-        {
-            return getMapper().readValue(input, List.class);
-        }
-        catch (IOException e)
-        {
-            log.error(ERROR_DESERIALIZING, e);
-        }
-        return Collections.emptyList();
-    }
-
     public static <T> List<T> fromJSONList(String input, Class<T> clazz)
     {
         try
         {
-            return getMapper().readValue(input, getMapper().getTypeFactory().constructCollectionType(List.class, clazz));
+            return mapper().readValue(input, mapper().getTypeFactory().constructCollectionType(List.class, clazz));
         }
         catch (IOException e)
         {
@@ -169,20 +146,7 @@ public class JsonUtil
     {
         try
         {
-            return getMapper().readValue(input, javaType);
-        }
-        catch (IOException e)
-        {
-            log.error(ERROR_DESERIALIZING, e);
-        }
-        return null;
-    }
-
-    public static <T> Map<T, Object> fromJSONMap(String input)
-    {
-        try
-        {
-            return getMapper().readValue(input, Map.class);
+            return mapper().readValue(input, javaType);
         }
         catch (IOException e)
         {
@@ -204,8 +168,6 @@ public class JsonUtil
             return false;
         }
     }
-
-
 }
 
 

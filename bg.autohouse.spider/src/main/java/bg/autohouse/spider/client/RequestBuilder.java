@@ -16,8 +16,8 @@ public final class RequestBuilder
     Charset charset = StandardCharsets.UTF_8;
     RequestBody body;
     boolean async = false;
-    int socksTimeout = 5000;
     int connectTimeout = 3000;
+    int retries = 0;
 
     private static RequestBuilder builder()
     {
@@ -29,9 +29,9 @@ public final class RequestBuilder
         return builder(HttpMethod.GET, url);
     }
 
-    public static RequestBuilder post(String url)
+    public static RequestBuilder post(String url, RequestBody body)
     {
-        return builder(HttpMethod.POST, url);
+        return builder(HttpMethod.POST, url).body(body);
     }
 
     private static RequestBuilder builder(HttpMethod method, String url)
@@ -41,18 +41,6 @@ public final class RequestBuilder
 
     RequestBuilder()
     {
-    }
-
-    public static RequestBuilder of(RequestMetadata metadata)
-    {
-        return new RequestBuilder(metadata);
-    }
-
-    RequestBuilder(RequestMetadata request)
-    {
-        this.method = request.method();
-        this.body = request.body();
-        this.params = request.params();
     }
 
     public RequestBuilder method(HttpMethod method)
@@ -91,15 +79,15 @@ public final class RequestBuilder
         return this;
     }
 
-    public RequestBuilder socksTimeout(int socksTimeout)
-    {
-        this.socksTimeout = socksTimeout;
-        return this;
-    }
-
     public RequestBuilder connectTimeout(int connectTimeout)
     {
         this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    public RequestBuilder retries(int retries)
+    {
+        this.retries = retries;
         return this;
     }
 

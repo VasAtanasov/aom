@@ -2,6 +2,7 @@ package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.client.api.HttpMethod;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,10 +10,12 @@ import java.util.Collections;
 public class RequestMetadata
 {
     private final HttpMethod httpMethod;
+    private final URI uri;
     private final Collection<? extends Parameter<?>> params;
     private final RequestBody body;
     private final boolean async;
-    private final URI uri;
+    private final int connectTimeout;
+    private final int retries;
 
     public RequestMetadata(RequestBuilder builder)
     {
@@ -21,6 +24,8 @@ public class RequestMetadata
         this.async = builder.async;
         this.uri = builder.uri;
         this.body = builder.body;
+        this.connectTimeout = builder.connectTimeout;
+        this.retries = builder.retries;
     }
 
     public HttpMethod method()
@@ -43,8 +48,23 @@ public class RequestMetadata
         return Collections.unmodifiableCollection(params);
     }
 
-    public RequestBody body()
+    public InputStream body()
     {
-        return body;
+        return body.getBody();
+    }
+
+    public Header contentType()
+    {
+        return body.getContentType();
+    }
+
+    public int connectTimeout()
+    {
+        return connectTimeout;
+    }
+
+    public int retries()
+    {
+        return retries;
     }
 }
