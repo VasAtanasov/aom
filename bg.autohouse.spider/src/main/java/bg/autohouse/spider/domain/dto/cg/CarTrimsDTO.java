@@ -2,9 +2,11 @@ package bg.autohouse.spider.domain.dto.cg;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class CarDTO
+public class CarTrimsDTO
 {
     private String id;
-    private int year;
+    private List<TrimDTO> trims;
 }

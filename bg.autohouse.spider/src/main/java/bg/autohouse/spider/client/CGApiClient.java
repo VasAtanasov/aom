@@ -1,7 +1,6 @@
 package bg.autohouse.spider.client;
 
-import bg.autohouse.spider.client.endpoint.cg.MakerEndpoint;
-import bg.autohouse.spider.client.endpoint.cg.MakersCollectionEndpoint;
+import bg.autohouse.spider.client.endpoint.cg.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CGApiClient extends AbstractApiClient
@@ -21,6 +20,21 @@ public class CGApiClient extends AbstractApiClient
     public MakerEndpoint maker(String id)
     {
         return new MakerEndpoint(this, id);
+    }
+
+    public ModelEndpoint modelCars(String id)
+    {
+        return new ModelEndpoint(this, id);
+    }
+
+    public TrimTransmissionEndpoint trimTransmissions(String trimId)
+    {
+        return new TrimTransmissionEndpoint(this, trimId);
+    }
+
+    public TrimEngineEndpoint trimEngines(String trimId)
+    {
+        return new TrimEngineEndpoint(this, trimId);
     }
 
     @Override
