@@ -5,8 +5,6 @@ import bg.autohouse.spider.client.CGApiClient;
 import bg.autohouse.spider.client.HttpStrategy;
 import bg.autohouse.spider.client.JavaHttpClientStrategy;
 import bg.autohouse.spider.domain.dto.cg.*;
-import bg.autohouse.spider.util.json.ObjectMapperFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.stream.Collectors;
@@ -21,8 +19,7 @@ public class SpiderApplication
         log.info("Running SpiderApplication");
         log.info("Initializing CG Client");
         HttpStrategy httpStrategy = new JavaHttpClientStrategy();
-        ObjectMapper objectMapper = ObjectMapperFactory.mapper();
-        CGApiClient cg = new CGApiClient(httpStrategy, objectMapper);
+        CGApiClient cg = new CGApiClient(httpStrategy);
 
         int b = 10;
 

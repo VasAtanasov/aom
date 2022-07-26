@@ -6,6 +6,5 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public interface ApiClient
 {
     HttpStrategy http();
-    ObjectMapper mapper();
     String apiBaseUrl();
 }

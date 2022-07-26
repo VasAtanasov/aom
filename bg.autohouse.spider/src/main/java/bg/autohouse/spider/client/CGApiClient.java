@@ -1,15 +1,14 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.client.endpoint.cg.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CGApiClient extends AbstractApiClient
 {
     private static final String API_BASE_URL = "https://www.cargurus.com/Cars";
 
-    public CGApiClient(HttpStrategy httpStrategy, ObjectMapper objectMapper)
+    public CGApiClient(HttpStrategy httpStrategy)
     {
-        super(httpStrategy, objectMapper);
+        super(httpStrategy);
     }
 
     public MakersCollectionEndpoint makers()
