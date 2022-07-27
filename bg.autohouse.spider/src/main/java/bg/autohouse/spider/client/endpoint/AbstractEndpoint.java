@@ -1,7 +1,7 @@
 package bg.autohouse.spider.client.endpoint;
 
 import bg.autohouse.spider.client.HttpStrategy;
-import bg.autohouse.spider.client.api.ApiClient;
+import bg.autohouse.spider.api.ApiClient;
 
 public class AbstractEndpoint
 {
@@ -30,5 +30,4 @@ public class AbstractEndpoint
     {
         return this.client.http();
     }
-
 }

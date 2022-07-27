@@ -1,7 +1,7 @@
 package bg.autohouse.spider;
 
 
-import bg.autohouse.spider.cache.ApplicationCacheManager;
+import bg.autohouse.spider.cache.SpiderCacheManager;
 import bg.autohouse.spider.client.CGApiClient;
 import bg.autohouse.spider.client.HttpStrategy;
 import bg.autohouse.spider.client.JavaHttpClientStrategy;
@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.ehcache.Cache;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -26,7 +28,7 @@ public class SpiderApplication
         HttpStrategy httpStrategy = new JavaHttpClientStrategy();
         CGApiClient cg = new CGApiClient(httpStrategy);
 
-        try (ApplicationCacheManager cacheManager = new ApplicationCacheManager())
+        try (SpiderCacheManager cacheManager = new SpiderCacheManager())
         {
             Cache<String, MakersModelsWrapper> makersCache = cacheManager.makersCache();
             Cache<String, ModelsCarsWrapper> makerModelsCache = cacheManager.makerModelsCache();
@@ -63,51 +65,10 @@ public class SpiderApplication
                             return modelsWrapper;
                         });
                     })
+//                    .map(cf -> cf.thenApply(modelsCarsWrapper -> ))
                     .collect(Collectors.toList());
 
-            var modelsCars = futureMakersModels.stream()
-                    .map(CompletableFuture::join)
-                    .parallel()
-                    .map(ModelsCarsWrapper::getModels)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
-
-
-            long end = System.currentTimeMillis();
-
-            log.info(String.format("The operation took %s ms%n", end - start));
-//            for (ModelCarsDTO modelDTO : modelsCars)
-//            {
-//                var modelId = modelDTO.getId();
-//                var cars = cg.modelCars(modelId).cars();
-//
-//                for (CarTrimsDTO carTrimsDTO : cars)
-//                {
-//                    var carId = carTrimsDTO.getId();
-//                    var carName = modelDTO.getCars()
-//                            .stream()
-//                            .filter(c -> c.getId().equals(carId))
-//                            .findFirst()
-//                            .map(CarDTO::getYear)
-//                            .orElse(9999);
-//
-//                    for (TrimDTO trim : carTrimsDTO.getTrims())
-//                    {
-//                        var trimId = trim.getId();
-//                        var trimName = trim.getName();
-//                        var transmission = cg.trimTransmissions(trimId).transmissions();
-//                        var engines = cg.trimEngines(trimId).engines();
-//                        var options = cg.trimOptions(trimId).options();
-//                        int a = 5;
-//                        break;
-//                    }
-//
-//
-//                }
-//            }
-            int b = 10;
-
-            //            for (MakerDTO makerDTO : makers)
+//            for (MakerDTO makerDTO : makers)
             //            {
             //                log.info("Getting models for maker {}", makerDTO.getName());
             //                var makerId = makerDTO.getId();
@@ -149,6 +110,20 @@ public class SpiderApplication
             //                    }
             //                }
             //            }
+
+
+            var modelsCars = futureMakersModels.stream()
+                    .map(CompletableFuture::join)
+                    .parallel()
+                    .map(ModelsCarsWrapper::getModels)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+
+
+            long end = System.currentTimeMillis();
+
+            log.info(String.format("The operation took %s ms%n", end - start));
+
         }
 
     }

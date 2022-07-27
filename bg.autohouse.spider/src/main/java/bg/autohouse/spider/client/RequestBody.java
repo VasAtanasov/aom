@@ -1,6 +1,6 @@
 package bg.autohouse.spider.client;
 
-import bg.autohouse.spider.client.api.MediaType;
+import bg.autohouse.spider.api.MediaType;
 
 import java.io.InputStream;
 import java.io.Serializable;

@@ -13,13 +13,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class ApplicationCacheManager implements AutoCloseable
+public class SpiderCacheManager implements AutoCloseable
 {
     private static final Logger LOG = LoggerFactory.getLogger("ApplicationCacheManager");
     private static final String PREFIX_CACHE = "auto_";
     private final PersistentCacheManager cacheManager;
 
-    public ApplicationCacheManager()
+    public SpiderCacheManager()
     {
         String storagePath = "cached_data";
         this.cacheManager = CacheManagerBuilder.newCacheManagerBuilder()

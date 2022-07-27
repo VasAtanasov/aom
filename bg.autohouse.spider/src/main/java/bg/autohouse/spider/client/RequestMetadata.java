@@ -1,6 +1,6 @@
 package bg.autohouse.spider.client;
 
-import bg.autohouse.spider.client.api.HttpMethod;
+import bg.autohouse.spider.api.HttpMethod;
 
 import java.io.InputStream;
 import java.net.URI;

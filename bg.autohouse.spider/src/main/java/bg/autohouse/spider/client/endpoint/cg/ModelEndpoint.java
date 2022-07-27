@@ -3,7 +3,7 @@ package bg.autohouse.spider.client.endpoint.cg;
 import bg.autohouse.spider.client.RequestBuilder;
 import bg.autohouse.spider.client.Response;
 import bg.autohouse.spider.client.ResponseBodyHandler;
-import bg.autohouse.spider.client.api.ApiClient;
+import bg.autohouse.spider.api.ApiClient;
 import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
 import bg.autohouse.spider.domain.dto.cg.CarTrimsDTO;
 import bg.autohouse.spider.domain.dto.cg.CarsTrimsWrapper;

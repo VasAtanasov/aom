@@ -1,4 +1,4 @@
-package bg.autohouse.spider.client.api;
+package bg.autohouse.spider.api;
 
 public interface Parameter<T>
 {

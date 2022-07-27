@@ -1,11 +1,8 @@
 package bg.autohouse.spider.client.endpoint.cg;
 
-import bg.autohouse.spider.client.RequestBody;
 import bg.autohouse.spider.client.RequestBuilder;
-import bg.autohouse.spider.client.Response;
-import bg.autohouse.spider.client.ResponseBodyHandler;
-import bg.autohouse.spider.client.api.ApiClient;
-import bg.autohouse.spider.client.api.MediaType;
+import bg.autohouse.spider.api.ApiClient;
+import bg.autohouse.spider.api.MediaType;
 import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
