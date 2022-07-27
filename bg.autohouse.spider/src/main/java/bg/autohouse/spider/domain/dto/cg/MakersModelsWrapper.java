@@ -3,10 +3,11 @@ package bg.autohouse.spider.domain.dto.cg;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class MakersModelsWrapper
+public class MakersModelsWrapper implements Serializable
 {
     private static final String MAKERS_KEY = "makers";
 

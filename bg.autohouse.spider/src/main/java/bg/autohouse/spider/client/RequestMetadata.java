@@ -11,7 +11,7 @@ public class RequestMetadata
 {
     private final HttpMethod httpMethod;
     private final URI uri;
-    private final Collection<? extends Parameter<?>> params;
+    private final Collection<? extends QueryParameter> params;
     private final RequestBody body;
     private final boolean async;
     private final int connectTimeout;
@@ -43,7 +43,7 @@ public class RequestMetadata
         return async;
     }
 
-    public Collection<? extends Parameter<?>> params()
+    public Collection<? extends QueryParameter> params()
     {
         return Collections.unmodifiableCollection(params);
     }

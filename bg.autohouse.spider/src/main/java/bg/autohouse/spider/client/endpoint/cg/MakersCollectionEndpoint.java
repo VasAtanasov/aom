@@ -5,10 +5,7 @@ import bg.autohouse.spider.client.Response;
 import bg.autohouse.spider.client.ResponseBodyHandler;
 import bg.autohouse.spider.client.api.ApiClient;
 import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
-import bg.autohouse.spider.domain.dto.cg.MakerDTO;
 import bg.autohouse.spider.domain.dto.cg.MakersModelsWrapper;
-
-import java.util.List;
 
 public class MakersCollectionEndpoint extends AbstractEndpoint
 {
@@ -20,11 +17,11 @@ public class MakersCollectionEndpoint extends AbstractEndpoint
         super(client, MAKER_MODEL_URL);
     }
 
-    public List<MakerDTO> makers()
+    public MakersModelsWrapper makers()
     {
         var metadata = RequestBuilder.get(endpoint()).build();
         ResponseBodyHandler<MakersModelsWrapper> handler = ResponseBodyHandler.BodyHandlers.ofJson(MakersModelsWrapper.class);
         Response<MakersModelsWrapper> response = http().call(metadata, handler);
-        return response.body().makers();
+        return response.body();
     }
 }

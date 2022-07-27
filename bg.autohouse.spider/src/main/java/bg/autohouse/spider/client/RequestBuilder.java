@@ -12,7 +12,7 @@ public final class RequestBuilder
 {
     HttpMethod method = HttpMethod.GET;
     URI uri;
-    Collection<? extends Parameter<?>> params = List.of();
+    Collection<? extends QueryParameter> params = List.of();
     Charset charset = StandardCharsets.UTF_8;
     RequestBody body;
     boolean async = false;
@@ -55,7 +55,7 @@ public final class RequestBuilder
         return this;
     }
 
-    public RequestBuilder params(Collection<? extends Parameter<?>> params)
+    public RequestBuilder params(Collection<? extends QueryParameter> params)
     {
         this.params = params;
         return this;

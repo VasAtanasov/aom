@@ -40,3 +40,4 @@ build/
 /authouse
 
 heroku_vars.cmd
+cached_data/

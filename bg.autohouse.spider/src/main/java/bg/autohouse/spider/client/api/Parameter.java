@@ -1,6 +1,6 @@
 package bg.autohouse.spider.client.api;
 
-public interface Param<T>
+public interface Parameter<T>
 {
     String name();
 
