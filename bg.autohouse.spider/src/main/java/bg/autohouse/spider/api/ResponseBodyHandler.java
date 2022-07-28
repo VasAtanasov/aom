@@ -1,5 +1,6 @@
-package bg.autohouse.spider.client;
+package bg.autohouse.spider.api;
 
+import bg.autohouse.spider.util.IOUtil;
 import bg.autohouse.spider.util.json.JsonUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -20,6 +21,11 @@ public interface ResponseBodyHandler<T>
         public static <T> ResponseBodyHandler<T> ofJson(TypeReference<T> type)
         {
             return in -> JsonUtil.fromJSON(in, type);
+        }
+
+        public static ResponseBodyHandler<String> ofString()
+        {
+            return IOUtil::toString;
         }
     }
 }

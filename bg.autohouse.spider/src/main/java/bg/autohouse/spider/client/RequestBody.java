@@ -1,9 +1,15 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.MediaType;
+import bg.autohouse.spider.util.IOUtil;
+import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Map;
 
 public abstract class RequestBody implements Serializable
 {
@@ -64,6 +70,27 @@ public abstract class RequestBody implements Serializable
         public FormRequestBody(InputStream body)
         {
             super(body, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        }
+
+        public FormRequestBody(FormEntity formData)
+        {
+            super(IOUtil.toInputStream(ofFormData(formData)), MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        }
+
+        public static String ofFormData(FormEntity formEntity)
+        {
+            var builder = new StringBuilder();
+            for (FormParameter entry : formEntity.data())
+            {
+                if (builder.length() > 0)
+                {
+                    builder.append("&");
+                }
+                builder.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
+                builder.append("=");
+                builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+            }
+            return builder.toString();
         }
     }
 }

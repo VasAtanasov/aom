@@ -1,6 +1,7 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.ApiClient;
+import bg.autohouse.spider.api.HttpStrategy;
 
 abstract class AbstractApiClient implements ApiClient
 {

@@ -3,15 +3,15 @@ package bg.autohouse.spider;
 
 import bg.autohouse.spider.cache.SpiderCacheManager;
 import bg.autohouse.spider.client.CGApiClient;
-import bg.autohouse.spider.client.HttpStrategy;
+import bg.autohouse.spider.api.HttpStrategy;
+import bg.autohouse.spider.client.FormEntity;
 import bg.autohouse.spider.client.JavaHttpClientStrategy;
+import bg.autohouse.spider.client.RequestBody;
 import bg.autohouse.spider.domain.dto.cg.*;
 import lombok.extern.slf4j.Slf4j;
 import org.ehcache.Cache;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -42,7 +42,8 @@ public class SpiderApplication
                         return makersModelsWrapper.makers();
                     })
                     .orElseGet(() -> {
-                        var wrapper = cg.makers().makers();
+                        var response = cg.makers().GET();
+                        var wrapper = response.body();
                         makersCache.put("all_makers", wrapper);
                         return wrapper.makers()
                                 .stream()
@@ -60,15 +61,54 @@ public class SpiderApplication
                             return CompletableFuture.supplyAsync(() -> modelsCarsWrapper);
                         }
                         return CompletableFuture.supplyAsync(() -> {
-                            var modelsWrapper = cg.maker(makerId).models();
+                            var response = cg.maker(makerId).GET();
+                            var modelsWrapper = response.body();
                             makerModelsCache.put(makerId, modelsWrapper);
                             return modelsWrapper;
                         });
                     })
-//                    .map(cf -> cf.thenApply(modelsCarsWrapper -> ))
+                    .map(cf -> cf.thenAccept(modelsCarsWrapper -> {
+                        var models = modelsCarsWrapper.getModels();
+                        for (ModelCarsDTO modelDTO : models)
+                        {
+                            var modelId = modelDTO.getId();
+                            var response = cg.modelCars(modelId).GET();
+                            var cars = response.body().getCars();
+
+                            for (CarTrimsDTO carTrimsDTO : cars)
+                            {
+                                var carId = carTrimsDTO.getId();
+                                var carName = modelDTO.getCars()
+                                        .stream()
+                                        .filter(c -> c.getId().equals(carId))
+                                        .findFirst()
+                                        .map(CarDTO::getYear)
+                                        .orElse(9999);
+
+                                for (TrimDTO trim : carTrimsDTO.getTrims())
+                                {
+                                    var trimId = trim.getId();
+                                    var trimName = trim.getName();
+                                    var transmissionResponse = cg.trimTransmissions(trimId).GET();
+                                    var transmission = response.body();
+                                    var enginesResponse = cg.trimEngines(trimId).GET();
+                                    var engines = enginesResponse.body();
+
+                                    FormEntity formEntity = FormEntity.of("trim", trimId);
+                                    RequestBody body = new RequestBody.FormRequestBody(formEntity);
+                                    var options = cg.trimOptions(trimId).POST(body);
+                                    int a = 5;
+                                    break;
+                                }
+
+
+                            }
+                        }
+                    }))
                     .collect(Collectors.toList());
 
-//            for (MakerDTO makerDTO : makers)
+
+            //            for (MakerDTO makerDTO : makers)
             //            {
             //                log.info("Getting models for maker {}", makerDTO.getName());
             //                var makerId = makerDTO.getId();
@@ -114,9 +154,9 @@ public class SpiderApplication
 
             var modelsCars = futureMakersModels.stream()
                     .map(CompletableFuture::join)
-                    .parallel()
-                    .map(ModelsCarsWrapper::getModels)
-                    .flatMap(Collection::stream)
+                    //                    .parallel()
+                    //                    .map(ModelsCarsWrapper::getModels)
+                    //                    .flatMap(Collection::stream)
                     .collect(Collectors.toList());
 
 

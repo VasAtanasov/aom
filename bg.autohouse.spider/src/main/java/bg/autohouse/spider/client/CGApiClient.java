@@ -1,5 +1,6 @@
 package bg.autohouse.spider.client;
 
+import bg.autohouse.spider.api.HttpStrategy;
 import bg.autohouse.spider.client.endpoint.cg.*;
 
 public class CGApiClient extends AbstractApiClient

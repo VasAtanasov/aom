@@ -1,6 +1,8 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.HttpMethod;
+import bg.autohouse.spider.api.HttpStrategy;
+import bg.autohouse.spider.api.ResponseBodyHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
