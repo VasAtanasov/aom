@@ -1,6 +1,6 @@
 # Ubuntu with JDK base image
 
-FROM ${ID_DOCKER_REGISTRY}/ah-ubuntu-base:${BASE_IMAGE_TAG}
+FROM ${docker.registry}/ah-ubuntu-base:${docker.image.base.tag}
 
 # Install OpenJDK Java
 RUN apt-get update \

@@ -16,22 +16,21 @@ public class Application implements CommandLineRunner
 {
 
     private final RestTemplate restTemplate;
-    private final DataSource dataSource;
     private final Environment env;
 
-    public Application(RestTemplate restTemplate, DataSource dataSource, Environment env)
+    public Application(RestTemplate restTemplate, Environment env)
     {
         this.restTemplate = restTemplate;
-        this.dataSource = dataSource;
         this.env = env;
-        try
-        {
-            System.out.println(dataSource.getConnection().getMetaData().getURL());
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        System.out.println(env);
+//        try
+//        {
+//            System.out.println(dataSource.getConnection().getMetaData().getURL());
+//        }
+//        catch (SQLException e)
+//        {
+//            e.printStackTrace();
+//        }
 
     }
 

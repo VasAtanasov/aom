@@ -5,7 +5,7 @@
     <parent>
         <artifactId>bg.autohouse.docker</artifactId>
         <groupId>bg.autohouse</groupId>
-        <version>2.0.0</version>
+        <version>2.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,11 +13,9 @@
     <packaging>pom</packaging>
 
     <properties>
-        <BASE_IMAGE_TAG>u20.04-8.0</BASE_IMAGE_TAG>
-        <image.name>ah-mysql-dev</image.name>
-        <image.tag>${BASE_IMAGE_TAG}-${project.version}</image.tag>
-        <!-- default value, may be overwritten by CLI -->
-        <additional.tag>${image.tag}</additional.tag>
+        <docker.image.base.tag>u20.04-8.0</docker.image.base.tag>
+        <docker.image.name>ah-mysql-dev</docker.image.name>
+        <docker.image.tag>${docker.image.base.tag}-${docker.project.version.tag}</docker.image.tag>
     </properties>
 
     <build>
@@ -28,7 +26,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>${ID_DOCKER_REGISTRY}/${image.name}:${image.tag}</name>
+                            <name>${docker.registry}/${docker.image.name}:${docker.image.tag}</name>
                             <build>
                                 <dockerFile>Dockerfile</dockerFile>
                                 <tags>

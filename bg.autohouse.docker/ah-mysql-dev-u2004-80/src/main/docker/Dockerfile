@@ -1,4 +1,4 @@
-FROM ${ID_DOCKER_REGISTRY}/ah-mysql-base:${BASE_IMAGE_TAG}
+FROM ${docker.registry}/ah-mysql-base:${docker.image.base.tag}
 
 # MySql
 ENV MYSQL_HOST ''

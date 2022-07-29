@@ -9,13 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ah-mysql-base-u2004-80</artifactId>
+    <artifactId>autohouse-server</artifactId>
     <packaging>pom</packaging>
 
     <properties>
-        <docker.image.base.tag>u20.04</docker.image.base.tag>
-        <docker.image.name>ah-mysql-base</docker.image.name>
-        <docker.image.tag>u20.04-8.0</docker.image.tag>
+        <docker.image.base.tag>u20.04-jdk17</docker.image.base.tag>
+        <docker.image.name>autohouse-server</docker.image.name>
+        <docker.image.tag>${docker.project.version.tag}</docker.image.tag>
     </properties>
 
     <build>
@@ -50,17 +50,46 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${plugin.maven.dependency.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>bg.autohouse</groupId>
+                                    <artifactId>bg.autohouse.webapp</artifactId>
+                                    <overWrite>true</overWrite>
+                                    <destFileName>autohouse-server.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>
+                                ${project.build.directory}/docker/${docker.registry}/${docker.image.name}/${docker.image.tag}/build
+                            </outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
 
     <dependencies>
         <dependency>
             <groupId>bg.autohouse</groupId>
-            <artifactId>ah-ubuntu-base-u2004</artifactId>
+            <artifactId>ah-jdk-base-u2004-jdk17</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
     </dependencies>
+
 
 </project>

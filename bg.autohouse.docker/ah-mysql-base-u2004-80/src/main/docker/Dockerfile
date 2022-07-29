@@ -1,7 +1,7 @@
-FROM ${ID_DOCKER_REGISTRY}/ah-ubuntu-base:${BASE_IMAGE_TAG}
+FROM ${docker.registry}/ah-ubuntu-base:${docker.image.base.tag}
 
 # install MySql and disable autostart. The run script will start it later.
-ARG MYSQL_VERSION=8.0.29*
+ARG MYSQL_VERSION=8.0.30*
 RUN apt-get update \
     && apt-get --no-install-recommends --allow-downgrades -y install \
        mysql-client=${MYSQL_VERSION} mysql-server=${MYSQL_VERSION} \

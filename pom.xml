@@ -3,13 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.9</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
     <groupId>bg.autohouse</groupId>
     <artifactId>autohouse</artifactId>
     <version>2.0.0-SNAPSHOT</version>
@@ -19,18 +12,31 @@
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <plugin.maven.compiler.version>3.8.1</plugin.maven.compiler.version>
+        <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
+        <plugin.maven.jar.version>3.2.0</plugin.maven.jar.version>
+        <plugin.maven.dependency.version>3.3.0</plugin.maven.dependency.version>
+        <plugin.manve.docker.plugin>0.40.1</plugin.manve.docker.plugin>
 
         <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
         <version.dependencies.hibernate.jpamodelgen>6.1.0.Final</version.dependencies.hibernate.jpamodelgen>
         <version.dependencies.apache.httpclient>4.5.13</version.dependencies.apache.httpclient>
+        <version.dependencies.testcontainers>1.17.3</version.dependencies.testcontainers>
+        <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
+        <version.lombok.mapstruct.binding>0.2.0</version.lombok.mapstruct.binding>
 
         <!-- Docker Properties -->
-        <version.docker-maven-plugin>0.40.1</version.docker-maven-plugin>
-        <ID_DOCKER_REGISTRY>docker.io/vasatanasov</ID_DOCKER_REGISTRY>
+        <ah.docker.image.tag>2.0.0</ah.docker.image.tag>
+        <docker.registry>docker.io/vasatanasov</docker.registry>
         <docker.nocache>true</docker.nocache>
-        <additional.tag>${project.version}</additional.tag>
+
+        <spring-boot.version>2.6.9</spring-boot.version>
+        <spring-framework.version>5.3.21</spring-framework.version>
+
+
     </properties>
 
     <profiles>
@@ -47,6 +53,7 @@
                 <module>bg.autohouse.webapp</module>
                 <module>bg.autohouse.spider</module>
                 <module>bg.autohouse.docker</module>
+                <module>bg.autohouse.spider-integration-test</module>
             </modules>
         </profile>
         <profile>
@@ -73,47 +80,220 @@
         </profile>
     </profiles>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${version.dependencies.mapstruct}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-tomcat</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jetty</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- Test -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Internal dependencies -->
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>bg.autohouse.api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>bg.autohouse.core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>bg.autohouse.integration</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>bg.autohouse.util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>bg.autohouse.webapp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 3d Party dependencies -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${version.dependencies.mapstruct}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <optional>true</optional>
+                <version>${version.dependencies.lombok}</version>
+            </dependency>
+
+
+            <!-- Test containers -->
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>bg.autohouse.webapp</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+                <type>test-jar</type>
+            </dependency>
+
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>bg.autohouse.spider</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+                <type>test-jar</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${plugin.manve.docker.plugin}</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <pushRegistry>${docker.registry}</pushRegistry>
+                        <verbose>true</verbose>
+                        <useColor>true</useColor>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${plugin.maven.compiler.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <release>${java.version}</release>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${version.dependencies.mapstruct}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${version.dependencies.lombok}</version>
+                            </path>
+                            <!-- additional annotation processor required as of Lombok 1.18.16 -->
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>0.2.0</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${plugin.maven.jar.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${plugin.maven.source.version}</version>
+                    <executions>
+                        <execution>
+                            <id>generate-source-jar</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${version.dependencies.mapstruct}</version>
-                        </path>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                        <!-- additional annotation processor required as of Lombok 1.18.16 -->
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -126,6 +306,4 @@
             <url>https://index.docker.io/v2/</url>
         </repository>
     </distributionManagement>
-
-
 </project>

@@ -66,46 +66,7 @@ public class SpiderApplication
                             makerModelsCache.put(makerId, modelsWrapper);
                             return modelsWrapper;
                         });
-                    })
-                    .map(cf -> cf.thenAccept(modelsCarsWrapper -> {
-                        var models = modelsCarsWrapper.getModels();
-                        for (ModelCarsDTO modelDTO : models)
-                        {
-                            var modelId = modelDTO.getId();
-                            var response = cg.modelCars(modelId).GET();
-                            var cars = response.body().getCars();
-
-                            for (CarTrimsDTO carTrimsDTO : cars)
-                            {
-                                var carId = carTrimsDTO.getId();
-                                var carName = modelDTO.getCars()
-                                        .stream()
-                                        .filter(c -> c.getId().equals(carId))
-                                        .findFirst()
-                                        .map(CarDTO::getYear)
-                                        .orElse(9999);
-
-                                for (TrimDTO trim : carTrimsDTO.getTrims())
-                                {
-                                    var trimId = trim.getId();
-                                    var trimName = trim.getName();
-                                    var transmissionResponse = cg.trimTransmissions(trimId).GET();
-                                    var transmission = response.body();
-                                    var enginesResponse = cg.trimEngines(trimId).GET();
-                                    var engines = enginesResponse.body();
-
-                                    FormEntity formEntity = FormEntity.of("trim", trimId);
-                                    RequestBody body = new RequestBody.FormRequestBody(formEntity);
-                                    var options = cg.trimOptions(trimId).POST(body);
-                                    int a = 5;
-                                    break;
-                                }
-
-
-                            }
-                        }
-                    }))
-                    .collect(Collectors.toList());
+                    }).toList();
 
 
             //            for (MakerDTO makerDTO : makers)
@@ -153,11 +114,7 @@ public class SpiderApplication
 
 
             var modelsCars = futureMakersModels.stream()
-                    .map(CompletableFuture::join)
-                    //                    .parallel()
-                    //                    .map(ModelsCarsWrapper::getModels)
-                    //                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                    .map(CompletableFuture::join).toList();
 
 
             long end = System.currentTimeMillis();

@@ -1,4 +1,4 @@
-FROM ${ID_DOCKER_REGISTRY}/ah-jdk-base:${BASE_IMAGE_TAG}
+FROM ${docker.registry}/ah-jdk-base:${docker.image.base.tag}
 
 EXPOSE 8080
 
@@ -35,7 +35,7 @@ ENV DB_PASSWORD ${DB_PASSWORD:-ah_dev}
 ENV DDL_STRATEGY ${DDL_STRATEGY:-validate}
 
 #Copy executable jar file from the builder image
-COPY target/*.jar app.jar
+COPY autohouse-server.jar app.jar
 
 ENV SPRING_PROFILES_ACTIVE=${ACTIVE_PROFILES:-default}
 

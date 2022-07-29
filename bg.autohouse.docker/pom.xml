@@ -11,7 +11,14 @@
     </parent>
 
     <artifactId>bg.autohouse.docker</artifactId>
-    <version>2.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <docker.project.version.tag>2.0.0</docker.project.version.tag>
+
+        <ah.mysql.tag>${docker.project.version.tag}</ah.mysql.tag>
+        <ah.mysql.image>${docker.registry}/</ah.mysql.image>
+    </properties>
 
     <modules>
         <module>ah-mysql-dev-u2004-80</module>
@@ -19,40 +26,7 @@
         <module>ah-ubuntu-base-u2004</module>
         <module>ah-jdk-base-u2004-jdk17</module>
         <module>ah-jdk-base-u2004-jdk11</module>
+        <module>autohouse-server</module>
     </modules>
-
-    <packaging>pom</packaging>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>${version.docker-maven-plugin}</version>
-                    <inherited>true</inherited>
-                    <configuration>
-                        <pushRegistry>${ID_DOCKER_REGISTRY}</pushRegistry>
-                        <verbose>true</verbose>
-                        <useColor>true</useColor>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <inherited>false</inherited>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

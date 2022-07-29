@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class FormEntity
 {
-    private Collection<FormParameter> formData;
+    private Collection<FormField> formData;
 
     private FormEntity()
     {
@@ -27,10 +27,10 @@ public class FormEntity
 
     public void addParameter(String key, Object value)
     {
-        formData.add(new FormParameter(key, value));
+        formData.add(new FormField(key, value));
     }
 
-    public Collection<FormParameter> data()
+    public Collection<FormField> data()
     {
         return Collections.unmodifiableCollection(formData);
     }

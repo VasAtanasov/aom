@@ -1,6 +1,6 @@
 # Ubuntu base image
 
-FROM ubuntu:${BASE_IMAGE_TAG}
+FROM ubuntu:${docker.image.base.tag}
 
 ENV DEBIAN_FRONTEND noninteractive
 

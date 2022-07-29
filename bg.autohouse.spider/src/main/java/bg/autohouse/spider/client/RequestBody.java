@@ -2,14 +2,11 @@ package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.MediaType;
 import bg.autohouse.spider.util.IOUtil;
-import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Map;
 
 public abstract class RequestBody implements Serializable
 {
@@ -80,7 +77,7 @@ public abstract class RequestBody implements Serializable
         public static String ofFormData(FormEntity formEntity)
         {
             var builder = new StringBuilder();
-            for (FormParameter entry : formEntity.data())
+            for (FormField entry : formEntity.data())
             {
                 if (builder.length() > 0)
                 {
