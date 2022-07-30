@@ -29,4 +29,23 @@
         <module>autohouse-server</module>
     </modules>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>${plugin.manve.docker.version}</version>
+                    <inherited>true</inherited>
+                    <configuration>
+                        <pushRegistry>${docker.registry}</pushRegistry>
+                        <verbose>true</verbose>
+                        <useColor>true</useColor>
+                        <!--                        <nocache>${docker.nocache}</nocache>-->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
 </project>

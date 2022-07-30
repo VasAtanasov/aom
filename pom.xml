@@ -19,7 +19,7 @@
         <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
         <plugin.maven.jar.version>3.2.0</plugin.maven.jar.version>
         <plugin.maven.dependency.version>3.3.0</plugin.maven.dependency.version>
-        <plugin.manve.docker.plugin>0.40.1</plugin.manve.docker.plugin>
+        <plugin.manve.docker.version>0.40.1</plugin.manve.docker.version>
 
         <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
         <version.dependencies.hibernate.jpamodelgen>6.1.0.Final</version.dependencies.hibernate.jpamodelgen>
@@ -204,18 +204,6 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>${plugin.manve.docker.plugin}</version>
-                    <inherited>true</inherited>
-                    <configuration>
-                        <pushRegistry>${docker.registry}</pushRegistry>
-                        <verbose>true</verbose>
-                        <useColor>true</useColor>
-                    </configuration>
-                </plugin>
-
-                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${plugin.maven.compiler.version}</version>
@@ -285,15 +273,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
