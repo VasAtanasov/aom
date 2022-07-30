@@ -16,6 +16,10 @@
     <properties>
         <docker.project.version.tag>2.0.0</docker.project.version.tag>
 
+        <ah.docker.image.tag>2.0.0</ah.docker.image.tag>
+        <docker.registry>docker.io/vasatanasov</docker.registry>
+        <docker.nocache>true</docker.nocache>
+
         <ah.mysql.tag>${docker.project.version.tag}</ah.mysql.tag>
         <ah.mysql.image>${docker.registry}/</ah.mysql.image>
     </properties>
@@ -27,6 +31,7 @@
         <module>ah-jdk-base-u2004-jdk17</module>
         <module>ah-jdk-base-u2004-jdk11</module>
         <module>autohouse-server</module>
+        <module>wiremock-docker</module>
     </modules>
 
     <build>

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+COMMAND="java $JAVA_OPTS -jar $WIREMOCK_SERVER_FILE_LOCATION"
+$COMMAND
