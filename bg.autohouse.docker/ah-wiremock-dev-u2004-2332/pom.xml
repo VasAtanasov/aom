@@ -9,13 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ah-wiremock-base-u2004-2332</artifactId>
+    <artifactId>ah-wiremock-dev-u2004-2332</artifactId>
     <packaging>pom</packaging>
 
     <properties>
-        <docker.image.base.tag>u20.04-jdk17</docker.image.base.tag>
-        <docker.image.name>ah-wiremock-base</docker.image.name>
-        <docker.image.tag>u20.04-2.33.2</docker.image.tag>
+        <docker.image.base.tag>u20.04-2.33.2</docker.image.base.tag>
+        <docker.image.name>ah-wiremock-dev</docker.image.name>
+        <docker.image.tag>${docker.image.base.tag}-${docker.project.version.tag}</docker.image.tag>
     </properties>
 
     <build>
@@ -56,8 +56,9 @@
     <dependencies>
         <dependency>
             <groupId>bg.autohouse</groupId>
-            <artifactId>ah-jdk-base-u2004-jdk17</artifactId>
-            <version>${project.version}</version>
+            <artifactId>ah-wiremock-base-u2004-2332</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <type>pom</type>
         </dependency>
     </dependencies>
 </project>

@@ -1,0 +1,32 @@
+services:
+  wiremock:
+    image: vasatanasov/ah-wiremock-base:${AH_WIREMOCK_BASE_IMAGE_TAG}
+    container_name: wiremock
+    command:
+      - --proxy-all=${WIREMOCK_PROXY_ALL_HOST}
+      - --record-mappings=${WIREMOCK_RECORD_MAPPINGS}
+      - --verbose=${WIREMOCK_VERBOSE}
+    environment:
+      - UID=${UID}
+      - WIREMOKE_HOME=${WIREMOKE_HOME}
+      - WIREMOCK_ENABLED=${WIREMOCK_ENABLED}
+    volumes:
+      - $PWD/mappings:${WIREMOKE_HOME}
+    ports:
+      - "18080:8080"
+    networks:
+      - network
+
+  spider:
+    depends_on:
+      -  wiremock
+    image: vasatanasov/ah-spider:${AH_SPIDER_IMAGE_TAG}
+    container_name: spider
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+
+
+networks:
+  network:

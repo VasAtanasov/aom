@@ -31,7 +31,9 @@
         <module>ah-jdk-base-u2004-jdk17</module>
         <module>ah-jdk-base-u2004-jdk11</module>
         <module>ah-wiremock-base-u2004-2332</module>
+        <module>ah-wiremock-dev-u2004-2332</module>
         <module>autohouse-server</module>
+        <module>ah-spider</module>
     </modules>
 
     <build>
@@ -46,7 +48,6 @@
                         <pushRegistry>${docker.registry}</pushRegistry>
                         <verbose>true</verbose>
                         <useColor>true</useColor>
-                        <!--                        <nocache>${docker.nocache}</nocache>-->
                     </configuration>
                 </plugin>
             </plugins>

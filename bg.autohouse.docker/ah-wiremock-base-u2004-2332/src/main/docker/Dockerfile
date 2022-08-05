@@ -8,6 +8,7 @@ ENV WIREMOCK_SERVER_EXTENSIONS_LOCATION "/var/wiremock/extensions"
 ENV WIREMOCK_SERVER_JAR_FILE "$WIREMOCK_SERVER_LIB_LOCATION/$WIREMOK_JAR"
 ENV WIREMOCK_HTTP_PORT ${WIREMOCK_HTTP_PORT:-8080}
 ENV WIREMOCK_HTTPS_PORT ${WIREMOCK_HTTPS_PORT:-8443}
+ENV WIREMOKE_HOME /home/wiremock
 
 COPY scripts /scripts
 COPY assets /assets
@@ -19,9 +20,9 @@ RUN chmod -R a+x /scripts/*.sh \
     && mkdir -p /runtime/logs \
     && chmod a+rw /runtime/logs
 
-WORKDIR /home/wiremock
+WORKDIR $WIREMOKE_HOME
 
-VOLUME /home/wiremock
+VOLUME $WIREMOKE_HOME
 
 EXPOSE $WIREMOCK_HTTP_PORT $WIREMOCK_HTTPS_PORT
 
