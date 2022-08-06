@@ -12,7 +12,7 @@ import bg.autohouse.spider.domain.dto.cg.TransmissionWrapper;
 public class TrimTransmissionEndpoint extends AbstractEndpoint
     implements GetEnabled<TransmissionWrapper>, CGEndpoint {
   public static final String TRIM_TRANSMISSION_URL =
-      "/Cars/getTransmissionListTrimFirstJson.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=";
+      "Cars/getTransmissionListTrimFirstJson.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=";
 
   public TrimTransmissionEndpoint(ApiClient client, String trimId) {
     super(client, TRIM_TRANSMISSION_URL + trimId);

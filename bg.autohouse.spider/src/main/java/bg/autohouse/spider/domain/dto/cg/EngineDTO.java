@@ -1,9 +1,10 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class EngineDTO {
+public class EngineDTO implements Serializable {
   private Integer id;
   private String name;
   private boolean isStandard;

@@ -12,7 +12,7 @@ import bg.autohouse.spider.domain.dto.cg.CarsTrimsWrapper;
 public class ModelEndpoint extends AbstractEndpoint
     implements GetEnabled<CarsTrimsWrapper>, CGEndpoint {
   public static final String CARS_TRIMS_URL =
-      "/Cars/getSelectedModelCarTrimsAJAX.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&model=";
+      "Cars/getSelectedModelCarTrimsAJAX.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&model=";
 
   public ModelEndpoint(ApiClient client, String modelId) {
     super(client, CARS_TRIMS_URL + modelId);

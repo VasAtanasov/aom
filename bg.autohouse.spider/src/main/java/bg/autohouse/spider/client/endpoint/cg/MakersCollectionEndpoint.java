@@ -12,7 +12,7 @@ import bg.autohouse.spider.domain.dto.cg.MakersModelsWrapper;
 public class MakersCollectionEndpoint extends AbstractEndpoint
     implements GetEnabled<MakersModelsWrapper>, CGEndpoint {
   private static final String MAKER_MODEL_URL =
-      "/Cars/getCarPickerReferenceDataAJAX.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT";
+      "Cars/getCarPickerReferenceDataAJAX.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT";
 
   public MakersCollectionEndpoint(ApiClient client) {
     super(client, MAKER_MODEL_URL);

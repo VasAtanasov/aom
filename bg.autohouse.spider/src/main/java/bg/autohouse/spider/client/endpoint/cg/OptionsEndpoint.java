@@ -8,11 +8,16 @@ import bg.autohouse.spider.client.RequestBuilder;
 import bg.autohouse.spider.client.Response;
 import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
 import bg.autohouse.spider.client.endpoint.PostEnabled;
+import bg.autohouse.spider.domain.dto.cg.OptionDTO;
+import com.fasterxml.jackson.core.type.TypeReference;
+import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OptionsEndpoint extends AbstractEndpoint implements PostEnabled<String>, CGEndpoint {
-  public static final String TRIM_OPTIONS_FORM_URL = "/Cars/getOptionsJson.action";
+public class OptionsEndpoint extends AbstractEndpoint
+    implements PostEnabled<Map<String, List<OptionDTO>>>, CGEndpoint {
+  public static final String TRIM_OPTIONS_FORM_URL = "Cars/getOptionsJson.action";
   private static final Logger LOG = LoggerFactory.getLogger("OptionsEndpoint");
   private final String trimId;
 
@@ -22,8 +27,10 @@ public class OptionsEndpoint extends AbstractEndpoint implements PostEnabled<Str
   }
 
   @Override
-  public Response<String> POST(RequestBody body, QueryParameter... queryParameters) {
-    var metadata = RequestBuilder.post(endpoint(), body).params(queryParameters).build();
-    return http().call(metadata, ResponseBodyHandler.BodyHandlers.ofString());
+  public Response<Map<String, List<OptionDTO>>> POST(
+      RequestBody body, QueryParameter... queryParameters) {
+    var metadataOPTS = RequestBuilder.post(endpoint(), body).params(queryParameters).build();
+    return http()
+        .call(metadataOPTS, ResponseBodyHandler.BodyHandlers.ofJson(new TypeReference<>() {}));
   }
 }

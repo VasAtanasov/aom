@@ -9,7 +9,8 @@ import bg.autohouse.spider.client.endpoint.cg.TrimEngineEndpoint;
 import bg.autohouse.spider.client.endpoint.cg.TrimTransmissionEndpoint;
 
 public class CGApiClientImpl extends AbstractApiClient {
-  private static final String API_BASE_URL = "https://www.cargurus.com";
+  //  private static final String API_BASE_URL = "https://www.cargurus.com";
+  private static final String API_BASE_URL = "http://localhost:18080";
 
   public CGApiClientImpl(HttpStrategy httpStrategy) {
     super(httpStrategy);

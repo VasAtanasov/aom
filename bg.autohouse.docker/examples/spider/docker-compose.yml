@@ -24,6 +24,7 @@ services:
     container_name: spider
     environment:
       - WIREMOCK_ENABLED=${WIREMOCK_ENABLED}
+      - FILE_STORAGE_FOLDER=${FILE_STORAGE_FOLDER}
     ports:
       - "8080:8080"
     networks:

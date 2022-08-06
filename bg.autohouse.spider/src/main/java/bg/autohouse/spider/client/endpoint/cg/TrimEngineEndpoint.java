@@ -14,7 +14,7 @@ import java.util.List;
 public class TrimEngineEndpoint extends AbstractEndpoint
     implements GetEnabled<List<EngineDTO>>, CGEndpoint {
   public static final String TRIM_ENGINE_URL =
-      "/Cars/getEngineList.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=";
+      "Cars/getEngineList.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=";
 
   public TrimEngineEndpoint(ApiClient client, String trimId) {
     super(client, TRIM_ENGINE_URL + trimId);

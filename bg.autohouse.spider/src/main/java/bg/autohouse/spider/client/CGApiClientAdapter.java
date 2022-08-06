@@ -4,39 +4,22 @@ import bg.autohouse.spider.domain.dto.cg.CarsTrimsWrapper;
 import bg.autohouse.spider.domain.dto.cg.EngineDTO;
 import bg.autohouse.spider.domain.dto.cg.MakersModelsWrapper;
 import bg.autohouse.spider.domain.dto.cg.ModelsCarsWrapper;
+import bg.autohouse.spider.domain.dto.cg.OptionDTO;
 import bg.autohouse.spider.domain.dto.cg.TransmissionWrapper;
 import java.util.List;
+import java.util.Map;
 
-public class CGApiClientAdapter {
-  private final CGApiClientImpl client;
+public interface CGApiClientAdapter {
 
-  public CGApiClientAdapter(CGApiClientImpl client) {
-    this.client = client;
-  }
+  MakersModelsWrapper makers();
 
-  public MakersModelsWrapper makers() {
-    return client.makers().GET().body();
-  }
+  ModelsCarsWrapper maker(String id);
 
-  public ModelsCarsWrapper maker(String id) {
-    return client.maker(id).GET().body();
-  }
+  CarsTrimsWrapper modelCars(String id);
 
-  public CarsTrimsWrapper modelCars(String id) {
-    return client.modelCars(id).GET().body();
-  }
+  TransmissionWrapper trimTransmissions(String trimId);
 
-  public TransmissionWrapper trimTransmissions(String trimId) {
-    return client.trimTransmissions(trimId).GET().body();
-  }
+  List<EngineDTO> trimEngines(String trimId);
 
-  public List<EngineDTO> trimEngines(String trimId) {
-    return client.trimEngines(trimId).GET().body();
-  }
-
-  public String trimOptions(String trimId) {
-    var form = FormEntity.form("trim", trimId);
-    var body = new RequestBody.FormRequestBody(form);
-    return client.trimOptions(trimId).POST(body).body();
-  }
+  Map<String, List<OptionDTO>> trimOptions(String trimId);
 }
