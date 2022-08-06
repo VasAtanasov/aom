@@ -1,12 +1,10 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import java.io.Serializable;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class CarDTO implements Serializable
-{
-    private String id;
-    private int year;
+public class CarDTO implements Serializable {
+  private String id;
+  private int year;
 }

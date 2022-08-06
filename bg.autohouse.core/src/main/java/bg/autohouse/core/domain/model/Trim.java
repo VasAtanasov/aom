@@ -1,19 +1,23 @@
 package bg.autohouse.core.domain.model;
 
 import bg.autohouse.core.domain.model.common.AbstractLongEntity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = EntityConstants.TRIMS)
-public class Trim extends AbstractLongEntity
-{
+public class Trim extends AbstractLongEntity {
 
   private static final long serialVersionUID = 2140536691508177039L;
 

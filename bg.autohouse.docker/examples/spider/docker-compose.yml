@@ -19,9 +19,11 @@ services:
 
   spider:
     depends_on:
-      -  wiremock
+      - wiremock
     image: vasatanasov/ah-spider:${AH_SPIDER_IMAGE_TAG}
     container_name: spider
+    environment:
+      - WIREMOCK_ENABLED=${WIREMOCK_ENABLED}
     ports:
       - "8080:8080"
     networks:

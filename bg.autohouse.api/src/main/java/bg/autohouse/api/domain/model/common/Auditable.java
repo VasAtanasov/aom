@@ -1,15 +1,13 @@
 package bg.autohouse.api.domain.model.common;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-public interface Auditable
-{
-    LocalDateTime createdAt();
+public interface Auditable {
+  LocalDateTime createdAt();
 
-    LocalDateTime updatedAt();
+  LocalDateTime updatedAt();
 
-    String createdBy();
+  String createdBy();
 
-    String modifiedBy();
+  String modifiedBy();
 }

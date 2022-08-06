@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 public class ObjectMapperFactory {
   private static ObjectMapper objectMapper;
+
+  private ObjectMapperFactory() {}
 
   public static ObjectMapper mapper() {
 
@@ -33,6 +34,4 @@ public class ObjectMapperFactory {
     df.setTimeZone(TimeZone.getTimeZone("UTC"));
     return df;
   }
-
-  private ObjectMapperFactory() {}
 }

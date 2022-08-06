@@ -9,21 +9,19 @@ import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
 import bg.autohouse.spider.client.endpoint.GetEnabled;
 import bg.autohouse.spider.domain.dto.cg.TransmissionWrapper;
 
-public class TrimTransmissionEndpoint extends AbstractEndpoint implements GetEnabled<TransmissionWrapper>
-{
-    public static final String TRIM_TRANSMISSION_URL =
-            "getTransmissionListTrimFirstJson.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=";
+public class TrimTransmissionEndpoint extends AbstractEndpoint
+    implements GetEnabled<TransmissionWrapper>, CGEndpoint {
+  public static final String TRIM_TRANSMISSION_URL =
+      "/Cars/getTransmissionListTrimFirstJson.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=";
 
-    public TrimTransmissionEndpoint(ApiClient client, String trimId)
-    {
-        super(client, TRIM_TRANSMISSION_URL + trimId);
-    }
+  public TrimTransmissionEndpoint(ApiClient client, String trimId) {
+    super(client, TRIM_TRANSMISSION_URL + trimId);
+  }
 
-    @Override
-    public Response<TransmissionWrapper> GET(QueryParameter... queryParameters)
-    {
-        var metadata = RequestBuilder.get(endpoint()).build();
-        ResponseBodyHandler<TransmissionWrapper> handler = ResponseBodyHandler.BodyHandlers.ofJson(TransmissionWrapper.class);
-        return http().call(metadata, handler);
-    }
+  @Override
+  public Response<TransmissionWrapper> GET(QueryParameter... queryParameters) {
+    var metadata = RequestBuilder.get(endpoint()).params(queryParameters).build();
+    return http()
+        .call(metadata, ResponseBodyHandler.BodyHandlers.ofJson(TransmissionWrapper.class));
+  }
 }

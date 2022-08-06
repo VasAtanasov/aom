@@ -1,19 +1,16 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import java.util.List;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class TransmissionWrapper
-{
-    @Data
-    public static class InnerWrapper
-    {
-        private String label;
-        private List<TransmissionDTO> values;
-    }
+public class TransmissionWrapper {
+  private InnerWrapper all;
+  private InnerWrapper trimSpecific;
 
-    private InnerWrapper all;
-    private InnerWrapper trimSpecific;
+  @Data
+  public static class InnerWrapper {
+    private String label;
+    private List<TransmissionDTO> values;
+  }
 }

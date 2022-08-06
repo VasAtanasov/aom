@@ -1,15 +1,13 @@
 package bg.autohouse.spider.domain.dto.cg;
 
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.List;
+import lombok.Data;
 
 @Data
-public class MakerDTO implements Serializable
-{
-    private String id;
-    private String name;
-    private boolean popular;
-    private List<ModelDTO> models;
+public class MakerDTO implements Serializable {
+  private String id;
+  private String name;
+  private boolean popular;
+  private List<ModelDTO> models;
 }

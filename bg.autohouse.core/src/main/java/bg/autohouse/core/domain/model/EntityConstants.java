@@ -1,12 +1,10 @@
 package bg.autohouse.core.domain.model;
 
+import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
 
-import java.time.LocalDate;
-
 @UtilityClass
-public class EntityConstants
-{
+public class EntityConstants {
   public static final String PREFIX = "auto_";
   public static final String MAKERS = PREFIX + "makers";
   public static final String MODELS = PREFIX + "models";

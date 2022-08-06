@@ -11,22 +11,19 @@ import bg.autohouse.spider.client.endpoint.PostEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OptionsEndpoint extends AbstractEndpoint implements PostEnabled<String>
-{
-    private static final Logger LOG = LoggerFactory.getLogger("OptionsEndpoint");
-    public static final String TRIM_OPTIONS_FORM_URL = "getOptionsJson.action";
-    private final String trimId;
+public class OptionsEndpoint extends AbstractEndpoint implements PostEnabled<String>, CGEndpoint {
+  public static final String TRIM_OPTIONS_FORM_URL = "/Cars/getOptionsJson.action";
+  private static final Logger LOG = LoggerFactory.getLogger("OptionsEndpoint");
+  private final String trimId;
 
-    public OptionsEndpoint(ApiClient client, String trimId)
-    {
-        super(client, TRIM_OPTIONS_FORM_URL);
-        this.trimId = trimId;
-    }
+  public OptionsEndpoint(ApiClient client, String trimId) {
+    super(client, TRIM_OPTIONS_FORM_URL);
+    this.trimId = trimId;
+  }
 
-    @Override
-    public Response<String> POST(RequestBody body, QueryParameter... queryParameters)
-    {
-        var metadata = RequestBuilder.post(endpoint(), body).build();
-        return http().call(metadata, ResponseBodyHandler.BodyHandlers.ofString());
-    }
+  @Override
+  public Response<String> POST(RequestBody body, QueryParameter... queryParameters) {
+    var metadata = RequestBuilder.post(endpoint(), body).params(queryParameters).build();
+    return http().call(metadata, ResponseBodyHandler.BodyHandlers.ofString());
+  }
 }

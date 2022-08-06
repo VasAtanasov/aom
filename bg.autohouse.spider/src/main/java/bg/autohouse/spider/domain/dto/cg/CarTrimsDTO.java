@@ -1,12 +1,10 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import java.util.List;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class CarTrimsDTO
-{
-    private String id;
-    private List<TrimDTO> trims;
+public class CarTrimsDTO {
+  private String id;
+  private List<TrimDTO> trims;
 }

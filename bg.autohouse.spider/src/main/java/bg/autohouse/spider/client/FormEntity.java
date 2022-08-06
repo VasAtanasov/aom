@@ -1,37 +1,29 @@
 package bg.autohouse.spider.client;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
-public class FormEntity
-{
-    private Collection<FormField> formData;
+public class FormEntity {
+  private final List<FormField> formData = new ArrayList<>();
 
-    private FormEntity()
-    {
-        formData = new ArrayList<>();
-    }
+  FormEntity() {}
 
-    public static FormEntity of(String key, Object value)
-    {
-        FormEntity formEntity = new FormEntity();
-        formEntity.addParameter(key, value);
-        return formEntity;
-    }
+  public static FormEntity form(String key, Object value) {
+    FormEntity formEntity = new FormEntity();
+    formEntity.addParameter(key, value);
+    return formEntity;
+  }
 
-    public static FormEntity newFormEntity()
-    {
-        return new FormEntity();
-    }
+  public static FormEntity form() {
+    return new FormEntity();
+  }
 
-    public void addParameter(String key, Object value)
-    {
-        formData.add(new FormField(key, value));
-    }
+  public FormEntity addParameter(String key, Object value) {
+    formData.add(new FormField(key, value));
+    return this;
+  }
 
-    public Collection<FormField> data()
-    {
-        return Collections.unmodifiableCollection(formData);
-    }
+  public List<FormField> data() {
+    return new ArrayList<>(formData);
+  }
 }

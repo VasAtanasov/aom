@@ -1,57 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>bg.autohouse.docker</artifactId>
 
-    <parent>
-        <artifactId>autohouse</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <version>2.0.0-SNAPSHOT</version>
-    </parent>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>docker-maven-plugin</artifactId>
+          <configuration>
+            <pushRegistry>${docker.registry}</pushRegistry>
+            <useColor>true</useColor>
+            <verbose>true</verbose>
+          </configuration>
+          <groupId>io.fabric8</groupId>
+          <inherited>true</inherited>
+          <version>${plugin.manve.docker.version}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>${plugin.maven.dependency.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
-    <artifactId>bg.autohouse.docker</artifactId>
-    <packaging>pom</packaging>
+  <modelVersion>4.0.0</modelVersion>
+  <modules>
+    <module>ah-mysql-dev-u2004-80</module>
+    <module>ah-mysql-base-u2004-80</module>
+    <module>ah-ubuntu-base-u2004</module>
+    <module>ah-jdk-base-u2004-jdk17</module>
+    <module>ah-jdk-base-u2004-jdk11</module>
+    <module>ah-wiremock-base-u2004-2332</module>
+    <module>ah-wiremock-dev-u2004-2332</module>
+    <module>ah-spider</module>
+    <module>autohouse-server</module>
+  </modules>
 
-    <properties>
-        <docker.project.version.tag>2.0.0</docker.project.version.tag>
+  <packaging>pom</packaging>
 
-        <ah.docker.image.tag>2.0.0</ah.docker.image.tag>
-        <docker.registry>docker.io/vasatanasov</docker.registry>
-        <docker.nocache>true</docker.nocache>
+  <parent>
+    <artifactId>autohouse</artifactId>
+    <groupId>bg.autohouse</groupId>
+    <version>2.0.0-SNAPSHOT</version>
+  </parent>
 
-        <ah.mysql.tag>${docker.project.version.tag}</ah.mysql.tag>
-        <ah.mysql.image>${docker.registry}/</ah.mysql.image>
-    </properties>
+  <properties>
+    <ah.docker.image.tag>2.0.0</ah.docker.image.tag>
 
-    <modules>
-        <module>ah-mysql-dev-u2004-80</module>
-        <module>ah-mysql-base-u2004-80</module>
-        <module>ah-ubuntu-base-u2004</module>
-        <module>ah-jdk-base-u2004-jdk17</module>
-        <module>ah-jdk-base-u2004-jdk11</module>
-        <module>ah-wiremock-base-u2004-2332</module>
-        <module>ah-wiremock-dev-u2004-2332</module>
-        <module>autohouse-server</module>
-        <module>ah-spider</module>
-    </modules>
+    <ah.mysql.image>${docker.registry}/</ah.mysql.image>
+    <ah.mysql.tag>${docker.project.version.tag}</ah.mysql.tag>
+    <docker.nocache>true</docker.nocache>
 
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>${plugin.manve.docker.version}</version>
-                    <inherited>true</inherited>
-                    <configuration>
-                        <pushRegistry>${docker.registry}</pushRegistry>
-                        <verbose>true</verbose>
-                        <useColor>true</useColor>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
+    <docker.project.version.tag>2.0.0</docker.project.version.tag>
+    <docker.registry>docker.io/vasatanasov</docker.registry>
+  </properties>
 
 </project>

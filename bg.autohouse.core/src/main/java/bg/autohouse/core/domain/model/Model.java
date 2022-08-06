@@ -1,16 +1,26 @@
 package bg.autohouse.core.domain.model;
 
-import bg.autohouse.core.domain.model.common.AbstractLongEntity;
-import bg.autohouse.core.domain.validation.maker.ModelName;
-import lombok.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-
 import static bg.autohouse.core.domain.validation.ValidationMessages.MAKER_NULL;
 
+import bg.autohouse.core.domain.model.common.AbstractLongEntity;
+import bg.autohouse.core.domain.validation.maker.ModelName;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -18,8 +28,7 @@ import static bg.autohouse.core.domain.validation.ValidationMessages.MAKER_NULL;
 @AllArgsConstructor(staticName = "of")
 @Entity
 @Table(name = EntityConstants.MODELS)
-public class Model extends AbstractLongEntity
-{
+public class Model extends AbstractLongEntity {
   private static final long serialVersionUID = 3257573416154758517L;
 
   @Column(name = "name", nullable = false)
