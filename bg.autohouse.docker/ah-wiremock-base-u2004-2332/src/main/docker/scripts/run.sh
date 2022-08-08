@@ -10,7 +10,7 @@ fi
 # allow the container to be started with `-e uid=`
 if [ "$UID" != "" ]; then
   # Change the ownership of /home/wiremock to $uid
-  chown -R $UID:$UID $WIREMOKE_HOME
+  chown -R $UID:$UID $WIREMOCK_HOME
 
   set -- gosu $UID:$UID "$@"
 fi

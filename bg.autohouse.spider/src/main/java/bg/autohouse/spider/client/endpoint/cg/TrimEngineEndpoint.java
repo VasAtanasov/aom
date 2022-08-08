@@ -22,7 +22,7 @@ public class TrimEngineEndpoint extends AbstractEndpoint
 
   @Override
   public Response<List<EngineDTO>> GET(QueryParameter... queryParameters) {
-    var metadata = RequestBuilder.get(endpoint()).params(queryParameters).build();
+    var metadata = RequestBuilder.get(endpoint()).params(queryParameters).retries(5).build();
     return http().call(metadata, ResponseBodyHandler.BodyHandlers.ofJson(new TypeReference<>() {}));
   }
 }

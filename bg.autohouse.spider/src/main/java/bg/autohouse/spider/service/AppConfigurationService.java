@@ -66,6 +66,7 @@ public class AppConfigurationService implements Configuration {
       for (Entry<Object, Object> entry : defaultInstProps.entrySet()) {
         String key = (String) entry.getKey();
         String value = resolvePlaceholder((String) entry.getValue());
+        if (value == null) continue;
         properties.put(key, value);
       }
     } catch (IOException e) {

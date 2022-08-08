@@ -16,8 +16,7 @@ public final class RequestBuilder {
   RequestBody body;
   boolean async = false;
   int connectTimeout = 3000;
-
-  RequestBuilder() {}
+  int retries = 0;
 
   private static RequestBuilder builder() {
     return new RequestBuilder();
@@ -73,6 +72,11 @@ public final class RequestBuilder {
 
   public RequestBuilder connectTimeout(int connectTimeout) {
     this.connectTimeout = connectTimeout;
+    return this;
+  }
+
+  public RequestBuilder retries(int retries) {
+    this.retries = retries;
     return this;
   }
 

@@ -41,21 +41,25 @@ public class JavaHttpClientStrategy implements HttpStrategy {
 
   @Override
   public <T> Response<T> call(final RequestMetadata metadata, ResponseBodyHandler<T> handler) {
+    if (metadata.retries() < 0) {
+      throw new IllegalArgumentException("Number of retries must be more or equal to 0: " + metadata.retries());
+    }
+
     HttpRequest request = builder(metadata).build();
     HttpResponse<InputStream> response;
 
-    //        for (int i = 0; i < metadata.retries() + 1; i++)
-    //        {
-    try {
-      response = http.send(request, HttpResponse.BodyHandlers.ofInputStream());
+    for (int i = 0; i < metadata.retries() + 1; i++) {
+      try {
+        response = http.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
-      return handleResponseStatus(toResponse(handler).apply(response));
+        return handleResponseStatus(toResponse(handler).apply(response));
 
-    } catch (Exception e) {
-      throw new HttpClientException(
-          String.format("Failed to send http %s to %s", metadata.method(), metadata.uri()), e);
+      } catch (Exception e) {
+        LOG.error(String.format("Failed to send http %s to %s, retrying .... %d", metadata.method(), metadata.uri(), i + 1), e);
+      }
     }
-    //        }
+    throw new HttpClientException(
+        String.format("Could not perform http %s call to %s", metadata.method(), metadata.uri()));
   }
 
   @Override

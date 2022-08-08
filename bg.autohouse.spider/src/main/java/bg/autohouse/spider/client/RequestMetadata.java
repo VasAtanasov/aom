@@ -13,6 +13,7 @@ public class RequestMetadata {
   private final RequestBody body;
   private final boolean async;
   private final int connectTimeout;
+  private final int retries;
 
   public RequestMetadata(RequestBuilder builder) {
     this.httpMethod = builder.method;
@@ -21,6 +22,7 @@ public class RequestMetadata {
     this.uri = builder.uri;
     this.body = builder.body;
     this.connectTimeout = builder.connectTimeout;
+    this.retries = builder.retries;
   }
 
   public HttpMethod method() {
@@ -49,5 +51,9 @@ public class RequestMetadata {
 
   public int connectTimeout() {
     return connectTimeout;
+  }
+
+  public int retries() {
+    return retries;
   }
 }

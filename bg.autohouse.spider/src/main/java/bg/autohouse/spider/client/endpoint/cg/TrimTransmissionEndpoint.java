@@ -20,7 +20,7 @@ public class TrimTransmissionEndpoint extends AbstractEndpoint
 
   @Override
   public Response<TransmissionWrapper> GET(QueryParameter... queryParameters) {
-    var metadata = RequestBuilder.get(endpoint()).params(queryParameters).build();
+    var metadata = RequestBuilder.get(endpoint()).params(queryParameters).retries(5).build();
     return http()
         .call(metadata, ResponseBodyHandler.BodyHandlers.ofJson(TransmissionWrapper.class));
   }

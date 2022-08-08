@@ -29,7 +29,8 @@ public class OptionsEndpoint extends AbstractEndpoint
   @Override
   public Response<Map<String, List<OptionDTO>>> POST(
       RequestBody body, QueryParameter... queryParameters) {
-    var metadataOPTS = RequestBuilder.post(endpoint(), body).params(queryParameters).build();
+    var metadataOPTS =
+        RequestBuilder.post(endpoint(), body).params(queryParameters).retries(5).build();
     return http()
         .call(metadataOPTS, ResponseBodyHandler.BodyHandlers.ofJson(new TypeReference<>() {}));
   }

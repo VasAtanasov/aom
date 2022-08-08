@@ -1,9 +1,7 @@
 package bg.autohouse.spider;
 
 import bg.autohouse.spider.api.HttpStrategy;
-import bg.autohouse.spider.cache.SpiderCacheManager;
 import bg.autohouse.spider.client.CGApiClientAdapterImpl;
-import bg.autohouse.spider.client.CGApiClientCacheProxy;
 import bg.autohouse.spider.client.CGApiClientImpl;
 import bg.autohouse.spider.client.JavaHttpClientStrategy;
 import bg.autohouse.spider.service.AppConfigurationService;
@@ -21,9 +19,12 @@ public class SpiderApplication {
     HttpStrategy httpStrategy = new JavaHttpClientStrategy();
     CGApiClientImpl cg = new CGApiClientImpl(httpStrategy);
     CGApiClientAdapterImpl cgAdapter = new CGApiClientAdapterImpl(cg);
-    try (SpiderCacheManager cacheManager = new SpiderCacheManager()) {
-      CGApiClientCacheProxy proxy = new CGApiClientCacheProxy(cgAdapter, cacheManager);
-      CGService service = new CGService(proxy);
+    //    try (SpiderCacheManager cacheManager = new SpiderCacheManager()) {
+    //      CGApiClientCacheProxy proxy = new CGApiClientCacheProxy(cgAdapter, cacheManager);
+    //      CGService service = new CGService(cgAdapter);
+    //      service.crawl();
+    //    }
+    try (CGService service = new CGService(cgAdapter, 5)) {
       service.crawl();
     }
   }
