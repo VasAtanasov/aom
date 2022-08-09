@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class CarDTO implements Serializable {
   private String id;
-  private int year;
+  private Integer year;
 }

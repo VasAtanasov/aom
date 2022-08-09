@@ -8,4 +8,5 @@ public class ModelDTO implements Serializable {
   private String id;
   private String name;
   private boolean popular;
+  private String url;
 }

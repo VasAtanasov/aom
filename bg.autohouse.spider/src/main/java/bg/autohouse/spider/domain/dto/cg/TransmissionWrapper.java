@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class TransmissionWrapper implements Serializable {
-  private InnerWrapper all;
-  private InnerWrapper trimSpecific;
+  private InnerTransmissionWrapper all;
+  private InnerTransmissionWrapper trimSpecific;
 
   @Data
-  public static class InnerWrapper implements Serializable{
+  public static class InnerTransmissionWrapper implements Serializable{
     private String label;
     private List<TransmissionDTO> values;
   }

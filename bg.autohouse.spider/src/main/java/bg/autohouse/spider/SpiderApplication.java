@@ -25,7 +25,8 @@ public class SpiderApplication {
     //      service.crawl();
     //    }
     try (CGService service = new CGService(cgAdapter, 5)) {
-      service.crawl();
+      var trims = service.updateMakersModels();
+      int a = 5;
     }
   }
 }
