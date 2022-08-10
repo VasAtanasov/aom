@@ -125,7 +125,9 @@ public class CGService implements AutoCloseable {
     List<MakerDTO> makers =
         wrapper.makers().stream().filter(MakerDTO::isPopular).skip(26).limit(5).toList();
     List<CompletableFuture<List<TrimFullDTO>>> futureMakersModels =
-        makers.stream().map(m -> CompletableFuture.completedFuture(makerTaskSupplier(m).get())).toList();
+        makers.stream()
+            .map(m -> CompletableFuture.completedFuture(makerTaskSupplier(m).get()))
+            .toList();
 
     List<TrimFullDTO> completedFuture =
         futureMakersModels.stream()
@@ -137,6 +139,40 @@ public class CGService implements AutoCloseable {
     log.info(String.format("The operation took %s ms%n", end - start));
 
     return completedFuture;
+  }
+
+  private static final int DEFAULT_MAX_RESULT = 35;
+
+  private CompletableFuture<List<ListingDTO>> listingsFuture(String entity) {
+    List<ListingDTO> allListings = new ArrayList<>();
+    for (int offset = 0; offset < 5; offset++) {
+
+      var listings = clientAdapter.searchListings(offset, DEFAULT_MAX_RESULT, "m6");
+      allListings.addAll(listings);
+    }
+    int size = allListings.size();
+    List<ListingDTO> ids =
+            allListings.stream()
+                    //            .map(ListingDTO::getId)
+                    .sorted(Comparator.comparingLong(ListingDTO::getId)).toList();
+    int a = 5;
+
+    return CompletableFuture.completedFuture(allListings);
+  }
+
+  public List<ListingDTO> fetchListings() {
+    MakersModelsWrapper wrapper = clientAdapter.makers();
+    List<MakerDTO> makers =
+        wrapper.makers().stream().filter(MakerDTO::isPopular).sorted().skip(0).limit(1).toList();
+
+    var listingsFuture = makers.stream().map(dto -> listingsFuture(dto.getId())).toList();
+
+    List<ListingDTO> listings =
+        listingsFuture.stream().map(CompletableFuture::join).flatMap(Collection::stream).toList();
+
+    int a = 5;
+
+    return listings;
   }
 
   @Override

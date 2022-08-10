@@ -15,7 +15,7 @@ services:
       - /home/vas/projects/wiremock-mappings/original/__files:${WIREMOCK_HOME}/__files
       - /home/vas/projects/wiremock-mappings/original/mappings:${WIREMOCK_HOME}/mappings
     ports:
-      - "18080:8080"
+      - "${WIREMOCK_PORT}:8080"
     networks:
       - network
 
@@ -25,7 +25,7 @@ services:
     image: vasatanasov/ah-spider:${AH_SPIDER_IMAGE_TAG}
     container_name: spider
     environment:
-      - WIREMOCK_ENABLED=${WIREMOCK_ENABLED}
+      - STUBBING_ENABLED=${STUBBING_ENABLED}
       - FILE_STORAGE_FOLDER=${FILE_STORAGE_FOLDER}
     ports:
       - "8080:8080"

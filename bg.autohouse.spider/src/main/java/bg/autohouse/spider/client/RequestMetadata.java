@@ -1,6 +1,7 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.HttpMethod;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
@@ -9,7 +10,7 @@ import java.util.Collections;
 public class RequestMetadata {
   private final HttpMethod httpMethod;
   private final URI uri;
-  private final Collection<? extends QueryParameter> params;
+  private final Collection<QueryParameter> params;
   private final RequestBody body;
   private final boolean async;
   private final int connectTimeout;
@@ -37,7 +38,7 @@ public class RequestMetadata {
     return async;
   }
 
-  public Collection<? extends QueryParameter> params() {
+  public Collection<QueryParameter> params() {
     return Collections.unmodifiableCollection(params);
   }
 

@@ -2,17 +2,15 @@ package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.HttpStrategy;
 import bg.autohouse.spider.api.ResponseBodyHandler;
-import bg.autohouse.spider.client.exception.BadRequestException;
-import bg.autohouse.spider.client.exception.ForbiddenException;
-import bg.autohouse.spider.client.exception.HttpClientException;
-import bg.autohouse.spider.client.exception.InternalException;
-import bg.autohouse.spider.client.exception.MaintenanceException;
-import bg.autohouse.spider.client.exception.NotFoundException;
-import bg.autohouse.spider.client.exception.RedirectException;
-import bg.autohouse.spider.client.exception.TimeoutException;
-import bg.autohouse.spider.client.exception.UnauthorizedException;
+import bg.autohouse.spider.client.exception.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Version;
 import java.net.http.HttpRequest;
@@ -20,9 +18,6 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Slf4j
 public class JavaHttpClientStrategy implements HttpStrategy {
@@ -72,8 +67,9 @@ public class JavaHttpClientStrategy implements HttpStrategy {
   }
 
   public HttpRequest.Builder builder(RequestMetadata metadata) {
+    URI uri = getUri(metadata);
     HttpRequest.Builder builder =
-        HttpRequest.newBuilder(metadata.uri())
+        HttpRequest.newBuilder(uri)
             .timeout(Duration.ofMillis(metadata.connectTimeout()));
 
     switch (metadata.method()) {
@@ -87,6 +83,22 @@ public class JavaHttpClientStrategy implements HttpStrategy {
     }
 
     return builder;
+  }
+
+  private URI getUri(RequestMetadata metadata)
+  {
+    URIBuilder uriBuilder = new URIBuilder(metadata.uri());
+    metadata.params().forEach(param -> uriBuilder.addParameter(param.name(),param.value()));
+
+    try
+    {
+      return uriBuilder.build();
+    }
+    catch (URISyntaxException e)
+    {
+      e.printStackTrace();
+    }
+    return metadata.uri();
   }
 
   private <T> Response<T> handleResponseStatus(Response<T> response) {

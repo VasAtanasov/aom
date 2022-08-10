@@ -1,19 +1,13 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.cache.SpiderCacheManager;
-import bg.autohouse.spider.domain.dto.cg.CarsTrimsWrapper;
-import bg.autohouse.spider.domain.dto.cg.EngineDTO;
-import bg.autohouse.spider.domain.dto.cg.EnginesList;
-import bg.autohouse.spider.domain.dto.cg.MakersModelsWrapper;
-import bg.autohouse.spider.domain.dto.cg.ModelsCarsWrapper;
-import bg.autohouse.spider.domain.dto.cg.OptionDTO;
-import bg.autohouse.spider.domain.dto.cg.OptionsWrapper;
-import bg.autohouse.spider.domain.dto.cg.TransmissionWrapper;
-import java.util.List;
-import java.util.Map;
+import bg.autohouse.spider.domain.dto.cg.*;
 import org.ehcache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 public class CGApiClientCacheProxy implements CGApiClientAdapter {
   private static final Logger log = LoggerFactory.getLogger(CGApiClientCacheProxy.class);
@@ -98,5 +92,10 @@ public class CGApiClientCacheProxy implements CGApiClientAdapter {
     Map<String, List<OptionDTO>> options = client.trimOptions(trimId);
     optionsCache.put(trimId, new OptionsWrapper(options));
     return options;
+  }
+
+  @Override
+  public List<ListingDTO> searchListings(int offset, int maxResults, String entity) {
+    return client.searchListings(offset, maxResults, entity);
   }
 }

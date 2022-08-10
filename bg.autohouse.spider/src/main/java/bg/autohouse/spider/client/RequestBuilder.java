@@ -15,7 +15,7 @@ public final class RequestBuilder {
   Charset charset = StandardCharsets.UTF_8;
   RequestBody body;
   boolean async = false;
-  int connectTimeout = 3000;
+  int connectTimeout = 15000;
   int retries = 0;
 
   private static RequestBuilder builder() {

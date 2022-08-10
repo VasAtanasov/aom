@@ -1,16 +1,11 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.HttpStrategy;
-import bg.autohouse.spider.client.endpoint.cg.MakerEndpoint;
-import bg.autohouse.spider.client.endpoint.cg.MakersCollectionEndpoint;
-import bg.autohouse.spider.client.endpoint.cg.ModelEndpoint;
-import bg.autohouse.spider.client.endpoint.cg.OptionsEndpoint;
-import bg.autohouse.spider.client.endpoint.cg.TrimEngineEndpoint;
-import bg.autohouse.spider.client.endpoint.cg.TrimTransmissionEndpoint;
+import bg.autohouse.spider.client.endpoint.cg.*;
+import bg.autohouse.spider.service.AppConfigurationService;
 
 public class CGApiClientImpl extends AbstractApiClient {
-//    private static final String API_BASE_URL = "https://www.cargurus.com";
-  public static final String API_BASE_URL = "http://localhost:18080";
+  public static final String API_BASE_URL = AppConfigurationService.getCGApiBaseUrl();
 
   public CGApiClientImpl(HttpStrategy httpStrategy) {
     super(httpStrategy);
@@ -38,6 +33,14 @@ public class CGApiClientImpl extends AbstractApiClient {
 
   public OptionsEndpoint trimOptions(String trimId) {
     return new OptionsEndpoint(this, trimId);
+  }
+
+  public SearchResultEndpoint listingsSearch() {
+    return new SearchResultEndpoint(this);
+  }
+
+  public ListingDetailEndpoint listingDetail() {
+    return new ListingDetailEndpoint(this);
   }
 
   public String apiBaseUrl() {

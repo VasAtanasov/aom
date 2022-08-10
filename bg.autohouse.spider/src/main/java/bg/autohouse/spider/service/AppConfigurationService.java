@@ -1,11 +1,17 @@
 package bg.autohouse.spider.service;
 
 import bg.autohouse.spider.constants.Constant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Properties;
 
 public class AppConfigurationService implements Configuration {
+
+  private static final Logger log = LoggerFactory.getLogger(AppConfigurationService.class);
 
   private static final Properties properties = new Properties();
 
@@ -14,7 +20,12 @@ public class AppConfigurationService implements Configuration {
   }
 
   public enum ConfigKeys {
-    FILE_STORAGE_FOLDER("file.storage.folder");
+    FILE_STORAGE_FOLDER("file.storage.folder"),
+    STUBBING_ENABLED("stubbing.enabled"),
+    STUBBING_SERVER_URL("stubbing.server.url"),
+    CG_API_BASE_URL("api.client.cg.base.url"),
+    AL_API_BASE_URL("api.client.al.base.url"),
+    ;
 
     private final String key;
 
@@ -55,6 +66,30 @@ public class AppConfigurationService implements Configuration {
         ConfigKeys.FILE_STORAGE_FOLDER.getKey(), Constant.TEMP_STORAGE_PATH);
   }
 
+  public static boolean isStubbingEnabled() {
+    return Boolean.parseBoolean(
+        properties.getProperty(ConfigKeys.STUBBING_ENABLED.getKey(), "false"));
+  }
+
+  public static String getStubbingServerUrl() {
+    return properties.getProperty(
+        ConfigKeys.STUBBING_SERVER_URL.getKey(), "http://localhost:18008");
+  }
+
+  public static String getCGApiBaseUrl() {
+    if (isStubbingEnabled()) {
+      return getStubbingServerUrl();
+    }
+    return properties.getProperty(ConfigKeys.CG_API_BASE_URL.getKey(), "http://localhost:18080");
+  }
+
+  public static String getALApiBaseUrl() {
+    if (isStubbingEnabled()) {
+      return getStubbingServerUrl();
+    }
+    return properties.getProperty(ConfigKeys.AL_API_BASE_URL.getKey(), "http://localhost:18080");
+  }
+
   private void init() {
     try {
       Properties defaultInstProps = new Properties();
@@ -66,7 +101,7 @@ public class AppConfigurationService implements Configuration {
       for (Entry<Object, Object> entry : defaultInstProps.entrySet()) {
         String key = (String) entry.getKey();
         String value = resolvePlaceholder((String) entry.getValue());
-        if (value == null) continue;
+        log.info("Config: " + key + "=" + value);
         properties.put(key, value);
       }
     } catch (IOException e) {
@@ -74,10 +109,23 @@ public class AppConfigurationService implements Configuration {
     }
   }
 
+  private static final String START_ENV_PLACEHOLDER_STR = "${";
+  private static final String END_ENV_PLACEHOLDER_STR = "}";
+
   private String resolvePlaceholder(String value) {
-    if (value.startsWith("${") && value.endsWith("}")) {
-      String placeholder = value.substring(2, value.length() - 1);
-      return System.getenv(placeholder);
+    Objects.requireNonNull(value);
+    int starPlaceholder = value.indexOf(START_ENV_PLACEHOLDER_STR);
+    int endPlaceholder = value.indexOf(END_ENV_PLACEHOLDER_STR);
+    if (starPlaceholder != -1 && endPlaceholder != -1) {
+      String placeholder =
+          value.substring(starPlaceholder, endPlaceholder + END_ENV_PLACEHOLDER_STR.length());
+      String placeholderStripped =
+          value.substring(starPlaceholder + START_ENV_PLACEHOLDER_STR.length(), endPlaceholder);
+      String env = System.getenv(placeholderStripped);
+
+      if (env == null) return value;
+
+      return resolvePlaceholder(value.replace(placeholder, env));
     }
     return value;
   }
