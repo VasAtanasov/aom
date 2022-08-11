@@ -1,11 +1,14 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.domain.dto.cg.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 
 public class CGApiClientAdapterImpl implements CGApiClientAdapter {
+  private static final Logger log = LoggerFactory.getLogger(CGApiClientAdapterImpl.class);
   private final CGApiClientImpl client;
 
   public CGApiClientAdapterImpl(CGApiClientImpl client) {
@@ -45,13 +48,16 @@ public class CGApiClientAdapterImpl implements CGApiClientAdapter {
   }
 
   @Override
-  public List<ListingDTO> searchListings(int offset, int maxResults, String entity) {
+  public Page<ListingDTO> searchListings(
+      String zip, int distance, String entity, PageRequest pageRequest) {
     QueryParameter[] queryParameters =
         new QueryParameter[] {
-          QueryParameter.of("offset", String.valueOf(offset)),
-          QueryParameter.of("maxResults", String.valueOf(maxResults)),
+          QueryParameter.of("zip", zip),
+          QueryParameter.of("distance", String.valueOf(distance)),
+          QueryParameter.of("offset", String.valueOf(pageRequest.offset())),
+          QueryParameter.of("maxResults", String.valueOf(pageRequest.pageSize())),
           QueryParameter.of("entitySelectingHelper.selectedEntity", entity)
         };
-    return client.listingsSearch().GET(queryParameters).body();
+    return new Page<>(client.listingsSearch().GET(queryParameters).body(), pageRequest);
   }
 }

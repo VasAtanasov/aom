@@ -4,9 +4,12 @@ import bg.autohouse.spider.api.HttpStrategy;
 import bg.autohouse.spider.client.CGApiClientAdapterImpl;
 import bg.autohouse.spider.client.CGApiClientImpl;
 import bg.autohouse.spider.client.JavaHttpClientStrategy;
+import bg.autohouse.spider.domain.dto.cg.MakerDTO;
 import bg.autohouse.spider.service.AppConfigurationService;
-import bg.autohouse.spider.service.CGService;
+import bg.autohouse.spider.service.CGServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 @Slf4j
 public class SpiderApplication {
@@ -21,26 +24,17 @@ public class SpiderApplication {
     log.info("CG base url: " + cg.apiBaseUrl());
     CGApiClientAdapterImpl cgAdapter = new CGApiClientAdapterImpl(cg);
 
-    //    Response<List<ListingDTO>> response =
-    //        cg.listingsSearch()
-    //            .GET(
-    //                QueryParameter.of("offset", "0"),
-    //                QueryParameter.of("maxResults", "35"),
-    //                QueryParameter.of("entitySelectingHelper.selectedEntity", "m48"));
-    //    List<ListingDTO> body = response.body();
-
-    //    var res = cg.listingDetail().GET(QueryParameter.of("inventoryListing", "331451311"));
-    //    var resBody = res.body();
-    //    int a = 5;
-
     //    try (SpiderCacheManager cacheManager = new SpiderCacheManager()) {
     //      CGApiClientCacheProxy proxy = new CGApiClientCacheProxy(cgAdapter, cacheManager);
     //      CGService service = new CGService(cgAdapter);
     //      service.crawl();
     //    }
-    try (CGService service = new CGService(cgAdapter, 5)) {
-      //      var trims = service.updateMakersModels();
-      var listings = service.fetchListings();
+    try (CGServiceImpl service = new CGServiceImpl(cgAdapter, 3)) {
+      //            var trims = service.updateMakersModels();
+
+      List<MakerDTO> makers =
+          service.fetchMakers().stream().filter(MakerDTO::isPopular).sorted().skip(0).limit(3).toList();
+      var listings = service.fetchListings(makers);
     }
   }
 }

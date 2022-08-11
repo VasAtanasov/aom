@@ -12,8 +12,8 @@ services:
       - WIREMOCK_HOME=${WIREMOCK_HOME}
       - WIREMOCK_ENABLED=${WIREMOCK_ENABLED}
     volumes:
-      - /home/vas/projects/wiremock-mappings/original/__files:${WIREMOCK_HOME}/__files
-      - /home/vas/projects/wiremock-mappings/original/mappings:${WIREMOCK_HOME}/mappings
+      - /home/vas/projects/wiremock-mappings/listings/__files:${WIREMOCK_HOME}/__files
+      - /home/vas/projects/wiremock-mappings/listings/mappings:${WIREMOCK_HOME}/mappings
     ports:
       - "${WIREMOCK_PORT}:8080"
     networks:

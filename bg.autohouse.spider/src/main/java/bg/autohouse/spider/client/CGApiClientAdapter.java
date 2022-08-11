@@ -19,5 +19,5 @@ public interface CGApiClientAdapter {
 
   Map<String, List<OptionDTO>> trimOptions(String trimId);
 
-  List<ListingDTO> searchListings(int offset, int maxResults, String entity);
+  Page<ListingDTO> searchListings(String zip, int distance, String entity, PageRequest pageRequest);
 }

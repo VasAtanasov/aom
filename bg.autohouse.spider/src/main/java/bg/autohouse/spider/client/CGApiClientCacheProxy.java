@@ -95,7 +95,7 @@ public class CGApiClientCacheProxy implements CGApiClientAdapter {
   }
 
   @Override
-  public List<ListingDTO> searchListings(int offset, int maxResults, String entity) {
-    return client.searchListings(offset, maxResults, entity);
+  public Page<ListingDTO> searchListings(String zip, int distance, String entity, PageRequest pageRequest) {
+    return client.searchListings(zip, distance, entity, pageRequest);
   }
 }
