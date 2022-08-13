@@ -30,11 +30,23 @@ public class SpiderApplication {
     //      service.crawl();
     //    }
     try (CGServiceImpl service = new CGServiceImpl(cgAdapter, 3)) {
-      //            var trims = service.updateMakersModels();
-
       List<MakerDTO> makers =
-          service.fetchMakers().stream().filter(MakerDTO::isPopular).sorted().skip(0).limit(3).toList();
-      var listings = service.fetchListings(makers);
+          service.fetchMakers().stream()
+              //            .filter(MakerDTO::isPopular)
+              //            .skip(26)
+              //            .limit(makerThreads)
+              .filter(makerDTO -> makerDTO.getId().equals("m23") || makerDTO.getId().equals("m48"))
+              .toList();
+      var trims = service.updateAllTrims(makers);
+
+      //      List<MakerDTO> makers =
+      //          service.fetchMakers().stream()
+      //              .filter(MakerDTO::isPopular)
+      //              .sorted()
+      //              .skip(0)
+      //              .limit(3)
+      //              .toList();
+      //      var listings = service.fetchListings(makers);
     }
   }
 }
