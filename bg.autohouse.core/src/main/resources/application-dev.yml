@@ -13,10 +13,12 @@ spring:
     open-in-view: false
     generate-ddl: true
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    password: ${DB_PASSWORD}
+    driverClassName: org.mariadb.jdbc.Driver
     username: ${DB_USER}
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=TRUE
+    password: ${DB_PASSWORD}
+#    password: root
+#    username: root
+    url: ${DB_CONNECTION_URL}
   sql:
     init:
       platform: mysql

@@ -17,6 +17,11 @@ ENV DB_PASSWORD ${DB_PASSWORD:-ah_dev}
 ENV DB_ROOT_PASSWORD ${DB_ROOT_PASSWORD:-root}
 ENV DB_CONNECTION_OPTS ''
 
+COPY scripts /scripts
+COPY assets /assets
+
+RUN chmod a+rx /scripts/mysql/*.sh && chmod -R a+r /assets/mysql/
+
 EXPOSE 3306
 
 HEALTHCHECK --interval=15s --retries=40 CMD /scripts/mysql/check-mysql-ready.sh

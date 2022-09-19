@@ -223,7 +223,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <description>Auto House Parent Project</description>
+
   <distributionManagement>
     <repository>
       <id>DockerHub</id>
@@ -232,13 +232,12 @@
       <url>https://index.docker.io/v2/</url>
     </repository>
   </distributionManagement>
+
   <groupId>bg.autohouse</groupId>
-
   <modelVersion>4.0.0</modelVersion>
-
   <name>Auto House (Parent)</name>
-
   <packaging>pom</packaging>
+  <description>Auto House Parent Project</description>
 
   <profiles>
     <profile>
@@ -254,7 +253,6 @@
         <module>bg.autohouse.webapp</module>
         <module>bg.autohouse.spider</module>
         <module>bg.autohouse.docker</module>
-        <module>bg.autohouse.spider-integration-test</module>
       </modules>
     </profile>
     <profile>

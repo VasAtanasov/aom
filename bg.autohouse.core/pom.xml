@@ -19,6 +19,7 @@
     <dependency>
       <artifactId>mariadb-java-client</artifactId>
       <groupId>org.mariadb.jdbc</groupId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <artifactId>h2</artifactId>

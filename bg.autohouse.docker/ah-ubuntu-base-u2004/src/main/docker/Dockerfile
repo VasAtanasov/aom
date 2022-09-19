@@ -1,6 +1,6 @@
 # Ubuntu base image
 
-FROM ubuntu:${docker.image.base.tag}
+FROM docker.io/ubuntu:${docker.image.base.tag}
 
 ARG GOSU_VERSION=1.14
 

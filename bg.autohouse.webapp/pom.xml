@@ -36,6 +36,10 @@
       <artifactId>lombok</artifactId>
       <groupId>org.projectlombok</groupId>
     </dependency>
+    <dependency>
+      <groupId>bg.autohouse</groupId>
+      <artifactId>bg.autohouse.core</artifactId>
+    </dependency>
   </dependencies>
 
   <modelVersion>4.0.0</modelVersion>

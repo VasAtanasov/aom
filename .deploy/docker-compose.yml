@@ -3,9 +3,9 @@ services:
     image: vasatanasov/ah-mysql-dev:${AH_MYSQL_IMAGE_TAG}
     environment:
       - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - DB_NAME=${PRODUCT_DB_NAME}
-      - DB_USER=${PRODUCT_DB_USER}
-      - DB_PASSWORD=${PRODUCT_DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
     volumes:
       - mysql:/var/lib/mysql
     ports:
@@ -19,13 +19,15 @@ services:
       - mysql
     environment:
       # RDBMS
-      - DB_HOST=${PRODUCT_DB_HOST}
-      - DB_PORT=${PRODUCT_DB_PORT}
-      - DB_NAME=${PRODUCT_DB_NAME}
-      - DB_USER=${PRODUCT_DB_USER}
-      - DB_PASSWORD=${PRODUCT_DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_CONNECTION_URL=${DB_CONNECTION_URL}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - DDL_STRATEGY=none
+      - TIME_ZONE=${TIME_ZONE}
     ports:
       - "8080:8080"
     networks:
