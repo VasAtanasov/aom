@@ -1,0 +1,37 @@
+{
+  "id" : "d99b999a-9a59-3ad9-806a-03e679921fcc",
+  "request" : {
+    "url" : "/Cars/getOptionsJson.action",
+    "method" : "POST",
+    "bodyPatterns" : [ {
+      "equalTo" : "trim=t67659"
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-Cars-getOptionsJson.action-4Wzxn.txt",
+    "headers" : {
+      "server" : "Apache/2.4.6 (CentOS) mod_jk/1.2.41",
+      "set-cookie" : [ "JSESSIONID=AB71C6EA21FB29B2087D5E5E173C8535.3f712; Path=/; Secure; HttpOnly; SameSite=None", "ViewVersion=%7B%22en%22%3A%7B%22includes%22%3A%5B%22d15c1bc6-8838-4b24-988a-d871cd81c299%22%2C%22aaba4696-f8cf-baba-5785-a4c6b027886d%22%5D%2C%22exclude%22%3A%7B%227bf01801-3707-433d-b5c9-35e3ac9fe5b7%22%3A1%7D%2C%22type%22%3A%22IN%22%7D%7D; Expires=Fri, 06-Aug-2027 11:48:36 GMT; Path=/; Secure; SameSite=None", "CarGurusUserT=3dKg-87.126.6.26.1659872916345; Expires=Fri, 06-Aug-2027 11:48:36 GMT; Path=/; Secure; SameSite=None", "cg-ssid=e6a041817a6c080ce1fc8e89cc79ead7a53b84a6caf6799eba8e44115eddcd4c; Expires=Fri, 06-Aug-2027 11:48:36 GMT; Path=/; Secure; SameSite=None", "MultivariateTest=H4sIAAAAAAAAAE3NzQqAIBAE4HfZc8H%2BaLp2jgqiS48jvnu6YnT7GGaYDNu9X%2BdzQMqgARLMBBOEJlJfGWMlrlJJKKNAuFjc7cxoDl%2BuXMli9GPIOiRW5Cb%2BXWAbudhG%2FdlbTH1WygvgpPMksgAAAKLVEzy7zW2xt2E8U0HmHOhLvPxLLMR%2BXCs1KZmKA0m1; Expires=Fri, 06-Aug-2027 11:48:36 GMT; Path=/; Secure; SameSite=None", "LSW=www-i-052209a800cc7cd84;path=/", "LSW=www-i-052209a800cc7cd84;path=/" ],
+      "x-content-type-options" : "nosniff",
+      "x-xss-protection" : "1; mode=block",
+      "x-frame-options" : "SAMEORIGIN",
+      "cache-control" : "no-cache,no-store,must-revalidate",
+      "pragma" : "no-cache",
+      "expires" : "0",
+      "last-modified" : "Sun, 07 Aug 2022 11:48:36 GMT",
+      "content-disposition" : "inline",
+      "content-language" : "en-US",
+      "content-type" : "text/plain;charset=ISO-8859-1",
+      "Accept-Ranges" : "bytes",
+      "Via" : "1.1 varnish, 1.1 varnish",
+      "Date" : "Sun, 07 Aug 2022 11:48:36 GMT",
+      "X-Served-By" : "cache-iad-kcgs7200078-IAD, cache-sof1510040-SOF",
+      "X-Cache" : "MISS, MISS",
+      "X-Cache-Hits" : "0, 0",
+      "X-Timer" : "S1659872916.289169,VS0,VE117",
+      "Vary" : "Accept-Encoding,User-Agent"
+    }
+  },
+  "uuid" : "d99b999a-9a59-3ad9-806a-03e679921fcc"
+}

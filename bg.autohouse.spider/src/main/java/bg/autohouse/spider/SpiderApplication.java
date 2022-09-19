@@ -29,15 +29,24 @@ public class SpiderApplication {
     //      CGService service = new CGService(cgAdapter);
     //      service.crawl();
     //    }
+
     try (CGServiceImpl service = new CGServiceImpl(cgAdapter, 3)) {
-      List<MakerDTO> makers =
+      final String zip = "10001";
+      final int distance = 150;
+
+
+      long start = System.currentTimeMillis();
+
+      MakerDTO makers =
           service.fetchMakers().stream()
               //            .filter(MakerDTO::isPopular)
               //            .skip(26)
               //            .limit(makerThreads)
-              .filter(makerDTO -> makerDTO.getId().equals("m23") || makerDTO.getId().equals("m48"))
-              .toList();
-      var trims = service.updateAllTrims(makers);
+              //              .filter(makerDTO -> makerDTO.getId().equals("m23") ||
+              // makerDTO.getId().equals("m48"))
+              .filter(makerDTO -> makerDTO.getId().equals("m48"))
+              .toList().get(0);
+      var trims = service.fetchTrims(makers);
 
       //      List<MakerDTO> makers =
       //          service.fetchMakers().stream()
@@ -47,6 +56,9 @@ public class SpiderApplication {
       //              .limit(3)
       //              .toList();
       //      var listings = service.fetchListings(makers);
+      long end = System.currentTimeMillis();
+      log.info(String.format("The operation took %s ms%n", end - start));
+
     }
   }
 }

@@ -11,7 +11,7 @@ import bg.autohouse.spider.domain.dto.cg.ListingDetailWrapperDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 public class ListingDetailEndpoint extends AbstractEndpoint
-    implements GetEnabled<ListingDetailWrapperDTO> {
+    implements GetEnabled<ListingDetailWrapperDTO>, CGEndpoint {
   private static final String ENDPOINT = "Cars/detailListingJson.action";
 
   public ListingDetailEndpoint(ApiClient client) {

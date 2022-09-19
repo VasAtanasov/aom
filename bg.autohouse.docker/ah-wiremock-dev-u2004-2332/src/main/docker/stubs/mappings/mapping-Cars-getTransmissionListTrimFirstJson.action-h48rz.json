@@ -1,0 +1,34 @@
+{
+  "id" : "1611aa2c-181e-3a17-bb13-1a223dff069e",
+  "request" : {
+    "url" : "/Cars/getTransmissionListTrimFirstJson.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=t54870",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-Cars-getTransmissionListTrimFirstJson.action-h48rz.txt",
+    "headers" : {
+      "server" : "Apache/2.4.6 (CentOS) mod_jk/1.2.41",
+      "set-cookie" : [ "JSESSIONID=860D18B810155346738DC0C7706EB1E5.bf4b0; Path=/; Secure; HttpOnly; SameSite=None", "ViewVersion=%7B%22en%22%3A%7B%22exclude%22%3A%7B%22d15c1bc6-8838-4b24-988a-d871cd81c299%22%3A20%2C%225545b969-0730-4545-a87a-5b394fd87792%22%3A10%2C%227bf01801-3707-433d-b5c9-35e3ac9fe5b7%22%3A1%7D%2C%22type%22%3A%22OUT%22%7D%7D; Expires=Fri, 06-Aug-2027 11:49:44 GMT; Path=/; Secure; SameSite=None", "CarGurusUserT=fDTs-87.126.6.26.1659872984250; Expires=Fri, 06-Aug-2027 11:49:44 GMT; Path=/; Secure; SameSite=None", "cg-ssid=03cb8c3b75e4ba96a040657b70bf82da4b56eaef38340654f98a8a2f9b28999f; Expires=Fri, 06-Aug-2027 11:49:44 GMT; Path=/; Secure; SameSite=None", "MultivariateTest=H4sIAAAAAAAAAEXNwQ6AIAiA4XfhXJughtq5VVvr0uM43z3AWSe%2F%2FQOssN37dT4HlAqZoQAFgglYiVmZktCtXojOi2c0Lpa7w5%2F5y7It57wxjgHKQ3qK9aV%2F2Q3m%2Fmm0ir229gLI5%2FRurgAAAA6RoEDZx66SgJQhnMekwzIfpRmcb01iDFdfazelVW86; Expires=Fri, 06-Aug-2027 11:49:44 GMT; Path=/; Secure; SameSite=None", "LSW=www-i-0dac720072d207acd;path=/", "LSW=www-i-0dac720072d207acd;path=/" ],
+      "x-content-type-options" : "nosniff",
+      "x-xss-protection" : "1; mode=block",
+      "x-frame-options" : "SAMEORIGIN",
+      "cache-control" : "no-cache,no-store,must-revalidate",
+      "pragma" : "no-cache",
+      "expires" : "0",
+      "last-modified" : "Sun, 07 Aug 2022 11:49:44 GMT",
+      "content-disposition" : "inline",
+      "content-language" : "en-US",
+      "content-type" : "text/plain;charset=ISO-8859-1",
+      "Accept-Ranges" : "bytes",
+      "Via" : "1.1 varnish, 1.1 varnish",
+      "Date" : "Sun, 07 Aug 2022 11:49:44 GMT",
+      "X-Served-By" : "cache-iad-kiad7000154-IAD, cache-sof1510075-SOF",
+      "X-Cache" : "MISS, MISS",
+      "X-Cache-Hits" : "0, 0",
+      "X-Timer" : "S1659872984.192557,VS0,VE121",
+      "Vary" : "Accept-Encoding,User-Agent"
+    }
+  },
+  "uuid" : "1611aa2c-181e-3a17-bb13-1a223dff069e"
+}

@@ -8,11 +8,12 @@ import bg.autohouse.spider.util.F;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
@@ -23,9 +24,26 @@ public class CGServiceImpl implements CGService {
   private final ExecutorService makerExecutor;
   private final ExecutorService modelExecutor;
   private final ExecutorService cachedExecutor;
-  private final Map<String, TrimBuilder> builders = new HashMap<>();
 
-  private final TrimTree trimTree = new TrimTree();
+  public CGServiceImpl(CGApiClientAdapter clientAdapter, int nThreads) {
+    this.clientAdapter = clientAdapter;
+    int modelsThreads = nThreads * 5;
+    makerExecutor = Executors.newFixedThreadPool(nThreads);
+    modelExecutor = Executors.newFixedThreadPool(modelsThreads);
+    cachedExecutor =
+        Executors.newCachedThreadPool(
+            new ThreadFactory() {
+              private final AtomicLong COUNTER = new AtomicLong(0);
+
+              @Override
+              public Thread newThread(Runnable r) {
+                Thread thread =
+                    new Thread(r, "CGService-thread-" + COUNTER.getAndIncrement());
+                thread.setDaemon(true);
+                return thread;
+              }
+            });
+  }
 
   @Override
   public void close() {
@@ -34,212 +52,129 @@ public class CGServiceImpl implements CGService {
     cachedExecutor.shutdown();
   }
 
-  private enum NodeType {
-    MAKER,
-    MODEL,
-    CAR,
-    TRIM
-  }
-
-  private static class TrimTree {
-    private static Map<String, TrimNode> nodes;
-  }
-
-  private static class TrimNode {
-    private final String id;
-    private final NodeType nodeType;
-    private final TrimFullDTO trim;
-    private final Map<String, TrimFullDTO> children = new HashMap<>();
-
-    public TrimNode(String id, NodeType nodeType, TrimFullDTO trim) {
-      this.id = id;
-      this.nodeType = nodeType;
-      this.trim = trim;
-    }
-  }
-
-  private static class Model {
-    String id;
-    ModelCarsDTO cars;
-    String name;
-    MakerDTO maker;
-
-    static Model of(String id, String name, ModelCarsDTO cars, MakerDTO maker) {
-      Model model = new Model();
-      model.id = id;
-      model.cars = cars;
-      model.name = name;
-      model.maker = maker;
-      return model;
-    }
-  }
-
-  public CGServiceImpl(CGApiClientAdapter clientAdapter, int nThreads) {
-    this.clientAdapter = clientAdapter;
-    int modelsThreads = nThreads * 5;
-    makerExecutor = Executors.newFixedThreadPool(nThreads);
-    modelExecutor = Executors.newFixedThreadPool(modelsThreads);
-    cachedExecutor = Executors.newCachedThreadPool();
-  }
-
+  @Override
   public List<MakerDTO> fetchMakers() {
     return clientAdapter.makers().makers();
   }
 
+  @Override
   public List<ModelCarsDTO> fetchMakerModels(String makerId) {
     return clientAdapter.maker(makerId).getModels();
   }
 
-  public CompletableFuture<List<ModelCarsDTO>> fetchMakerModelsAsync(String makerId) {
-    return CompletableFuture.supplyAsync(() -> fetchMakerModels(makerId), cachedExecutor);
+  @Override
+  public List<TrimFullDTO> fetchTrims(final MakerDTO maker) {
+    final Map<String, String> modelNamesById =
+        F.toHashMap(maker.getModels(), ModelDTO::getId, ModelDTO::getName);
+
+    List<ModelCarsDTO> models =
+        fetchMakerModels(maker.getId()).stream()
+            .peek(
+                model -> {
+                  model.setModelName(modelNamesById.get(model.getId()));
+                  model.setMakerId(maker.getId());
+                  model.setMakerName(maker.getName());
+                })
+            .toList();
+
+    return models.stream()
+        .map(m -> CompletableFuture.supplyAsync(() -> fetchTrims(m), modelExecutor))
+        .map(CompletableFuture::join)
+        .flatMap(Collection::stream)
+        .toList();
   }
 
-  public Page<ListingDTO> fetchListingsPage(
-      String zip, int distance, String entity, PageRequest page) {
+  @Override
+  public List<TrimFullDTO> fetchTrims(ModelCarsDTO model) {
+    Map<String, Integer> carNamesById =
+        F.toHashMap(model.getCars(), CarDTO::getId, CarDTO::getYear);
+
+    final TrimBuilder builder =
+        TrimBuilder.builder()
+            .makerId(model.getMakerId())
+            .makerName(model.getMakerName())
+            .modelId(model.getId())
+            .modelName(model.getModelName());
+
+    List<TrimFullDTO> trims = new ArrayList<>();
+    CarsTrimsWrapper carsTrimsWrapper = clientAdapter.modelCars(model.getId());
+    List<CarTrimsDTO> cars = carsTrimsWrapper.getCars();
+
+    if (cars.isEmpty()) trims.add(builder.build());
+
+    for (CarTrimsDTO carTrimsDTO : cars) {
+      var carId = carTrimsDTO.getId();
+      var carName = carNamesById.computeIfAbsent(carId, s -> 9999);
+
+      builder.carName(carName).carId(carId);
+
+      for (TrimDTO trim : carTrimsDTO.getTrims()) {
+        var trimId = trim.getId();
+        var trimName = trim.getName();
+        builder.trimName(trimName).trimId(trimId);
+
+        log.info(
+            "======================================= {} =======================================",
+            builder.buildTitle());
+
+        var transmissionFuture =
+            CompletableFuture.supplyAsync(
+                () -> clientAdapter.trimTransmissions(trimId), cachedExecutor);
+        var enginesFuture =
+            CompletableFuture.supplyAsync(() -> clientAdapter.trimEngines(trimId), cachedExecutor);
+        var optionsMapFuture =
+            CompletableFuture.supplyAsync(() -> clientAdapter.trimOptions(trimId), cachedExecutor);
+
+        CompletableFuture.allOf(transmissionFuture, enginesFuture, optionsMapFuture);
+
+        try {
+          TransmissionWrapper transmission = transmissionFuture.get();
+          List<EngineDTO> engines = enginesFuture.get();
+          Map<String, List<OptionDTO>> optionsMap = optionsMapFuture.get();
+          builder
+              .transmissions(transmission.getTrimSpecific())
+              .engines(engines)
+              .options(optionsMap);
+
+          TrimFullDTO trimFullDTO = builder.build();
+          trims.add(trimFullDTO);
+        } catch (InterruptedException | ExecutionException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+
+    return trims;
+  }
+
+  @Override
+  public List<TrimFullDTO> fetchTrims(List<MakerDTO> makers) {
+    return makers.stream()
+        .map(m -> CompletableFuture.supplyAsync(() -> fetchTrims(m), makerExecutor))
+        .map(CompletableFuture::join)
+        .flatMap(Collection::stream)
+        .toList();
+  }
+
+  @Override
+  public Page<ListingDTO> fetchListings(String zip, int distance, String entity, PageRequest page) {
     return clientAdapter.searchListings(zip, distance, entity, page);
   }
 
-  public CompletableFuture<Page<ListingDTO>> fetchListingsPageAsync(
-      String zip, int distance, String entity, PageRequest page) {
-    return CompletableFuture.supplyAsync(
-        () -> fetchListingsPage(zip, distance, entity, page), cachedExecutor);
+  @Override
+  public List<ListingDTO> fetchListings(String zip, int distance, List<MakerDTO> makers) {
+    return makers.stream()
+        .map(MakerDTO::getId)
+        .map(makerId -> listingsTaskSupplier(zip, distance, makerId, 5))
+        .map(supplier -> CompletableFuture.supplyAsync(supplier, makerExecutor))
+        .map(CompletableFuture::join)
+        .flatMap(Collection::stream)
+        .toList();
   }
 
-  private String getModelName(Map<String, String> modelNamesById, String modelId) {
-    return modelNamesById.computeIfAbsent(modelId, s -> "UNIDENTIFIED");
-  }
-
-  private Supplier<List<TrimFullDTO>> makerTaskSupplier(final MakerDTO maker) {
-    return () -> {
-      final Map<String, String> modelNamesById =
-          F.toHashMap(maker.getModels(), ModelDTO::getId, ModelDTO::getName);
-
-      List<ModelCarsDTO> models = fetchMakerModels(maker.getId());
-
-      try {
-
-        return models.stream()
-            .peek(
-                model -> {
-                  var makerBuilder =
-                      builders.computeIfAbsent(
-                          maker.getId(),
-                          makerId ->
-                              TrimBuilder.toBuilder(TrimBuilder::makerId, TrimBuilder::makerName)
-                                  .apply(makerId, maker.getName()));
-
-                  builders.computeIfAbsent(
-                      model.getId(),
-                      modelId ->
-                          TrimBuilder.toBuilder(
-                                  TrimBuilder::modelId,
-                                  TrimBuilder::modelName,
-                                  () -> new TrimBuilder(makerBuilder))
-                              .apply(modelId, getModelName(modelNamesById, modelId)));
-                })
-            .map(this::modelTrimsAsync)
-            .map(CompletableFuture::join)
-            .flatMap(Collection::stream)
-            .toList();
-
-      } catch (Exception e) {
-        return List.of();
-      }
-    };
-  }
-
-  private CompletableFuture<List<TrimFullDTO>> modelTrimsAsync(ModelCarsDTO model) {
-    return CompletableFuture.supplyAsync(modelTrimsTaskSupplier(model), modelExecutor);
-  }
-
-  private Supplier<List<TrimFullDTO>> modelTrimsTaskSupplier(ModelCarsDTO model) {
-    return () -> {
-      Map<String, Integer> carNamesById =
-          F.toHashMap(model.getCars(), CarDTO::getId, CarDTO::getYear);
-
-      final TrimBuilder builder = builders.get(model.getId());
-
-      List<TrimFullDTO> trims = new ArrayList<>();
-      CarsTrimsWrapper carsTrimsWrapper = clientAdapter.modelCars(model.getId());
-      List<CarTrimsDTO> cars = carsTrimsWrapper.getCars();
-
-      if (cars.isEmpty()) trims.add(builder.build());
-
-      for (CarTrimsDTO carTrimsDTO : cars) {
-        var carId = carTrimsDTO.getId();
-        var carName = carNamesById.computeIfAbsent(carId, s -> 9999);
-
-        builder.carName(carName).carId(carId);
-
-        for (TrimDTO trim : carTrimsDTO.getTrims()) {
-          var trimId = trim.getId();
-          var trimName = trim.getName();
-          builder.trimName(trimName).trimId(trimId);
-
-          log.info(
-              "======================================= {} =======================================",
-              builder.buildTitle());
-
-          var transmissionFuture =
-              CompletableFuture.supplyAsync(
-                  () -> clientAdapter.trimTransmissions(trimId), cachedExecutor);
-          var enginesFuture =
-              CompletableFuture.supplyAsync(
-                  () -> clientAdapter.trimEngines(trimId), cachedExecutor);
-          var optionsMapFuture =
-              CompletableFuture.supplyAsync(
-                  () -> clientAdapter.trimOptions(trimId), cachedExecutor);
-
-          CompletableFuture.allOf(transmissionFuture, enginesFuture, optionsMapFuture);
-
-          try {
-            TransmissionWrapper transmission = transmissionFuture.get();
-            List<EngineDTO> engines = enginesFuture.get();
-            Map<String, List<OptionDTO>> optionsMap = optionsMapFuture.get();
-            builder
-                .transmissions(transmission.getTrimSpecific())
-                .engines(engines)
-                .options(optionsMap);
-
-            TrimFullDTO trimFullDTO = builder.build();
-            trims.add(trimFullDTO);
-          } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-          }
-        }
-      }
-
-      return trims;
-    };
-  }
-
-  public List<TrimFullDTO> updateAllTrims(List<MakerDTO> makers) {
-    long start = System.currentTimeMillis();
-
-    List<CompletableFuture<List<TrimFullDTO>>> futureMakersModels =
-        makers.stream()
-            //            .peek(
-            //                maker ->
-            //                    builders.computeIfAbsent(
-            //                        maker.getId(),
-            //                        makerId ->
-            //                            TrimBuilder.toBuilder(TrimBuilder::makerId,
-            // TrimBuilder::makerName)
-            //                                .apply(makerId, maker.getName())))
-            .map(this::makerTaskSupplier)
-            .map(supplier -> CompletableFuture.supplyAsync(supplier, makerExecutor))
-            .toList();
-
-    List<TrimFullDTO> completedFuture =
-        futureMakersModels.stream()
-            .map(CompletableFuture::join)
-            .flatMap(Collection::stream)
-            .toList();
-
-    long end = System.currentTimeMillis();
-    log.info(String.format("The operation took %s ms%n", end - start));
-
-    return completedFuture;
+  @Override
+  public List<ListingDTO> fetchListings(String zip, int distance, MakerDTO maker) {
+    return listingsTaskSupplier(zip, distance, maker.getId(), 5).get();
   }
 
   private Supplier<List<ListingDTO>> listingsTaskSupplier(
@@ -248,29 +183,12 @@ public class CGServiceImpl implements CGService {
         IntStream.iterate(0, pageNumber -> pageNumber + 1)
             .limit(totalPages)
             .mapToObj(PageRequest::of)
-            .map(page -> fetchListingsPageAsync(zip, distance, entity, page))
+            .map(
+                page ->
+                    CompletableFuture.supplyAsync(
+                        () -> fetchListings(zip, distance, entity, page), cachedExecutor))
             .map(CompletableFuture::join)
             .flatMap(Page::stream)
             .toList();
-  }
-
-  public List<ListingDTO> fetchListings(List<MakerDTO> makers) {
-
-    final String zip = "10001";
-    final int distance = 150;
-
-    var listingsFuture =
-        makers.stream()
-            .map(MakerDTO::getId)
-            .map(makerId -> listingsTaskSupplier(zip, distance, makerId, 5))
-            .map(supplier -> CompletableFuture.supplyAsync(supplier, makerExecutor))
-            .toList();
-
-    List<ListingDTO> listings =
-        listingsFuture.stream().map(CompletableFuture::join).flatMap(Collection::stream).toList();
-
-    int a = 5;
-
-    return listings;
   }
 }

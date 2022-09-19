@@ -1,0 +1,34 @@
+{
+  "id" : "69e56433-f9d4-3bba-a9b6-0f7caabda109",
+  "request" : {
+    "url" : "/Cars/getTransmissionListTrimFirstJson.action?showInactive=true&useInventoryService=false&quotableCarsOnly=false&localCountryCarsOnly=false&outputFormat=REACT&trim=t35130",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "bodyFileName" : "body-Cars-getTransmissionListTrimFirstJson.action-Qqhvc.txt",
+    "headers" : {
+      "server" : "Apache/2.4.6 (CentOS) mod_jk/1.2.41",
+      "set-cookie" : [ "JSESSIONID=5F2978006ED0E1B87CA04A041622F9D9.d46e9; Path=/; Secure; HttpOnly; SameSite=None", "ViewVersion=%7B%22en%22%3A%7B%22includes%22%3A%5B%22d15c1bc6-8838-4b24-988a-d871cd81c299%22%5D%2C%22exclude%22%3A%7B%225545b969-0730-4545-a87a-5b394fd87792%22%3A10%2C%227bf01801-3707-433d-b5c9-35e3ac9fe5b7%22%3A1%7D%2C%22type%22%3A%22IN%22%7D%7D; Expires=Fri, 06-Aug-2027 11:48:54 GMT; Path=/; Secure; SameSite=None", "CarGurusUserT=pTm4-87.126.6.26.1659872934204; Expires=Fri, 06-Aug-2027 11:48:54 GMT; Path=/; Secure; SameSite=None", "cg-ssid=6cb7fedc457e265b02bd6319a3760b7f619583f46e77276df2ebcbf1909ba902; Expires=Fri, 06-Aug-2027 11:48:54 GMT; Path=/; Secure; SameSite=None", "MultivariateTest=H4sIAAAAAAAAAEXNPQ6AIAyA0bt01gRKoRRnoybGxeMQ7m6pQbeXL%2F2psF7bedw7lArCUGD2MAF3eSFlziN6F34mpVtekxpjMvPXBXsOxjgWUVSMqu9W6HOcbduNKP0rEln1dt9Baw9cwSYFrwAAAJz%2FRe0%2B3u4k7TIatdk2%2BN0JgtYhnKFh7b5gWtpByWMy; Expires=Fri, 06-Aug-2027 11:48:54 GMT; Path=/; Secure; SameSite=None", "LSW=www-i-08576b4c917c04560;path=/", "LSW=www-i-08576b4c917c04560;path=/" ],
+      "x-content-type-options" : "nosniff",
+      "x-xss-protection" : "1; mode=block",
+      "x-frame-options" : "SAMEORIGIN",
+      "cache-control" : "no-cache,no-store,must-revalidate",
+      "pragma" : "no-cache",
+      "expires" : "0",
+      "last-modified" : "Sun, 07 Aug 2022 11:48:54 GMT",
+      "content-disposition" : "inline",
+      "content-language" : "en-US",
+      "content-type" : "text/plain;charset=ISO-8859-1",
+      "Accept-Ranges" : "bytes",
+      "Via" : "1.1 varnish, 1.1 varnish",
+      "Date" : "Sun, 07 Aug 2022 11:48:54 GMT",
+      "X-Served-By" : "cache-iad-kcgs7200112-IAD, cache-sof1510066-SOF",
+      "X-Cache" : "MISS, MISS",
+      "X-Cache-Hits" : "0, 0",
+      "X-Timer" : "S1659872934.143859,VS0,VE124",
+      "Vary" : "Accept-Encoding,User-Agent"
+    }
+  },
+  "uuid" : "69e56433-f9d4-3bba-a9b6-0f7caabda109"
+}

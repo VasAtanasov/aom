@@ -7,13 +7,13 @@ public class AsyncExecutor {
   private static ExecutorService pool;
   private static AsyncExecutor instance;
 
-  private AsyncExecutor(int maxTherads) {
-    pool = Executors.newFixedThreadPool(maxTherads);
+  private AsyncExecutor(int maxThreads) {
+    pool = Executors.newFixedThreadPool(maxThreads);
   }
 
-  public static AsyncExecutor create(int maxTherads) {
+  public static AsyncExecutor create(int maxThreads) {
     if (instance == null || pool.isTerminated()) {
-      instance = new AsyncExecutor(maxTherads);
+      instance = new AsyncExecutor(maxThreads);
     }
     return instance;
   }
