@@ -1,1 +1,0 @@
-{"ROOF":[{"important":true,"active":true,"label":"Sunroof/Moonroof","id":2}],"WHEELS":[{"important":true,"active":true,"label":"Alloy Wheels","id":6},{"important":true,"active":true,"label":"Steel Wheels","id":8},{"important":true,"active":true,"label":"Premium Wheels","id":9}]}

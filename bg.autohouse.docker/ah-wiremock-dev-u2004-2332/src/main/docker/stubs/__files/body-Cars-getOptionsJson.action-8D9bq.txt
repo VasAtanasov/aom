@@ -1,1 +1,0 @@
-{"OTHER":[{"important":true,"active":true,"label":"Third Row Seating","id":135},{"important":true,"active":true,"label":"Bluetooth","id":120}],"ROOF":[{"important":true,"active":true,"label":"Sunroof/Moonroof","id":2}],"PACKAGE":[{"important":true,"active":true,"label":"Premium Package","id":12}]}
