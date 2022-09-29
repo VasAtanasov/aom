@@ -5,6 +5,9 @@ import lombok.Data;
 @Data
 public class ListingDetailWrapperDTO {
 
+  private ListingDetailDTO listing;
+  private AutoEntityInfo autoEntityInfo;
+
   @Data
   private static class AutoEntityInfo {
     private String entityId;
@@ -16,7 +19,4 @@ public class ListingDetailWrapperDTO {
     private String bodyStyle;
     private String[] autoCategories;
   }
-
-  private ListingDetailDTO listing;
-  private AutoEntityInfo autoEntityInfo;
 }

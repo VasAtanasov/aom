@@ -14,51 +14,15 @@ public class AppConfigurationService implements Configuration {
   private static final Logger log = LoggerFactory.getLogger(AppConfigurationService.class);
 
   private static final Properties properties = new Properties();
+  private static final String START_ENV_PLACEHOLDER_STR = "${";
+  private static final String END_ENV_PLACEHOLDER_STR = "}";
 
   private AppConfigurationService() {
     init();
   }
 
-  public enum ConfigKeys {
-    FILE_STORAGE_FOLDER("file.storage.folder"),
-    STUBBING_ENABLED("stubbing.enabled"),
-    STUBBING_SERVER_URL("stubbing.server.url"),
-    CG_API_BASE_URL("api.client.cg.base.url"),
-    AL_API_BASE_URL("api.client.al.base.url"),
-    ;
-
-    private final String key;
-
-    ConfigKeys(String key) {
-      this.key = key;
-    }
-
-    public String getKey() {
-      return key;
-    }
-
-    public String getPlaceholder() {
-      return name();
-    }
-  }
-
   public static AppConfigurationService create() {
     return new AppConfigurationService();
-  }
-
-  @Override
-  public String getProperty(String key) {
-    return properties.getProperty(key);
-  }
-
-  @Override
-  public void addProperty(String key, Object prop) {
-    properties.put(key, prop);
-  }
-
-  @Override
-  public void removeProperty(String key) {
-    properties.remove(key);
   }
 
   public static String storageBasePath() {
@@ -90,6 +54,21 @@ public class AppConfigurationService implements Configuration {
     return properties.getProperty(ConfigKeys.AL_API_BASE_URL.getKey(), "http://localhost:18080");
   }
 
+  @Override
+  public String getProperty(String key) {
+    return properties.getProperty(key);
+  }
+
+  @Override
+  public void addProperty(String key, Object prop) {
+    properties.put(key, prop);
+  }
+
+  @Override
+  public void removeProperty(String key) {
+    properties.remove(key);
+  }
+
   private void init() {
     try {
       Properties defaultInstProps = new Properties();
@@ -109,9 +88,6 @@ public class AppConfigurationService implements Configuration {
     }
   }
 
-  private static final String START_ENV_PLACEHOLDER_STR = "${";
-  private static final String END_ENV_PLACEHOLDER_STR = "}";
-
   private String resolvePlaceholder(String value) {
     Objects.requireNonNull(value);
     int starPlaceholder = value.indexOf(START_ENV_PLACEHOLDER_STR);
@@ -128,5 +104,28 @@ public class AppConfigurationService implements Configuration {
       return resolvePlaceholder(value.replace(placeholder, env));
     }
     return value;
+  }
+
+  public enum ConfigKeys {
+    FILE_STORAGE_FOLDER("file.storage.folder"),
+    STUBBING_ENABLED("stubbing.enabled"),
+    STUBBING_SERVER_URL("stubbing.server.url"),
+    CG_API_BASE_URL("api.client.cg.base.url"),
+    AL_API_BASE_URL("api.client.al.base.url"),
+    ;
+
+    private final String key;
+
+    ConfigKeys(String key) {
+      this.key = key;
+    }
+
+    public String getKey() {
+      return key;
+    }
+
+    public String getPlaceholder() {
+      return name();
+    }
   }
 }

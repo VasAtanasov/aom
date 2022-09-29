@@ -16,8 +16,6 @@ spring:
     driverClassName: org.mariadb.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-#    password: root
-#    username: root
     url: ${DB_CONNECTION_URL}
   sql:
     init:

@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>bg.autohouse.integration</artifactId>
-  <dependencies>
-    <dependency>
-      <artifactId>spring-boot-starter-web</artifactId>
-      <groupId>org.springframework.boot</groupId>
-    </dependency>
-    <dependency>
-      <artifactId>httpclient</artifactId>
-      <groupId>org.apache.httpcomponents</groupId>
-      <version>${version.dependencies.apache.httpclient}</version>
-    </dependency>
-    <dependency>
-      <artifactId>httpasyncclient</artifactId>
-      <groupId>org.apache.httpcomponents</groupId>
-      <version>4.1.5</version>
-    </dependency>
-  </dependencies>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>autohouse</artifactId>
+        <groupId>bg.autohouse</groupId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
 
-  <parent>
-    <artifactId>autohouse</artifactId>
-    <groupId>bg.autohouse</groupId>
-    <version>2.0.0-SNAPSHOT</version>
-  </parent>
+    <artifactId>bg.autohouse.integration</artifactId>
+
+    <properties>
+        <version.dependencies.httpasyncclient>4.1.5</version.dependencies.httpasyncclient>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>httpclient</artifactId>
+            <groupId>org.apache.httpcomponents</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>httpasyncclient</artifactId>
+            <groupId>org.apache.httpcomponents</groupId>
+            <version>${version.dependencies.httpasyncclient}</version>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -1,9 +1,10 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
 
 @Data
 public class ModelsCarsWrapper implements Serializable {

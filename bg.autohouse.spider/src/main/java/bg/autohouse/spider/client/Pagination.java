@@ -1,16 +1,15 @@
 package bg.autohouse.spider.client;
 
-public interface Pagination
-{
-    int pageSize();
+public interface Pagination {
+  int pageSize();
 
-    int pageNumber();
+  int pageNumber();
 
-    int offset();
+  int offset();
 
-    PageRequest next();
+  PageRequest next();
 
-    PageRequest previous();
+  PageRequest previous();
 
-    PageRequest first();
+  PageRequest first();
 }

@@ -1,10 +1,8 @@
 package bg.autohouse.spider;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.getRecordingStatus;
-
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.http.Body;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.getRecordingStatus;
 
 public class WireMockApp {
   public static void main(String[] args) {
@@ -13,9 +11,9 @@ public class WireMockApp {
     WireMock.configureFor(18080);
     var mappings = WireMock.listAllStubMappings().getMappings();
     int f = 5;
-//    stubFor(proxyAllTo(CGApiClientImpl.API_BASE_URL));
-//    WireMock.startRecording(
-//        recordSpec().captureHeader("Accept").captureHeader("Content-Type", true));
+    //    stubFor(proxyAllTo(CGApiClientImpl.API_BASE_URL));
+    //    WireMock.startRecording(
+    //        recordSpec().captureHeader("Accept").captureHeader("Content-Type", true));
 
     System.out.println(getRecordingStatus().getStatus());
     int c = 5;

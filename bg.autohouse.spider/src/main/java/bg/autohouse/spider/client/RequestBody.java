@@ -2,6 +2,7 @@ package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.MediaType;
 import bg.autohouse.spider.util.IOUtil;
+
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URLEncoder;

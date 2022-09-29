@@ -2,6 +2,7 @@ package bg.autohouse.spider.api;
 
 import bg.autohouse.spider.client.RequestMetadata;
 import bg.autohouse.spider.client.Response;
+
 import java.util.concurrent.CompletableFuture;
 
 public interface HttpStrategy {

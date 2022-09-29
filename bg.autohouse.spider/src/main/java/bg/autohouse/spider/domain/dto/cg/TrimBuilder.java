@@ -22,10 +22,6 @@ public class TrimBuilder {
   private TransmissionWrapper.InnerTransmissionWrapper transmissions;
   private Map<String, List<OptionDTO>> options;
 
-  public static TrimBuilder builder() {
-    return new TrimBuilder();
-  }
-
   public TrimBuilder() {}
 
   public TrimBuilder(TrimBuilder builder) {
@@ -54,6 +50,27 @@ public class TrimBuilder {
     this.engines = trim.getEngines();
     this.transmissions = trim.getTransmissions();
     this.options = trim.getOptions();
+  }
+
+  public static TrimBuilder builder() {
+    return new TrimBuilder();
+  }
+
+  public static <I, N> BiFunction<I, N, TrimBuilder> toBuilder(
+      BiConsumer<TrimBuilder, I> idConsumer, BiConsumer<TrimBuilder, N> nameConsumer) {
+    return toBuilder(idConsumer, nameConsumer, TrimBuilder::new);
+  }
+
+  public static <I, N> BiFunction<I, N, TrimBuilder> toBuilder(
+      BiConsumer<TrimBuilder, I> idConsumer,
+      BiConsumer<TrimBuilder, N> nameConsumer,
+      Supplier<TrimBuilder> builderSupplier) {
+    return (id, name) -> {
+      TrimBuilder builder = builderSupplier.get();
+      idConsumer.accept(builder, id);
+      nameConsumer.accept(builder, name);
+      return builder;
+    };
   }
 
   public TrimBuilder makerId(String makerId) {
@@ -129,22 +146,5 @@ public class TrimBuilder {
 
   public String buildTitle() {
     return String.format("%s %s %d %S", makerName, modelName, carName, trimName);
-  }
-
-  public static <I, N> BiFunction<I, N, TrimBuilder> toBuilder(
-      BiConsumer<TrimBuilder, I> idConsumer, BiConsumer<TrimBuilder, N> nameConsumer) {
-    return toBuilder(idConsumer, nameConsumer, TrimBuilder::new);
-  }
-
-  public static <I, N> BiFunction<I, N, TrimBuilder> toBuilder(
-      BiConsumer<TrimBuilder, I> idConsumer,
-      BiConsumer<TrimBuilder, N> nameConsumer,
-      Supplier<TrimBuilder> builderSupplier) {
-    return (id, name) -> {
-      TrimBuilder builder = builderSupplier.get();
-      idConsumer.accept(builder, id);
-      nameConsumer.accept(builder, name);
-      return builder;
-    };
   }
 }

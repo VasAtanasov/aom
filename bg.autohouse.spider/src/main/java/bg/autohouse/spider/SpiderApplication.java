@@ -9,8 +9,6 @@ import bg.autohouse.spider.service.AppConfigurationService;
 import bg.autohouse.spider.service.CGServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
-
 @Slf4j
 public class SpiderApplication {
   public static void main(String[] args) {
@@ -34,7 +32,6 @@ public class SpiderApplication {
       final String zip = "10001";
       final int distance = 150;
 
-
       long start = System.currentTimeMillis();
 
       MakerDTO makers =
@@ -45,7 +42,8 @@ public class SpiderApplication {
               //              .filter(makerDTO -> makerDTO.getId().equals("m23") ||
               // makerDTO.getId().equals("m48"))
               .filter(makerDTO -> makerDTO.getId().equals("m48"))
-              .toList().get(0);
+              .toList()
+              .get(0);
       var trims = service.fetchTrims(makers);
 
       //      List<MakerDTO> makers =
@@ -58,7 +56,6 @@ public class SpiderApplication {
       //      var listings = service.fetchListings(makers);
       long end = System.currentTimeMillis();
       log.info(String.format("The operation took %s ms%n", end - start));
-
     }
   }
 }

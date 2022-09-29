@@ -1,6 +1,7 @@
 package bg.autohouse.spider.client;
 
 import bg.autohouse.spider.api.Parameter;
+
 import java.io.Serializable;
 import java.util.Objects;
 

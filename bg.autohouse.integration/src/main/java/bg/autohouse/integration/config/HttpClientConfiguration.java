@@ -35,7 +35,7 @@ public class HttpClientConfiguration {
     connectionManager.setDefaultMaxPerRoute(DEFAULT_MAX_CONNECTIONS_PER_ROUTE);
     RequestConfig config =
         RequestConfig.custom().setConnectTimeout(DEFAULT_READ_TIMEOUT_MILLISECONDS).build();
-    System.out.println("Http client configuring");
+
     return HttpClientBuilder.create()
         .setConnectionManager(connectionManager)
         .setDefaultRequestConfig(config)

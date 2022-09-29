@@ -9,6 +9,7 @@ import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
 import bg.autohouse.spider.client.endpoint.GetEnabled;
 import bg.autohouse.spider.domain.dto.cg.EngineDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.util.List;
 
 public class TrimEngineEndpoint extends AbstractEndpoint

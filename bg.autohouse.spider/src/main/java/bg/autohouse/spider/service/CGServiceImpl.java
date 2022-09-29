@@ -37,8 +37,7 @@ public class CGServiceImpl implements CGService {
 
               @Override
               public Thread newThread(Runnable r) {
-                Thread thread =
-                    new Thread(r, "CGService-thread-" + COUNTER.getAndIncrement());
+                Thread thread = new Thread(r, "CGService-thread-" + COUNTER.getAndIncrement());
                 thread.setDaemon(true);
                 return thread;
               }

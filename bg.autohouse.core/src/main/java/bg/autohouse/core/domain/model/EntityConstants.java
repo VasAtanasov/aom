@@ -1,7 +1,8 @@
 package bg.autohouse.core.domain.model;
 
-import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
+
+import java.time.LocalDate;
 
 @UtilityClass
 public class EntityConstants {

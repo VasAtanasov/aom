@@ -1,20 +1,8 @@
 package bg.autohouse.spider.cache;
 
-import static bg.autohouse.spider.constants.Constant.TEMP_STORAGE_PATH;
-
-import bg.autohouse.spider.domain.dto.cg.CarsTrimsWrapper;
-import bg.autohouse.spider.domain.dto.cg.EnginesList;
-import bg.autohouse.spider.domain.dto.cg.MakersModelsWrapper;
-import bg.autohouse.spider.domain.dto.cg.ModelsCarsWrapper;
-import bg.autohouse.spider.domain.dto.cg.OptionsWrapper;
-import bg.autohouse.spider.domain.dto.cg.TransmissionWrapper;
+import bg.autohouse.spider.domain.dto.cg.*;
 import bg.autohouse.spider.service.AppConfigurationService;
 import com.google.common.base.Preconditions;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import org.apache.commons.lang3.StringUtils;
 import org.ehcache.Cache;
 import org.ehcache.PersistentCacheManager;
@@ -24,6 +12,14 @@ import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.ehcache.config.units.MemoryUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static bg.autohouse.spider.constants.Constant.TEMP_STORAGE_PATH;
 
 public class SpiderCacheManager implements AutoCloseable {
   private static final Logger LOG = LoggerFactory.getLogger(SpiderCacheManager.class);
@@ -79,6 +75,17 @@ public class SpiderCacheManager implements AutoCloseable {
             .build(true);
   }
 
+  private static void checkDirectoryExistsAndWritable(final Path directory) throws IOException {
+    final File file = directory.toFile();
+
+    if (!file.exists()) {
+      Files.createDirectory(directory);
+    } else {
+      Preconditions.checkState(file.isDirectory(), "Storage path is not directory");
+      Preconditions.checkState(file.canWrite(), "Storage path is not writable");
+    }
+  }
+
   @Override
   public void close() {
     cacheManager.close();
@@ -132,16 +139,5 @@ public class SpiderCacheManager implements AutoCloseable {
 
   private String buildName(String name) {
     return (PREFIX_CACHE + name).toLowerCase();
-  }
-
-  private static void checkDirectoryExistsAndWritable(final Path directory) throws IOException {
-    final File file = directory.toFile();
-
-    if (!file.exists()) {
-      Files.createDirectory(directory);
-    } else {
-      Preconditions.checkState(file.isDirectory(), "Storage path is not directory");
-      Preconditions.checkState(file.canWrite(), "Storage path is not writable");
-    }
   }
 }

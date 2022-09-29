@@ -1,8 +1,9 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.List;
-import lombok.Data;
 
 @Data
 public class TransmissionWrapper implements Serializable {
@@ -10,7 +11,7 @@ public class TransmissionWrapper implements Serializable {
   private InnerTransmissionWrapper trimSpecific;
 
   @Data
-  public static class InnerTransmissionWrapper implements Serializable{
+  public static class InnerTransmissionWrapper implements Serializable {
     private String label;
     private List<TransmissionDTO> values;
   }

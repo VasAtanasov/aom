@@ -19,5 +19,4 @@ public class TrimFullDTO implements Serializable {
   private List<EngineDTO> engines;
   private TransmissionWrapper.InnerTransmissionWrapper transmissions;
   private Map<String, List<OptionDTO>> options;
-
 }

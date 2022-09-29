@@ -10,10 +10,11 @@ import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
 import bg.autohouse.spider.client.endpoint.PostEnabled;
 import bg.autohouse.spider.domain.dto.cg.OptionDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
-import java.util.List;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 public class OptionsEndpoint extends AbstractEndpoint
     implements PostEnabled<Map<String, List<OptionDTO>>>, CGEndpoint {

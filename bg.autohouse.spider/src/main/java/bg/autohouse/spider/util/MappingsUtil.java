@@ -3,6 +3,7 @@ package bg.autohouse.spider.util;
 import bg.autohouse.spider.util.json.JsonUtil;
 import bg.autohouse.spider.util.json.ObjectMapperFactory;
 import bg.autohouse.spider.util.mappings.Mapping;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

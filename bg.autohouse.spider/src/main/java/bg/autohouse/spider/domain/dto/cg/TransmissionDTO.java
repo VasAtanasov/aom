@@ -1,7 +1,8 @@
 package bg.autohouse.spider.domain.dto.cg;
 
-import java.io.Serializable;
 import lombok.Data;
+
+import java.io.Serializable;
 
 @Data
 public class TransmissionDTO implements Serializable {

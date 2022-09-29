@@ -3,6 +3,7 @@ package bg.autohouse.spider.api;
 import bg.autohouse.spider.util.IOUtil;
 import bg.autohouse.spider.util.json.JsonUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.io.InputStream;
 
 @FunctionalInterface

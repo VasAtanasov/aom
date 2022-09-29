@@ -1,306 +1,236 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>autohouse</artifactId>
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <annotationProcessorPaths>
-              <path>
-                <artifactId>mapstruct-processor</artifactId>
-                <groupId>org.mapstruct</groupId>
-                <version>${version.dependencies.mapstruct}</version>
-              </path>
-              <path>
-                <artifactId>lombok</artifactId>
-                <groupId>org.projectlombok</groupId>
-                <version>${version.dependencies.lombok}</version>
-              </path>
-              <!-- additional annotation processor required as of Lombok 1.18.16 -->
-              <path>
-                <artifactId>lombok-mapstruct-binding</artifactId>
-                <groupId>org.projectlombok</groupId>
-                <version>0.2.0</version>
-              </path>
-            </annotationProcessorPaths>
-            <release>${java.version}</release>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
-          </configuration>
-          <groupId>org.apache.maven.plugins</groupId>
-          <version>${plugin.maven.compiler.version}</version>
-        </plugin>
+    <groupId>bg.autohouse</groupId>
+    <artifactId>autohouse</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
 
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <groupId>org.apache.maven.plugins</groupId>
-          <version>${plugin.maven.jar.version}</version>
-        </plugin>
+    <packaging>pom</packaging>
+    <name>Auto House (Parent)</name>
+    <description>Auto House Parent Project</description>
 
-        <plugin>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <configuration>
-            <excludes>
-              <exclude>
-                <artifactId>lombok</artifactId>
-                <groupId>org.projectlombok</groupId>
-              </exclude>
-            </excludes>
-          </configuration>
-          <groupId>org.springframework.boot</groupId>
-          <version>${spring-boot.version}</version>
-        </plugin>
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <plugin>
-          <artifactId>maven-source-plugin</artifactId>
-          <executions>
-            <execution>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-              <id>generate-source-jar</id>
-            </execution>
-          </executions>
-          <groupId>org.apache.maven.plugins</groupId>
-          <version>${plugin.maven.source.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+        <plugin.maven.spring-boot.version>2.6.9</plugin.maven.spring-boot.version>
+        <plugin.manve.docker.version>0.40.1</plugin.manve.docker.version>
+        <plugin.maven.compiler.version>3.8.1</plugin.maven.compiler.version>
+        <plugin.maven.dependency.version>3.3.0</plugin.maven.dependency.version>
+        <plugin.maven.jar.version>3.2.0</plugin.maven.jar.version>
+        <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
 
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
-      </plugin>
-      <plugin>
-        <artifactId>maven-source-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencyManagement>
-    <dependencies>
-      <!-- Spring Boot dependencies -->
-      <dependency>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <scope>import</scope>
-        <type>pom</type>
-        <version>${spring-boot.version}</version>
-      </dependency>
+        <version.dependencies.lombok.mapstruct.binding>0.2.0</version.dependencies.lombok.mapstruct.binding>
+        <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
+        <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
+    </properties>
 
-      <dependency>
-        <artifactId>spring-boot-starter-web</artifactId>
-        <exclusions>
-          <exclusion>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <groupId>org.springframework.boot</groupId>
-          </exclusion>
-        </exclusions>
-        <groupId>org.springframework.boot</groupId>
-        <version>${spring-boot.version}</version>
-      </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <artifactId>bg.autohouse.bom</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${project.version}</version>
+            </dependency>
 
-      <dependency>
-        <artifactId>spring-boot-starter-jetty</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <version>${spring-boot.version}</version>
-      </dependency>
+            <!-- Internal dependencies -->
+            <dependency>
+                <artifactId>bg.autohouse.api</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <version>${project.version}</version>
+            </dependency>
 
-      <dependency>
-        <artifactId>spring-boot-starter-data-jpa</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <version>${spring-boot.version}</version>
-      </dependency>
+            <dependency>
+                <artifactId>bg.autohouse.core</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <version>${project.version}</version>
+            </dependency>
 
-      <dependency>
-        <artifactId>spring-boot-starter-actuator</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <version>${spring-boot.version}</version>
-      </dependency>
+            <dependency>
+                <artifactId>bg.autohouse.integration</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <version>${project.version}</version>
+            </dependency>
 
-      <dependency>
-        <artifactId>spring-boot-starter-validation</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <version>${spring-boot.version}</version>
-      </dependency>
+            <dependency>
+                <artifactId>bg.autohouse.util</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <version>${project.version}</version>
+            </dependency>
 
-      <!-- MySQL -->
-      <dependency>
-        <artifactId>mariadb-java-client</artifactId>
-        <groupId>org.mariadb.jdbc</groupId>
-        <version>${mysql.mariadb.driver.version}</version>
-      </dependency>
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>ah-util-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
-      <!-- Test -->
-      <dependency>
-        <artifactId>spring-boot-starter-test</artifactId>
-        <groupId>org.springframework.boot</groupId>
-        <scope>test</scope>
-        <version>${spring-boot.version}</version>
-      </dependency>
+            <dependency>
+                <artifactId>bg.autohouse.spider</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <version>${project.version}</version>
+            </dependency>
 
-      <dependency>
-        <artifactId>testcontainers</artifactId>
-        <groupId>org.testcontainers</groupId>
-        <scope>test</scope>
-        <version>${version.dependencies.testcontainers}</version>
-      </dependency>
+            <dependency>
+                <artifactId>bg.autohouse.webapp</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <version>${project.version}</version>
+            </dependency>
 
+            <!-- Test containers -->
+            <dependency>
+                <artifactId>bg.autohouse.webapp</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <scope>test</scope>
+                <type>test-jar</type>
+                <version>${project.version}</version>
+            </dependency>
 
-      <!-- Internal dependencies -->
-      <dependency>
-        <artifactId>bg.autohouse.api</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <version>${project.version}</version>
-      </dependency>
+            <dependency>
+                <artifactId>bg.autohouse.spider</artifactId>
+                <groupId>bg.autohouse</groupId>
+                <scope>test</scope>
+                <type>test-jar</type>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-      <dependency>
-        <artifactId>bg.autohouse.core</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <version>${project.version}</version>
-      </dependency>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <version>${plugin.maven.compiler.version}</version>
+                    <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <groupId>org.mapstruct</groupId>
+                                <version>${version.dependencies.mapstruct}</version>
+                            </path>
+                            <path>
+                                <artifactId>lombok</artifactId>
+                                <groupId>org.projectlombok</groupId>
+                                <version>${version.dependencies.lombok}</version>
+                            </path>
+                            <!-- additional annotation processor required as of Lombok 1.18.16 -->
+                            <path>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <groupId>org.projectlombok</groupId>
+                                <version>${version.dependencies.lombok.mapstruct.binding}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <release>${java.version}</release>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
 
-      <dependency>
-        <artifactId>bg.autohouse.integration</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <version>${project.version}</version>
-      </dependency>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <version>${plugin.maven.jar.version}</version>
+                </plugin>
 
-      <dependency>
-        <artifactId>bg.autohouse.util</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <version>${project.version}</version>
-      </dependency>
+                <plugin>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                    <version>${plugin.maven.spring-boot.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <artifactId>lombok</artifactId>
+                                <groupId>org.projectlombok</groupId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
 
-      <dependency>
-        <artifactId>bg.autohouse.spider</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <version>${project.version}</version>
-      </dependency>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <version>${plugin.maven.source.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <id>generate-source-jar</id>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+            </plugin>
+        </plugins>
+    </build>
 
-      <dependency>
-        <artifactId>bg.autohouse.webapp</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <version>${project.version}</version>
-      </dependency>
+    <distributionManagement>
+        <repository>
+            <id>DockerHub</id>
+            <name>DockerHub</name>
+            <uniqueVersion>false</uniqueVersion>
+            <url>https://index.docker.io/v2/</url>
+        </repository>
+    </distributionManagement>
 
-      <!-- 3d Party dependencies -->
-      <dependency>
-        <artifactId>mapstruct</artifactId>
-        <groupId>org.mapstruct</groupId>
-        <version>${version.dependencies.mapstruct}</version>
-      </dependency>
+    <modules>
+        <module>bg.autohouse.bom</module>
+    </modules>
 
-      <dependency>
-        <artifactId>lombok</artifactId>
-        <groupId>org.projectlombok</groupId>
-        <optional>true</optional>
-        <version>${version.dependencies.lombok}</version>
-      </dependency>
+    <profiles>
+        <profile>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <id>default</id>
+            <modules>
+                <module>bg.autohouse.api</module>
+                <module>bg.autohouse.core</module>
+                <module>bg.autohouse.util</module>
+                <module>bg.autohouse.integration</module>
+                <module>bg.autohouse.webapp</module>
+                <module>bg.autohouse.spider</module>
+                <module>bg.autohouse.docker</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>java</id>
+            <modules>
+                <module>bg.autohouse.api</module>
+                <module>bg.autohouse.core</module>
+                <module>bg.autohouse.util</module>
+                <module>bg.autohouse.integration</module>
+                <module>bg.autohouse.webapp</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>docker</id>
+            <modules>
+                <module>bg.autohouse.docker</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>spider</id>
+            <modules>
+                <module>bg.autohouse.spider</module>
+            </modules>
+        </profile>
+    </profiles>
 
-      <!-- Test containers -->
-      <dependency>
-        <artifactId>bg.autohouse.webapp</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <scope>test</scope>
-        <type>test-jar</type>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <artifactId>bg.autohouse.spider</artifactId>
-        <groupId>bg.autohouse</groupId>
-        <scope>test</scope>
-        <type>test-jar</type>
-        <version>${project.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-  <distributionManagement>
-    <repository>
-      <id>DockerHub</id>
-      <name>DockerHub</name>
-      <uniqueVersion>false</uniqueVersion>
-      <url>https://index.docker.io/v2/</url>
-    </repository>
-  </distributionManagement>
-
-  <groupId>bg.autohouse</groupId>
-  <modelVersion>4.0.0</modelVersion>
-  <name>Auto House (Parent)</name>
-  <packaging>pom</packaging>
-  <description>Auto House Parent Project</description>
-
-  <profiles>
-    <profile>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <id>default</id>
-      <modules>
-        <module>bg.autohouse.api</module>
-        <module>bg.autohouse.core</module>
-        <module>bg.autohouse.util</module>
-        <module>bg.autohouse.integration</module>
-        <module>bg.autohouse.webapp</module>
-        <module>bg.autohouse.spider</module>
-        <module>bg.autohouse.docker</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>java</id>
-      <modules>
-        <module>bg.autohouse.api</module>
-        <module>bg.autohouse.core</module>
-        <module>bg.autohouse.util</module>
-        <module>bg.autohouse.integration</module>
-        <module>bg.autohouse.webapp</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>docker</id>
-      <modules>
-        <module>bg.autohouse.docker</module>
-      </modules>
-    </profile>
-    <profile>
-      <id>spider</id>
-      <modules>
-        <module>bg.autohouse.spider</module>
-      </modules>
-    </profile>
-  </profiles>
-
-  <properties>
-    <java.version>17</java.version>
-    <mysql.mariadb.driver.version>2.7.5</mysql.mariadb.driver.version>
-
-    <plugin.manve.docker.version>0.40.1</plugin.manve.docker.version>
-    <plugin.maven.compiler.version>3.8.1</plugin.maven.compiler.version>
-    <plugin.maven.dependency.version>3.3.0</plugin.maven.dependency.version>
-    <plugin.maven.jar.version>3.2.0</plugin.maven.jar.version>
-    <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
-
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring-boot.version>2.6.9</spring-boot.version>
-    <spring-framework.version>5.3.21</spring-framework.version>
-    <version.dependencies.apache.httpclient>4.5.13</version.dependencies.apache.httpclient>
-    <version.dependencies.hibernate.jpamodelgen>6.1.0.Final
-    </version.dependencies.hibernate.jpamodelgen>
-    <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
-
-    <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
-    <version.dependencies.testcontainers>1.17.3</version.dependencies.testcontainers>
-    <version.lombok.mapstruct.binding>0.2.0</version.lombok.mapstruct.binding>
-  </properties>
-
-  <version>2.0.0-SNAPSHOT</version>
 </project>

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class  ModelCarsDTO implements Serializable {
+public class ModelCarsDTO implements Serializable {
   private String id;
   private String modelName;
   private String makerId;

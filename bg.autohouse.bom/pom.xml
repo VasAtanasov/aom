@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <groupId>bg.autohouse</groupId>
+    <version>2.0.0-SNAPSHOT</version>
+
+    <artifactId>bg.autohouse.bom</artifactId>
+
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <spring-boot.version>2.6.9</spring-boot.version>
+        <spring-framework.version>5.3.21</spring-framework.version>
+
+
+        <version.dependencies.jackson-bom>2.13.3</version.dependencies.jackson-bom>
+        <version.dependencies.liquibase>4.5.0</version.dependencies.liquibase>
+        <version.dependencies.h2>1.4.200</version.dependencies.h2>
+        <version.dependencies.hibernate.jpamodelgen>6.1.0.Final</version.dependencies.hibernate.jpamodelgen>
+        <version.dependencies.mysql.mariadb.driver>2.7.5</version.dependencies.mysql.mariadb.driver>
+        <version.dependencies.slf4j>1.7.36</version.dependencies.slf4j>
+        <version.dependencies.apache.httpclient>4.5.13</version.dependencies.apache.httpclient>
+        <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
+        <version.dependencies.commons-lang3>3.12.0</version.dependencies.commons-lang3>
+        <version.dependencies.commons-io>2.11.0</version.dependencies.commons-io>
+        <version.dependencies.guava>31.1-jre</version.dependencies.guava>
+        <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
+        <version.dependencies.testcontainers>1.17.3</version.dependencies.testcontainers>
+        <version.dependencies.ehcache>3.9.9</version.dependencies.ehcache>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot dependencies -->
+            <dependency>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>spring-boot-starter-tomcat</artifactId>
+                        <groupId>org.springframework.boot</groupId>
+                    </exclusion>
+                </exclusions>
+                <groupId>org.springframework.boot</groupId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>spring-boot-starter-jetty</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>spring-boot-starter-validation</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <!-- Logging -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${version.dependencies.slf4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${version.dependencies.slf4j}</version>
+            </dependency>
+
+            <!-- MySQL & DB -->
+            <dependency>
+                <groupId>org.mariadb.jdbc</groupId>
+                <artifactId>mariadb-java-client</artifactId>
+                <version>${version.dependencies.mysql.mariadb.driver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${version.dependencies.h2}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>hibernate-jpamodelgen</artifactId>
+                <groupId>org.hibernate.orm</groupId>
+                <version>${version.dependencies.hibernate.jpamodelgen}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${version.dependencies.liquibase}</version>
+            </dependency>
+
+            <!-- 3d Party dependencies -->
+            <dependency>
+                <artifactId>mapstruct</artifactId>
+                <groupId>org.mapstruct</groupId>
+                <version>${version.dependencies.mapstruct}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>lombok</artifactId>
+                <groupId>org.projectlombok</groupId>
+                <optional>true</optional>
+                <version>${version.dependencies.lombok}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.dependencies.commons-lang3}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>commons-io</artifactId>
+                <groupId>commons-io</groupId>
+                <version>${version.dependencies.commons-io}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>httpclient</artifactId>
+                <groupId>org.apache.httpcomponents</groupId>
+                <version>${version.dependencies.apache.httpclient}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${version.dependencies.guava}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${version.dependencies.jackson-bom}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Cache -->
+            <dependency>
+                <artifactId>ehcache</artifactId>
+                <groupId>org.ehcache</groupId>
+                <version>${version.dependencies.ehcache}</version>
+            </dependency>
+
+            <!-- Test -->
+            <dependency>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <scope>test</scope>
+                <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>testcontainers</artifactId>
+                <groupId>org.testcontainers</groupId>
+                <scope>test</scope>
+                <version>${version.dependencies.testcontainers}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
