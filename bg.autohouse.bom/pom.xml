@@ -18,7 +18,7 @@
 
 
         <version.dependencies.jackson-bom>2.13.3</version.dependencies.jackson-bom>
-        <version.dependencies.liquibase>4.5.0</version.dependencies.liquibase>
+        <version.dependencies.liquibase>4.8.0</version.dependencies.liquibase>
         <version.dependencies.h2>1.4.200</version.dependencies.h2>
         <version.dependencies.hibernate.jpamodelgen>6.1.0.Final</version.dependencies.hibernate.jpamodelgen>
         <version.dependencies.mysql.mariadb.driver>2.7.5</version.dependencies.mysql.mariadb.driver>
