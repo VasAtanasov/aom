@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20221002_01
+      author: vasil
+      comment: "Create table for makers entity"
+      changes:
+        - sqlFile:
+            endDelimiter: //
+            path: db/scripts/20221002_01_create_maker_table.sql

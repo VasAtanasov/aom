@@ -16,13 +16,16 @@
         <spring-boot.version>2.6.9</spring-boot.version>
         <spring-framework.version>5.3.21</spring-framework.version>
 
-
         <version.dependencies.jackson-bom>2.13.3</version.dependencies.jackson-bom>
-        <version.dependencies.liquibase>4.5.0</version.dependencies.liquibase>
-        <version.dependencies.h2>1.4.200</version.dependencies.h2>
+        <version.dependencies.liquibase>4.8.0</version.dependencies.liquibase>
+        <version.dependencies.h2>1.4.200</version.dependencies.h2>  <!-- bump version to 2.1.210 -->
         <version.dependencies.hibernate.jpamodelgen>6.1.0.Final</version.dependencies.hibernate.jpamodelgen>
         <version.dependencies.mysql.mariadb.driver>2.7.5</version.dependencies.mysql.mariadb.driver>
+
         <version.dependencies.slf4j>1.7.36</version.dependencies.slf4j>
+        <version.dependencies.logback-classic>1.2.11</version.dependencies.logback-classic>
+        <version.dependencies.log4j-to-slf4j>2.17.2</version.dependencies.log4j-to-slf4j>
+
         <version.dependencies.apache.httpclient>4.5.13</version.dependencies.apache.httpclient>
         <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
         <version.dependencies.commons-lang3>3.12.0</version.dependencies.commons-lang3>
@@ -37,47 +40,75 @@
         <dependencies>
             <!-- Spring Boot dependencies -->
             <dependency>
-                <artifactId>spring-boot-starter-parent</artifactId>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
                 <scope>import</scope>
                 <type>pom</type>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>spring-boot-starter-tomcat</artifactId>
                         <groupId>org.springframework.boot</groupId>
                     </exclusion>
                 </exclusions>
-                <groupId>org.springframework.boot</groupId>
-                <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jetty</artifactId>
-                <groupId>org.springframework.boot</groupId>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <groupId>org.springframework.boot</groupId>
                 <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.logmanager</groupId>
+                        <artifactId>jboss-logmanager</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
-                <groupId>org.springframework.boot</groupId>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
-                <artifactId>spring-boot-starter-validation</artifactId>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
                 <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.logmanager</groupId>
+                        <artifactId>jboss-logmanager</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Logging -->
@@ -86,10 +117,35 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${version.dependencies.slf4j}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-to-slf4j</artifactId>
+                <version>${version.dependencies.log4j-to-slf4j}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${version.dependencies.log4j-to-slf4j}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
+                <artifactId>jul-to-slf4j</artifactId>
                 <version>${version.dependencies.slf4j}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${version.dependencies.logback-classic}</version>
             </dependency>
 
             <!-- MySQL & DB -->
@@ -106,9 +162,15 @@
             </dependency>
 
             <dependency>
-                <artifactId>hibernate-jpamodelgen</artifactId>
                 <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-jpamodelgen</artifactId>
                 <version>${version.dependencies.hibernate.jpamodelgen}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.jboss.logging</groupId>
+                        <artifactId>jboss-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -119,14 +181,14 @@
 
             <!-- 3d Party dependencies -->
             <dependency>
-                <artifactId>mapstruct</artifactId>
                 <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
                 <version>${version.dependencies.mapstruct}</version>
             </dependency>
 
             <dependency>
-                <artifactId>lombok</artifactId>
                 <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
                 <optional>true</optional>
                 <version>${version.dependencies.lombok}</version>
             </dependency>
@@ -138,15 +200,21 @@
             </dependency>
 
             <dependency>
-                <artifactId>commons-io</artifactId>
                 <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
                 <version>${version.dependencies.commons-io}</version>
             </dependency>
 
             <dependency>
-                <artifactId>httpclient</artifactId>
                 <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
                 <version>${version.dependencies.apache.httpclient}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -172,15 +240,15 @@
 
             <!-- Test -->
             <dependency>
-                <artifactId>spring-boot-starter-test</artifactId>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
                 <scope>test</scope>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
-                <artifactId>testcontainers</artifactId>
                 <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
                 <scope>test</scope>
                 <version>${version.dependencies.testcontainers}</version>
             </dependency>

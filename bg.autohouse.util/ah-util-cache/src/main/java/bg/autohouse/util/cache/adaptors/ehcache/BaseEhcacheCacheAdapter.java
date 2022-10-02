@@ -1,11 +1,11 @@
 package bg.autohouse.util.cache.adaptors.ehcache;
 
 import bg.autohouse.util.cache.adaptors.CacheAdapter;
+import bg.autohouse.util.common.logging.ApplicationLoggerFactory;
+import bg.autohouse.util.common.logging.Logger;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.Status;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 abstract class BaseEhcacheCacheAdapter implements CacheAdapter, Closeable {
 
-  private static final Logger LOG = LoggerFactory.getLogger(BaseEhcacheCacheAdapter.class);
+  private static final Logger LOG = ApplicationLoggerFactory.getLogger(BaseEhcacheCacheAdapter.class);
   private static final ConcurrentMap<String, CacheManager> ALL_CACHE_MANAGERS =
       new ConcurrentHashMap<>();
 

@@ -18,16 +18,16 @@
 
     <dependencies>
         <dependency>
-            <artifactId>spring-boot-starter-web</artifactId>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <groupId>org.apache.httpcomponents</groupId>
         </dependency>
         <dependency>
-            <artifactId>httpasyncclient</artifactId>
             <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
             <version>${version.dependencies.httpasyncclient}</version>
         </dependency>
     </dependencies>

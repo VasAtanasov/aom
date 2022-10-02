@@ -18,9 +18,12 @@
             <groupId>bg.autohouse</groupId>
         </dependency>
         <dependency>
-            <artifactId>lombok</artifactId>
-            <groupId>org.projectlombok</groupId>
-            <optional>true</optional>
+            <groupId>bg.autohouse</groupId>
+            <artifactId>bg.autohouse.dbupdate</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bg.autohouse</groupId>
+            <artifactId>ah-util-common</artifactId>
         </dependency>
         <dependency>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -45,8 +48,9 @@
             <groupId>org.springframework.boot</groupId>
         </dependency>
         <dependency>
-            <artifactId>liquibase-core</artifactId>
-            <groupId>org.liquibase</groupId>
+            <artifactId>lombok</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

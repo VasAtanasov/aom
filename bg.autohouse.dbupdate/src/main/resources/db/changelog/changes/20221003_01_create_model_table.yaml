@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20221003_01
+      author: vasil
+      comment: "Create table for models entity"
+      changes:
+        - sqlFile:
+            endDelimiter: //
+            path: db/scripts/20221003_01_create_model_table.sql

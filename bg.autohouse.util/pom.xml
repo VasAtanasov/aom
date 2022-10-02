@@ -16,5 +16,7 @@
     <modules>
         <module>ah-util-common</module>
         <module>ah-util-cache</module>
+        <module>ah-util-settings</module>
     </modules>
+
 </project>

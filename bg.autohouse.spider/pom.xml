@@ -30,14 +30,6 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
         </dependency>
         <dependency>
-            <artifactId>slf4j-api</artifactId>
-            <groupId>org.slf4j</groupId>
-        </dependency>
-        <dependency>
-            <artifactId>slf4j-simple</artifactId>
-            <groupId>org.slf4j</groupId>
-        </dependency>
-        <dependency>
             <artifactId>wiremock-jre8</artifactId>
             <groupId>com.github.tomakehurst</groupId>
             <version>${version.dependencies.wiremock-jre8}</version>

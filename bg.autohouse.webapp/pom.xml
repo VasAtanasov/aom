@@ -21,10 +21,10 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
             <groupId>org.springframework.boot</groupId>
         </dependency>
-        <dependency>
-            <artifactId>bg.autohouse.integration</artifactId>
-            <groupId>bg.autohouse</groupId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <artifactId>bg.autohouse.integration</artifactId>-->
+<!--            <groupId>bg.autohouse</groupId>-->
+<!--        </dependency>-->
         <dependency>
             <artifactId>lombok</artifactId>
             <groupId>org.projectlombok</groupId>
@@ -33,6 +33,10 @@
         <dependency>
             <groupId>bg.autohouse</groupId>
             <artifactId>bg.autohouse.core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>bg.autohouse</groupId>
+            <artifactId>ah-util-common</artifactId>
         </dependency>
     </dependencies>
 

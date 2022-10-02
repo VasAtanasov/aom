@@ -1,26 +1,42 @@
 package bg.autohouse.core.domain.model;
 
-import bg.autohouse.core.domain.model.common.AbstractLongEntity;
+import bg.autohouse.core.domain.model.common.BaseEntity;
+import bg.autohouse.core.domain.model.common.ColumnConstants;
 import bg.autohouse.core.domain.validation.maker.ModelName;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import static bg.autohouse.core.domain.model.Model.ENTITY_NAME;
 import static bg.autohouse.core.domain.validation.ValidationMessages.MAKER_NULL;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
 @Entity
-@Table(name = EntityConstants.MODELS)
-public class Model extends AbstractLongEntity {
-  private static final long serialVersionUID = 3257573416154758517L;
+@Table(name = ENTITY_NAME)
+public class Model implements BaseEntity<Long> {
 
-  @Column(name = "name", nullable = false)
+  public static final String ENTITY_NAME = "model";
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = ColumnConstants.ID, updatable = false, unique = true, nullable = false)
+  private Long id;
+
+  @Column(name = ColumnConstants.UID, nullable = false)
+  private UUID uid;
+
+  @Column(name = "external_id")
+  private String externalId;
+
+  @Column(name = "name")
   @ModelName
   private String name;
 
@@ -29,7 +45,7 @@ public class Model extends AbstractLongEntity {
   @JoinColumn(
       name = "maker_id",
       referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "fk_models_makers_id"))
+      foreignKey = @ForeignKey(name = EntityConstants.PREFIX + "FK_MODEL_MAKE_ID"))
   private Maker maker;
 
   @OneToMany(
@@ -38,10 +54,4 @@ public class Model extends AbstractLongEntity {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<Trim> trims = new ArrayList<>();
-
-  @Builder
-  public Model(Long id, String name) {
-    super(id);
-    this.name = name;
-  }
 }

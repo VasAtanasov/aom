@@ -3,13 +3,15 @@ server:
   compression:
     enabled: true
 spring:
+  liquibase:
+    enabled: false
   jpa:
     properties:
       hibernate:
         dialect: bg.autohouse.core.config.MySQL8UnicodeDialect
     show-sql: true
     hibernate:
-      ddl-auto: ${DDL_STRATEGY}
+      ddl-auto: create-drop
     open-in-view: false
     generate-ddl: true
   datasource:

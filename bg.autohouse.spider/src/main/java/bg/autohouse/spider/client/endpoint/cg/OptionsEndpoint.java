@@ -10,8 +10,6 @@ import bg.autohouse.spider.client.endpoint.AbstractEndpoint;
 import bg.autohouse.spider.client.endpoint.PostEnabled;
 import bg.autohouse.spider.domain.dto.cg.OptionDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +17,6 @@ import java.util.Map;
 public class OptionsEndpoint extends AbstractEndpoint
     implements PostEnabled<Map<String, List<OptionDTO>>>, CGEndpoint {
   public static final String TRIM_OPTIONS_FORM_URL = "Cars/getOptionsJson.action";
-  private static final Logger LOG = LoggerFactory.getLogger("OptionsEndpoint");
   private final String trimId;
 
   public OptionsEndpoint(ApiClient client, String trimId) {
