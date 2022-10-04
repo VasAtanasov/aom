@@ -1,0 +1,23 @@
+spring:
+  liquibase:
+    enabled: true
+  datasource:
+    username: sa
+    url: jdbc:h2:mem:tests_db
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: 'true'
+      path: /h2_console
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: 'true'
+    database: h2
+    hibernate:
+      ddl-auto: none
+    show-sql: 'true'
+  sql:
+    init:
+      mode: never

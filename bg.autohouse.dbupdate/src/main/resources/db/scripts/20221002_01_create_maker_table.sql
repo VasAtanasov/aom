@@ -8,19 +8,16 @@ BEGIN
                   WHERE LOWER(TABLE_NAME) = 'maker'
                     AND TABLE_SCHEMA = DATABASE())
     THEN
-        CREATE TABLE IF NOT EXISTS maker
+        CREATE TABLE `maker`
         (
-            id          BIGINT     NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            uid         BINARY(16) NOT NULL,
-            external_id VARCHAR(12),
-            name        VARCHAR(255)
+            `id`   VARCHAR(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `name` VARCHAR(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            PRIMARY KEY (`id`)
         ) ENGINE = InnoDB
           DEFAULT CHARSET = utf8mb4
           COLLATE = utf8mb4_unicode_ci;
 
-        CREATE INDEX MAKER_EXTERNAL_ID ON maker (external_id);
         CREATE INDEX MAKER_NAME ON maker (name);
-        CREATE INDEX MAKER_UID ON maker (uid);
 
     END IF;
 

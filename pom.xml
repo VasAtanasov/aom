@@ -52,7 +52,7 @@
             </dependency>
 
             <dependency>
-                <artifactId>bg.autohouse.core</artifactId>
+                <artifactId>bg.autohouse.backend</artifactId>
                 <groupId>bg.autohouse</groupId>
                 <version>${project.version}</version>
             </dependency>
@@ -87,15 +87,9 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <dependency>
-                <artifactId>bg.autohouse.webapp</artifactId>
-                <groupId>bg.autohouse</groupId>
-                <version>${project.version}</version>
-            </dependency>
-
             <!-- Test containers -->
             <dependency>
-                <artifactId>bg.autohouse.webapp</artifactId>
+                <artifactId>bg.autohouse.backend</artifactId>
                 <groupId>bg.autohouse</groupId>
                 <scope>test</scope>
                 <type>test-jar</type>
@@ -213,10 +207,9 @@
             <id>default</id>
             <modules>
                 <module>bg.autohouse.api</module>
-                <module>bg.autohouse.core</module>
+                <module>bg.autohouse.backend</module>
                 <module>bg.autohouse.util</module>
                 <module>bg.autohouse.integration</module>
-                <module>bg.autohouse.webapp</module>
                 <module>bg.autohouse.spider</module>
                 <module>bg.autohouse.docker</module>
                 <module>bg.autohouse.dbupdate</module>
@@ -226,10 +219,9 @@
             <id>java</id>
             <modules>
                 <module>bg.autohouse.api</module>
-                <module>bg.autohouse.core</module>
+                <module>bg.autohouse.backend</module>
                 <module>bg.autohouse.util</module>
                 <module>bg.autohouse.integration</module>
-                <module>bg.autohouse.webapp</module>
                 <module>bg.autohouse.dbupdate</module>
             </modules>
         </profile>

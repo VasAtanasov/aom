@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20221003_04
+      author: vasil
+      comment: "Create table for engines entity"
+      changes:
+        - sqlFile:
+            endDelimiter: //
+            path: db/scripts/20221003_04_create_engine_table.sql

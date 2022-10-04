@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20221003_03
+      author: vasil
+      comment: "Create table for trims entity"
+      changes:
+        - sqlFile:
+            endDelimiter: //
+            path: db/scripts/20221003_03_create_trim_table.sql

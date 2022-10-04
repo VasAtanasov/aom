@@ -21,6 +21,7 @@
         <version.dependencies.h2>1.4.200</version.dependencies.h2>  <!-- bump version to 2.1.210 -->
         <version.dependencies.hibernate.jpamodelgen>6.1.0.Final</version.dependencies.hibernate.jpamodelgen>
         <version.dependencies.mysql.mariadb.driver>2.7.5</version.dependencies.mysql.mariadb.driver>
+        <version.dependencies.jakarta-persistance-api>2.2.3</version.dependencies.jakarta-persistance-api>
 
         <version.dependencies.slf4j>1.7.36</version.dependencies.slf4j>
         <version.dependencies.logback-classic>1.2.11</version.dependencies.logback-classic>
@@ -72,7 +73,7 @@
                 <exclusions>
                     <exclusion>
                         <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-logging</artifactId>
+                        <artifactId>spring-boot-starter-logging</artifactId>2.7.5
                     </exclusion>
                     <exclusion>
                         <groupId>org.springframework</groupId>
@@ -177,6 +178,12 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-core</artifactId>
                 <version>${version.dependencies.liquibase}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>${version.dependencies.jakarta-persistance-api}</version>
             </dependency>
 
             <!-- 3d Party dependencies -->

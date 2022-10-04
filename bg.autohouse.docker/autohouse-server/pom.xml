@@ -27,7 +27,7 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <artifactId>bg.autohouse.webapp</artifactId>
+            <artifactId>bg.autohouse.backend</artifactId>
             <groupId>bg.autohouse</groupId>
         </dependency>
     </dependencies>
@@ -71,7 +71,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <artifactId>bg.autohouse.webapp</artifactId>
+                                    <artifactId>bg.autohouse.backend</artifactId>
                                     <destFileName>autohouse-server.jar</destFileName>
                                     <groupId>bg.autohouse</groupId>
                                     <overWrite>true</overWrite>

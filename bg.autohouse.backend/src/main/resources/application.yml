@@ -1,0 +1,16 @@
+spring:
+  liquibase:
+    enabled: false
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+  main:
+    banner-mode: off
+  sql:
+    init:
+      mode: never
