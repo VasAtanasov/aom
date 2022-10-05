@@ -1,8 +1,5 @@
-package bg.autohouse.backend.domain.validation;
+package bg.autohouse.backend.validation;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
 public class ValidationMessages {
 
   public static final String MAKER_NAME_BLANK =
@@ -68,4 +65,8 @@ public class ValidationMessages {
   public static final String BLANK_NEW_ROLE = "The new role must not be blank.";
 
   public static final String BLANK_CURRENT_ROLE = "Current role must not be blank.";
+
+  private ValidationMessages() {
+    throw new UnsupportedOperationException();
+  }
 }
