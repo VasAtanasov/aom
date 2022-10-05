@@ -23,6 +23,7 @@
         <dependency>
             <artifactId>ah-jdk-base-u2004-jdk17</artifactId>
             <groupId>bg.autohouse</groupId>
+            <type>pom</type>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

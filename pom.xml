@@ -26,6 +26,7 @@
         <version.dependencies.lombok.mapstruct.binding>0.2.0</version.dependencies.lombok.mapstruct.binding>
         <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
         <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
+        <version.dependencies.hibernate>5.6.9.Final</version.dependencies.hibernate>
     </properties>
 
     <dependencyManagement>
@@ -115,6 +116,11 @@
                     <version>${plugin.maven.compiler.version}</version>
                     <configuration>
                         <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.hibernate</groupId>
+                                <artifactId>hibernate-jpamodelgen</artifactId>
+                                <version>${version.dependencies.hibernate}</version>
+                            </path>
                             <path>
                                 <artifactId>mapstruct-processor</artifactId>
                                 <groupId>org.mapstruct</groupId>

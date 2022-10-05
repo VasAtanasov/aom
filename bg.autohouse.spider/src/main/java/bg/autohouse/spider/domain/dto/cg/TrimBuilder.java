@@ -1,5 +1,8 @@
 package bg.autohouse.spider.domain.dto.cg;
 
+import bg.autohouse.bg.api.engine.EngineDTO;
+import bg.autohouse.bg.api.option.OptionDTO;
+import bg.autohouse.bg.api.transmission.TransmissionWrapper;
 import lombok.ToString;
 
 import java.util.List;

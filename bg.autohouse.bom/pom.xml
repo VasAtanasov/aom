@@ -19,7 +19,7 @@
         <version.dependencies.jackson-bom>2.13.3</version.dependencies.jackson-bom>
         <version.dependencies.liquibase>4.8.0</version.dependencies.liquibase>
         <version.dependencies.h2>1.4.200</version.dependencies.h2>  <!-- bump version to 2.1.210 -->
-        <version.dependencies.hibernate.jpamodelgen>6.1.0.Final</version.dependencies.hibernate.jpamodelgen>
+        <version.dependencies.hibernate>5.6.9.Final</version.dependencies.hibernate>
         <version.dependencies.mysql.mariadb.driver>2.7.5</version.dependencies.mysql.mariadb.driver>
         <version.dependencies.jakarta-persistance-api>2.2.3</version.dependencies.jakarta-persistance-api>
 
@@ -73,7 +73,7 @@
                 <exclusions>
                     <exclusion>
                         <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-logging</artifactId>2.7.5
+                        <artifactId>spring-boot-starter-logging</artifactId>
                     </exclusion>
                     <exclusion>
                         <groupId>org.springframework</groupId>
@@ -163,9 +163,10 @@
             </dependency>
 
             <dependency>
-                <groupId>org.hibernate.orm</groupId>
+                <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jpamodelgen</artifactId>
-                <version>${version.dependencies.hibernate.jpamodelgen}</version>
+                <version>${version.dependencies.hibernate}</version>
+                <scope>provided</scope>
                 <exclusions>
                     <exclusion>
                         <groupId>org.jboss.logging</groupId>

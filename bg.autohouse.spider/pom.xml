@@ -18,6 +18,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>bg.autohouse</groupId>
+            <artifactId>bg.autohouse.api</artifactId>
+        </dependency>
+        <dependency>
             <artifactId>jackson-databind</artifactId>
             <groupId>com.fasterxml.jackson.core</groupId>
         </dependency>
