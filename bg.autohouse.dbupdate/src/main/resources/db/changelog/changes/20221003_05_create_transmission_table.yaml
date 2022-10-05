@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 20221003_05
-      author: vasil
-      comment: "Create table for transmissions entity"
-      changes:
-        - sqlFile:
-            endDelimiter: //
-            path: db/scripts/20221003_05_create_transmission_table.sql

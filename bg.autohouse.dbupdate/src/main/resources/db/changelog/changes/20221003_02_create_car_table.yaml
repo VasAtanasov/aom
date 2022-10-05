@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 20221003_02
-      author: vasil
-      comment: "Create table for trims entity"
-      changes:
-        - sqlFile:
-            endDelimiter: //
-            path: db/scripts/20221003_02_create_car_table.sql

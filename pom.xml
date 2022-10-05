@@ -22,6 +22,7 @@
         <plugin.maven.dependency.version>3.3.0</plugin.maven.dependency.version>
         <plugin.maven.jar.version>3.2.0</plugin.maven.jar.version>
         <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
+        <version.dependencies.liquibase>4.8.0</version.dependencies.liquibase>
 
         <version.dependencies.lombok.mapstruct.binding>0.2.0</version.dependencies.lombok.mapstruct.binding>
         <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
@@ -177,6 +178,16 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                    <version>${version.dependencies.liquibase}</version>
+                    <configuration>
+                        <verbose>true</verbose>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
 

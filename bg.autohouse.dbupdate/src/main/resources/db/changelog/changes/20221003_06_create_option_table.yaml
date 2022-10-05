@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 20221003_06
-      author: vasil
-      comment: "Create table for options entity"
-      changes:
-        - sqlFile:
-            endDelimiter: //
-            path: db/scripts/20221003_06_create_option_table.sql

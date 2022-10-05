@@ -11,11 +11,39 @@
 
     <artifactId>bg.autohouse.dbupdate</artifactId>
 
+    <properties>
+        <version.dependencies.mysql.mariadb.driver>2.7.5</version.dependencies.mysql.mariadb.driver>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <propertyFile>
+                        src/main/resources/liquibase.properties
+                    </propertyFile>
+                    <outputChangeLogFile>
+                        src/main/resources/generated.mysql.sql
+                    </outputChangeLogFile>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <artifactId>mariadb-java-client</artifactId>
+                        <groupId>org.mariadb.jdbc</groupId>
+                        <version>${version.dependencies.mysql.mariadb.driver}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
