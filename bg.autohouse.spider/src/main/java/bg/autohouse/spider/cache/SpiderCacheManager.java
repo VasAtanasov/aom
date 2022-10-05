@@ -1,6 +1,11 @@
 package bg.autohouse.spider.cache;
 
-import bg.autohouse.spider.domain.dto.cg.*;
+import bg.autohouse.bg.api.car.CarsTrimsWrapper;
+import bg.autohouse.bg.api.engine.EnginesList;
+import bg.autohouse.bg.api.maker.MakersModelsWrapper;
+import bg.autohouse.bg.api.model.ModelsCarsWrapper;
+import bg.autohouse.bg.api.option.OptionsWrapper;
+import bg.autohouse.bg.api.transmission.TransmissionWrapper;
 import bg.autohouse.spider.service.AppConfigurationService;
 import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;

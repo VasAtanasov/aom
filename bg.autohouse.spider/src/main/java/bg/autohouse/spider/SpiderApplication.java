@@ -1,10 +1,10 @@
 package bg.autohouse.spider;
 
+import bg.autohouse.bg.api.maker.MakerDTO;
 import bg.autohouse.spider.api.HttpStrategy;
 import bg.autohouse.spider.client.CGApiClientAdapterImpl;
 import bg.autohouse.spider.client.CGApiClientImpl;
 import bg.autohouse.spider.client.JavaHttpClientStrategy;
-import bg.autohouse.spider.domain.dto.cg.MakerDTO;
 import bg.autohouse.spider.service.AppConfigurationService;
 import bg.autohouse.spider.service.CGServiceImpl;
 import lombok.extern.slf4j.Slf4j;
