@@ -1,7 +1,7 @@
 package bg.autohouse.backend.feature.pub.car.dao;
 
-import bg.autohouse.backend.feature.pub.trim.dao.Trim;
 import bg.autohouse.backend.feature.pub.model.dao.Model;
+import bg.autohouse.backend.feature.pub.trim.dao.Trim;
 import bg.autohouse.util.common.persistance.BaseEntity;
 import bg.autohouse.util.common.persistance.ColumnConstants;
 import lombok.Getter;
@@ -18,7 +18,9 @@ import static bg.autohouse.backend.feature.pub.car.dao.Car.ENTITY_NAME;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = ENTITY_NAME)
+@Table(
+    name = ENTITY_NAME,
+    indexes = {@Index(name = "CAR_YEAR", columnList = "year")})
 public class Car implements BaseEntity<String> {
 
   public static final String ENTITY_NAME = "car";

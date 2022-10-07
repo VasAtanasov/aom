@@ -1,5 +1,6 @@
 package bg.autohouse.backend.feature.error;
 
+import bg.autohouse.backend.feature.RuntimeEnvironmentUtil;
 import bg.autohouse.util.common.logging.ApplicationLoggerFactory;
 import bg.autohouse.util.common.logging.Logger;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -34,6 +35,12 @@ public class RestErrorService {
     //     exceptionToStatusMapping        .put(AccessDeniedException.class, HttpStatus.FORBIDDEN);
     exceptionToStatusMapping.put(IllegalArgumentException.class, HttpStatus.BAD_REQUEST);
     exceptionToStatusMapping.put(IllegalStateException.class, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  protected final RuntimeEnvironmentUtil runtimeEnvironmentUtil;
+
+  public RestErrorService(RuntimeEnvironmentUtil runtimeEnvironmentUtil) {
+    this.runtimeEnvironmentUtil = runtimeEnvironmentUtil;
   }
 
   private static HttpStatus getHttpStatusCode(final Throwable ex) {
@@ -78,6 +85,10 @@ public class RestErrorService {
   public RestError exposeConstraintViolation(final ConstraintViolationException cve) {
     final RestError.Builder builder =
         new RestError.Builder(HttpStatus.BAD_REQUEST).setMessage("Constraint violation");
+
+    if (runtimeEnvironmentUtil.isProductionEnvironment()) {
+      return builder.build();
+    }
 
     for (final ConstraintViolation<?> violation : cve.getConstraintViolations()) {
       final String fieldName =

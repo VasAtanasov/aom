@@ -1,11 +1,11 @@
 package bg.autohouse.spider.client;
 
-import bg.autohouse.bg.api.car.CarsTrimsWrapper;
-import bg.autohouse.bg.api.engine.EngineDTO;
-import bg.autohouse.bg.api.maker.MakersModelsWrapper;
-import bg.autohouse.bg.api.model.ModelsCarsWrapper;
-import bg.autohouse.bg.api.option.OptionDTO;
-import bg.autohouse.bg.api.transmission.TransmissionWrapper;
+import bg.autohouse.api.dto.car.CarsTrimsWrapper;
+import bg.autohouse.api.dto.engine.EngineDTO;
+import bg.autohouse.api.dto.maker.MakersModelsWrapper;
+import bg.autohouse.api.dto.model.ModelsCarsWrapper;
+import bg.autohouse.api.dto.option.OptionDTO;
+import bg.autohouse.api.dto.transmission.TransmissionWrapper;
 import bg.autohouse.spider.domain.dto.cg.ListingDTO;
 
 import java.util.List;

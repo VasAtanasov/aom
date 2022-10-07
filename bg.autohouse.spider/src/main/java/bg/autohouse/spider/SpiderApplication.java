@@ -1,6 +1,6 @@
 package bg.autohouse.spider;
 
-import bg.autohouse.bg.api.maker.MakerDTO;
+import bg.autohouse.api.dto.maker.MakerDTO;
 import bg.autohouse.spider.api.HttpStrategy;
 import bg.autohouse.spider.client.CGApiClientAdapterImpl;
 import bg.autohouse.spider.client.CGApiClientImpl;

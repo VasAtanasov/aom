@@ -15,7 +15,9 @@ import static bg.autohouse.backend.feature.pub.transmission.dao.Transmission.ENT
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = ENTITY_NAME)
+@Table(
+    name = ENTITY_NAME,
+    indexes = {@Index(name = "TRANSMISSION_NAME", columnList = "name")})
 public class Transmission implements BaseEntity<Long> {
 
   public static final String ENTITY_NAME = "transmission";
@@ -29,8 +31,8 @@ public class Transmission implements BaseEntity<Long> {
 
   @ManyToOne(targetEntity = Trim.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
-          name = "trim_id",
-          referencedColumnName = ColumnConstants.ID,
-          foreignKey = @ForeignKey(name = "FK_TRANSMISSIONS_TRIMS_ID"))
+      name = "trim_id",
+      referencedColumnName = ColumnConstants.ID,
+      foreignKey = @ForeignKey(name = "FK_TRANSMISSIONS_TRIMS_ID"))
   private Trim trim;
 }

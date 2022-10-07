@@ -20,7 +20,9 @@ import static bg.autohouse.backend.feature.pub.trim.dao.Trim.ENTITY_NAME;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = ENTITY_NAME)
+@Table(
+    name = ENTITY_NAME,
+    indexes = {@Index(name = "TRIM_NAME", columnList = "trim")})
 public class Trim implements BaseEntity<String> {
 
   public static final String ENTITY_NAME = "trim";

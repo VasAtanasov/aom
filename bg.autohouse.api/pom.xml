@@ -3,6 +3,8 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>bg.autohouse.api</artifactId>
+    <packaging>pom</packaging>
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,6 +12,11 @@
         <groupId>bg.autohouse</groupId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
+
+    <modules>
+        <module>ah-api-dto</module>
+        <module>ah-api-rest</module>
+    </modules>
 
     <dependencies>
         <dependency>

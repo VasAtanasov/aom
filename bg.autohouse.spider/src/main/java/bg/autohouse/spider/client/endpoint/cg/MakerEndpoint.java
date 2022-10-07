@@ -1,6 +1,6 @@
 package bg.autohouse.spider.client.endpoint.cg;
 
-import bg.autohouse.bg.api.model.ModelsCarsWrapper;
+import bg.autohouse.api.dto.model.ModelsCarsWrapper;
 import bg.autohouse.spider.api.ApiClient;
 import bg.autohouse.spider.api.ResponseBodyHandler;
 import bg.autohouse.spider.client.QueryParameter;

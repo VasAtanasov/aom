@@ -1,6 +1,6 @@
 package bg.autohouse.backend.feature.pub.maker.dao;
 
-import bg.autohouse.backend.feature.common.repository.ApplicationRepository;
+import bg.autohouse.backend.feature.common.repository.ApplicationJpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MakerRepository extends ApplicationRepository<Maker, Long>
+public interface MakerRepository extends ApplicationJpaRepository<Maker, Long>
 {
   @Query(
       "SELECT DISTINCT "
@@ -24,4 +24,6 @@ public interface MakerRepository extends ApplicationRepository<Maker, Long>
   List<Maker> findAllWithModels();
 
   boolean existsByName(String name);
+
+
 }

@@ -16,18 +16,19 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <plugin.maven.spring-boot.version>2.6.9</plugin.maven.spring-boot.version>
+        <plugin.maven.spring-boot.version>2.7.4</plugin.maven.spring-boot.version>
         <plugin.manve.docker.version>0.40.1</plugin.manve.docker.version>
-        <plugin.maven.compiler.version>3.8.1</plugin.maven.compiler.version>
+        <plugin.maven.compiler.version>3.10.1</plugin.maven.compiler.version>
         <plugin.maven.dependency.version>3.3.0</plugin.maven.dependency.version>
-        <plugin.maven.jar.version>3.2.0</plugin.maven.jar.version>
+        <plugin.maven.jar.version>3.2.2</plugin.maven.jar.version>
         <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
-        <version.dependencies.liquibase>4.8.0</version.dependencies.liquibase>
+        <plugin.maven.resource.version>3.2.0</plugin.maven.resource.version>
 
+        <version.dependencies.liquibase>4.9.1</version.dependencies.liquibase>
         <version.dependencies.lombok.mapstruct.binding>0.2.0</version.dependencies.lombok.mapstruct.binding>
         <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
         <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
-        <version.dependencies.hibernate>5.6.9.Final</version.dependencies.hibernate>
+        <version.dependencies.hibernate>5.6.11.Final</version.dependencies.hibernate>
     </properties>
 
     <dependencyManagement>
@@ -42,8 +43,14 @@
 
             <!-- Internal dependencies -->
             <dependency>
-                <artifactId>bg.autohouse.api</artifactId>
                 <groupId>bg.autohouse</groupId>
+                <artifactId>ah-api-dto</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>bg.autohouse</groupId>
+                <artifactId>ah-api-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -61,12 +68,6 @@
 
             <dependency>
                 <artifactId>bg.autohouse.integration</artifactId>
-                <groupId>bg.autohouse</groupId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <artifactId>bg.autohouse.util</artifactId>
                 <groupId>bg.autohouse</groupId>
                 <version>${project.version}</version>
             </dependency>
@@ -180,11 +181,54 @@
                 </plugin>
 
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${plugin.maven.resource.version}</version>
+                    <configuration>
+                        <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
+                    </configuration>
+                </plugin>
+
+                <plugin>
                     <groupId>org.liquibase</groupId>
                     <artifactId>liquibase-maven-plugin</artifactId>
                     <version>${version.dependencies.liquibase}</version>
                     <configuration>
                         <verbose>true</verbose>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>io.github.git-commit-id</groupId>
+                    <artifactId>git-commit-id-maven-plugin</artifactId>
+                    <version>5.0.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>revision</goal>
+                            </goals>
+                            <phase>initialize</phase>
+                        </execution>
+                        <execution>
+                            <id>validate-the-git-infos</id>
+                            <goals>
+                                <goal>validateRevision</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                        <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                        <commitIdGenerationMode>full</commitIdGenerationMode>
+                        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                        <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+                        </generateGitPropertiesFilename>
+                        <gitDescribe>
+                            <always>false</always>
+                            <abbrev>8</abbrev>
+                            <dirty>-SNAPSHOT</dirty>
+                        </gitDescribe>
                     </configuration>
                 </plugin>
 
@@ -221,7 +265,7 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <id>default</id>
+            <id>dev</id>
             <modules>
                 <module>bg.autohouse.api</module>
                 <module>bg.autohouse.backend</module>

@@ -1,15 +1,15 @@
 package bg.autohouse.spider.service;
 
-import bg.autohouse.bg.api.car.CarDTO;
-import bg.autohouse.bg.api.car.CarTrimsDTO;
-import bg.autohouse.bg.api.car.CarsTrimsWrapper;
-import bg.autohouse.bg.api.engine.EngineDTO;
-import bg.autohouse.bg.api.maker.MakerDTO;
-import bg.autohouse.bg.api.model.ModelCarsDTO;
-import bg.autohouse.bg.api.model.ModelDTO;
-import bg.autohouse.bg.api.option.OptionDTO;
-import bg.autohouse.bg.api.transmission.TransmissionWrapper;
-import bg.autohouse.bg.api.trim.TrimDTO;
+import bg.autohouse.api.dto.car.CarDTO;
+import bg.autohouse.api.dto.car.CarTrimsDTO;
+import bg.autohouse.api.dto.car.CarsTrimsWrapper;
+import bg.autohouse.api.dto.engine.EngineDTO;
+import bg.autohouse.api.dto.maker.MakerDTO;
+import bg.autohouse.api.dto.model.ModelCarsDTO;
+import bg.autohouse.api.dto.model.ModelDTO;
+import bg.autohouse.api.dto.option.OptionDTO;
+import bg.autohouse.api.dto.transmission.TransmissionWrapper;
+import bg.autohouse.api.dto.trim.TrimDTO;
 import bg.autohouse.spider.client.CGApiClientAdapter;
 import bg.autohouse.spider.client.Page;
 import bg.autohouse.spider.client.PageRequest;

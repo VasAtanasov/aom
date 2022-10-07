@@ -14,8 +14,8 @@
 
     <dependencies>
         <dependency>
-            <artifactId>bg.autohouse.api</artifactId>
             <groupId>bg.autohouse</groupId>
+            <artifactId>ah-api-dto</artifactId>
         </dependency>
         <dependency>
             <groupId>bg.autohouse</groupId>
@@ -66,6 +66,10 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <groupId>org.springframework.boot</groupId>

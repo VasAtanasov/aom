@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>bg.autohouse</groupId>
-            <artifactId>bg.autohouse.api</artifactId>
+            <artifactId>ah-api-dto</artifactId>
         </dependency>
         <dependency>
             <artifactId>jackson-databind</artifactId>

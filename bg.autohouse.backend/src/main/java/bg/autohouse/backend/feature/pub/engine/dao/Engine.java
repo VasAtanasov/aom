@@ -15,7 +15,12 @@ import static bg.autohouse.backend.feature.pub.engine.dao.Engine.ENTITY_NAME;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = ENTITY_NAME)
+@Table(
+    name = ENTITY_NAME,
+    indexes = {
+      @Index(name = "ENGINE_NAME", columnList = "name"),
+      @Index(name = "ENGINE_IS_STANDARD", columnList = "is_standard")
+    })
 public class Engine implements BaseEntity<Long> {
   public static final String ENTITY_NAME = "engine";
 

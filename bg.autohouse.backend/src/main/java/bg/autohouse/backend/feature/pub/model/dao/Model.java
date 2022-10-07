@@ -1,10 +1,10 @@
 package bg.autohouse.backend.feature.pub.model.dao;
 
 import bg.autohouse.backend.feature.pub.car.dao.Car;
-import bg.autohouse.util.common.persistance.BaseEntity;
-import bg.autohouse.util.common.persistance.ColumnConstants;
 import bg.autohouse.backend.feature.pub.maker.dao.Maker;
 import bg.autohouse.backend.validation.ModelName;
+import bg.autohouse.util.common.persistance.BaseEntity;
+import bg.autohouse.util.common.persistance.ColumnConstants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +21,9 @@ import static bg.autohouse.backend.validation.ValidationMessages.MAKER_NULL;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = ENTITY_NAME)
+@Table(
+    name = ENTITY_NAME,
+    indexes = {@Index(name = "MODEL_NAME", columnList = "name")})
 public class Model implements BaseEntity<String> {
 
   public static final String ENTITY_NAME = "model";

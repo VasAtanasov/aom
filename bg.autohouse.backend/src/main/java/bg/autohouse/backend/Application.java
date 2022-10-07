@@ -1,23 +1,15 @@
 package bg.autohouse.backend;
 
-import bg.autohouse.backend.config.JPAConfiguration;
-import bg.autohouse.backend.config.RestControllerBeanConfiguration;
+import bg.autohouse.backend.config.AutoHouseApplication;
 import bg.autohouse.util.common.logging.ApplicationLoggerFactory;
 import bg.autohouse.util.common.logging.Logger;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan(
-    excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "bg.autohouse.*"))
-@Import({JPAConfiguration.class, RestControllerBeanConfiguration.class})
 public class Application implements CommandLineRunner {
 
   private static final Logger log = ApplicationLoggerFactory.getLogger(Application.class);
@@ -29,7 +21,7 @@ public class Application implements CommandLineRunner {
   }
 
   public static void main(String[] args) {
-    SpringApplication.run(Application.class, args);
+    AutoHouseApplication.run(Application.class, args);
   }
 
   @Override

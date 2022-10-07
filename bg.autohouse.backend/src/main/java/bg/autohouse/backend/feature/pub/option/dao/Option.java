@@ -15,7 +15,9 @@ import static bg.autohouse.backend.feature.pub.option.dao.Option.ENTITY_NAME;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = ENTITY_NAME)
+@Table(
+    name = ENTITY_NAME,
+    indexes = {@Index(name = "OPTION_NAME", columnList = "name")})
 public class Option implements BaseEntity<Long> {
 
   public static final String ENTITY_NAME = "option";
@@ -35,8 +37,8 @@ public class Option implements BaseEntity<Long> {
 
   @ManyToOne(targetEntity = Trim.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
-          name = "trim_id",
-          referencedColumnName = ColumnConstants.ID,
-          foreignKey = @ForeignKey(name = "FK_OPTIONS_TRIMS_ID"))
+      name = "trim_id",
+      referencedColumnName = ColumnConstants.ID,
+      foreignKey = @ForeignKey(name = "FK_OPTIONS_TRIMS_ID"))
   private Trim trim;
 }

@@ -1,7 +1,7 @@
 package bg.autohouse.spider.service;
 
-import bg.autohouse.bg.api.maker.MakerDTO;
-import bg.autohouse.bg.api.model.ModelCarsDTO;
+import bg.autohouse.api.dto.maker.MakerDTO;
+import bg.autohouse.api.dto.model.ModelCarsDTO;
 import bg.autohouse.spider.client.Page;
 import bg.autohouse.spider.client.PageRequest;
 import bg.autohouse.spider.domain.dto.cg.ListingDTO;
