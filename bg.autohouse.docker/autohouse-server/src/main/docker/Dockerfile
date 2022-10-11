@@ -1,4 +1,4 @@
-FROM ${docker.registry}/ah-jdk-base:${docker.image.base.tag}
+FROM ${docker.image.base}
 
 RUN apt-get update && apt-get install supervisor -y
 

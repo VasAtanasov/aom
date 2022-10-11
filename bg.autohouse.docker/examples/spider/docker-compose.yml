@@ -1,7 +1,7 @@
 services:
   wiremock:
-    image: vasatanasov/ah-wiremock-base:${AH_WIREMOCK_BASE_IMAGE_TAG}
-    #    image: vasatanasov/ah-wiremock-dev:${AH_WIREMOCK_DEV_IMAGE_TAG}
+    image: vasatanasov/wiremock-base:${WIREMOCK_BASE_IMAGE_TAG}
+    #    image: vasatanasov/ah-wiremock-dev:${WIREMOCK_DEV_IMAGE_TAG}
     container_name: wiremock
     command:
       - --proxy-all=${WIREMOCK_PROXY_ALL_HOST}
@@ -22,7 +22,7 @@ services:
   spider:
     depends_on:
       - wiremock
-    image: vasatanasov/ah-spider:${AH_SPIDER_IMAGE_TAG}
+    image: vasatanasov/spider:${SPIDER_IMAGE_TAG}
     container_name: spider
     environment:
       - STUBBING_ENABLED=${STUBBING_ENABLED}

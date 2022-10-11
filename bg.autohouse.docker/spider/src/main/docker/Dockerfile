@@ -1,4 +1,4 @@
-FROM ${docker.registry}/ah-jdk-base:${docker.image.base.tag}
+FROM ${docker.image.base}
 
 ENV APP_HOME /runtime
 ENV SPIDER_CACHE_DIR $APP_HOME/storage

@@ -14,11 +14,11 @@
     <packaging>pom</packaging>
 
     <properties>
-        <ah.docker.image.tag>2.0.0</ah.docker.image.tag>
-        <docker.nocache>true</docker.nocache>
-
         <docker.project.version.tag>2.0.0</docker.project.version.tag>
         <docker.registry>docker.io/vasatanasov</docker.registry>
+        <docker.image.tag.latest>latest</docker.image.tag.latest>
+
+        <docker.nocache>true</docker.nocache>
     </properties>
 
     <build>
@@ -45,8 +45,8 @@
     </build>
 
     <modules>
-        <module>ah-spider</module>
         <module>autohouse-server</module>
+        <module>spider</module>
     </modules>
 
 </project>

@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: vasatanasov/ah-mysql-dev:${AH_MYSQL_IMAGE_TAG}
+    image: vasatanasov/mysql-dev:${MYSQL_IMAGE_TAG}
     environment:
       - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - DB_NAME=${DB_NAME}
@@ -13,8 +13,8 @@ services:
     networks:
       - network
 
-  product:
-    image: vasatanasov/ah-product-dev:${AH_PRODUCT_IMAGE_TAG}
+  server:
+    image: vasatanasov/autohouse-server:${AUTOHOUSE_SERVER_IMAGE_TAG}
     depends_on:
       - mysql
     environment:

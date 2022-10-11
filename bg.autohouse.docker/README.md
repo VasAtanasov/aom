@@ -11,7 +11,7 @@ mvn clean install -Ddocker.nocache=true
 ## Build specific image
 
 ```bash
-mvn -f ah-ubuntu-base-u2004/pom.xml clean install -Ddocker.nocache=true
+mvn -f ${target-pom-dir} clean install -Ddocker.nocache=true
 ```
 
 > **NOTE** that all dependent images must exit in local docker in the remote registry.

@@ -7,6 +7,7 @@ echo "$(date +"%T"): DB_PORT=${DB_PORT}"
 echo "$(date +"%T"): DB_NAME=${DB_NAME}"
 echo "$(date +"%T"): DB_USER=${DB_USER}"
 echo "$(date +"%T"): JVM_MEMORY=${JVM_MEMORY}"
+echo "$(date +"%T"): JAVA_OPTS=${JAVA_OPTS}"
 echo "$(date +"%T"): APP_HOME=${APP_HOME}"
 echo "$(date +"%T"): ========================================================"
 

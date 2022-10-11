@@ -11,21 +11,17 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ah-spider</artifactId>
+    <artifactId>spider</artifactId>
 
     <properties>
         <docker.image.base.tag>u20.04-jdk17</docker.image.base.tag>
-        <docker.image.name>ah-spider</docker.image.name>
+        <docker.image.base>${docker.registry}/jdk-base:${docker.image.base.tag}</docker.image.base>
+
+        <docker.image.name>spider</docker.image.name>
         <docker.image.tag>${docker.project.version.tag}</docker.image.tag>
     </properties>
 
     <dependencies>
-        <dependency>
-            <artifactId>ah-jdk-base-u2004-jdk17</artifactId>
-            <groupId>bg.autohouse</groupId>
-            <type>pom</type>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <artifactId>bg.autohouse.spider</artifactId>
             <groupId>bg.autohouse</groupId>
@@ -72,8 +68,8 @@
                             <artifactItems>
                                 <artifactItem>
                                     <artifactId>bg.autohouse.spider</artifactId>
-                                    <destFileName>spider.jar</destFileName>
                                     <groupId>bg.autohouse</groupId>
+                                    <destFileName>spider.jar</destFileName>
                                     <overWrite>true</overWrite>
                                 </artifactItem>
                             </artifactItems>
