@@ -1,7 +1,7 @@
-package bg.autohouse.util.common.persistance;
+package bg.autohouse.util.common.persistance.entity;
 
-import bg.autohouse.util.common.persistance.BaseLifecycleEntity;
-import bg.autohouse.util.common.persistance.ColumnConstants;
+import bg.autohouse.util.common.persistance.entity.BaseLifecycleEntity;
+import bg.autohouse.util.common.persistance.entity.ColumnConstants;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -9,7 +9,8 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 @MappedSuperclass
-public abstract class LifecycleEntity<T extends Serializable> implements BaseLifecycleEntity<T> {
+public abstract class LifecycleEntity<T extends Serializable> implements BaseLifecycleEntity<T>
+{
   @Column(name = ColumnConstants.CREATED_BY, nullable = false, updatable = false)
   private String createdBy;
 

@@ -1,8 +1,8 @@
 package bg.autohouse.backend.feature.pub.engine.dao;
 
 import bg.autohouse.backend.feature.pub.trim.dao.Trim;
-import bg.autohouse.util.common.persistance.BaseEntity;
-import bg.autohouse.util.common.persistance.ColumnConstants;
+import bg.autohouse.util.common.persistance.entity.BaseEntity;
+import bg.autohouse.util.common.persistance.entity.ColumnConstants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

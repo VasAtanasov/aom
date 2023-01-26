@@ -1,4 +1,4 @@
-package bg.autohouse.util.common.persistance;
+package bg.autohouse.util.common.persistance.entity;
 
 import bg.autohouse.util.common.datetime.DateTimeUtils;
 
@@ -8,7 +8,8 @@ import java.util.UUID;
 
 /** Base entity interface which holds preCreate and preUpdate functions to set base fields. */
 public interface BaseLifecycleEntity<T extends Serializable>
-    extends PreProcessed, Serializable, BaseEntity<T> {
+    extends PreProcessed, Serializable, BaseEntity<T>
+{
 
   default void preCreate() {
     setCreatedAt(DateTimeUtils.currentInUtc());

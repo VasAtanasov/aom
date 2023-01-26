@@ -1,4 +1,4 @@
-package bg.autohouse.util.common.persistance;
+package bg.autohouse.util.common.persistance.entity;
 
 import java.util.UUID;
 
