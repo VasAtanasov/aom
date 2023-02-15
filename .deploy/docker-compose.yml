@@ -14,7 +14,7 @@ services:
       - network
 
   server:
-    image: vasatanasov/autohouse-server:${AUTOHOUSE_SERVER_IMAGE_TAG}
+    image: vasatanasov/aom-server:${AUTOHOUSE_SERVER_IMAGE_TAG}
     depends_on:
       - mysql
     environment:

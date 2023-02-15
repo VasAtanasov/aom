@@ -6,31 +6,32 @@
     <packaging>pom</packaging>
 
     <parent>
-        <artifactId>bg.autohouse.docker</artifactId>
-        <groupId>bg.autohouse</groupId>
+        <groupId>com.github.vaatech</groupId>
+        <artifactId>aom-docker</artifactId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>autohouse-server</artifactId>
+    <artifactId>aom-server</artifactId>
 
     <properties>
         <docker.image.base.tag>u20.04-jdk17</docker.image.base.tag>
         <docker.image.base>${docker.registry}/jdk-base:${docker.image.base.tag}</docker.image.base>
 
-        <docker.image.name>autohouse-server</docker.image.name>
+        <docker.image.name>aom-server</docker.image.name>
         <docker.image.tag>${docker.project.version.tag}</docker.image.tag>
     </properties>
 
     <dependencies>
         <dependency>
-            <artifactId>bg.autohouse.backend</artifactId>
-            <groupId>bg.autohouse</groupId>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>aom</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <configuration>
                     <images>
@@ -58,17 +59,17 @@
                         <phase>deploy</phase>
                     </execution>
                 </executions>
-                <groupId>io.fabric8</groupId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <artifactId>bg.autohouse.backend</artifactId>
-                                    <groupId>bg.autohouse</groupId>
+                                    <groupId>com.github.vaatech</groupId>
+                                    <artifactId>aom</artifactId>
                                     <destFileName>autohouse-server.jar</destFileName>
                                     <overWrite>true</overWrite>
                                 </artifactItem>
@@ -86,7 +87,6 @@
                         <phase>package</phase>
                     </execution>
                 </executions>
-                <groupId>org.apache.maven.plugins</groupId>
             </plugin>
         </plugins>
     </build>

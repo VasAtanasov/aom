@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>autohouse</artifactId>
-        <groupId>bg.autohouse</groupId>
+        <groupId>com.github.vaatech</groupId>
+        <artifactId>aom-parent</artifactId>
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bg.autohouse.docker</artifactId>
+    <artifactId>aom-docker</artifactId>
     <packaging>pom</packaging>
 
     <properties>
@@ -45,7 +45,7 @@
     </build>
 
     <modules>
-        <module>autohouse-server</module>
+        <module>aom-server</module>
     </modules>
 
 </project>

@@ -1,1 +1,1 @@
-## Autohouse - REST API for managing automotive offers
+## Auto Offer Management - REST API for managing automotive offers

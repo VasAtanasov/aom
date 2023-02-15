@@ -11,10 +11,9 @@
         <relativePath/>
     </parent>
 
-    <groupId>bg.autohouse</groupId>
+    <groupId>com.github.vaatech</groupId>
+    <artifactId>aom-bom</artifactId>
     <version>2.0.0-SNAPSHOT</version>
-
-    <artifactId>bg.autohouse.bom</artifactId>
 
     <packaging>pom</packaging>
 
