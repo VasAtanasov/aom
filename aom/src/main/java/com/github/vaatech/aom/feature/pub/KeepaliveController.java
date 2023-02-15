@@ -1,7 +1,7 @@
 package com.github.vaatech.aom.feature.pub;
 
 import com.github.vaatech.aom.feature.RuntimeEnvironmentUtil;
-import com.github.vaatech.aom.feature.pub.maker.dao.MakerRepository;
+import com.github.vaatech.aom.feature.vehicle.maker.MakerRepository;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

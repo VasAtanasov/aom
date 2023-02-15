@@ -1,6 +1,6 @@
 package com.github.vaatech.aom.validation;
 
-import com.github.vaatech.aom.feature.pub.maker.dao.MakerRepository;
+import com.github.vaatech.aom.feature.vehicle.maker.MakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

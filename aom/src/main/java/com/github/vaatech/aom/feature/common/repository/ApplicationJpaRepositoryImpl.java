@@ -1,6 +1,6 @@
 package com.github.vaatech.aom.feature.common.repository;
 
-import com.github.vaatech.aom.util.common.persistance.entity.BaseEntity;
+import com.github.vaatech.aom.feature.common.entity.BaseEntity;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
