@@ -1,7 +1,7 @@
 package bg.autohouse.api.dto.model;
 
+import bg.autohouse.api.dto.BaseDTO;
 import bg.autohouse.api.dto.car.CarDTO;
-import bg.autohouse.util.common.dto.BaseDTO;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 

@@ -21,6 +21,7 @@
             <groupId>bg.autohouse</groupId>
             <artifactId>ah-util-common</artifactId>
         </dependency>
+
         <dependency>
             <groupId>bg.autohouse</groupId>
             <artifactId>bg.autohouse.dbupdate</artifactId>
@@ -55,7 +56,11 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpasyncclient</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <classifier>jakarta</classifier>
+        </dependency>
         <dependency>
             <artifactId>mariadb-java-client</artifactId>
             <groupId>org.mariadb.jdbc</groupId>
@@ -146,9 +151,6 @@
                         <!--                            <version>${version.dependencies.lombok.mapstruct.binding}</version>-->
                         <!--                        </path>-->
                     </annotationProcessorPaths>
-                    <release>${java.version}</release>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
                 </configuration>
             </plugin>
         </plugins>

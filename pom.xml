@@ -60,40 +60,14 @@
             </dependency>
 
             <dependency>
-                <artifactId>bg.autohouse.integration</artifactId>
-                <groupId>bg.autohouse</groupId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>bg.autohouse</groupId>
-                <artifactId>ah-util-cache</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>bg.autohouse</groupId>
                 <artifactId>ah-util-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <artifactId>bg.autohouse.spider</artifactId>
-                <groupId>bg.autohouse</groupId>
                 <version>${project.version}</version>
             </dependency>
 
             <!-- Test containers -->
             <dependency>
                 <artifactId>bg.autohouse.backend</artifactId>
-                <groupId>bg.autohouse</groupId>
-                <scope>test</scope>
-                <type>test-jar</type>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <artifactId>bg.autohouse.spider</artifactId>
                 <groupId>bg.autohouse</groupId>
                 <scope>test</scope>
                 <type>test-jar</type>
@@ -211,7 +185,6 @@
             <modules>
                 <module>bg.autohouse.api</module>
                 <module>bg.autohouse.backend</module>
-                <module>bg.autohouse.util</module>
                 <module>bg.autohouse.docker</module>
                 <module>bg.autohouse.dbupdate</module>
             </modules>
@@ -221,7 +194,6 @@
             <modules>
                 <module>bg.autohouse.api</module>
                 <module>bg.autohouse.backend</module>
-                <module>bg.autohouse.util</module>
                 <module>bg.autohouse.dbupdate</module>
             </modules>
         </profile>

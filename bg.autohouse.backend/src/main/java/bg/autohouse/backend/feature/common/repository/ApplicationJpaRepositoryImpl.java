@@ -1,6 +1,6 @@
 package bg.autohouse.backend.feature.common.repository;
 
-import bg.autohouse.util.common.persistance.entity.BaseEntity;
+import bg.autohouse.backend.util.common.persistance.entity.BaseEntity;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 

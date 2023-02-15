@@ -1,7 +1,7 @@
 package bg.autohouse.backend.feature.error;
 
-import bg.autohouse.util.common.logging.ApplicationLoggerFactory;
-import bg.autohouse.util.common.logging.Logger;
+import bg.autohouse.backend.util.common.logging.ApplicationLoggerFactory;
+import bg.autohouse.backend.util.common.logging.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package bg.autohouse.backend.config;
 
-import bg.autohouse.util.common.logging.ApplicationLoggerFactory;
-import bg.autohouse.util.common.logging.Logger;
+import bg.autohouse.backend.util.common.logging.ApplicationLoggerFactory;
+import bg.autohouse.backend.util.common.logging.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;

@@ -1,8 +1,8 @@
 package bg.autohouse.api.dto.model;
 
+import bg.autohouse.api.dto.BaseDTO;
 import bg.autohouse.api.dto.car.CarDTO;
 import bg.autohouse.api.dto.maker.MakerDTO;
-import bg.autohouse.util.common.dto.BaseDTO;
 import lombok.Data;
 
 import java.util.List;

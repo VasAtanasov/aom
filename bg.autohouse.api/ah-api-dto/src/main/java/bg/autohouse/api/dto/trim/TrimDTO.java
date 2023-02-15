@@ -1,6 +1,6 @@
 package bg.autohouse.api.dto.trim;
 
-import bg.autohouse.util.common.dto.BaseDTO;
+import bg.autohouse.api.dto.BaseDTO;
 import lombok.Data;
 
 @Data
