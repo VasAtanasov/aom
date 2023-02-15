@@ -1,10 +1,8 @@
 package bg.autohouse.util.common.persistance.entity;
 
-import bg.autohouse.util.common.persistance.entity.BaseLifecycleEntity;
-import bg.autohouse.util.common.persistance.entity.ColumnConstants;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 

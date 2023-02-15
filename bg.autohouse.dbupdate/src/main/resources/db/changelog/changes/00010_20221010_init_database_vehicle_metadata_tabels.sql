@@ -6,7 +6,7 @@
 
 -- comment: Create table for maker entity
 
-CREATE TABLE `maker`
+CREATE IF NOT EXISTS TABLE `maker`
 (
     `id`   VARCHAR(12) COLLATE utf8mb4_unicode_ci NOT NULL,
     `name` VARCHAR(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -21,14 +21,13 @@ CREATE INDEX MAKER_NAME ON maker (name);
 -- rollback DROP TABLE IF EXISTS `maker`;
 
 
-
 -- changeset vasil:20221010_020
 -- preconditions onFail:MARK_RAN onError:MARK_RAN
 -- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'model';
 
 -- comment: Create table for model entity
 
-CREATE TABLE `model`
+CREATE IF NOT EXISTS TABLE `model`
 (
     `id`       VARCHAR(12) COLLATE utf8mb4_unicode_ci NOT NULL,
     `name`     VARCHAR(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -47,14 +46,13 @@ CREATE INDEX MODEL_NAME ON model (name);
 -- rollback DROP TABLE IF EXISTS `model`;
 
 
-
 -- changeset vasil:20221010_030
 -- preconditions onFail:MARK_RAN onError:MARK_RAN
 -- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'car';
 
 -- comment: Create table for car entity
 
-CREATE TABLE `car`
+CREATE IF NOT EXISTS TABLE `car`
 (
     `id`       VARCHAR(12) COLLATE utf8mb4_unicode_ci NOT NULL,
     `year`     INT DEFAULT NULL,
@@ -73,14 +71,13 @@ CREATE INDEX CAR_YEAR ON car (year);
 -- rollback DROP TABLE IF EXISTS `car`;
 
 
-
 -- changeset vasil:20221010_040
 -- preconditions onFail:MARK_RAN onError:MARK_RAN
 -- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'trim';
 
 -- comment: Create table for trim entity
 
-CREATE TABLE `trim`
+CREATE IF NOT EXISTS TABLE `trim`
 (
     `id`     VARCHAR(12) COLLATE utf8mb4_unicode_ci  NOT NULL,
     `trim`   VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -92,12 +89,11 @@ CREATE TABLE `trim`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-CREATE INDEX TRIM_NAME ON `trim` (trim);
+CREATE IF NOT EXISTS INDEX TRIM_NAME ON `trim` (trim);
 
 -- rollback ALTER TABLE `trim` DROP CONSTRAINT FK_TRIMS_CARS_ID;
 -- rollback DROP INDEX TRIM_NAME on `trim`;
 -- rollback DROP TABLE IF EXISTS `trim`;
-
 
 
 -- changeset vasil:20221010_050
@@ -106,7 +102,7 @@ CREATE INDEX TRIM_NAME ON `trim` (trim);
 
 -- comment: Create table for engine entity
 
-CREATE TABLE `engine`
+CREATE IF NOT EXISTS TABLE `engine`
 (
     `id`          BIGINT                                 NOT NULL,
     `is_standard` BIT(1)                                  DEFAULT NULL,
@@ -128,15 +124,13 @@ CREATE INDEX ENGINE_IS_STANDARD ON `engine` (is_standard);
 -- rollback DROP TABLE IF EXISTS `engine`;
 
 
-
-
 -- changeset vasil:20221010_060
 -- preconditions onFail:MARK_RAN onError:MARK_RAN
 -- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'transmission';
 
 -- comment: Create table for transmission entity
 
-CREATE TABLE `transmission`
+CREATE IF NOT EXISTS TABLE `transmission`
 (
     `id`      BIGINT                                 NOT NULL,
     `name`    VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -155,15 +149,13 @@ CREATE INDEX TRANSMISSION_NAME ON `transmission` (name);
 -- rollback DROP TABLE IF EXISTS `transmission`;
 
 
-
-
 -- changeset vasil:20221010_070
 -- preconditions onFail:MARK_RAN onError:MARK_RAN
 -- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'option';
 
 -- comment: Create table for option entity
 
-CREATE TABLE `option`
+CREATE IF NOT EXISTS TABLE `option`
 (
     `id`        BIGINT                                 NOT NULL,
     `active`    BIT(1)                                  DEFAULT NULL,

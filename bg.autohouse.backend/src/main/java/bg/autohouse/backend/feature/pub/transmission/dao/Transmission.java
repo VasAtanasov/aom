@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import static bg.autohouse.backend.feature.pub.transmission.dao.Transmission.ENTITY_NAME;
 

@@ -4,8 +4,8 @@ import bg.autohouse.backend.feature.pub.maker.dao.MakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @Transactional(readOnly = true)
 public class UniqueMakerNameValidator implements ConstraintValidator<UniqueMakerName, String> {

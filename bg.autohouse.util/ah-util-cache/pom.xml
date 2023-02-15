@@ -14,8 +14,9 @@
 
     <dependencies>
         <dependency>
-            <artifactId>ehcache</artifactId>
             <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <classifier>jakarta</classifier>
         </dependency>
         <dependency>
             <groupId>bg.autohouse</groupId>

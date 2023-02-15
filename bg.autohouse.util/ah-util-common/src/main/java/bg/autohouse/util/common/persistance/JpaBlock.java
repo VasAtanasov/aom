@@ -1,6 +1,6 @@
 package bg.autohouse.util.common.persistance;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @FunctionalInterface
 public interface JpaBlock<T> {

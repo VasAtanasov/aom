@@ -4,7 +4,7 @@ import bg.autohouse.util.common.persistance.entity.BaseEntity;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.io.Serializable;
 
 public class ApplicationJpaRepositoryImpl<T extends BaseEntity<ID>, ID extends Serializable>

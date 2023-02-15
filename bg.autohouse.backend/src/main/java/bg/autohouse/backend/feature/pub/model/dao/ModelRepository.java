@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 @Repository
 public interface ModelRepository extends ApplicationJpaRepository<Model, String> {
 
-  default Stream<Model> findAllCarsByModelId(String modelId) {
-    return findOne(ModelSpecifications.carsForModelId(modelId)).stream();
-  }
+//  default Stream<Model> findAllCarsByModelId(String modelId) {
+//    return findOne(ModelSpecifications.carsForModelId(modelId)).stream();
+//  }
 }

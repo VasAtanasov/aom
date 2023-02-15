@@ -49,6 +49,7 @@
         <dependency>
             <artifactId>ehcache</artifactId>
             <groupId>org.ehcache</groupId>
+            <classifier>jakarta</classifier>
         </dependency>
         <dependency>
             <artifactId>lombok</artifactId>

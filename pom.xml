@@ -2,6 +2,14 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>bg.autohouse</groupId>
+        <artifactId>bg.autohouse.bom</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>bg.autohouse.bom/pom.xml</relativePath>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>bg.autohouse</groupId>
@@ -24,22 +32,12 @@
         <plugin.maven.source.version>3.2.1</plugin.maven.source.version>
         <plugin.maven.resource.version>3.2.0</plugin.maven.resource.version>
 
-        <version.dependencies.liquibase>4.9.1</version.dependencies.liquibase>
         <version.dependencies.lombok.mapstruct.binding>0.2.0</version.dependencies.lombok.mapstruct.binding>
-        <version.dependencies.lombok>1.18.24</version.dependencies.lombok>
         <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
-        <version.dependencies.hibernate>5.6.11.Final</version.dependencies.hibernate>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <artifactId>bg.autohouse.bom</artifactId>
-                <groupId>bg.autohouse</groupId>
-                <scope>import</scope>
-                <type>pom</type>
-                <version>${project.version}</version>
-            </dependency>
 
             <!-- Internal dependencies -->
             <dependency>
@@ -112,73 +110,45 @@
     <build>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <version>${plugin.maven.compiler.version}</version>
-                    <configuration>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.hibernate</groupId>
-                                <artifactId>hibernate-jpamodelgen</artifactId>
-                                <version>${version.dependencies.hibernate}</version>
-                            </path>
-                            <path>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <groupId>org.mapstruct</groupId>
-                                <version>${version.dependencies.mapstruct}</version>
-                            </path>
-                            <path>
-                                <artifactId>lombok</artifactId>
-                                <groupId>org.projectlombok</groupId>
-                                <version>${version.dependencies.lombok}</version>
-                            </path>
-                            <!-- additional annotation processor required as of Lombok 1.18.16 -->
-                            <path>
-                                <artifactId>lombok-mapstruct-binding</artifactId>
-                                <groupId>org.projectlombok</groupId>
-                                <version>${version.dependencies.lombok.mapstruct.binding}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                        <release>${java.version}</release>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                    </configuration>
-                </plugin>
+<!--                <plugin>-->
+<!--                    <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <version>${maven-clean-plugin.version}</version>-->
+<!--                    <configuration>-->
+<!--                        <annotationProcessorPaths>-->
+<!--                            <path>-->
+<!--                                <groupId>org.hibernate</groupId>-->
+<!--                                <artifactId>hibernate-jpamodelgen</artifactId>-->
+<!--                                <version>${hibernate.version}</version>-->
+<!--                            </path>-->
+<!--                            <path>-->
+<!--                                <artifactId>mapstruct-processor</artifactId>-->
+<!--                                <groupId>org.mapstruct</groupId>-->
+<!--                                <version>${version.dependencies.mapstruct}</version>-->
+<!--                            </path>-->
+<!--                            <path>-->
+<!--                                <artifactId>lombok</artifactId>-->
+<!--                                <groupId>org.projectlombok</groupId>-->
+<!--                                <version>${lombok.version}</version>-->
+<!--                            </path>-->
+<!--                            &lt;!&ndash; additional annotation processor required as of Lombok 1.18.16 &ndash;&gt;-->
+<!--                            <path>-->
+<!--                                <artifactId>lombok-mapstruct-binding</artifactId>-->
+<!--                                <groupId>org.projectlombok</groupId>-->
+<!--                                <version>${version.dependencies.lombok.mapstruct.binding}</version>-->
+<!--                            </path>-->
+<!--                        </annotationProcessorPaths>-->
+<!--                        <release>${java.version}</release>-->
+<!--                        <source>${java.version}</source>-->
+<!--                        <target>${java.version}</target>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
 
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <version>${plugin.maven.jar.version}</version>
-                </plugin>
 
-                <plugin>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                    <version>${plugin.maven.spring-boot.version}</version>
-                    <configuration>
-                        <excludes>
-                            <exclude>
-                                <artifactId>lombok</artifactId>
-                                <groupId>org.projectlombok</groupId>
-                            </exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
 
-                <plugin>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <version>${plugin.maven.source.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                            <id>generate-source-jar</id>
-                        </execution>
-                    </executions>
-                </plugin>
+
+
+
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -186,15 +156,6 @@
                     <version>${plugin.maven.resource.version}</version>
                     <configuration>
                         <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-maven-plugin</artifactId>
-                    <version>${version.dependencies.liquibase}</version>
-                    <configuration>
-                        <verbose>true</verbose>
                     </configuration>
                 </plugin>
 
@@ -237,13 +198,53 @@
 
         <plugins>
             <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+<!--                    <annotationProcessorPaths>-->
+<!--                        <path>-->
+<!--                            <groupId>org.hibernate</groupId>-->
+<!--                            <artifactId>hibernate-jpamodelgen</artifactId>-->
+<!--                            <version>${hibernate.version}</version>-->
+<!--                        </path>-->
+<!--                        <path>-->
+<!--                            <artifactId>mapstruct-processor</artifactId>-->
+<!--                            <groupId>org.mapstruct</groupId>-->
+<!--                            <version>${version.dependencies.mapstruct}</version>-->
+<!--                        </path>-->
+<!--                        <path>-->
+<!--                            <artifactId>lombok</artifactId>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <version>${lombok.version}</version>-->
+<!--                        </path>-->
+<!--                        &lt;!&ndash; additional annotation processor required as of Lombok 1.18.16 &ndash;&gt;-->
+<!--                        <path>-->
+<!--                            <artifactId>lombok-mapstruct-binding</artifactId>-->
+<!--                            <groupId>org.projectlombok</groupId>-->
+<!--                            <version>${version.dependencies.lombok.mapstruct.binding}</version>-->
+<!--                        </path>-->
+<!--                    </annotationProcessorPaths>-->
+                    <release>${java.version}</release>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
             </plugin>
+
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
+                <version>${plugin.maven.source.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <id>generate-source-jar</id>
+                    </execution>
+                </executions>
             </plugin>
+
+
         </plugins>
     </build>
 
@@ -256,9 +257,6 @@
         </repository>
     </distributionManagement>
 
-    <modules>
-        <module>bg.autohouse.bom</module>
-    </modules>
 
     <profiles>
         <profile>
@@ -272,7 +270,7 @@
                 <module>bg.autohouse.util</module>
                 <module>bg.autohouse.integration</module>
                 <module>bg.autohouse.spider</module>
-                <module>bg.autohouse.docker</module>
+<!--                <module>bg.autohouse.docker</module>-->
                 <module>bg.autohouse.dbupdate</module>
             </modules>
         </profile>

@@ -54,7 +54,7 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
         </dependency>
         <dependency>
@@ -91,6 +91,52 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <artifactId>lombok</artifactId>
+                            <groupId>org.projectlombok</groupId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <!--                        <path>-->
+                        <!--                            <groupId>org.hibernate</groupId>-->
+                        <!--                            <artifactId>hibernate-jpamodelgen</artifactId>-->
+                        <!--                            <version>${hibernate.version}</version>-->
+                        <!--                        </path>-->
+                        <!--                        <path>-->
+                        <!--                            <artifactId>mapstruct-processor</artifactId>-->
+                        <!--                            <groupId>org.mapstruct</groupId>-->
+                        <!--                            <version>${version.dependencies.mapstruct}</version>-->
+                        <!--                        </path>-->
+                        <path>
+                            <artifactId>lombok</artifactId>
+                            <groupId>org.projectlombok</groupId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <!--                        &lt;!&ndash; additional annotation processor required as of Lombok 1.18.16 &ndash;&gt;-->
+                        <!--                        <path>-->
+                        <!--                            <artifactId>lombok-mapstruct-binding</artifactId>-->
+                        <!--                            <groupId>org.projectlombok</groupId>-->
+                        <!--                            <version>${version.dependencies.lombok.mapstruct.binding}</version>-->
+                        <!--                        </path>-->
+                    </annotationProcessorPaths>
+                    <release>${java.version}</release>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>
