@@ -13,10 +13,6 @@
     <artifactId>ah-util-common</artifactId>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.hibernate.orm</groupId>-->
-<!--            <artifactId>hibernate-jpamodelgen</artifactId>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>jakarta.persistence</groupId>

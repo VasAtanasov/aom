@@ -38,7 +38,7 @@
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <version>${plugin.maven.dependency.version}</version>
+                    <version>${maven-dependency-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -46,7 +46,6 @@
 
     <modules>
         <module>autohouse-server</module>
-        <module>spider</module>
     </modules>
 
 </project>

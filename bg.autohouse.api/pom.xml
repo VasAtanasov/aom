@@ -41,4 +41,38 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
         </dependency>
     </dependencies>
+
+
+
+<!--    <build>-->
+<!--        <pluginManagement>-->
+<!--            <plugins>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                    <configuration>-->
+<!--                        <annotationProcessorPaths>-->
+<!--                            &lt;!&ndash;                        <path>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <artifactId>mapstruct-processor</artifactId>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <groupId>org.mapstruct</groupId>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <version>${version.dependencies.mapstruct}</version>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                        </path>&ndash;&gt;-->
+<!--                            <path>-->
+<!--                                <artifactId>lombok</artifactId>-->
+<!--                                <groupId>org.projectlombok</groupId>-->
+<!--                                <version>${lombok.version}</version>-->
+<!--                            </path>-->
+<!--                            &lt;!&ndash;                        &lt;!&ndash; additional annotation processor required as of Lombok 1.18.16 &ndash;&gt;&ndash;&gt;-->
+<!--                            &lt;!&ndash;                        <path>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <artifactId>lombok-mapstruct-binding</artifactId>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <groupId>org.projectlombok</groupId>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            <version>${version.dependencies.lombok.mapstruct.binding}</version>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                        </path>&ndash;&gt;-->
+<!--                        </annotationProcessorPaths>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
+<!--            </plugins>-->
+<!--        </pluginManagement>-->
+<!--    </build>-->
+
 </project>
