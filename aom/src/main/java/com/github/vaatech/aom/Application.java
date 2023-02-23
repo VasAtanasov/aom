@@ -1,8 +1,8 @@
 package com.github.vaatech.aom;
 
-import com.github.vaatech.aom.config.AutoHouseApplication;
-import com.github.vaatech.aom.util.common.logging.ApplicationLoggerFactory;
-import com.github.vaatech.aom.util.common.logging.Logger;
+import com.github.vaatech.aom.config.AomApplication;
+import com.github.vaatech.aom.core.util.logging.ApplicationLoggerFactory;
+import com.github.vaatech.aom.core.util.logging.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -21,7 +21,7 @@ public class Application implements CommandLineRunner {
   }
 
   public static void main(String[] args) {
-    AutoHouseApplication.run(Application.class, args);
+    AomApplication.run(Application.class, args);
   }
 
   @Override

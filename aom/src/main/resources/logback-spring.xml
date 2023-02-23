@@ -8,13 +8,9 @@
     </appender>
 
     <springProfile name="dev">
-
-        <logger name="bg.autohouse.backend" level="DEBUG"/>
-        <logger name="bg.autohouse.util.cache" level="DEBUG"/>
+        <logger name="com.github.vaatech.aom.core" level="DEBUG"/>
         <logger name="org.ehcache" level="DEBUG"/>
-
     </springProfile>
-
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

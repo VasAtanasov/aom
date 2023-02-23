@@ -8,7 +8,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: bg.autohouse.backend.config.MySQL8UnicodeDialect
+        dialect: com.github.vaatech.aom.config.MySQL8UnicodeDialect
     show-sql: true
     hibernate:
       ddl-auto: none
