@@ -1,5 +1,5 @@
 spring:
-  liquibase:
+  flyway:
     enabled: false
   jpa:
     open-in-view: false

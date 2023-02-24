@@ -9,22 +9,31 @@ import java.time.ZonedDateTime;
 @MappedSuperclass
 public abstract class LifecycleEntity<T extends Serializable> implements BaseLifecycleEntity<T>
 {
-  @Column(name = ColumnConstants.CREATED_BY, nullable = false, updatable = false)
+  public interface Persistence {
+    String CREATED_BY = "created_by";
+    String CREATED_AT = "created_at";
+    String UPDATED_BY = "updated_by";
+    String UPDATED_AT = "updated_at";
+    String DELETED_BY = "deleted_by";
+    String DELETED_AT = "deleted_at";
+  }
+
+  @Column(name = Persistence.CREATED_BY, nullable = false, updatable = false)
   private String createdBy;
 
-  @Column(name = ColumnConstants.CREATED_AT, nullable = false, updatable = false)
+  @Column(name = Persistence.CREATED_AT, nullable = false, updatable = false)
   private ZonedDateTime createdAt;
 
-  @Column(name = ColumnConstants.UPDATED_BY, insertable = false)
+  @Column(name = Persistence.UPDATED_BY, insertable = false)
   private String updatedBy;
 
-  @Column(name = ColumnConstants.UPDATED_AT, insertable = false)
+  @Column(name = Persistence.UPDATED_AT, insertable = false)
   private ZonedDateTime updatedAt;
 
-  @Column(name = ColumnConstants.DELETED_BY, updatable = false, insertable = false)
+  @Column(name = Persistence.DELETED_BY, updatable = false, insertable = false)
   private String deletedBy;
 
-  @Column(name = ColumnConstants.DELETED_AT, updatable = false, insertable = false)
+  @Column(name = Persistence.DELETED_AT, updatable = false, insertable = false)
   private ZonedDateTime deletedAt;
 
   public String getCreatedBy() {

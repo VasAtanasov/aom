@@ -1,6 +1,6 @@
 package com.github.vaatech.aom.web.model;
 
-import com.github.vaatech.aom.api.dto.BaseDTO;
+import com.github.vaatech.aom.core.model.common.BaseDTO;
 import lombok.Data;
 
 @Data

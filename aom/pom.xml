@@ -17,12 +17,10 @@
             <groupId>com.github.vaatech</groupId>
             <artifactId>aom-api-dto</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.github.vaatech</groupId>
             <artifactId>aom-dbupdate</artifactId>
         </dependency>
-
         <dependency>
             <artifactId>spring-boot-starter-web</artifactId>
             <groupId>org.springframework.boot</groupId>
@@ -58,8 +56,8 @@
             <classifier>jakarta</classifier>
         </dependency>
         <dependency>
-            <artifactId>mariadb-java-client</artifactId>
-            <groupId>org.mariadb.jdbc</groupId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

@@ -1,43 +1,58 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.core.model.common.BaseEntity;
-import com.github.vaatech.aom.core.model.common.ColumnConstants;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
 
-import static com.github.vaatech.aom.core.model.vehicle.Option.ENTITY_NAME;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(
-    name = ENTITY_NAME,
-    indexes = {@Index(name = "OPTION_NAME", columnList = "name")})
-public class Option implements BaseEntity<Long> {
+    name = Option.Persistence.TABLE_NAME,
+    indexes = {
+      @Index(
+          name = Option.Persistence.INDEX_OPTION_NAME,
+          columnList = Option.Persistence.COLUMN_NAME)
+    })
+public class Option implements BaseEntity<Integer> {
 
-  public static final String ENTITY_NAME = "option";
+  public interface Persistence {
+    String TABLE_NAME = "option";
+    String COLUMN_ID = "id";
+    String COLUMN_NAME = "name";
+    String COLUMN_IMPORTANT = "important";
+    String COLUMN_ACTIVE = "active";
+    String COLUMN_TRIM_ID = "trim_id";
+    String INDEX_OPTION_NAME = "INDEX_OPTION_NAME";
+    String FK_OPTIONS_TO_TRIMS_ID = "FK_OPTIONS_TO_TRIMS_ID";
+  }
+
+  public interface Properties {
+    String TRIM = "trim";
+  }
 
   @Id
-  @Column(name = ColumnConstants.ID, updatable = false, unique = true, nullable = false)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = Persistence.COLUMN_ID, updatable = false, unique = true, nullable = false)
+  private Integer id;
 
-  @Column(name = "name")
-  private String label;
+  @Column(name = Persistence.COLUMN_NAME)
+  private String name;
 
-  @Column(name = "important")
+  @Column(name = Persistence.COLUMN_IMPORTANT)
   private boolean important;
 
-  @Column(name = "active")
+  @Column(name = Persistence.COLUMN_ACTIVE)
   private boolean active;
 
   @ManyToOne(targetEntity = Trim.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
-      name = "trim_id",
-      referencedColumnName = ColumnConstants.ID,
-      foreignKey = @ForeignKey(name = "FK_OPTIONS_TRIMS_ID"))
+      name = Persistence.COLUMN_TRIM_ID,
+      referencedColumnName = Trim.Persistence.COLUMN_ID,
+      foreignKey = @ForeignKey(name = Persistence.FK_OPTIONS_TO_TRIMS_ID))
   private Trim trim;
 }

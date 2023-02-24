@@ -1,42 +1,57 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.core.model.common.BaseEntity;
-import com.github.vaatech.aom.core.model.common.ColumnConstants;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import jakarta.persistence.*;
-
-import static com.github.vaatech.aom.core.model.vehicle.Engine.ENTITY_NAME;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(
-    name = ENTITY_NAME,
+    name = Engine.Persistence.TABLE_NAME,
     indexes = {
-      @Index(name = "ENGINE_NAME", columnList = "name"),
-      @Index(name = "ENGINE_IS_STANDARD", columnList = "is_standard")
+      @Index(
+          name = Engine.Persistence.INDEX_ENGINE_NAME,
+          columnList = Engine.Persistence.COLUMN_NAME),
+      @Index(
+          name = Engine.Persistence.INDEX_ENGINE_IS_STANDARD,
+          columnList = Engine.Persistence.COLUMN_IS_STANDARD)
     })
-public class Engine implements BaseEntity<Long> {
-  public static final String ENTITY_NAME = "engine";
+public class Engine implements BaseEntity<Integer> {
+
+  public interface Persistence {
+    String TABLE_NAME = "engine";
+    String COLUMN_ID = "id";
+    String COLUMN_NAME = "name";
+    String COLUMN_IS_STANDARD = "is_standard";
+    String COLUMN_TRIM_ID = "trim_id";
+    String INDEX_ENGINE_NAME = "INDEX_ENGINE_NAME";
+    String INDEX_ENGINE_IS_STANDARD = "INDEX_ENGINE_IS_STANDARD";
+    String FK_ENGINES_TO_TRIMS_ID = "FK_ENGINES_TO_TRIMS_ID";
+  }
+
+  public interface Properties {
+    String TRIM = "trim";
+  }
 
   @Id
-  @Column(name = ColumnConstants.ID, updatable = false, unique = true, nullable = false)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = Persistence.COLUMN_ID, updatable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "name")
+  @Column(name = Persistence.COLUMN_NAME)
   private String name;
 
-  @Column(name = "is_standard")
+  @Column(name = Persistence.COLUMN_IS_STANDARD)
   private boolean isStandard;
 
   @ManyToOne(targetEntity = Trim.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
-      name = "trim_id",
-      referencedColumnName = ColumnConstants.ID,
-      foreignKey = @ForeignKey(name = "FK_ENGINES_TRIMS_ID"))
+      name = Persistence.COLUMN_TRIM_ID,
+      referencedColumnName = Trim.Persistence.COLUMN_ID,
+      foreignKey = @ForeignKey(name = Persistence.FK_ENGINES_TO_TRIMS_ID))
   private Trim trim;
 }

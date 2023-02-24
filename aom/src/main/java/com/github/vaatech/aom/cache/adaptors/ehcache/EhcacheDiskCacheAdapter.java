@@ -1,7 +1,6 @@
 package com.github.vaatech.aom.cache.adaptors.ehcache;
 
 import com.github.vaatech.aom.cache.CacheProviderType;
-import org.apache.commons.lang3.StringUtils;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.slf4j.Logger;
@@ -57,14 +56,14 @@ public class EhcacheDiskCacheAdapter extends BaseEhcacheCacheAdapter {
 
   private void setStorageBasePath(String storageFolderPath) {
     try {
-      if (StringUtils.isNotEmpty(storageFolderPath) && StringUtils.isNotBlank(storageFolderPath)) {
-        LOG.info("File local storage folder: {}", storageFolderPath);
-
-        this.storageBasePath = Paths.get(storageFolderPath);
-      } else {
-        LOG.warn("Property \"file.storage.folder\" note set. Using temporary folder");
-        this.storageBasePath = Files.createTempDirectory(TEMP_STORAGE_PATH).toAbsolutePath();
-      }
+//      if (StringUtils.isNotEmpty(storageFolderPath) && StringUtils.isNotBlank(storageFolderPath)) {
+//        LOG.info("File local storage folder: {}", storageFolderPath);
+//
+//        this.storageBasePath = Paths.get(storageFolderPath);
+//      } else {
+//        LOG.warn("Property \"file.storage.folder\" note set. Using temporary folder");
+//        this.storageBasePath = Files.createTempDirectory(TEMP_STORAGE_PATH).toAbsolutePath();
+//      }
 
       checkDirectoryExistsAndWritable(this.storageBasePath);
     } catch (IOException io) {

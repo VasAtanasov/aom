@@ -1,65 +1,64 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.core.model.common.BaseEntity;
-import com.github.vaatech.aom.core.model.common.ColumnConstants;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import static com.github.vaatech.aom.core.model.vehicle.Trim.ENTITY_NAME;
-
+/**
+ * Trim is a version of a particular model with a particular configuration. The different trim
+ * levels offer varieties to the exterior and interior elements of a particular model, in addition
+ * to performance options, technologies, and even safety options. While many manufacturers today
+ * offer customers a wide array of trims, some models are still offered in a single configuration.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(
-    name = ENTITY_NAME,
-    indexes = {@Index(name = "TRIM_NAME", columnList = "trim")})
-public class Trim implements BaseEntity<String> {
+    name = Trim.Persistence.TABLE_NAME,
+    indexes = {
+      @Index(name = Trim.Persistence.INDEX_TRIM_NAME, columnList = Trim.Persistence.COLUMN_TRIM)
+    })
+public class Trim implements BaseEntity<Integer> {
+  public interface Persistence {
+    String TABLE_NAME = "trim";
+    String COLUMN_ID = "id";
+    String COLUMN_TRIM = "trim";
+    String COLUMN_CAR_ID = "car_id";
+    String FK_TRIMS_TO_CARS_ID = "FK_TRIMS_TO_CARS_ID";
+    String INDEX_TRIM_NAME = "INDEX_TRIM_NAME";
+  }
 
-  public static final String ENTITY_NAME = "trim";
+  public interface Properties {
+    String MODEL_YEAR = "modelYear";
+  }
 
   @Id
-  @Column(
-      name = ColumnConstants.ID,
-      updatable = false,
-      unique = true,
-      nullable = false,
-      length = 12)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = Persistence.COLUMN_ID, updatable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "trim", nullable = false)
+  @Column(name = Persistence.COLUMN_TRIM, nullable = false)
   private String trim;
 
-  @ManyToOne(targetEntity = Car.class, fetch = FetchType.LAZY, optional = false)
+  @ManyToOne(targetEntity = ModelYear.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
-      name = "car_id",
-      referencedColumnName = ColumnConstants.ID,
-      foreignKey = @ForeignKey(name = "FK_TRIMS_CARS_ID"))
-  private Car car;
+      name = Persistence.COLUMN_CAR_ID,
+      referencedColumnName = ModelYear.Persistence.COLUMN_ID,
+      foreignKey = @ForeignKey(name = Persistence.FK_TRIMS_TO_CARS_ID))
+  private ModelYear modelYear;
 
-  @OneToMany(
-      mappedBy = "trim",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<Engine> engines = new ArrayList<>();
+  @OneToMany(mappedBy = Engine.Properties.TRIM, fetch = FetchType.LAZY)
+  private Set<Engine> engines = new HashSet<>();
 
-  @OneToMany(
-      mappedBy = "trim",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<Transmission> transmissions = new ArrayList<>();
+  @OneToMany(mappedBy = Transmission.Properties.TRIM, fetch = FetchType.LAZY)
+  private Set<Transmission> transmissions = new HashSet<>();
 
-  @OneToMany(
-      mappedBy = "trim",
-      fetch = FetchType.LAZY,
-      cascade = CascadeType.ALL,
-      orphanRemoval = true)
-  private List<Option> options = new ArrayList<>();
+  @OneToMany(mappedBy = Option.Properties.TRIM, fetch = FetchType.LAZY)
+  private Set<Option> options = new HashSet<>();
 }

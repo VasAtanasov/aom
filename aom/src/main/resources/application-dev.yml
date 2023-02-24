@@ -3,8 +3,13 @@ server:
   compression:
     enabled: true
 spring:
-  liquibase:
+  flyway:
     enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1_0
+    baseline-description: AOM Init schema
+    locations: classpath:db/migration
+    table: ${MIGRATION_TABLE_NAME:_dbupdate_aom}
   jpa:
     properties:
       hibernate:
@@ -16,10 +21,21 @@ spring:
     generate-ddl: false
     database: mysql
   datasource:
-    driverClassName: org.mariadb.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     url: ${DB_CONNECTION_URL}
+    hikari:
+      pool-name: aom-connection-pool
+      connection-test-query: SELECT 1
+      initialization-fail-timeout: -1
+      data-source-properties:
+        useServerPrepStmts: true
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useSSL: false
   sql:
     init:
       platform: mysql
+

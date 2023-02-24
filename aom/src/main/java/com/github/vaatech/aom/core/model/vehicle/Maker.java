@@ -2,45 +2,45 @@ package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.core.model.common.BaseEntity;
 import com.github.vaatech.aom.validation.MakerName;
-import com.github.vaatech.aom.core.model.common.ColumnConstants;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.github.vaatech.aom.core.model.vehicle.Maker.ENTITY_NAME;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(
-    name = ENTITY_NAME,
-    indexes = {@Index(name = "MAKER_NAME", columnList = "name")})
-public class Maker implements BaseEntity<String> {
+    name = Maker.Persistence.TABLE_NAME,
+    indexes = {
+      @Index(name = Maker.Persistence.INDEX_MAKER_NAME, columnList = Maker.Persistence.COLUMN_NAME)
+    })
+public class Maker implements BaseEntity<Integer> {
 
-  public static final String ENTITY_NAME = "maker";
+  public interface Persistence {
+    String TABLE_NAME = "maker";
+    String COLUMN_ID = "id";
+    String COLUMN_NAME = "name";
+    String INDEX_MAKER_NAME = "INDEX_MAKER_NAME";
+  }
 
   @Id
-  @Column(
-      name = ColumnConstants.ID,
-      updatable = false,
-      unique = true,
-      nullable = false,
-      length = 12)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = Persistence.COLUMN_ID, updatable = false, nullable = false)
+  private Integer id;
 
   @MakerName
-  @Column(name = "name")
+  @Column(name = Persistence.COLUMN_NAME)
   private String name;
 
   @OneToMany(
-      mappedBy = "maker",
+      mappedBy = Model.Properties.MAKER,
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<Model> models = new ArrayList<>();
+  private Set<Model> models = new HashSet<>();
 }

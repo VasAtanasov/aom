@@ -5,8 +5,7 @@ package com.github.vaatech.aom.core.model.common;
  * cases when usual JPA listeners / methods are not suitable (e.g. when we don't want to depend on
  * DB and generate data in the code before entity is merged / persisted).
  */
-public interface PreProcessed extends HasVersion
-{
+public interface PreProcessed extends HasVersion {
   void preCreate();
 
   void preUpdate();

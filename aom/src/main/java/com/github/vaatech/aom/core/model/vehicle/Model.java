@@ -3,54 +3,60 @@ package com.github.vaatech.aom.core.model.vehicle;
 import com.github.vaatech.aom.core.model.common.BaseEntity;
 import com.github.vaatech.aom.validation.ModelName;
 import com.github.vaatech.aom.validation.ValidationMessages;
-import com.github.vaatech.aom.core.model.common.ColumnConstants;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.github.vaatech.aom.core.model.vehicle.Model.ENTITY_NAME;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(
-    name = ENTITY_NAME,
-    indexes = {@Index(name = "MODEL_NAME", columnList = "name")})
-public class Model implements BaseEntity<String> {
+    name = Model.Persistence.TABLE_NAME,
+    indexes = {
+      @Index(name = Model.Persistence.INDEX_MODEL_NAME, columnList = Model.Persistence.COLUMN_NAME)
+    })
+public class Model implements BaseEntity<Integer> {
 
-  public static final String ENTITY_NAME = "model";
+  public interface Persistence {
+    String COLUMN_ID = "id";
+    String TABLE_NAME = "model";
+    String COLUMN_NAME = "name";
+    String COLUMN_MAKER_ID = "maker_id";
+    String FK_MODEL_TO_MAKE_ID = "FK_MODEL_TO_MAKE_ID";
+    String INDEX_MODEL_NAME = "INDEX_MODEL_NAME";
+  }
+
+  public interface Properties {
+    String MAKER = "maker";
+  }
 
   @Id
-  @Column(
-      name = ColumnConstants.ID,
-      updatable = false,
-      unique = true,
-      nullable = false,
-      length = 12)
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = Persistence.COLUMN_ID, updatable = false, nullable = false)
+  private Integer id;
 
-  @Column(name = "name")
+  @Column(name = Persistence.COLUMN_NAME)
   @ModelName
   private String name;
 
   @NotNull(message = ValidationMessages.MAKER_NULL)
   @ManyToOne(targetEntity = Maker.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
-      name = "maker_id",
-      referencedColumnName = ColumnConstants.ID,
-      foreignKey = @ForeignKey(name = "FK_MODEL_MAKE_ID"))
+      name = Persistence.COLUMN_MAKER_ID,
+      referencedColumnName = Maker.Persistence.COLUMN_ID,
+      foreignKey = @ForeignKey(name = Persistence.FK_MODEL_TO_MAKE_ID))
   private Maker maker;
 
   @OneToMany(
-      mappedBy = "model",
+      mappedBy = ModelYear.Properties.MODEL,
       fetch = FetchType.LAZY,
       cascade = CascadeType.ALL,
       orphanRemoval = true)
-  private List<Car> cars = new ArrayList<>();
+  private Set<ModelYear> modelYears = new HashSet<>();
 }
