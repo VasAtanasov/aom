@@ -49,10 +49,10 @@ CREATE TABLE IF NOT EXISTS `trim`
 
 CREATE TABLE IF NOT EXISTS `engine`
 (
-    `id`          int(11) NOT NULL AUTO_INCREMENT,
-    `is_standard` bit(1)                                  DEFAULT NULL,
+    `id`          int NOT NULL AUTO_INCREMENT,
+    `is_standard` bit                                     DEFAULT NULL,
     `name`        varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-    `trim_id`     int(11) NOT NULL,
+    `trim_id`     int NOT NULL,
     PRIMARY KEY (`id`),
     KEY `INDEX_ENGINE_NAME` (`name`),
     KEY `INDEX_ENGINE_IS_STANDARD` (`is_standard`),
