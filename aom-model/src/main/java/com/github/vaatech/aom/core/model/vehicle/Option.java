@@ -1,11 +1,10 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.core.model.common.BaseEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import jakarta.persistence.*;
 
 @Getter
 @Setter

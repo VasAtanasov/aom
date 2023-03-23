@@ -1,8 +1,7 @@
 package com.github.vaatech.aom.web.error;
 
 import com.github.vaatech.aom.core.RuntimeEnvironmentUtil;
-import com.github.vaatech.aom.core.util.logging.ApplicationLoggerFactory;
-import com.github.vaatech.aom.core.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
@@ -21,9 +20,9 @@ import jakarta.validation.ValidationException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class RestErrorService {
-  private static final Logger LOG = ApplicationLoggerFactory.getLogger(RestErrorService.class);
   private static final Map<Class<?>, HttpStatus> exceptionToStatusMapping = new HashMap<>();
 
   static {
@@ -57,7 +56,7 @@ public class RestErrorService {
       }
     }
 
-    LOG.warn("Unknown exception type: " + ex.getClass().getName());
+    log.warn("Unknown exception type: " + ex.getClass().getName());
 
     return HttpStatus.INTERNAL_SERVER_ERROR;
   }

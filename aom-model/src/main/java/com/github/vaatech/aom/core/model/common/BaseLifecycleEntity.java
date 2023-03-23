@@ -1,6 +1,6 @@
 package com.github.vaatech.aom.core.model.common;
 
-import com.github.vaatech.aom.core.util.DateTimeUtils;
+import com.github.vaatech.aom.commons.util.DateTimeUtils;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -8,8 +8,7 @@ import java.util.UUID;
 
 /** Base entity interface which holds preCreate and preUpdate functions to set base fields. */
 public interface BaseLifecycleEntity<T extends Serializable>
-    extends PreProcessed, Serializable, BaseEntity<T>
-{
+    extends PreProcessed, Serializable, BaseEntity<T> {
 
   default void preCreate() {
     setCreatedAt(DateTimeUtils.currentInUtc());

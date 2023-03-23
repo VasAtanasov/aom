@@ -1,7 +1,6 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.core.model.common.BaseEntity;
-import com.github.vaatech.aom.validation.MakerName;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +32,6 @@ public class Maker implements BaseEntity<Integer> {
   @Column(name = Persistence.COLUMN_ID, updatable = false, nullable = false)
   private Integer id;
 
-  @MakerName
   @Column(name = Persistence.COLUMN_NAME)
   private String name;
 

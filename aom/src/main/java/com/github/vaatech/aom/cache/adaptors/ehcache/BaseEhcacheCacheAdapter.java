@@ -1,8 +1,7 @@
 package com.github.vaatech.aom.cache.adaptors.ehcache;
 
 import com.github.vaatech.aom.cache.adaptors.CacheAdapter;
-import com.github.vaatech.aom.core.util.logging.ApplicationLoggerFactory;
-import com.github.vaatech.aom.core.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.Status;
@@ -13,9 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Supplier;
 
+@Slf4j
 abstract class BaseEhcacheCacheAdapter implements CacheAdapter, Closeable {
 
-  private static final Logger LOG = ApplicationLoggerFactory.getLogger(BaseEhcacheCacheAdapter.class);
   private static final ConcurrentMap<String, CacheManager> ALL_CACHE_MANAGERS =
       new ConcurrentHashMap<>();
 
@@ -32,14 +31,14 @@ abstract class BaseEhcacheCacheAdapter implements CacheAdapter, Closeable {
     final Cache<String, T> cache =
         getCacheInternal(tenantId, cacheName, expireMillis, size, resultType);
 
-    LOG.debug(
+    log.debug(
         String.format(
             "[%s:%s]: Checking EhCache cache for invocation: %s", tenantId, cacheName, key));
 
     T value = valueSupplier.get();
     cache.put(key, value);
 
-    LOG.debug(
+    log.debug(
         String.format(
             "[%s:%s]: Value after invocation %s was cached in EhCache successfully",
             tenantId, cacheName, key));

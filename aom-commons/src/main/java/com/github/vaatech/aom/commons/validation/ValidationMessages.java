@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.validation;
+package com.github.vaatech.aom.commons.validation;
 
 public class ValidationMessages {
 

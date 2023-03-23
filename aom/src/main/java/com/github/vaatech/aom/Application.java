@@ -1,18 +1,16 @@
 package com.github.vaatech.aom;
 
 import com.github.vaatech.aom.config.AomApplication;
-import com.github.vaatech.aom.core.util.logging.ApplicationLoggerFactory;
-import com.github.vaatech.aom.core.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.util.Arrays;
 
+@Slf4j
 @SpringBootApplication
 public class Application implements CommandLineRunner {
-
-  private static final Logger log = ApplicationLoggerFactory.getLogger(Application.class);
 
   private final ConfigurableEnvironment env;
 

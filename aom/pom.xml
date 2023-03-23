@@ -15,6 +15,10 @@
     <dependencies>
         <dependency>
             <groupId>com.github.vaatech</groupId>
+            <artifactId>aom-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vaatech</groupId>
             <artifactId>aom-api-dto</artifactId>
         </dependency>
         <dependency>
@@ -22,6 +26,12 @@
             <artifactId>aom-dbupdate</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>aom-model</artifactId>
+        </dependency>
+
+        <dependency>
+            <!--suppress VulnerableLibrariesLocal -->
             <artifactId>spring-boot-starter-web</artifactId>
             <groupId>org.springframework.boot</groupId>
         </dependency>

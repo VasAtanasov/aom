@@ -1,4 +1,6 @@
-package com.github.vaatech.aom.core.util.logging;
+package com.github.vaatech.aom.commons.util.logging;
+
+import org.slf4j.Logger;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

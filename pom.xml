@@ -35,6 +35,12 @@
             <!-- Internal dependencies -->
             <dependency>
                 <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
                 <artifactId>aom-api-dto</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -48,6 +54,12 @@
             <dependency>
                 <groupId>com.github.vaatech</groupId>
                 <artifactId>aom-dbupdate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -171,8 +183,10 @@
             </activation>
             <id>dev</id>
             <modules>
+                <module>aom-commons</module>
                 <module>aom-api</module>
                 <module>aom-dbupdate</module>
+                <module>aom-model</module>
                 <module>aom</module>
                 <module>aom-docker</module>
             </modules>
@@ -180,8 +194,10 @@
         <profile>
             <id>java</id>
             <modules>
+                <module>aom-commons</module>
                 <module>aom-api</module>
                 <module>aom-dbupdate</module>
+                <module>aom-model</module>
                 <module>aom</module>
             </modules>
         </profile>

@@ -1,7 +1,6 @@
 package com.github.vaatech.aom.config;
 
-import com.github.vaatech.aom.core.util.logging.ApplicationLoggerFactory;
-import com.github.vaatech.aom.core.util.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -9,9 +8,9 @@ import org.springframework.core.env.Profiles;
 
 import static java.lang.String.format;
 
+@Slf4j
 public class AomApplication extends SpringApplication {
 
-  private static final Logger LOG = ApplicationLoggerFactory.getLogger(AomApplication.class);
 
   public AomApplication(Class<?> configClass) {
     super(configClass);
@@ -44,14 +43,14 @@ public class AomApplication extends SpringApplication {
               "Only one of the following profiles may be specified: [%s]",
               ApplicationProfile.toAvailableProfilesStr());
 
-      LOG.error(message);
+      log.error(message);
       throw new IllegalStateException(message);
     }
 
     if (numberActive == 1) {
-      LOG.info("Activating because one profile has been specified.");
+      log.info("Activating because one profile has been specified.");
     } else {
-      LOG.info(
+      log.info(
           "The default 'standalone' profile is active because no other profiles have been specified.");
       environment.setActiveProfiles(ApplicationProfile.INMEMORY.getProfile());
     }

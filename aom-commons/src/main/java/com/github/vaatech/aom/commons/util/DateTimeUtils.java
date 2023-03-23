@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.core.util;
+package com.github.vaatech.aom.commons.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;

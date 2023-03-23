@@ -6,7 +6,7 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static com.github.vaatech.aom.validation.ValidationMessages.MAKER_NAME_EXISTS;
+import static com.github.vaatech.aom.commons.validation.ValidationMessages.MAKER_NAME_EXISTS;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
