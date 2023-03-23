@@ -19,6 +19,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: false
+        generate_statistics: true
   datasource:
     url: jdbc:mysql://${container.mysql.host:localhost}:${container.mysql.port:3306}/${container.mysql.database:aom_test}${container.mysql.options:?createDatabaseIfNotExist=true}
     username: ${container.mysql.username:aom_dev}

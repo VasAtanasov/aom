@@ -1,6 +1,7 @@
 package com.github.vaatech.aom.core.repository;
 
 import com.github.vaatech.aom.BaseApplicationTest;
+import com.github.vaatech.aom.test.HibernateStatisticsAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,6 +13,7 @@ class MakerRepositoryTest extends BaseApplicationTest {
     MakerRepository makerRepository;
 
     @Test
+    @HibernateStatisticsAssertions(queryCount = 0)
     void findAll() {
         int a= 5;
 

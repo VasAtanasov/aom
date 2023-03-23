@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import javax.sql.DataSource;
@@ -30,6 +31,23 @@ public class MySQLContainerTest extends BaseApplicationTest {
   @Test
   public void shouldConnectToMySQL() throws Exception {
     assertThat(jdbcTemplate.queryForObject("select version()", String.class)).startsWith("8.0.");
+  }
+
+  @Sql(
+      statements =
+          """
+          CREATE TABLE person (
+              first_name VARCHAR(50) NOT NULL,
+              last_name VARCHAR(50) NOT NULL
+          );
+          INSERT INTO person(first_name, last_name) values('Sam', 'Brannen');
+          """)
+  @Test
+  public void shouldInitDBForMySQL() throws Exception {
+    assertThat(
+            jdbcTemplate.queryForObject(
+                "select count(first_name) from person where first_name = 'Sam' ", Integer.class))
+        .isEqualTo(1);
   }
 
   @Test
