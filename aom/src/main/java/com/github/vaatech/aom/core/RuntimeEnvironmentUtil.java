@@ -12,14 +12,11 @@ import static org.springframework.util.StringUtils.hasText;
 public class RuntimeEnvironmentUtil {
   private static final long JVM_STARTUP_TIMESTAMP = System.currentTimeMillis();
 
-  @Value("${spring.profiles.active}")
-  private String[] activeProfiles;
+  @Value("${environment.id}")
+  private String environmentId;
 
   @Value("${git.commit.id.abbrev:}")
   public String gitCommitIdAbbrev;
-
-  @Value("${server.url}")
-  private URI serverUri;
 
   @Value("${file.storage.folder}")
   private String fileStorageFolder;
@@ -33,7 +30,8 @@ public class RuntimeEnvironmentUtil {
   }
 
   public String getEnvironmentId() {
-    return ApplicationProfile.activeProfileId(activeProfiles).orElseThrow();
+//    return ApplicationProfile.activeProfileId(activeProfiles).orElseThrow();
+    return environmentId;
   }
 
   public boolean isDevelopmentEnvironment() {
@@ -46,10 +44,6 @@ public class RuntimeEnvironmentUtil {
 
   public boolean isIntegrationTestEnvironment() {
     return ApplicationProfile.TEST.getProfile().equals(getEnvironmentId());
-  }
-
-  public URI getBackendBaseUri() {
-    return serverUri;
   }
 
   public String getFileStorageBasePath() {

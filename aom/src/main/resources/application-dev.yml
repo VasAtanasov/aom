@@ -1,3 +1,5 @@
+environment:
+  id: dev
 server:
   port: ${SERVER_PORT:8080}
   compression:

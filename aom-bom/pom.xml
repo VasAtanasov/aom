@@ -23,7 +23,7 @@
 
         <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
         <version.dependencies.commons-io>2.11.0</version.dependencies.commons-io>
-        <version.dependencies.testcontainers>1.17.3</version.dependencies.testcontainers>
+        <version.dependencies.testcontainers>1.17.6</version.dependencies.testcontainers>
     </properties>
 
     <dependencyManagement>
@@ -41,12 +41,12 @@
                 <artifactId>commons-io</artifactId>
                 <version>${version.dependencies.commons-io}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers</artifactId>
-                <scope>test</scope>
-                <version>${version.dependencies.testcontainers}</version>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>1.17.6</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -24,7 +24,7 @@ public class AomApplication extends SpringApplication {
   /** Enforce activation of profiles defined in {@link ApplicationProfile}. */
   @Override
   protected void postProcessApplicationContext(ConfigurableApplicationContext context) {
-    enforceProfiles(context);
+//    enforceProfiles(context);
     super.postProcessApplicationContext(context);
   }
 
