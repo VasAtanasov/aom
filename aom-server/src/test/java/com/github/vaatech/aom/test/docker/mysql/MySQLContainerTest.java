@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.test.mysql;
+package com.github.vaatech.aom.test.docker.mysql;
 
 import com.github.vaatech.aom.BaseApplicationTest;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import javax.sql.DataSource;
 
-import static com.github.vaatech.aom.test.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
+import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 

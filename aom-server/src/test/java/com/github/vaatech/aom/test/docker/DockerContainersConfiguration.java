@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -19,12 +19,12 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 
 @Configuration
-@AutoConfigureOrder(value = Ordered.HIGHEST_PRECEDENCE)
-@ConditionalOnExpression("${containers.enabled:true}")
-public class DockerContainersBootstrapConfiguration {
+@AutoConfigureOrder(value = Ordered.LOWEST_PRECEDENCE)
+@ConditionalOnProperty(name = "containers.enabled", matchIfMissing = true)
+public class DockerContainersConfiguration {
 
   private static final Logger LOGGER =
-      LogManager.getFormatterLogger(DockerContainersBootstrapConfiguration.class);
+      LogManager.getFormatterLogger(DockerContainersConfiguration.class);
 
   public static final String DOCKER_ENVIRONMENT = "dockerEnvironment";
 

@@ -158,6 +158,7 @@
                 <module>aom</module>
                 <module>aom-docker</module>
                 <module>aom-server</module>
+                <module>aom-integration-test</module>
             </modules>
         </profile>
         <profile>
@@ -170,6 +171,7 @@
                 <module>aom-dao</module>
                 <module>aom</module>
                 <module>aom-server</module>
+                <module>aom-integration-test</module>
             </modules>
         </profile>
         <profile>

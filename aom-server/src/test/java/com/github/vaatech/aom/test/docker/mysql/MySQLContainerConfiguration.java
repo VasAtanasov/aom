@@ -1,10 +1,12 @@
-package com.github.vaatech.aom.test.mysql;
+package com.github.vaatech.aom.test.docker.mysql;
 
 import com.github.vaatech.aom.test.docker.ContainerUtils;
 import com.github.vaatech.aom.test.docker.DockerContainer;
+import com.github.vaatech.aom.test.docker.DockerPresenceAutoConfiguration;
 import com.github.vaatech.aom.test.docker.StartableDecorator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,10 +19,10 @@ import org.testcontainers.containers.wait.strategy.Wait;
 
 import java.util.LinkedHashMap;
 
-import static com.github.vaatech.aom.test.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
+import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
 
 /**
- * {@link MySQLContainerBootstrapConfiguration} is a configuration class that sets up and configures
+ * {@link MySQLContainerConfiguration} is a configuration class that sets up and configures
  * a MySQL container using the Testcontainers library.
  *
  * <p>This class is used to conditionally register a {@link GenericContainer} bean for a MySQL
@@ -36,14 +38,15 @@ import static com.github.vaatech.aom.test.mysql.MySQLProperties.BEAN_NAME_CONTAI
  *
  * @see MySQLProperties
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnExpression("${containers.enabled:true}")
-@ConditionalOnProperty(name = "container.mysql.enabled")
+@AutoConfigureAfter(DockerPresenceAutoConfiguration.class)
+@ConditionalOnProperty(name = "container.mysql.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(MySQLProperties.class)
-public class MySQLContainerBootstrapConfiguration {
+public class MySQLContainerConfiguration {
 
   private static final Logger LOGGER =
-      LogManager.getFormatterLogger(MySQLContainerBootstrapConfiguration.class);
+      LogManager.getFormatterLogger(MySQLContainerConfiguration.class);
 
   /**
    * Bean that starts and stops the MySQL container. The container is configured with properties

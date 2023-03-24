@@ -1,19 +1,18 @@
-package com.github.vaatech.aom.test.mysql;
+package com.github.vaatech.aom.test.docker.mysql;
 
 import com.github.vaatech.aom.DependsOnPostProcessor;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
-import static com.github.vaatech.aom.test.docker.DockerContainersBootstrapConfiguration.DOCKER_ENVIRONMENT;
-import static com.github.vaatech.aom.test.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
+import static com.github.vaatech.aom.test.docker.DockerContainersConfiguration.DOCKER_ENVIRONMENT;
+import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
 
 /**
  * {@code @AutoConfiguration} class for MySQL container dependencies. This configuration class is
@@ -33,14 +32,13 @@ import static com.github.vaatech.aom.test.mysql.MySQLProperties.BEAN_NAME_CONTAI
  * DependsOnPostProcessor}, which sets the bean named "containerMySql" as a dependency for any
  * {@link DataSource} beans present in the application context.
  */
-@Configuration
+@AutoConfiguration(
+    afterName = "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration")
 @AutoConfigureOrder
 @ConditionalOnClass(DataSource.class)
 @ConditionalOnExpression("${containers.enabled:true}")
-@ConditionalOnProperty(name = "container.mysql.enabled")
-@AutoConfigureAfter(
-    name = "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration")
-public class MySQLContainerDependenciesAutoConfiguration {
+@ConditionalOnProperty(name = "container.mysql.enabled", matchIfMissing = true)
+public class MySQLContainerAutoConfiguration {
 
   /**
    * @return {@link BeanFactoryPostProcessor} that sets the {@link DataSource} bean to depend on the

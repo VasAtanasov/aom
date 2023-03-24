@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.test.mysql;
+package com.github.vaatech.aom.test.docker.mysql;
 
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.utility.DockerImageName;

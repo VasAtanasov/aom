@@ -1,12 +1,12 @@
-package com.github.vaatech.aom.test.mysql;
+package com.github.vaatech.aom.test.docker.mysql;
 
 import com.github.vaatech.aom.test.docker.CommonContainerProperties;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Getter
-@Setter
+@Data
+@EqualsAndHashCode(callSuper = true)
 @ConfigurationProperties("container.mysql")
 public class MySQLProperties extends CommonContainerProperties {
   public static final String BEAN_NAME_CONTAINER_MYSQL = "containerMySQL";
