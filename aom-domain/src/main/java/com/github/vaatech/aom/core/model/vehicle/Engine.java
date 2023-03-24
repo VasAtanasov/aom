@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.github.vaatech.aom.core.model.vehicle.Engine.Persistence.*;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,12 +15,8 @@ import lombok.Setter;
 @Table(
     name = Engine.Persistence.TABLE_NAME,
     indexes = {
-      @Index(
-          name = Engine.Persistence.INDEX_ENGINE_NAME,
-          columnList = Engine.Persistence.COLUMN_NAME),
-      @Index(
-          name = Engine.Persistence.INDEX_ENGINE_IS_STANDARD,
-          columnList = Engine.Persistence.COLUMN_IS_STANDARD)
+      @Index(name = INDEX_ENGINE_NAME, columnList = COLUMN_NAME),
+      @Index(name = INDEX_ENGINE_IS_STANDARD, columnList = COLUMN_IS_STANDARD)
     })
 public class Engine implements BaseEntity<Integer> {
 
@@ -42,7 +40,7 @@ public class Engine implements BaseEntity<Integer> {
   @Column(name = Persistence.COLUMN_ID, updatable = false, nullable = false)
   private Integer id;
 
-  @Column(name = Persistence.COLUMN_NAME)
+  @Column(name = COLUMN_NAME)
   private String name;
 
   @Column(name = Persistence.COLUMN_IS_STANDARD)
