@@ -45,7 +45,7 @@
     </build>
 
     <modules>
-        <module>aom-server</module>
+        <module>aom-app</module>
     </modules>
 
 </project>

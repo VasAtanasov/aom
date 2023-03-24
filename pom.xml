@@ -59,7 +59,19 @@
 
             <dependency>
                 <groupId>com.github.vaatech</groupId>
-                <artifactId>aom-model</artifactId>
+                <artifactId>aom-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-server</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -119,51 +131,6 @@
             </plugins>
         </pluginManagement>
 
-        <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.hibernate</groupId>-->
-<!--                            <artifactId>hibernate-jpamodelgen</artifactId>-->
-<!--                            <version>${hibernate.version}</version>-->
-<!--                        </path>-->
-<!--                        <path>-->
-<!--                            <artifactId>mapstruct-processor</artifactId>-->
-<!--                            <groupId>org.mapstruct</groupId>-->
-<!--                            <version>${version.dependencies.mapstruct}</version>-->
-<!--                        </path>-->
-<!--                        <path>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <version>${lombok.version}</version>-->
-<!--                        </path>-->
-<!--                        &lt;!&ndash; additional annotation processor required as of Lombok 1.18.16 &ndash;&gt;-->
-<!--                        <path>-->
-<!--                            <artifactId>lombok-mapstruct-binding</artifactId>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <version>${version.dependencies.lombok.mapstruct.binding}</version>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <artifactId>maven-source-plugin</artifactId>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>jar</goal>-->
-<!--                        </goals>-->
-<!--                        <id>generate-source-jar</id>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-
-
-        </plugins>
     </build>
 
     <distributionManagement>
@@ -186,9 +153,11 @@
                 <module>aom-commons</module>
                 <module>aom-api</module>
                 <module>aom-dbupdate</module>
-                <module>aom-model</module>
+                <module>aom-domain</module>
+                <module>aom-dao</module>
                 <module>aom</module>
                 <module>aom-docker</module>
+                <module>aom-server</module>
             </modules>
         </profile>
         <profile>
@@ -197,8 +166,10 @@
                 <module>aom-commons</module>
                 <module>aom-api</module>
                 <module>aom-dbupdate</module>
-                <module>aom-model</module>
+                <module>aom-domain</module>
+                <module>aom-dao</module>
                 <module>aom</module>
+                <module>aom-server</module>
             </modules>
         </profile>
         <profile>
