@@ -17,7 +17,7 @@ public class MySQLProperties extends CommonContainerProperties {
   private int port = 3306;
 
   @Override
-  public String getDefaultDockerImage() {
-    return "vasatanasov/mysql-base:u20.04-8.0";
+  public DockerImage getDefaultDockerImage() {
+    return new DockerImage("vasatanasov", "mysql-base", "u20.04-8.0");
   }
 }

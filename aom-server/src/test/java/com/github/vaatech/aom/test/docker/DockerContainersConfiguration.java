@@ -1,15 +1,18 @@
 package com.github.vaatech.aom.test.docker;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.testcontainers.containers.ContainerState;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.Network;
 
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -18,6 +21,7 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 
+@Slf4j
 @Configuration
 @AutoConfigureOrder(value = Ordered.LOWEST_PRECEDENCE)
 @ConditionalOnProperty(name = "containers.enabled", matchIfMissing = true)
@@ -27,6 +31,14 @@ public class DockerContainersConfiguration {
       LogManager.getFormatterLogger(DockerContainersConfiguration.class);
 
   public static final String DOCKER_ENVIRONMENT = "dockerEnvironment";
+
+  @Bean
+  @ConditionalOnMissingBean(Network.class)
+  Network network() {
+    Network network = Network.newNetwork();
+    log.info("Created docker Network with id={}", network.getId());
+    return network;
+  }
 
   @Bean(name = DOCKER_ENVIRONMENT)
   public DockerEnvironment dockerContainers(
