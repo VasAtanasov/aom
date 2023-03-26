@@ -1,16 +1,17 @@
-file:
-  storage:
-    folder:
-environment:
-  id: test
+app:
+  dev:
+    mode: true
+  file:
+    storage:
+      folder: ''
 spring:
-  flyway:
-    enabled: true
-    baseline-version: '1_0'
-    baseline-description: Aom integration test baseline
-    clean-disabled: false
   main:
     allow-bean-definition-overriding: true
+  flyway:
+    enabled: true
+    baseline-version: 1_0
+    baseline-description: Aom integration test baseline
+    clean-disabled: false
   jpa:
     hibernate:
       ddl-auto: none
@@ -24,10 +25,6 @@ spring:
     url: jdbc:mysql://${container.mysql.host:localhost}:${container.mysql.port:3306}/${container.mysql.database:aom_test}${container.mysql.options:?createDatabaseIfNotExist=true}
     username: ${container.mysql.username:aom_dev}
     password: ${container.mysql.password:aom_dev}
-    tomcat:
-      test-on-connect: true
-      validation-query: SELECT 1;
-      test-on-borrow: true
   sql:
     init:
       mode: never
@@ -36,8 +33,10 @@ containers:
 container:
   mysql:
     enabled: true
-    dockerImage: vasatanasov/mysql-dev
-    dockerImageVersion: u20.04-8.0-2.0.0
+    docker-image:
+      registry: vasatanasov
+      name: mysql-dev
+      version: u20.04-8.0-2.0.0
     database: aom_test
     password: root
     username: root

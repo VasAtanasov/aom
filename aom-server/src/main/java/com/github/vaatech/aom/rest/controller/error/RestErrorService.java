@@ -85,7 +85,7 @@ public class RestErrorService {
     final RestError.Builder builder =
         new RestError.Builder(HttpStatus.BAD_REQUEST).setMessage("Constraint violation");
 
-    if (runtimeEnvironmentUtil.isProductionEnvironment()) {
+    if (!runtimeEnvironmentUtil.isDevMode()) {
       return builder.build();
     }
 

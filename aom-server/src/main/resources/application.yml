@@ -1,19 +1,58 @@
-file:
-  storage:
-    folder:
+app:
+  dev:
+    mode: ${APP_DEV_MODE:false}
+  logging:
+    level: ${APP_LOG_LEVEL:INFO}
+  file:
+    storage:
+      folder: ${APP_FILE_STORAGE_FOLDER:}
+server:
+  port: ${SERVER_PORT:8080}
+  compression:
+    enabled: true
 spring:
-  flyway:
-    enabled: false
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: none
-    generate-ddl: false
-    properties:
-      hibernate:
-        globally_quoted_identifiers: true
   main:
     banner-mode: off
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 1_0
+    baseline-description: AOM Init schema
+    locations: classpath:db/migration
+    table: ${MIGRATION_TABLE_NAME:_dbupdate_aom}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
+        dialect: com.github.vaatech.aom.config.MySQL8UnicodeDialect
+        globally_quoted_identifiers: true
+    open-in-view: false
+    generate-ddl: false
+    database: mysql
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: ${DB_CONNECTION_URL}
   sql:
     init:
       mode: never
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+      hibernate: INFO
+    com:
+      github:
+        vaatech:
+          aom: ${app.logging.level}
+  file:
+    name: ${LOG_FILE_NAME:aom}
+    path: ${LOG_FILE_PATH:logs}
+  config: classpath:logback-spring.xml
