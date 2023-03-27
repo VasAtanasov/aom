@@ -11,19 +11,4 @@
 
     <artifactId>aom-api-dto</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.vaatech</groupId>
-            <artifactId>aom-domain</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
 </project>
