@@ -17,15 +17,15 @@ public class ContainerUtils {
   private static final Logger LOGGER = LogManager.getFormatterLogger(ContainerUtils.class);
 
   public static DockerImageName getDockerImageName(CommonContainerProperties properties) {
-    String customImageName = properties.getDockerImage().fullImageName();
+    CommonContainerProperties.DockerImage customDockerImage = properties.getDockerImage();
     String defaultDockerImageName = properties.getDefaultDockerImage().fullImageName();
-    if (customImageName == null && defaultDockerImageName == null) {
+    if (customDockerImage == null && defaultDockerImageName == null) {
       throw new IllegalStateException("Please specify dockerImage for the container.");
     }
-    if (customImageName == null) {
+    if (customDockerImage == null) {
       return setupImage(defaultDockerImageName, properties);
     }
-    DockerImageName customImage = setupImage(customImageName, properties);
+    DockerImageName customImage = setupImage(customDockerImage.fullImageName(), properties);
     if (defaultDockerImageName == null) {
       return customImage;
     }
@@ -39,7 +39,7 @@ public class ContainerUtils {
   private static DockerImageName setupImage(
       String imageName, CommonContainerProperties properties) {
     DockerImageName image = DockerImageName.parse(imageName);
-    if (properties.getDockerImage().version() != null) {
+    if (properties.getDockerImage() != null && properties.getDockerImage().version() != null) {
       image = image.withTag(properties.getDockerImage().version());
     }
     return image;
