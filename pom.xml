@@ -31,7 +31,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <!-- Internal dependencies -->
             <dependency>
                 <groupId>com.github.vaatech</groupId>
@@ -142,44 +141,16 @@
         </repository>
     </distributionManagement>
 
-
-    <profiles>
-        <profile>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <id>dev</id>
-            <modules>
-                <module>aom-commons</module>
-                <module>aom-api</module>
-                <module>aom-dbupdate</module>
-                <module>aom-domain</module>
-                <module>aom-dao</module>
-                <module>aom</module>
-                <module>aom-docker</module>
-                <module>aom-server</module>
-                <module>aom-integration-test</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>java</id>
-            <modules>
-                <module>aom-commons</module>
-                <module>aom-api</module>
-                <module>aom-dbupdate</module>
-                <module>aom-domain</module>
-                <module>aom-dao</module>
-                <module>aom</module>
-                <module>aom-server</module>
-                <module>aom-integration-test</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>docker</id>
-            <modules>
-                <module>aom-docker</module>
-            </modules>
-        </profile>
-    </profiles>
+    <modules>
+        <module>aom-commons</module>
+        <module>aom-api</module>
+        <module>aom-dbupdate</module>
+        <module>aom-domain</module>
+        <module>aom-dao</module>
+        <module>aom</module>
+        <module>aom-docker</module>
+        <module>aom-server</module>
+        <module>aom-integration-test</module>
+    </modules>
 
 </project>

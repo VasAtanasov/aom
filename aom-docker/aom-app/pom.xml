@@ -22,9 +22,11 @@
     </properties>
 
     <dependencies>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>com.github.vaatech</groupId>
-            <artifactId>aom</artifactId>
+            <artifactId>aom-server</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
