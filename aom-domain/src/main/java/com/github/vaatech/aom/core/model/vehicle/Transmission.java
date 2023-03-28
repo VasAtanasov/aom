@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,9 +25,8 @@ public class Transmission implements BaseEntity<Integer> {
     String TABLE_NAME = "transmission";
     String COLUMN_ID = "id";
     String COLUMN_NAME = "name";
-    String COLUMN_TRIM_ID = "trim_id";
     String INDEX_TRANSMISSION_NAME = "INDEX_TRANSMISSION_NAME";
-    String FK_TRANSMISSIONS_TO_TRIMS_ID = "FK_TRANSMISSIONS_TO_TRIMS_ID";
+    String MAPPED_BY_TRANSMISSIONS = "transmissions";
   }
 
   public interface Properties {
@@ -40,10 +41,6 @@ public class Transmission implements BaseEntity<Integer> {
   @Column(name = Persistence.COLUMN_NAME)
   private String name;
 
-  @ManyToOne(targetEntity = Trim.class, fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(
-      name = Persistence.COLUMN_TRIM_ID,
-      referencedColumnName = Trim.Persistence.COLUMN_ID,
-      foreignKey = @ForeignKey(name = Persistence.FK_TRANSMISSIONS_TO_TRIMS_ID))
-  private Trim trim;
+  @ManyToMany(mappedBy = Persistence.MAPPED_BY_TRANSMISSIONS, fetch = FetchType.LAZY)
+  private Set<Trim> trim;
 }

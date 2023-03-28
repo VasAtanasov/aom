@@ -29,9 +29,12 @@ public class Trim implements BaseEntity<Integer> {
     String TABLE_NAME = "trim";
     String COLUMN_ID = "id";
     String COLUMN_TRIM = "trim";
-    String COLUMN_CAR_ID = "car_id";
+    String COLUMN_MODEL_YEAR_ID = "model_year_id";
     String FK_TRIMS_TO_CARS_ID = "FK_TRIMS_TO_CARS_ID";
     String INDEX_TRIM_NAME = "INDEX_TRIM_NAME";
+    String JOIN_TABLE_NAME_TRIM_TRANSMISSION = "trim_transmission";
+    String JOIN_TABLE_COLUMN_TRIM_ID = "trim_id";
+    String JOIN_TABLE_COLUMN_TRANSMISSION_ID = "transmission_id";
   }
 
   public interface Properties {
@@ -48,7 +51,7 @@ public class Trim implements BaseEntity<Integer> {
 
   @ManyToOne(targetEntity = ModelYear.class, fetch = FetchType.LAZY, optional = false)
   @JoinColumn(
-      name = Persistence.COLUMN_CAR_ID,
+      name = Persistence.COLUMN_MODEL_YEAR_ID,
       referencedColumnName = ModelYear.Persistence.COLUMN_ID,
       foreignKey = @ForeignKey(name = Persistence.FK_TRIMS_TO_CARS_ID))
   private ModelYear modelYear;
@@ -56,7 +59,11 @@ public class Trim implements BaseEntity<Integer> {
   @OneToMany(mappedBy = Engine.Properties.TRIM, fetch = FetchType.LAZY)
   private Set<Engine> engines = new HashSet<>();
 
-  @OneToMany(mappedBy = Transmission.Properties.TRIM, fetch = FetchType.LAZY)
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  @JoinTable(
+      name = Persistence.JOIN_TABLE_NAME_TRIM_TRANSMISSION,
+      joinColumns = @JoinColumn(name = Persistence.JOIN_TABLE_COLUMN_TRIM_ID),
+      inverseJoinColumns = @JoinColumn(name = Persistence.JOIN_TABLE_COLUMN_TRANSMISSION_ID))
   private Set<Transmission> transmissions = new HashSet<>();
 
   @OneToMany(mappedBy = Option.Properties.TRIM, fetch = FetchType.LAZY)
