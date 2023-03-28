@@ -45,11 +45,11 @@ BEGIN
     (
         `id`     int                                     NOT NULL AUTO_INCREMENT,
         `trim`   varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-        `car_id` int                                     NOT NULL,
+        `model_year_id` int                                     NOT NULL,
         PRIMARY KEY (`id`),
         KEY `INDEX_TRIM_NAME` (`trim`),
-        KEY `FK_TRIMS_TO_CARS_ID` (`car_id`),
-        CONSTRAINT `FK_TRIMS_TO_CARS_ID` FOREIGN KEY (`car_id`) REFERENCES `model_year` (`id`)
+        KEY `FK_TRIMS_TO_CARS_ID` (`model_year_id`),
+        CONSTRAINT `FK_TRIMS_TO_CARS_ID` FOREIGN KEY (`model_year_id`) REFERENCES `model_year` (`id`)
     ) ENGINE = InnoDB
       DEFAULT CHARSET = utf8mb4
       COLLATE = utf8mb4_unicode_ci;
@@ -73,11 +73,20 @@ BEGIN
     (
         `id`      int NOT NULL AUTO_INCREMENT,
         `name`    varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-        `trim_id` int NOT NULL,
         PRIMARY KEY (`id`),
-        KEY `INDEX_TRANSMISSION_NAME` (`name`),
-        KEY `FK_TRANSMISSIONS_TO_TRIMS_ID` (`trim_id`),
-        CONSTRAINT `FK_TRANSMISSIONS_TO_TRIMS_ID` FOREIGN KEY (`trim_id`) REFERENCES `trim` (`id`)
+        KEY `INDEX_TRANSMISSION_NAME` (`name`)
+    ) ENGINE = InnoDB
+      DEFAULT CHARSET = utf8mb4
+      COLLATE = utf8mb4_unicode_ci;
+
+    CREATE TABLE IF NOT EXISTS trim_transmission
+    (
+        `transmission_id` INT NOT NULL,
+        `trim_id`         INT NOT NULL,
+        PRIMARY KEY (`transmission_id`, `trim_id`),
+        CONSTRAINT `FK_TRITRA_ON_TRANSMISSION` FOREIGN KEY (`transmission_id`) REFERENCES `transmission` (`id`),
+        CONSTRAINT `FK_TRITRA_ON_TRIM` FOREIGN KEY (`trim_id`) REFERENCES `trim` (`id`)
+
     ) ENGINE = InnoDB
       DEFAULT CHARSET = utf8mb4
       COLLATE = utf8mb4_unicode_ci;
