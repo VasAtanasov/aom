@@ -34,7 +34,7 @@ public class DockerContainersConfiguration {
 
   @Bean
   @ConditionalOnMissingBean(Network.class)
-  Network network() {
+  public Network network() {
     Network network = Network.newNetwork();
     log.info("Created docker Network with id={}", network.getId());
     return network;
@@ -43,6 +43,7 @@ public class DockerContainersConfiguration {
   @Bean(name = DOCKER_ENVIRONMENT)
   public DockerEnvironment dockerContainers(
       @Autowired(required = false) DockerContainer[] containers) throws Exception {
+
     if (containers == null) {
       return new DockerEnvironment(false, new GenericContainer<?>[0]);
     }

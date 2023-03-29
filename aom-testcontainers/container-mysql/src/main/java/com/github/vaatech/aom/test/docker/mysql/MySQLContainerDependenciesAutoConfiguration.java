@@ -1,6 +1,8 @@
 package com.github.vaatech.aom.test.docker.mysql;
 
 import com.github.vaatech.aom.DependsOnPostProcessor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -38,14 +40,15 @@ import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME
 @ConditionalOnClass(DataSource.class)
 @ConditionalOnExpression("${containers.enabled:true}")
 @ConditionalOnProperty(name = "container.mysql.enabled", matchIfMissing = true)
-public class MySQLContainerAutoConfiguration {
+public class MySQLContainerDependenciesAutoConfiguration {
 
   /**
    * @return {@link BeanFactoryPostProcessor} that sets the {@link DataSource} bean to depend on the
    *     MysSQL container bean.
    */
+  @Contract(" -> new")
   @Bean
-  public static BeanFactoryPostProcessor datasourceMySqlDependencyPostProcessor() {
+  public static @NotNull BeanFactoryPostProcessor datasourceMySqlDependencyPostProcessor() {
     return new DependsOnPostProcessor(
         DataSource.class, BEAN_NAME_CONTAINER_MYSQL, DOCKER_ENVIRONMENT);
   }

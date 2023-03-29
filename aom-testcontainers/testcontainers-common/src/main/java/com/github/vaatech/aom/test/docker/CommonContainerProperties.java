@@ -13,9 +13,6 @@ public abstract class CommonContainerProperties {
   public record DockerImage(String registry, String name, String version) {
 
     public DockerImage {
-      if (registry != null && registry.isBlank()) {
-        throw new IllegalArgumentException("Registry cannot be blank.");
-      }
       if (name == null || name.isBlank()) {
         throw new IllegalArgumentException("Name cannot be blank.");
       }
@@ -25,6 +22,7 @@ public abstract class CommonContainerProperties {
     }
 
     public String fullImageName() {
+      if (registry != null && registry.isBlank()) return String.format("%s:%s", name, version);
       return String.format("%s/%s:%s", registry, name, version);
     }
   }

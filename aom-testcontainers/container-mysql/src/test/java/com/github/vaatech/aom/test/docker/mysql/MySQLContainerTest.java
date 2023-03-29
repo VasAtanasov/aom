@@ -1,14 +1,15 @@
 package com.github.vaatech.aom.test.docker.mysql;
 
-import com.github.vaatech.aom.BaseApplicationTest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.EnabledIf;
 
 import javax.sql.DataSource;
 
@@ -16,11 +17,15 @@ import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@EnabledIf(
-    expression =
-        "#{environment.getProperty('container.mysql.enabled') && environment.getProperty('containers.enabled')}",
-    loadContext = true)
-public class MySQLContainerTest extends BaseApplicationTest {
+@Slf4j
+@SpringBootTest(
+    classes = {MySQLContainerTest.TestConfiguration.class},
+    properties = {
+      "spring.profiles.active=enabled",
+      "container.mysql.username=root",
+      "container.mysql.password=root",
+    })
+public class MySQLContainerTest {
 
   @Autowired ConfigurableListableBeanFactory beanFactory;
 
@@ -76,4 +81,7 @@ public class MySQLContainerTest extends BaseApplicationTest {
         .isNotEmpty()
         .contains(BEAN_NAME_CONTAINER_MYSQL);
   }
+
+  @SpringBootApplication(scanBasePackages = "com.github.vaatech.aom.test.docker")
+  static class TestConfiguration {}
 }

@@ -5,7 +5,7 @@
     {
       "name": "containers.enabled",
       "type": "java.lang.Boolean",
-      "defaultValue": true
+      "defaultValue": "true"
     }
   ],
   "hints": [

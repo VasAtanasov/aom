@@ -157,6 +157,7 @@
         <module>aom-docker</module>
         <module>aom-server</module>
         <module>aom-integration-test</module>
+        <module>aom-testcontainers</module>
     </modules>
 
 </project>
