@@ -13,10 +13,8 @@
     <artifactId>aom</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.github.vaatech</groupId>
-            <artifactId>aom-commons</artifactId>
-        </dependency>
+
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>com.github.vaatech</groupId>
             <artifactId>aom-dao</artifactId>

@@ -20,7 +20,11 @@
     <dependencies>
         <dependency>
             <groupId>com.github.vaatech</groupId>
-            <artifactId>aom-commons</artifactId>
+            <artifactId>validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>util</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
