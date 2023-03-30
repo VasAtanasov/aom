@@ -1,1 +1,1 @@
-com.github.vaatech.aom.test.docker.DockerPresenceAutoConfiguration
+com.github.vaatech.aom.test.docker.common.DockerPresenceAutoConfiguration

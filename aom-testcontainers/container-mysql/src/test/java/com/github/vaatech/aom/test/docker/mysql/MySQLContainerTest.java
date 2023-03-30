@@ -13,6 +13,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import javax.sql.DataSource;
 
+import static com.github.vaatech.aom.test.docker.common.DockerContainersConfiguration.DOCKER_ENVIRONMENT;
 import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,7 +80,7 @@ public class MySQLContainerTest {
     assertThat(beanFactory.getBeanDefinition(beanName).getDependsOn())
         .isNotNull()
         .isNotEmpty()
-        .contains(BEAN_NAME_CONTAINER_MYSQL);
+        .contains(DOCKER_ENVIRONMENT, BEAN_NAME_CONTAINER_MYSQL);
   }
 
   @SpringBootApplication(scanBasePackages = "com.github.vaatech.aom.test.docker")

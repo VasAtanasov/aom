@@ -1,9 +1,9 @@
 package com.github.vaatech.aom.test.docker.mysql;
 
-import com.github.vaatech.aom.test.docker.ContainerUtils;
-import com.github.vaatech.aom.test.docker.DockerContainer;
-import com.github.vaatech.aom.test.docker.DockerPresenceAutoConfiguration;
-import com.github.vaatech.aom.test.docker.StartableDecorator;
+import com.github.vaatech.aom.test.docker.common.ContainerUtils;
+import com.github.vaatech.aom.test.docker.common.DockerContainer;
+import com.github.vaatech.aom.test.docker.common.DockerPresenceAutoConfiguration;
+import com.github.vaatech.aom.test.docker.common.StartableDecorator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

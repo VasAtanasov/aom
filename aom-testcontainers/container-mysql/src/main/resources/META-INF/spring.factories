@@ -1,2 +1,2 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.github.vaatech.aom.test.docker.mysql.MySQLContainerConfiguration

@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.test.docker;
+package com.github.vaatech.aom.test.docker.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +22,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 
 @Slf4j
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureOrder(value = Ordered.LOWEST_PRECEDENCE)
 @ConditionalOnProperty(name = "containers.enabled", matchIfMissing = true)
 public class DockerContainersConfiguration {

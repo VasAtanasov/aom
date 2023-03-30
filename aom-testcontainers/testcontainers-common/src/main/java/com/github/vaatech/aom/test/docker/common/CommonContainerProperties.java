@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.test.docker;
+package com.github.vaatech.aom.test.docker.common;
 
 import lombok.Getter;
 import lombok.Setter;

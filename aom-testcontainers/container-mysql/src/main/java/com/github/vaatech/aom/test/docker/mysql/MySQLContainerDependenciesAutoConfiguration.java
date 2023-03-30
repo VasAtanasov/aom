@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Bean;
 
 import javax.sql.DataSource;
 
-import static com.github.vaatech.aom.test.docker.DockerContainersConfiguration.DOCKER_ENVIRONMENT;
+import static com.github.vaatech.aom.test.docker.common.DockerContainersConfiguration.DOCKER_ENVIRONMENT;
 import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME_CONTAINER_MYSQL;
+import static org.springframework.boot.autoconfigure.AutoConfigureOrder.DEFAULT_ORDER;
 
 /**
  * {@code @AutoConfiguration} class for MySQL container dependencies. This configuration class is
@@ -36,7 +37,7 @@ import static com.github.vaatech.aom.test.docker.mysql.MySQLProperties.BEAN_NAME
  */
 @AutoConfiguration(
     afterName = "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration")
-@AutoConfigureOrder
+@AutoConfigureOrder(DEFAULT_ORDER)
 @ConditionalOnClass(DataSource.class)
 @ConditionalOnExpression("${containers.enabled:true}")
 @ConditionalOnProperty(name = "container.mysql.enabled", matchIfMissing = true)

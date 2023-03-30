@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.test.docker;
+package com.github.vaatech.aom.test.docker.common;
 
 public record DockerPresenceMarker(boolean dockerPresent) {
   public DockerPresenceMarker {

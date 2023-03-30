@@ -1,6 +1,6 @@
 package com.github.vaatech.aom.test.docker.mysql;
 
-import com.github.vaatech.aom.test.docker.CommonContainerProperties;
+import com.github.vaatech.aom.test.docker.common.CommonContainerProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;

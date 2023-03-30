@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.test.docker;
+package com.github.vaatech.aom.test.docker.common;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import org.testcontainers.containers.GenericContainer;

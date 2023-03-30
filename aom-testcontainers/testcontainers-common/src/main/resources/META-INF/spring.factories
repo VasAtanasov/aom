@@ -1,2 +1,2 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=\
-  com.github.vaatech.aom.test.docker.DockerContainersConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.vaatech.aom.test.docker.common.DockerContainersConfiguration
