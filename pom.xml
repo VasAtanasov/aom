@@ -4,15 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <groupId>com.github.vaatech</groupId>
-        <artifactId>aom-bom</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
-        <relativePath>aom-bom/pom.xml</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.2</version>
+        <relativePath/>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>aom-parent</artifactId>
+    <groupId>com.github.vaatech</groupId>
+    <artifactId>aom</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
@@ -21,81 +22,7 @@
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <plugin.manve.docker.version>0.40.1</plugin.manve.docker.version>
-        <plugin.maven.resource.version>3.2.0</plugin.maven.resource.version>
-
-        <version.dependencies.lombok.mapstruct.binding>0.2.0</version.dependencies.lombok.mapstruct.binding>
-        <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Internal dependencies -->
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>util</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>validation</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom-api-dto</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom-api-rest</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom-dbupdate</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom-domain</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom-dao</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom-server</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <!-- Test containers -->
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>aom</artifactId>
-                <scope>test</scope>
-                <type>test-jar</type>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <pluginManagement>
@@ -148,12 +75,14 @@
     </distributionManagement>
 
     <modules>
+        <module>aom-bom</module>
+        <module>aom-parent</module>
         <module>aom-commons</module>
         <module>aom-api</module>
         <module>aom-dbupdate</module>
         <module>aom-domain</module>
         <module>aom-dao</module>
-        <module>aom</module>
+        <module>aom-cache</module>
         <module>aom-docker</module>
         <module>aom-server</module>
         <module>aom-integration-test</module>

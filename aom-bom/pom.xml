@@ -5,49 +5,41 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.2</version>
-        <relativePath/>
+        <groupId>com.github.vaatech</groupId>
+        <artifactId>aom</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.github.vaatech</groupId>
     <artifactId>aom-bom</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
-
     <packaging>pom</packaging>
 
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
-        <version.dependencies.commons-io>2.11.0</version.dependencies.commons-io>
-        <version.dependencies.testcontainers>1.17.6</version.dependencies.testcontainers>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-
-            <!-- 3d Party dependencies -->
             <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-                <version>${version.dependencies.mapstruct}</version>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>testcontainers-common</artifactId>
+                <version>${project.version}</version>
             </dependency>
-
             <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${version.dependencies.commons-io}</version>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>container-mysql</artifactId>
+                <version>${project.version}</version>
             </dependency>
-
             <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-bom</artifactId>
-                <version>${version.dependencies.testcontainers}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-api-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-api-dto</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

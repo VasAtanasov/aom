@@ -6,6 +6,7 @@
         <artifactId>aom-parent</artifactId>
         <groupId>com.github.vaatech</groupId>
         <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../aom-parent</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

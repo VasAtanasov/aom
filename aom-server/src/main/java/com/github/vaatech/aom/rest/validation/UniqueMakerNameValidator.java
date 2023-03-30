@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.validation;
+package com.github.vaatech.aom.rest.validation;
 
 import com.github.vaatech.aom.core.repository.MakerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

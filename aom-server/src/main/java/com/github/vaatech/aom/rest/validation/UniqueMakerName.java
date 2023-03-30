@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.validation;
+package com.github.vaatech.aom.rest.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
