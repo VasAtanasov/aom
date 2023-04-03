@@ -23,16 +23,6 @@
         <dependencies>
             <dependency>
                 <groupId>com.github.vaatech</groupId>
-                <artifactId>testcontainers-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
-                <artifactId>container-mysql</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.vaatech</groupId>
                 <artifactId>aom-api-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>

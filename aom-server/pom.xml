@@ -67,7 +67,6 @@
         <dependency>
             <groupId>com.github.vaatech</groupId>
             <artifactId>container-mysql</artifactId>
-            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

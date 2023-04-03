@@ -3,6 +3,7 @@ package com.github.vaatech.aom;
 import com.github.vaatech.aom.test.HibernateStatisticsExtension;
 import com.github.vaatech.aom.test.HibernateStatisticsHelper;
 import com.github.vaatech.aom.test.listeners.CleanDatabaseTestExecutionListener;
+import com.github.vaatech.test.docker.mysql.EnableMySQLContainer;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.stat.Statistics;
@@ -33,6 +34,7 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 public abstract class BaseApplicationTest {
 
   @SpringBootApplication
+  @EnableMySQLContainer
   public static class ApplicationTestConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "spring", name = "flyway.enabled")
