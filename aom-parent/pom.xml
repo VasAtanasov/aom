@@ -72,6 +72,12 @@
 
             <dependency>
                 <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-business-logic</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
                 <artifactId>aom-server</artifactId>
                 <version>${project.version}</version>
             </dependency>

@@ -2,17 +2,25 @@ package com.github.vaatech.aom.rest.controller;
 
 import com.github.vaatech.aom.api.dto.MakerDTO;
 import com.github.vaatech.aom.api.rest.controller.MakerRestApi;
+import com.github.vaatech.aom.bl.MakerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class MakerRestController implements MakerRestApi {
 
+  private final MakerService makerService;
+
+  public MakerRestController(MakerService makerService) {
+    this.makerService = makerService;
+  }
+
   @Override
-  public ResponseEntity<List<MakerDTO>> fetchMakers() {
-    return null;
+  public ResponseEntity<Page<MakerDTO>> fetchMakers(Pageable pageable) {
+    return ResponseEntity.ok(makerService.fetchMakers(pageable));
   }
 
   @Override
@@ -22,7 +30,7 @@ public class MakerRestController implements MakerRestApi {
 
   @Override
   public ResponseEntity<MakerDTO> createMaker(MakerDTO maker) {
-    return null;
+    return ResponseEntity.status(HttpStatus.CREATED).body(makerService.createMaker(maker));
   }
 
   @Override

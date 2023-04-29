@@ -32,16 +32,13 @@ containers:
   enabled: true
 container:
   mysql:
-    docker-image:
-      registry: vasatanasov
-      name: mysql-dev
-      version: u20.04-8.0-2.0.0
     database: aom_test
-    password: root
-    username: root
+    exposed-ports: 3306
 logging:
   level:
     org:
       springframework:
+#        boot:
+#          autoconfigure: DEBUG
         web: DEBUG
   config: classpath:logback-test.xml

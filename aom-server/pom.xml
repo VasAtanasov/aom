@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.vaatech</groupId>
-            <artifactId>aom-dao</artifactId>
+            <artifactId>aom-business-logic</artifactId>
         </dependency>
 
         <!--suppress VulnerableLibrariesLocal -->
