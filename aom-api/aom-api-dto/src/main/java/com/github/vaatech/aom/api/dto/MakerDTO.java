@@ -1,12 +1,12 @@
 package com.github.vaatech.aom.api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@Builder
 public class MakerDTO {
   private Integer id;
   private String name;

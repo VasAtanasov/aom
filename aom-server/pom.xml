@@ -116,22 +116,22 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <annotationProcessorPaths>
-                        <!--                        <path>-->
-                        <!--                            <artifactId>mapstruct-processor</artifactId>-->
-                        <!--                            <groupId>org.mapstruct</groupId>-->
-                        <!--                            <version>${version.dependencies.mapstruct}</version>-->
-                        <!--                        </path>-->
+                        <path>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <groupId>org.mapstruct</groupId>
+                            <version>${version.dependencies.mapstruct}</version>
+                        </path>
                         <path>
                             <artifactId>lombok</artifactId>
                             <groupId>org.projectlombok</groupId>
                             <version>${lombok.version}</version>
                         </path>
-                        <!--                        &lt;!&ndash; additional annotation processor required as of Lombok 1.18.16 &ndash;&gt;-->
-                        <!--                        <path>-->
-                        <!--                            <artifactId>lombok-mapstruct-binding</artifactId>-->
-                        <!--                            <groupId>org.projectlombok</groupId>-->
-                        <!--                            <version>${version.dependencies.lombok.mapstruct.binding}</version>-->
-                        <!--                        </path>-->
+                        <!-- additional annotation processor required as of Lombok 1.18.16 -->
+                        <path>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <groupId>org.projectlombok</groupId>
+                            <version>${version.dependencies.lombok.mapstruct.binding}</version>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
