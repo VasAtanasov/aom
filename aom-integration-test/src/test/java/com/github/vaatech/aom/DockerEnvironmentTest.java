@@ -1,6 +1,7 @@
 package com.github.vaatech.aom;
 
 import com.github.vaatech.test.common.spring.DockerEnvironment;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
@@ -15,6 +16,6 @@ class DockerEnvironmentTest extends BaseApplicationTest {
 
   @Test
   void shouldLoadDockerEnvironment() {
-    assertThat(dockerEnvironment).isNotNull();
+    Assertions.assertThat(dockerEnvironment).isNotNull();
   }
 }

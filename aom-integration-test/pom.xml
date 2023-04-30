@@ -19,6 +19,13 @@
     </properties>
 
     <dependencies>
+        <!--suppress VulnerableLibrariesLocal -->
+        <dependency>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>aom-server</artifactId>
+        </dependency>
+
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -28,6 +35,12 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>container-mysql</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -197,7 +197,7 @@ public final class HibernateStatisticsHelper {
                   return Tuple.of(queryStats.getExecutionCount(), query);
                 })
             .sorted(reverseOrder())
-            .map(pair -> format("%s%s: %s", " ".repeat(3), pair._1.toString(), pair._2))
+            .map(pair -> String.format("%s%s: %s", " ".repeat(3), pair._1.toString(), pair._2))
             .collect(joining("\n  "));
 
     if (!queryLines.isEmpty()) {

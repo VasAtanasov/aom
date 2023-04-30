@@ -19,8 +19,7 @@ public class MakerServiceImpl implements MakerService {
 
   @Override
   public Page<MakerDTO> fetchMakers(Pageable pageable) {
-    //    return makerRepository.findAll(pageable).map(MakerDTO::new));
-    return null;
+    return makerRepository.findAll(pageable).map(MakerMapper.INSTANCE::toDto);
   }
 
   @Override
