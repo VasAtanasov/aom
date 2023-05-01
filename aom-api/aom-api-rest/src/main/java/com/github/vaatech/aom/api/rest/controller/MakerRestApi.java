@@ -19,7 +19,7 @@ public interface MakerRestApi {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   ResponseEntity<Page<MakerDTO>> fetchMakers(
-      @PageableDefault(page = 0, size = 20)
+      @PageableDefault(size = 20)
           @SortDefault.SortDefaults({
             @SortDefault(sort = "name", direction = Sort.Direction.ASC),
             @SortDefault(sort = "id", direction = Sort.Direction.ASC)

@@ -20,7 +20,9 @@ public class MakerRestController implements MakerRestApi {
 
   @Override
   public ResponseEntity<Page<MakerDTO>> fetchMakers(Pageable pageable) {
-    return ResponseEntity.ok(makerService.fetchMakers(pageable));
+    Page<MakerDTO> page = makerService.fetchMakers(pageable);
+    return ResponseEntity.ok(page);
+    //    return ResponseEntity.ok(new PageResource<>(page));
   }
 
   @Override
@@ -30,7 +32,8 @@ public class MakerRestController implements MakerRestApi {
 
   @Override
   public ResponseEntity<MakerDTO> createMaker(MakerDTO maker) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(makerService.createMaker(maker));
+    MakerDTO makerDTO = makerService.createMaker(maker);
+    return ResponseEntity.status(HttpStatus.CREATED).body(makerDTO);
   }
 
   @Override

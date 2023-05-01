@@ -1,17 +1,19 @@
 package com.github.vaatech.aom;
 
-import com.github.vaatech.aom.test.DatabaseCleaner;
-import com.github.vaatech.aom.test.listeners.CleanDatabaseTestExecutionListener;
+// import com.github.vaatech.aom.test.listeners.CleanDatabaseTestExecutionListener;
+import com.github.vaatech.aom.test.HibernateStatisticsExtension;
+import com.github.vaatech.aom.test.HibernateStatisticsHelper;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.stat.Statistics;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
@@ -21,13 +23,15 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(
-    classes = {Application.class, BaseApplicationTest.ApplicationTestConfiguration.class},
+    classes = {/*Application.class,*/ BaseApplicationDataTest.ApplicationTestConfiguration.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestExecutionListeners(
-    listeners = CleanDatabaseTestExecutionListener.class,
+    listeners = {
+      /*CleanDatabaseTestExecutionListener.class*/
+    },
     mergeMode = MERGE_WITH_DEFAULTS)
-public abstract class BaseApplicationTest {
+public abstract class BaseApplicationDataTest {
 
   @SpringBootApplication
   public static class ApplicationTestConfiguration {
@@ -41,11 +45,24 @@ public abstract class BaseApplicationTest {
     }
   }
 
-  @LocalServerPort protected int port;
+  @RegisterExtension
+  public final HibernateStatisticsExtension statsVerifier =
+      new HibernateStatisticsExtension() {
+        @Override
+        protected Statistics getStatistics() {
+          return getHibernateStatistics();
+        }
+      };
 
   @Autowired protected EntityManager entityManager;
 
-  @Autowired DatabaseCleaner databaseCleaner;
+  protected Statistics getHibernateStatistics() {
+    return HibernateStatisticsHelper.getStatistics(entityManager);
+  }
+
+  protected void clearHibernateStatistics() {
+    getHibernateStatistics().clear();
+  }
 
   @BeforeEach
   public void initTest() {
@@ -53,6 +70,6 @@ public abstract class BaseApplicationTest {
   }
 
   protected void reset() {
-    databaseCleaner.clearManagedEntityTablesFromDatabase();
+    clearHibernateStatistics();
   }
 }
