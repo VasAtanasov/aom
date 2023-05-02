@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class MakerServiceImpl implements MakerService {
   private final MakerRepository makerRepository;
@@ -26,6 +28,17 @@ public class MakerServiceImpl implements MakerService {
   public MakerDTO createMaker(MakerDTO maker) {
     Maker makerEntity = MakerMapper.INSTANCE.toEntity(maker);
     Maker savedMaker = makerRepository.save(makerEntity);
+    return MakerMapper.INSTANCE.toDto(savedMaker);
+  }
+
+  public MakerDTO updateMaker(Long id, MakerDTO dto) {
+    Objects.requireNonNull(id);
+    Objects.requireNonNull(dto);
+
+    Maker maker =
+        makerRepository.findById(id).orElseThrow(() -> new RuntimeException("Maker not found"));
+    MakerMapper.INSTANCE.updateEntity(dto, maker);
+    Maker savedMaker = makerRepository.save(maker);
     return MakerMapper.INSTANCE.toDto(savedMaker);
   }
 }
