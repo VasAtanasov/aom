@@ -35,10 +35,5 @@ container:
     database: aom_test
     exposed-ports: 3306
 logging:
-  level:
-    org:
-      springframework:
-#        boot:
-#          autoconfigure: DEBUG
-        web: DEBUG
   config: classpath:logback-test.xml
+

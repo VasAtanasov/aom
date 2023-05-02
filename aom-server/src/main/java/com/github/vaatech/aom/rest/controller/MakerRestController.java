@@ -22,7 +22,6 @@ public class MakerRestController implements MakerRestApi {
   public ResponseEntity<Page<MakerDTO>> fetchMakers(Pageable pageable) {
     Page<MakerDTO> page = makerService.fetchMakers(pageable);
     return ResponseEntity.ok(page);
-    //    return ResponseEntity.ok(new PageResource<>(page));
   }
 
   @Override

@@ -22,7 +22,6 @@ public class MakerApiEndpointAbstractFactory {
 
   public ApiEndpoint.ApiEndpointBuilder fetchMakersPageApiEndpointBuilder(int page, int size) {
     var params = Parameters.with("page", String.valueOf(page)).and("size", String.valueOf(size));
-
     return ApiEndpoint.builder()
         .url(MAKER_ENDPOINT)
         .params(params.map())

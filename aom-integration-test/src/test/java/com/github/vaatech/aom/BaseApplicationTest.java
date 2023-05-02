@@ -1,7 +1,9 @@
 package com.github.vaatech.aom;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.vaatech.aom.test.DatabaseCleaner;
 import com.github.vaatech.aom.test.listeners.CleanDatabaseTestExecutionListener;
+import com.github.vaatech.aom.test.rest.PrettyPrintPayloadCommonsRequestLoggingFilter;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import static org.springframework.test.context.TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS;
 
@@ -39,6 +42,18 @@ public abstract class BaseApplicationTest {
         log.warn("Flyway migration on startup is skipped in test.");
       };
     }
+
+    @Bean
+    public CommonsRequestLoggingFilter logFilter(ObjectMapper objectMapper) {
+      CommonsRequestLoggingFilter filter =
+          new PrettyPrintPayloadCommonsRequestLoggingFilter(objectMapper);
+      filter.setIncludeQueryString(true);
+      filter.setIncludePayload(true);
+      filter.setIncludeHeaders(true);
+      filter.setIncludeClientInfo(true);
+      filter.setMaxPayloadLength(20000);
+      return filter;
+    }
   }
 
   @LocalServerPort protected int port;
@@ -53,6 +68,6 @@ public abstract class BaseApplicationTest {
   }
 
   protected void reset() {
-    databaseCleaner.clearManagedEntityTablesFromDatabase();
+//    databaseCleaner.clearManagedEntityTablesFromDatabase();
   }
 }

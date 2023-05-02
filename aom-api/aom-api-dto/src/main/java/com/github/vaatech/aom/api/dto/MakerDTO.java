@@ -9,8 +9,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 @Builder
-public class MakerDTO implements Serializable
-{
+public class MakerDTO implements Serializable {
   private Integer id;
   private String name;
 }

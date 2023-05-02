@@ -3,6 +3,7 @@ package com.github.vaatech.aom;
 import com.github.vaatech.aom.rest.controller.error.RestError;
 import com.github.vaatech.aom.test.rest.ApiEndpoint;
 import com.github.vaatech.aom.test.rest.HttpClientException;
+import com.github.vaatech.aom.test.rest.PageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,6 +16,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 public abstract class BaseRestEndpointTestSupport extends BaseApplicationTest {
 
   @Autowired TestRestTemplate restTemplate;
+
+  protected <T> ResponseEntity<PageResponse<T>> executeForPage(
+      ApiEndpoint endpoint, ParameterizedTypeReference<PageResponse<T>> responseType) {
+    return executeInternal(endpoint, responseType);
+  }
 
   protected <T> ResponseEntity<T> execute(ApiEndpoint endpoint, Class<T> responseType) {
     return executeInternal(endpoint, ParameterizedTypeReference.forType(responseType));
