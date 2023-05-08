@@ -27,4 +27,11 @@ public class MakerApiEndpointAbstractFactory {
         .params(params.map())
         .httpMethod(HttpMethod.GET);
   }
+
+  public ApiEndpoint.ApiEndpointBuilder updateMakerApiEndpointBuilder(MakerDTO makerDTO) {
+    return ApiEndpoint.builder()
+        .url(MAKER_ENDPOINT + "/" + makerDTO.getId())
+        .httpMethod(HttpMethod.PUT)
+        .body(makerDTO);
+  }
 }

@@ -8,4 +8,6 @@ public interface MakerService {
   Page<MakerDTO> fetchMakers(Pageable pageable);
 
   MakerDTO createMaker(MakerDTO maker);
+
+  MakerDTO updateMaker(Long id, MakerDTO dto);
 }

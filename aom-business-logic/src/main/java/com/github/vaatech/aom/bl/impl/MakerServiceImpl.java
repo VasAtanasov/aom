@@ -31,6 +31,7 @@ public class MakerServiceImpl implements MakerService {
     return MakerMapper.INSTANCE.toDto(savedMaker);
   }
 
+  @Override
   public MakerDTO updateMaker(Long id, MakerDTO dto) {
     Objects.requireNonNull(id);
     Objects.requireNonNull(dto);

@@ -37,7 +37,8 @@ public class MakerRestController implements MakerRestApi {
 
   @Override
   public ResponseEntity<MakerDTO> updateMaker(Long id, MakerDTO maker) {
-    return null;
+    MakerDTO makerDTO = makerService.updateMaker(id, maker);
+    return ResponseEntity.ok(makerDTO);
   }
 
   @Override
