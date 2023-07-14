@@ -2,7 +2,6 @@ package com.github.vaatech.aom.rest.controller;
 
 import com.github.vaatech.aom.BaseRestEndpointTestSupport;
 import com.github.vaatech.aom.api.dto.MakerDTO;
-import com.github.vaatech.aom.rest.controller.error.RestError;
 import com.github.vaatech.aom.test.rest.ApiEndpoint;
 import com.github.vaatech.aom.test.rest.PageResponse;
 import com.github.vaatech.aom.test.rest.endpoint.MakerApiEndpointAbstractFactory;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.web.ErrorResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

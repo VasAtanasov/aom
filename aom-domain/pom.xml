@@ -19,13 +19,27 @@
     </properties>
 
     <dependencies>
+        <!--suppress VulnerableLibrariesLocal -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework</groupId>-->
+<!--            <artifactId>spring-context</artifactId>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.github.vaatech</groupId>
-            <artifactId>validation</artifactId>
+            <artifactId>aom-commons-validation</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.vaatech</groupId>
-            <artifactId>util</artifactId>
+            <artifactId>aom-commons-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>aom-commons-basic</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

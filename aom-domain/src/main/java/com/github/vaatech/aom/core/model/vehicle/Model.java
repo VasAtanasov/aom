@@ -2,7 +2,7 @@ package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.commons.validation.ModelName;
 import com.github.vaatech.aom.commons.validation.ValidationMessages;
-import com.github.vaatech.aom.core.model.common.BaseEntity;
+import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

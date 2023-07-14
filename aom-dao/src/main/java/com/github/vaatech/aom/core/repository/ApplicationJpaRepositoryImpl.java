@@ -1,6 +1,6 @@
 package com.github.vaatech.aom.core.repository;
 
-import com.github.vaatech.aom.core.model.common.BaseEntity;
+import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

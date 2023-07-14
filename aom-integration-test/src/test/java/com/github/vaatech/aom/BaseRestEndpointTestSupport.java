@@ -1,6 +1,6 @@
 package com.github.vaatech.aom;
 
-import com.github.vaatech.aom.rest.controller.error.RestError;
+//import com.github.vaatech.aom.rest.controller.error.RestError;
 import com.github.vaatech.aom.test.rest.ApiEndpoint;
 import com.github.vaatech.aom.test.rest.HttpClientException;
 import com.github.vaatech.aom.test.rest.PageResponse;
@@ -31,9 +31,9 @@ public abstract class BaseRestEndpointTestSupport extends BaseApplicationTest {
     return executeInternal(endpoint, responseType);
   }
 
-  protected ResponseEntity<RestError> executeForError(ApiEndpoint endpoint) {
-    return execute(endpoint, RestError.class);
-  }
+//  protected ResponseEntity<RestError> executeForError(ApiEndpoint endpoint) {
+//    return execute(endpoint, RestError.class);
+//  }
 
   private <T> ResponseEntity<T> executeInternal(
       ApiEndpoint endpoint, ParameterizedTypeReference<T> responseType) {

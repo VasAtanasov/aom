@@ -1,6 +1,7 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
-import com.github.vaatech.aom.core.model.common.BaseEntity;
+import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

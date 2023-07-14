@@ -30,13 +30,19 @@
             <!-- Internal dependencies -->
             <dependency>
                 <groupId>com.github.vaatech</groupId>
-                <artifactId>util</artifactId>
+                <artifactId>aom-commons-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.github.vaatech</groupId>
-                <artifactId>validation</artifactId>
+                <artifactId>aom-commons-validation</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.vaatech</groupId>
+                <artifactId>aom-commons-basic</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
