@@ -1,4 +1,4 @@
-package com.github.vaatech.core.aom.specification;
+package com.github.vaatech.aom.core.specification;
 
 import com.github.vaatech.aom.core.model.vehicle.Model;
 import com.github.vaatech.aom.core.model.vehicle.ModelYear;

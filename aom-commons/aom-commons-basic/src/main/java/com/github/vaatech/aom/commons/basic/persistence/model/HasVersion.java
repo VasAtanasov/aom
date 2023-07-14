@@ -3,7 +3,11 @@ package com.github.vaatech.aom.commons.basic.persistence.model;
 import java.util.UUID;
 
 public interface HasVersion {
-  void setUID(UUID uid);
+  default UUID getVersion() {
+    throw new UnsupportedOperationException();
+  }
 
-  void setVersion(UUID version);
+  default void setVersion(UUID version) {
+    throw new UnsupportedOperationException();
+  }
 }
