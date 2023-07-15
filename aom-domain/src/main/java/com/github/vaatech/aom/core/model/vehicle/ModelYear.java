@@ -2,12 +2,11 @@ package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * For a vehicle model, the calendar year designation assigned by the manufacturer to the annual
@@ -25,19 +24,6 @@ import java.util.List;
           columnList = ModelYear.Persistence.COLUMN_YEAR)
     })
 public class ModelYear implements BaseEntity<Integer> {
-
-  public interface Persistence {
-    String TABLE_NAME = "model_year";
-    String COLUMN_ID = "id";
-    String COLUMN_YEAR = "year";
-    String COLUMN_MODEL_ID = "model_id";
-    String FK_CARS_TO_MODELS_ID = "FK_CARS_TO_MODELS_ID";
-    String INDEX_MODEL_YEAR_YEAR = "INDEX_MODEL_YEAR_YEAR";
-  }
-
-  public interface Properties {
-    String MODEL = "model";
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,4 +46,17 @@ public class ModelYear implements BaseEntity<Integer> {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private List<Trim> trims = new ArrayList<>();
+
+  public interface Persistence {
+    String TABLE_NAME = "model_year";
+    String COLUMN_ID = "id";
+    String COLUMN_YEAR = "year";
+    String COLUMN_MODEL_ID = "model_id";
+    String FK_CARS_TO_MODELS_ID = "FK_CARS_TO_MODELS_ID";
+    String INDEX_MODEL_YEAR_YEAR = "INDEX_MODEL_YEAR_YEAR";
+  }
+
+  public interface Properties {
+    String MODEL = "model";
+  }
 }

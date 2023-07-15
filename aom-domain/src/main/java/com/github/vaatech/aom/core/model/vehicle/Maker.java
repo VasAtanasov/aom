@@ -2,12 +2,11 @@ package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -19,13 +18,6 @@ import java.util.Set;
       @Index(name = Maker.Persistence.INDEX_MAKER_NAME, columnList = Maker.Persistence.COLUMN_NAME)
     })
 public class Maker implements BaseEntity<Integer> {
-
-  public interface Persistence {
-    String TABLE_NAME = "maker";
-    String COLUMN_ID = "id";
-    String COLUMN_NAME = "name";
-    String INDEX_MAKER_NAME = "INDEX_MAKER_NAME";
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +33,11 @@ public class Maker implements BaseEntity<Integer> {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private Set<Model> models = new HashSet<>();
+
+  public interface Persistence {
+    String TABLE_NAME = "maker";
+    String COLUMN_ID = "id";
+    String COLUMN_NAME = "name";
+    String INDEX_MAKER_NAME = "INDEX_MAKER_NAME";
+  }
 }

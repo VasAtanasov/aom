@@ -22,7 +22,6 @@ public interface BaseLifecycleEntity<T extends Serializable>
     setVersion(UUID.randomUUID());
   }
 
-  @Override
   void setUID(UUID uid);
 
   void setCreatedAt(ZonedDateTime date);

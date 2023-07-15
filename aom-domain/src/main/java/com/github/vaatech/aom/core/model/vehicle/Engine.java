@@ -1,13 +1,12 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
-import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
+import static com.github.vaatech.aom.core.model.vehicle.Engine.Persistence.*;
 
+import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import static com.github.vaatech.aom.core.model.vehicle.Engine.Persistence.*;
 
 @Getter
 @Setter
@@ -20,21 +19,6 @@ import static com.github.vaatech.aom.core.model.vehicle.Engine.Persistence.*;
       @Index(name = INDEX_ENGINE_IS_STANDARD, columnList = COLUMN_IS_STANDARD)
     })
 public class Engine implements BaseEntity<Integer> {
-
-  public interface Persistence {
-    String TABLE_NAME = "engine";
-    String COLUMN_ID = "id";
-    String COLUMN_NAME = "name";
-    String COLUMN_IS_STANDARD = "is_standard";
-    String COLUMN_TRIM_ID = "trim_id";
-    String INDEX_ENGINE_NAME = "INDEX_ENGINE_NAME";
-    String INDEX_ENGINE_IS_STANDARD = "INDEX_ENGINE_IS_STANDARD";
-    String FK_ENGINES_TO_TRIMS_ID = "FK_ENGINES_TO_TRIMS_ID";
-  }
-
-  public interface Properties {
-    String TRIM = "trim";
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,4 +37,19 @@ public class Engine implements BaseEntity<Integer> {
       referencedColumnName = Trim.Persistence.COLUMN_ID,
       foreignKey = @ForeignKey(name = Persistence.FK_ENGINES_TO_TRIMS_ID))
   private Trim trim;
+
+  public interface Persistence {
+    String TABLE_NAME = "engine";
+    String COLUMN_ID = "id";
+    String COLUMN_NAME = "name";
+    String COLUMN_IS_STANDARD = "is_standard";
+    String COLUMN_TRIM_ID = "trim_id";
+    String INDEX_ENGINE_NAME = "INDEX_ENGINE_NAME";
+    String INDEX_ENGINE_IS_STANDARD = "INDEX_ENGINE_IS_STANDARD";
+    String FK_ENGINES_TO_TRIMS_ID = "FK_ENGINES_TO_TRIMS_ID";
+  }
+
+  public interface Properties {
+    String TRIM = "trim";
+  }
 }

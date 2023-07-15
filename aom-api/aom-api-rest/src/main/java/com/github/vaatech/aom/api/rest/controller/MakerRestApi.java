@@ -27,7 +27,7 @@ public interface MakerRestApi {
           Pageable pageable);
 
   @GetMapping(value = "/{id:\\d+}", produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<MakerDTO> findMakerById(@PathVariable Long id);
+  ResponseEntity<MakerDTO> findMakerById(@PathVariable Integer id);
 
   @PostMapping(
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -39,9 +39,9 @@ public interface MakerRestApi {
       value = "/{id:\\d+}",
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<MakerDTO> updateMaker(@PathVariable Long id, @RequestBody MakerDTO maker);
+  ResponseEntity<MakerDTO> updateMaker(@PathVariable Integer id, @RequestBody MakerDTO maker);
 
   @DeleteMapping("/{id:\\d+}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  ResponseEntity<Void> deleteMaker(@PathVariable Long id);
+  ResponseEntity<Void> deleteMaker(@PathVariable Integer id);
 }

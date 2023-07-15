@@ -25,24 +25,27 @@ public class MakerRestController implements MakerRestApi {
   }
 
   @Override
-  public ResponseEntity<MakerDTO> findMakerById(Long id) {
-    return null;
-  }
-
-  @Override
-  public ResponseEntity<MakerDTO> createMaker(MakerDTO maker) {
-    MakerDTO makerDTO = makerService.createMaker(maker);
-    return ResponseEntity.status(HttpStatus.CREATED).body(makerDTO);
-  }
-
-  @Override
-  public ResponseEntity<MakerDTO> updateMaker(Long id, MakerDTO maker) {
-    MakerDTO makerDTO = makerService.updateMaker(id, maker);
+  public ResponseEntity<MakerDTO> findMakerById(Integer id) {
+    MakerDTO makerDTO = makerService.read(id);
     return ResponseEntity.ok(makerDTO);
   }
 
   @Override
-  public ResponseEntity<Void> deleteMaker(Long id) {
-    return null;
+  public ResponseEntity<MakerDTO> createMaker(MakerDTO maker) {
+    MakerDTO makerDTO = makerService.create(maker);
+    return ResponseEntity.status(HttpStatus.CREATED).body(makerDTO);
+  }
+
+  @Override
+  public ResponseEntity<MakerDTO> updateMaker(Integer id, MakerDTO maker) {
+    maker.setId(id);
+    MakerDTO makerDTO = makerService.update(maker);
+    return ResponseEntity.ok(makerDTO);
+  }
+
+  @Override
+  public ResponseEntity<Void> deleteMaker(Integer id) {
+    makerService.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }

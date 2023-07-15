@@ -19,21 +19,6 @@ import lombok.Setter;
     })
 public class Option implements BaseEntity<Integer> {
 
-  public interface Persistence {
-    String TABLE_NAME = "option";
-    String COLUMN_ID = "id";
-    String COLUMN_NAME = "name";
-    String COLUMN_IMPORTANT = "important";
-    String COLUMN_ACTIVE = "active";
-    String COLUMN_TRIM_ID = "trim_id";
-    String INDEX_OPTION_NAME = "INDEX_OPTION_NAME";
-    String FK_OPTIONS_TO_TRIMS_ID = "FK_OPTIONS_TO_TRIMS_ID";
-  }
-
-  public interface Properties {
-    String TRIM = "trim";
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = Persistence.COLUMN_ID, updatable = false, unique = true, nullable = false)
@@ -54,4 +39,19 @@ public class Option implements BaseEntity<Integer> {
       referencedColumnName = Trim.Persistence.COLUMN_ID,
       foreignKey = @ForeignKey(name = Persistence.FK_OPTIONS_TO_TRIMS_ID))
   private Trim trim;
+
+  public interface Persistence {
+    String TABLE_NAME = "option";
+    String COLUMN_ID = "id";
+    String COLUMN_NAME = "name";
+    String COLUMN_IMPORTANT = "important";
+    String COLUMN_ACTIVE = "active";
+    String COLUMN_TRIM_ID = "trim_id";
+    String INDEX_OPTION_NAME = "INDEX_OPTION_NAME";
+    String FK_OPTIONS_TO_TRIMS_ID = "FK_OPTIONS_TO_TRIMS_ID";
+  }
+
+  public interface Properties {
+    String TRIM = "trim";
+  }
 }

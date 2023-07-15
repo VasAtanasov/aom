@@ -1,16 +1,15 @@
 package com.github.vaatech.aom.core.model.vehicle;
 
+import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import com.github.vaatech.aom.commons.validation.ModelName;
 import com.github.vaatech.aom.commons.validation.ValidationMessages;
-import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -22,19 +21,6 @@ import java.util.Set;
       @Index(name = Model.Persistence.INDEX_MODEL_NAME, columnList = Model.Persistence.COLUMN_NAME)
     })
 public class Model implements BaseEntity<Integer> {
-
-  public interface Persistence {
-    String COLUMN_ID = "id";
-    String TABLE_NAME = "model";
-    String COLUMN_NAME = "name";
-    String COLUMN_MAKER_ID = "maker_id";
-    String FK_MODEL_TO_MAKE_ID = "FK_MODEL_TO_MAKE_ID";
-    String INDEX_MODEL_NAME = "INDEX_MODEL_NAME";
-  }
-
-  public interface Properties {
-    String MAKER = "maker";
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,4 +45,17 @@ public class Model implements BaseEntity<Integer> {
       cascade = CascadeType.ALL,
       orphanRemoval = true)
   private Set<ModelYear> modelYears = new HashSet<>();
+
+  public interface Persistence {
+    String COLUMN_ID = "id";
+    String TABLE_NAME = "model";
+    String COLUMN_NAME = "name";
+    String COLUMN_MAKER_ID = "maker_id";
+    String FK_MODEL_TO_MAKE_ID = "FK_MODEL_TO_MAKE_ID";
+    String INDEX_MODEL_NAME = "INDEX_MODEL_NAME";
+  }
+
+  public interface Properties {
+    String MAKER = "maker";
+  }
 }

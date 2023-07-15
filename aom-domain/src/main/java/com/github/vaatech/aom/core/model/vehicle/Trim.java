@@ -2,12 +2,11 @@ package com.github.vaatech.aom.core.model.vehicle;
 
 import com.github.vaatech.aom.commons.basic.persistence.model.BaseEntity;
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Trim is a version of a particular model with a particular configuration. The different trim
@@ -25,22 +24,6 @@ import java.util.Set;
       @Index(name = Trim.Persistence.INDEX_TRIM_NAME, columnList = Trim.Persistence.COLUMN_TRIM)
     })
 public class Trim implements BaseEntity<Integer> {
-  public interface Persistence {
-    String TABLE_NAME = "trim";
-    String COLUMN_ID = "id";
-    String COLUMN_TRIM = "trim";
-    String COLUMN_MODEL_YEAR_ID = "model_year_id";
-    String FK_TRIMS_TO_CARS_ID = "FK_TRIMS_TO_CARS_ID";
-    String INDEX_TRIM_NAME = "INDEX_TRIM_NAME";
-    String JOIN_TABLE_NAME_TRIM_TRANSMISSION = "trim_transmission";
-    String JOIN_TABLE_COLUMN_TRIM_ID = "trim_id";
-    String JOIN_TABLE_COLUMN_TRANSMISSION_ID = "transmission_id";
-  }
-
-  public interface Properties {
-    String MODEL_YEAR = "modelYear";
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = Persistence.COLUMN_ID, updatable = false, nullable = false)
@@ -59,7 +42,9 @@ public class Trim implements BaseEntity<Integer> {
   @OneToMany(mappedBy = Engine.Properties.TRIM, fetch = FetchType.LAZY)
   private Set<Engine> engines = new HashSet<>();
 
-  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  @ManyToMany(
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+      fetch = FetchType.LAZY)
   @JoinTable(
       name = Persistence.JOIN_TABLE_NAME_TRIM_TRANSMISSION,
       joinColumns = @JoinColumn(name = Persistence.JOIN_TABLE_COLUMN_TRIM_ID),
@@ -68,4 +53,20 @@ public class Trim implements BaseEntity<Integer> {
 
   @OneToMany(mappedBy = Option.Properties.TRIM, fetch = FetchType.LAZY)
   private Set<Option> options = new HashSet<>();
+
+  public interface Persistence {
+    String TABLE_NAME = "trim";
+    String COLUMN_ID = "id";
+    String COLUMN_TRIM = "trim";
+    String COLUMN_MODEL_YEAR_ID = "model_year_id";
+    String FK_TRIMS_TO_CARS_ID = "FK_TRIMS_TO_CARS_ID";
+    String INDEX_TRIM_NAME = "INDEX_TRIM_NAME";
+    String JOIN_TABLE_NAME_TRIM_TRANSMISSION = "trim_transmission";
+    String JOIN_TABLE_COLUMN_TRIM_ID = "trim_id";
+    String JOIN_TABLE_COLUMN_TRANSMISSION_ID = "transmission_id";
+  }
+
+  public interface Properties {
+    String MODEL_YEAR = "modelYear";
+  }
 }
