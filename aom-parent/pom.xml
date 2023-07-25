@@ -19,6 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <version.dependencies.mapstruct>1.5.2.Final</version.dependencies.mapstruct>
+        <version.dependencies.modelmapper>3.1.1</version.dependencies.modelmapper>
         <version.dependencies.commons-io>2.11.0</version.dependencies.commons-io>
         <version.dependencies.testcontainers>1.17.6</version.dependencies.testcontainers>
         <version.dependencies.lombok.mapstruct.binding>0.2.0</version.dependencies.lombok.mapstruct.binding>
@@ -99,6 +100,12 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${version.dependencies.mapstruct}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${version.dependencies.modelmapper}</version>
             </dependency>
 
             <dependency>
