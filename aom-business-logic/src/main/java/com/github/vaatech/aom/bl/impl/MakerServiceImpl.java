@@ -3,7 +3,7 @@ package com.github.vaatech.aom.bl.impl;
 import com.github.vaatech.aom.api.dto.MakerDTO;
 import com.github.vaatech.aom.bl.AbstractCRUDService;
 import com.github.vaatech.aom.bl.MakerService;
-import com.github.vaatech.aom.bl.converters.MakerMapper;
+import com.github.vaatech.aom.commons.utils.modelmapper.MappingUtil;
 import com.github.vaatech.aom.core.model.vehicle.Maker;
 import com.github.vaatech.aom.core.repository.ApplicationJpaRepository;
 import com.github.vaatech.aom.core.repository.MakerRepository;
@@ -22,23 +22,23 @@ public class MakerServiceImpl extends AbstractCRUDService<Integer, Maker, MakerD
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public Page<MakerDTO> fetchMakers(Pageable pageable) {
-    return makerRepository.findAll(pageable).map(MakerMapper.INSTANCE::toDto);
-  }
-
-  @Override
   protected ApplicationJpaRepository<Maker, Integer> getRepository() {
     return makerRepository;
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public Page<MakerDTO> fetchMakers(Pageable pageable) {
+    return makerRepository.findAll(pageable).map(maker -> MappingUtil.map(maker, MakerDTO.class));
+  }
+
+  @Override
   protected void updateEntity(Maker entity, MakerDTO dto) {
-    MakerMapper.INSTANCE.updateEntity(dto, entity);
+    MappingUtil.map(dto, entity);
   }
 
   @Override
   protected MakerDTO toDTO(Maker entity) {
-    return MakerMapper.INSTANCE.toDto(entity);
+    return MappingUtil.map(entity, MakerDTO.class);
   }
 }

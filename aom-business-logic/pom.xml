@@ -25,15 +25,14 @@
             <groupId>com.github.vaatech</groupId>
             <artifactId>aom-api-dto</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.vaatech</groupId>
+            <artifactId>aom-commons-utils</artifactId>
+        </dependency>
         <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>com.github.vaatech</groupId>
             <artifactId>aom-dao</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
         </dependency>
     </dependencies>
 
@@ -45,20 +44,9 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <groupId>org.mapstruct</groupId>
-                            <version>${version.dependencies.mapstruct}</version>
-                        </path>
-                        <path>
                             <artifactId>lombok</artifactId>
                             <groupId>org.projectlombok</groupId>
                             <version>${lombok.version}</version>
-                        </path>
-                        <!-- additional annotation processor required as of Lombok 1.18.16 -->
-                        <path>
-                            <artifactId>lombok-mapstruct-binding</artifactId>
-                            <groupId>org.projectlombok</groupId>
-                            <version>${version.dependencies.lombok.mapstruct.binding}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
