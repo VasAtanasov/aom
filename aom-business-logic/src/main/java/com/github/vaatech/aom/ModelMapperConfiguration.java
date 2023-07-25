@@ -1,4 +1,4 @@
-package com.github.vaatech.aom.config.modelmapper;
+package com.github.vaatech.aom;
 
 import static org.modelmapper.config.Configuration.AccessLevel.PACKAGE_PRIVATE;
 
