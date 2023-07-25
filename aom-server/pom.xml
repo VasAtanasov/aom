@@ -26,6 +26,10 @@
         </dependency>
         <dependency>
             <groupId>com.github.vaatech</groupId>
+            <artifactId>aom-commons-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.vaatech</groupId>
             <artifactId>aom-api-rest</artifactId>
         </dependency>
         <dependency>
@@ -56,6 +60,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
         </dependency>
 
         <!--Test Dependencies-->
