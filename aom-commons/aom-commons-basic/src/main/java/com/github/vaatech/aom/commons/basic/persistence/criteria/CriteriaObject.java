@@ -15,7 +15,7 @@ public class CriteriaObject<E extends BaseEntity<ID>, ID extends Serializable, R
     this.cq = cq;
   }
 
-  public CriteriaQuery<R> getCq() {
+  public CriteriaQuery<R> cq() {
     return cq;
   }
 }

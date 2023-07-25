@@ -14,11 +14,11 @@ public class CriteriaBaseObject<E extends BaseEntity<ID>, ID extends Serializabl
     this.root = root;
   }
 
-  public CriteriaBuilder getCb() {
+  public CriteriaBuilder cb() {
     return cb;
   }
 
-  public Root<E> getRoot() {
+  public Root<E> root() {
     return root;
   }
 }
