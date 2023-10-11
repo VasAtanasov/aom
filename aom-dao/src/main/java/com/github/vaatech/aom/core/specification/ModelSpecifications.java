@@ -7,23 +7,23 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class ModelSpecifications {
 
-  public static Specification<Model> carsForModelId(String id) {
-    return (root, query, cb) -> {
-      Join<Model, ModelYear> join = root.join(Model_.modelYears, JoinType.LEFT);
-      query.distinct(true);
-      return cb.equal(join.get(ModelYear_.model), id);
-    };
-  }
+    public static Specification<Model> carsForModelId(String id) {
+        return (root, query, cb) -> {
+            Join<Model, ModelYear> join = root.join(Model_.modelYears, JoinType.LEFT);
+            query.distinct(true);
+            return cb.equal(join.get(ModelYear_.model), id);
+        };
+    }
 
-  public static Specification<Model> byId(String id) {
-    return (root, query, cb) -> cb.equal(root.get(Model_.id), id);
-  }
+    public static Specification<Model> byId(String id) {
+        return (root, query, cb) -> cb.equal(root.get(Model_.id), id);
+    }
 
-  public static Specification<Model> byMakerName(String makerName) {
-    return (root, query, cb) -> {
-      Join<Model, Maker> join = root.join(Model_.maker, JoinType.LEFT);
-      query.distinct(true);
-      return cb.equal(join.get(Maker_.name), makerName);
-    };
-  }
+    public static Specification<Model> byMakerName(String makerName) {
+        return (root, query, cb) -> {
+            Join<Model, Maker> join = root.join(Model_.maker, JoinType.LEFT);
+            query.distinct(true);
+            return cb.equal(join.get(Maker_.name), makerName);
+        };
+    }
 }

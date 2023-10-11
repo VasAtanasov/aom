@@ -1,6 +1,7 @@
 package com.github.vaatech.aom;
 
 // import com.github.vaatech.aom.test.listeners.CleanDatabaseTestExecutionListener;
+
 import com.github.vaatech.aom.test.HibernateStatisticsExtension;
 import com.github.vaatech.aom.test.HibernateStatisticsHelper;
 import jakarta.persistence.EntityManager;
@@ -23,53 +24,54 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(
-    classes = {/*Application.class,*/ BaseApplicationDataTest.ApplicationTestConfiguration.class},
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+        classes = {/*Application.class,*/ BaseApplicationDataTest.ApplicationTestConfiguration.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestExecutionListeners(
-    listeners = {
-      /*CleanDatabaseTestExecutionListener.class*/
-    },
-    mergeMode = MERGE_WITH_DEFAULTS)
+        listeners = {
+                /*CleanDatabaseTestExecutionListener.class*/
+        },
+        mergeMode = MERGE_WITH_DEFAULTS)
 public abstract class BaseApplicationDataTest {
 
-  @SpringBootApplication
-  public static class ApplicationTestConfiguration {
-    @Bean
-    @ConditionalOnProperty(prefix = "spring", name = "flyway.enabled")
-    public FlywayMigrationStrategy flywayMigrationStrategy() {
-      return flyway -> {
-        // ignore to avoid migration on startup.
-        log.warn("Flyway migration on startup is skipped in test.");
-      };
-    }
-  }
-
-  @RegisterExtension
-  public final HibernateStatisticsExtension statsVerifier =
-      new HibernateStatisticsExtension() {
-        @Override
-        protected Statistics getStatistics() {
-          return getHibernateStatistics();
+    @SpringBootApplication
+    public static class ApplicationTestConfiguration {
+        @Bean
+        @ConditionalOnProperty(prefix = "spring", name = "flyway.enabled")
+        public FlywayMigrationStrategy flywayMigrationStrategy() {
+            return flyway -> {
+                // ignore to avoid migration on startup.
+                log.warn("Flyway migration on startup is skipped in test.");
+            };
         }
-      };
+    }
 
-  @Autowired protected EntityManager entityManager;
+    @RegisterExtension
+    public final HibernateStatisticsExtension statsVerifier =
+            new HibernateStatisticsExtension() {
+                @Override
+                protected Statistics getStatistics() {
+                    return getHibernateStatistics();
+                }
+            };
 
-  protected Statistics getHibernateStatistics() {
-    return HibernateStatisticsHelper.getStatistics(entityManager);
-  }
+    @Autowired
+    protected EntityManager entityManager;
 
-  protected void clearHibernateStatistics() {
-    getHibernateStatistics().clear();
-  }
+    protected Statistics getHibernateStatistics() {
+        return HibernateStatisticsHelper.getStatistics(entityManager);
+    }
 
-  @BeforeEach
-  public void initTest() {
-    reset();
-  }
+    protected void clearHibernateStatistics() {
+        getHibernateStatistics().clear();
+    }
 
-  protected void reset() {
-    clearHibernateStatistics();
-  }
+    @BeforeEach
+    public void initTest() {
+        reset();
+    }
+
+    protected void reset() {
+        clearHibernateStatistics();
+    }
 }

@@ -11,9 +11,9 @@ import java.lang.annotation.*;
 @Inherited
 public @interface HibernateStatisticsAssertions {
 
-  // Maximum number of queries; a value less than zero accounts for undefined.
-  int maxQueries() default Integer.MAX_VALUE;
+    // Maximum number of queries; a value less than zero accounts for undefined.
+    int maxQueries() default Integer.MAX_VALUE;
 
-  // Exact count of queries; a value less than zero accounts for undefined.
-  int queryCount() default -1;
+    // Exact count of queries; a value less than zero accounts for undefined.
+    int queryCount() default -1;
 }
