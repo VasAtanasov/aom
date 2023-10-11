@@ -38,7 +38,7 @@ public abstract class AbstractCRUDService<ID extends Serializable, E extends Bas
 
         updateEntity(entity, dto);
 
-        final E persisted = getRepository().saveAndFlush(entity);
+        final E persisted = getRepository().persist(entity);
 
         afterCreate(persisted, dto);
         return toDTO(persisted);
@@ -69,7 +69,7 @@ public abstract class AbstractCRUDService<ID extends Serializable, E extends Bas
 
         updateEntity(entity, dto);
 
-        final E persisted = getRepository().saveAndFlush(entity);
+        final E persisted = getRepository().merge(entity);
         afterUpdate(persisted, dto);
         return toDTO(persisted);
     }
