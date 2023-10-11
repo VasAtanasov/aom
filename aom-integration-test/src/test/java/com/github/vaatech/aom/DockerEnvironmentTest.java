@@ -11,11 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnabledIf(expression = "#{environment.getProperty('containers.enabled')}", loadContext = true)
 class DockerEnvironmentTest extends BaseApplicationTest {
 
-  @Autowired
-  DockerEnvironment dockerEnvironment;
+    @Autowired
+    DockerEnvironment dockerEnvironment;
 
-  @Test
-  void shouldLoadDockerEnvironment() {
-    Assertions.assertThat(dockerEnvironment).isNotNull();
-  }
+    @Test
+    void shouldLoadDockerEnvironment() {
+        Assertions.assertThat(dockerEnvironment).isNotNull();
+    }
 }

@@ -8,8 +8,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Utils which provides methods to work with DateTime.
  */
-public final class DateTimeUtils
-{
+public final class DateTimeUtils {
     private static final String NOW = "now";
     private static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 

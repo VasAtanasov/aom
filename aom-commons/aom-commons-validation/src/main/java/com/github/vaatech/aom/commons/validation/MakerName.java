@@ -20,12 +20,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = {})
 @Documented
 public @interface MakerName {
-  int MIN_LENGTH = 1;
-  int MAX_LENGTH = 32;
+    int MIN_LENGTH = 1;
+    int MAX_LENGTH = 32;
 
-  String message() default "";
+    String message() default "";
 
-  Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-  Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }

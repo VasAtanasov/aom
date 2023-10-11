@@ -15,48 +15,48 @@ import java.util.Objects;
 
 class EhcacheCacheFactory {
 
-  static <T extends Serializable> Cache<String, T> heap(
-      final String alias,
-      final long expireMills,
-      final long size,
-      final Class<T> resultType,
-      CacheManager manager) {
-    return create(manager, ResourceType.HEAP, alias, expireMills, size, resultType, false);
-  }
+    static <T extends Serializable> Cache<String, T> heap(
+            final String alias,
+            final long expireMills,
+            final long size,
+            final Class<T> resultType,
+            CacheManager manager) {
+        return create(manager, ResourceType.HEAP, alias, expireMills, size, resultType, false);
+    }
 
-  static <T extends Serializable> Cache<String, T> disk(
-      final String alias,
-      final long expireMills,
-      final long size,
-      final Class<T> resultType,
-      CacheManager manager) {
-    return create(manager, ResourceType.DISK, alias, expireMills, size, resultType, true);
-  }
+    static <T extends Serializable> Cache<String, T> disk(
+            final String alias,
+            final long expireMills,
+            final long size,
+            final Class<T> resultType,
+            CacheManager manager) {
+        return create(manager, ResourceType.DISK, alias, expireMills, size, resultType, true);
+    }
 
-  private static <T extends Serializable> Cache<String, T> create(
-      final CacheManager manager,
-      final ResourceType type,
-      final String alias,
-      final long expireMills,
-      final long size,
-      final Class<T> resultType,
-      final boolean persistable) {
+    private static <T extends Serializable> Cache<String, T> create(
+            final CacheManager manager,
+            final ResourceType type,
+            final String alias,
+            final long expireMills,
+            final long size,
+            final Class<T> resultType,
+            final boolean persistable) {
 
-    Objects.requireNonNull(type);
+        Objects.requireNonNull(type);
 
-    ResourcePools pool =
-        switch (type) {
-          case HEAP -> ResourcePoolsBuilder.heap(size).build();
-          case DISK -> ResourcePoolsBuilder.newResourcePoolsBuilder()
-              .disk(size, MemoryUnit.MB, persistable)
-              .build();
-        };
+        ResourcePools pool =
+                switch (type) {
+                    case HEAP -> ResourcePoolsBuilder.heap(size).build();
+                    case DISK -> ResourcePoolsBuilder.newResourcePoolsBuilder()
+                            .disk(size, MemoryUnit.MB, persistable)
+                            .build();
+                };
 
-    CacheConfiguration<String, T> cacheConfiguration =
-        CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, resultType, pool)
-            .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMillis(expireMills)))
-            .build();
+        CacheConfiguration<String, T> cacheConfiguration =
+                CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, resultType, pool)
+                        .withExpiry(ExpiryPolicyBuilder.timeToLiveExpiration(Duration.ofMillis(expireMills)))
+                        .build();
 
-    return manager.createCache(alias, cacheConfiguration);
-  }
+        return manager.createCache(alias, cacheConfiguration);
+    }
 }

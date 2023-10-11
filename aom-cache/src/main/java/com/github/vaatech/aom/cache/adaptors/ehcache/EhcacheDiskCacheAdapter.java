@@ -15,47 +15,47 @@ import java.nio.file.Paths;
 
 public class EhcacheDiskCacheAdapter extends BaseEhcacheCacheAdapter {
 
-  public static final String TEMP_STORAGE_PATH = "storage";
-  private static final Logger LOG = LoggerFactory.getLogger(EhcacheDiskCacheAdapter.class);
+    public static final String TEMP_STORAGE_PATH = "storage";
+    private static final Logger LOG = LoggerFactory.getLogger(EhcacheDiskCacheAdapter.class);
 
-  private Path storageBasePath;
+    private Path storageBasePath;
 
-  public EhcacheDiskCacheAdapter(String storagePath) {
-    setStorageBasePath(storagePath);
-  }
-
-  private static void checkDirectoryExistsAndWritable(final Path directory) throws IOException {
-    final File file = directory.toFile();
-    if (!file.exists()) {
-      Files.createDirectory(directory);
-    } else {
-      if (!file.isDirectory()) {
-        throw new IllegalStateException("Storage path is not directory");
-      }
-      if (!file.canWrite()) {
-        throw new IllegalStateException("Storage path is not writable");
-      }
+    public EhcacheDiskCacheAdapter(String storagePath) {
+        setStorageBasePath(storagePath);
     }
-  }
 
-  @Override
-  protected CacheManager cacheManagerProvider() {
-    return EhcacheCacheMangerFactory.disk(storageBasePath);
-  }
+    private static void checkDirectoryExistsAndWritable(final Path directory) throws IOException {
+        final File file = directory.toFile();
+        if (!file.exists()) {
+            Files.createDirectory(directory);
+        } else {
+            if (!file.isDirectory()) {
+                throw new IllegalStateException("Storage path is not directory");
+            }
+            if (!file.canWrite()) {
+                throw new IllegalStateException("Storage path is not writable");
+            }
+        }
+    }
 
-  @Override
-  protected <T extends Serializable> Cache<String, T> cacheProvider(
-      String alias, Long expireMillis, Long size, Class<T> resultType, CacheManager manager) {
-    return EhcacheCacheFactory.disk(alias, expireMillis, size, resultType, manager);
-  }
+    @Override
+    protected CacheManager cacheManagerProvider() {
+        return EhcacheCacheMangerFactory.disk(storageBasePath);
+    }
 
-  @Override
-  public CacheProviderType getType() {
-    return CacheProviderType.EHCACHE_DISK;
-  }
+    @Override
+    protected <T extends Serializable> Cache<String, T> cacheProvider(
+            String alias, Long expireMillis, Long size, Class<T> resultType, CacheManager manager) {
+        return EhcacheCacheFactory.disk(alias, expireMillis, size, resultType, manager);
+    }
 
-  private void setStorageBasePath(String storageFolderPath) {
-    try {
+    @Override
+    public CacheProviderType getType() {
+        return CacheProviderType.EHCACHE_DISK;
+    }
+
+    private void setStorageBasePath(String storageFolderPath) {
+        try {
 //      if (StringUtils.isNotEmpty(storageFolderPath) && StringUtils.isNotBlank(storageFolderPath)) {
 //        LOG.info("File local storage folder: {}", storageFolderPath);
 //
@@ -65,9 +65,9 @@ public class EhcacheDiskCacheAdapter extends BaseEhcacheCacheAdapter {
 //        this.storageBasePath = Files.createTempDirectory(TEMP_STORAGE_PATH).toAbsolutePath();
 //      }
 
-      checkDirectoryExistsAndWritable(this.storageBasePath);
-    } catch (IOException io) {
-      LOG.error("File storage path is not configured!");
+            checkDirectoryExistsAndWritable(this.storageBasePath);
+        } catch (IOException io) {
+            LOG.error("File storage path is not configured!");
+        }
     }
-  }
 }

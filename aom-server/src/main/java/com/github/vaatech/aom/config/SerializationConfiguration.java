@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SerializationConfiguration {
 
-  @Bean
-  public CustomJacksonObjectMapper globalJacksonObjectMapper(
-      @Value("${app.dev.mode}") final boolean developmentEnvironment) {
-    return new CustomJacksonObjectMapper(developmentEnvironment);
-  }
+    @Bean
+    public CustomJacksonObjectMapper globalJacksonObjectMapper(
+            @Value("${app.dev.mode}") final boolean developmentEnvironment) {
+        return new CustomJacksonObjectMapper(developmentEnvironment);
+    }
 }

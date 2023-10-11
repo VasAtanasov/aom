@@ -14,31 +14,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MakerServiceImpl extends AbstractCRUDService<Integer, Maker, MakerDTO>
-    implements MakerService {
-  private final MakerRepository makerRepository;
+        implements MakerService {
+    private final MakerRepository makerRepository;
 
-  public MakerServiceImpl(MakerRepository makerRepository) {
-    this.makerRepository = makerRepository;
-  }
+    public MakerServiceImpl(MakerRepository makerRepository) {
+        this.makerRepository = makerRepository;
+    }
 
-  @Override
-  protected ApplicationJpaRepository<Maker, Integer> getRepository() {
-    return makerRepository;
-  }
+    @Override
+    protected ApplicationJpaRepository<Maker, Integer> getRepository() {
+        return makerRepository;
+    }
 
-  @Override
-  @Transactional(readOnly = true)
-  public Page<MakerDTO> fetchMakers(Pageable pageable) {
-    return makerRepository.findAll(pageable).map(maker -> MappingUtil.map(maker, MakerDTO.class));
-  }
+    @Override
+    @Transactional(readOnly = true)
+    public Page<MakerDTO> fetchMakers(Pageable pageable) {
+        return makerRepository.findAll(pageable).map(maker -> MappingUtil.map(maker, MakerDTO.class));
+    }
 
-  @Override
-  protected void updateEntity(Maker entity, MakerDTO dto) {
-    MappingUtil.map(dto, entity);
-  }
+    @Override
+    protected void updateEntity(Maker entity, MakerDTO dto) {
+        MappingUtil.map(dto, entity);
+    }
 
-  @Override
-  protected MakerDTO toDTO(Maker entity) {
-    return MappingUtil.map(entity, MakerDTO.class);
-  }
+    @Override
+    protected MakerDTO toDTO(Maker entity) {
+        return MappingUtil.map(entity, MakerDTO.class);
+    }
 }

@@ -10,10 +10,11 @@ import jakarta.validation.ConstraintValidatorContext;
 @Transactional(readOnly = true)
 public class UniqueMakerNameValidator implements ConstraintValidator<UniqueMakerName, String> {
 
-  @Autowired private MakerRepository makerRepository;
+    @Autowired
+    private MakerRepository makerRepository;
 
-  @Override
-  public boolean isValid(String value, ConstraintValidatorContext context) {
-    return !makerRepository.existsByName(value);
-  }
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        return !makerRepository.existsByName(value);
+    }
 }

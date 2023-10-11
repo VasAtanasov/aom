@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class KeepaliveController {
-  @RequestMapping(value = "/api/ping", produces = MediaType.TEXT_PLAIN_VALUE)
-  public String ping(HttpSession session) {
-    session.setAttribute("ts", System.currentTimeMillis());
-    return "ok";
-  }
+    @RequestMapping(value = "/api/ping", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String ping(HttpSession session) {
+        session.setAttribute("ts", System.currentTimeMillis());
+        return "ok";
+    }
 }

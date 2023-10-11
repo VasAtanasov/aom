@@ -11,8 +11,7 @@ import org.modelmapper.internal.util.Assert;
  * @param <S> source type
  * @param <D> destination type
  */
-public abstract class TypeMapConfigurerSupport<S, D> implements ModelMapperConfigurer
-{
+public abstract class TypeMapConfigurerSupport<S, D> implements ModelMapperConfigurer {
     /**
      * Configure {@link TypeMap}.
      *
@@ -27,8 +26,7 @@ public abstract class TypeMapConfigurerSupport<S, D> implements ModelMapperConfi
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void configure(ModelMapper modelMapper)
-    {
+    public void configure(ModelMapper modelMapper) {
         Class<?>[] typeArguments = TypeResolver.resolveRawArguments(TypeMapConfigurerSupport.class, getClass());
         Assert.notNull(typeArguments, "Must declare source type argument <S> and destination type argument <D> for TypeMap");
         typeMap(modelMapper.typeMap((Class<S>) typeArguments[0], (Class<D>) typeArguments[1]));

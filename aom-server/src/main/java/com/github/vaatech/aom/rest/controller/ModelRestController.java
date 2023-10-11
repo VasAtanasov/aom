@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ModelRestController implements ModelRestApi {
-  private final ModelService modelService;
+    private final ModelService modelService;
 
-  public ModelRestController(ModelService modelService) {
-    this.modelService = modelService;
-  }
+    public ModelRestController(ModelService modelService) {
+        this.modelService = modelService;
+    }
 
-  @Override
-  public ResponseEntity<Page<ModelDTO>> fetchMakerModels(String makerName, Pageable pageable) {
-    return ResponseEntity.ok(modelService.fetchMakerModels(makerName, pageable));
-  }
+    @Override
+    public ResponseEntity<Page<ModelDTO>> fetchMakerModels(String makerName, Pageable pageable) {
+        return ResponseEntity.ok(modelService.fetchMakerModels(makerName, pageable));
+    }
 }

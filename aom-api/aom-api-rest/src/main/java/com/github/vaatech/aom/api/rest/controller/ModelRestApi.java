@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping(value = {Constants.API_V1_0 + ModelRestApi.MODEL_URL})
 public interface ModelRestApi {
-  String MODEL_URL = "/models";
+    String MODEL_URL = "/models";
 
-  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<Page<ModelDTO>> fetchMakerModels(
-      @RequestParam String makerName,
-      @PageableDefault(size = 20)
-          @SortDefault.SortDefaults({
-            @SortDefault(sort = "name", direction = Sort.Direction.ASC),
-            @SortDefault(sort = "id", direction = Sort.Direction.ASC)
-          })
-          Pageable pageable);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<Page<ModelDTO>> fetchMakerModels(
+            @RequestParam String makerName,
+            @PageableDefault(size = 20)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "name", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "id", direction = Sort.Direction.ASC)
+            })
+            Pageable pageable);
 }

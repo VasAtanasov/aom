@@ -14,34 +14,34 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ModelServiceImpl extends AbstractCRUDService<Integer, Model, ModelDTO>
-    implements ModelService {
+        implements ModelService {
 
-  private final ModelRepository modelRepository;
+    private final ModelRepository modelRepository;
 
-  public ModelServiceImpl(ModelRepository modelRepository) {
-    this.modelRepository = modelRepository;
-  }
+    public ModelServiceImpl(ModelRepository modelRepository) {
+        this.modelRepository = modelRepository;
+    }
 
-  @Override
-  protected ApplicationJpaRepository<Model, Integer> getRepository() {
-    return modelRepository;
-  }
+    @Override
+    protected ApplicationJpaRepository<Model, Integer> getRepository() {
+        return modelRepository;
+    }
 
-  @Override
-  protected void updateEntity(Model entity, ModelDTO dto) {
-    MappingUtil.map(dto, entity);
-  }
+    @Override
+    protected void updateEntity(Model entity, ModelDTO dto) {
+        MappingUtil.map(dto, entity);
+    }
 
-  @Override
-  protected ModelDTO toDTO(Model entity) {
-    return MappingUtil.map(entity, ModelDTO.class);
-  }
+    @Override
+    protected ModelDTO toDTO(Model entity) {
+        return MappingUtil.map(entity, ModelDTO.class);
+    }
 
-  @Override
-  @Transactional(readOnly = true)
-  public Page<ModelDTO> fetchMakerModels(String makerName, Pageable pageable) {
-    return modelRepository
-        .findAllByMakerName(makerName, pageable)
-        .map(maker -> MappingUtil.map(maker, ModelDTO.class));
-  }
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ModelDTO> fetchMakerModels(String makerName, Pageable pageable) {
+        return modelRepository
+                .findAllByMakerName(makerName, pageable)
+                .map(maker -> MappingUtil.map(maker, ModelDTO.class));
+    }
 }

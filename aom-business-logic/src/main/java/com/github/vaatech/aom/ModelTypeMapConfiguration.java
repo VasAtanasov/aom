@@ -9,16 +9,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ModelTypeMapConfiguration {
 
-  @Configuration
-  public static class ModelToModelDTOTypeMapConfigurer
-      extends TypeMapConfigurerSupport<Model, ModelDTO> {
-    @Override
-    public void typeMap(TypeMap<Model, ModelDTO> typeMap) {
-      typeMap.addMappings(
-          mapper -> {
-            mapper.map(src -> src.getMaker().getName(), ModelDTO::setMakerName);
-            mapper.map(src -> src.getMaker().getId(), ModelDTO::setMakerId);
-          });
+    @Configuration
+    public static class ModelToModelDTOTypeMapConfigurer
+            extends TypeMapConfigurerSupport<Model, ModelDTO> {
+        @Override
+        public void typeMap(TypeMap<Model, ModelDTO> typeMap) {
+            typeMap.addMappings(
+                    mapper -> {
+                        mapper.map(src -> src.getMaker().getName(), ModelDTO::setMakerName);
+                        mapper.map(src -> src.getMaker().getId(), ModelDTO::setMakerId);
+                    });
+        }
     }
-  }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(
-    basePackages = "com.github.vaatech.aom.core.repository",
-    repositoryBaseClass = ApplicationJpaRepositoryImpl.class)
-public class JPAConfiguration {}
+        basePackages = "com.github.vaatech.aom.core.repository",
+        repositoryBaseClass = ApplicationJpaRepositoryImpl.class)
+public class JPAConfiguration {
+}

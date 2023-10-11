@@ -9,9 +9,9 @@ import lombok.*;
 @ToString
 @Builder
 public class ModelDTO implements BaseDTO<Integer> {
-  private Integer id;
-  private String name;
-  private Integer makerId;
-  private String makerName;
-  private MakerDTO maker;
+    private Integer id;
+    private String name;
+    private Integer makerId;
+    private String makerName;
+    private MakerDTO maker;
 }

@@ -10,27 +10,27 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBFlywayConfig {
 
-  @Bean
-  public FlywayMigrationStrategy flywayMigrationStrategy() {
-    return flyway -> {
-      log.info("=== start db migration === ");
-      for (MigrationInfo info : flyway.info().all()) {
-        log.info(
-            "state: {} desc: {} script: {}",
-            info.getState().getDisplayName(),
-            info.getDescription(),
-            info.getScript());
-      }
-      flyway.repair();
-      flyway.migrate();
-      for (MigrationInfo info : flyway.info().all()) {
-        log.info(
-            "state: {} desc: {} script: {}",
-            info.getState().getDisplayName(),
-            info.getDescription(),
-            info.getScript());
-      }
-      log.info("=== end db migration === ");
-    };
-  }
+    @Bean
+    public FlywayMigrationStrategy flywayMigrationStrategy() {
+        return flyway -> {
+            log.info("=== start db migration === ");
+            for (MigrationInfo info : flyway.info().all()) {
+                log.info(
+                        "state: {} desc: {} script: {}",
+                        info.getState().getDisplayName(),
+                        info.getDescription(),
+                        info.getScript());
+            }
+            flyway.repair();
+            flyway.migrate();
+            for (MigrationInfo info : flyway.info().all()) {
+                log.info(
+                        "state: {} desc: {} script: {}",
+                        info.getState().getDisplayName(),
+                        info.getDescription(),
+                        info.getScript());
+            }
+            log.info("=== end db migration === ");
+        };
+    }
 }

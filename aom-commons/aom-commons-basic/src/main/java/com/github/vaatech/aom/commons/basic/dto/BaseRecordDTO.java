@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public interface BaseRecordDTO<T extends Serializable> extends BaseDTO<T> {
 
-  T id();
+    T id();
 
-  @Override
-  default T getId() {
-    return id();
-  }
+    @Override
+    default T getId() {
+        return id();
+    }
 }

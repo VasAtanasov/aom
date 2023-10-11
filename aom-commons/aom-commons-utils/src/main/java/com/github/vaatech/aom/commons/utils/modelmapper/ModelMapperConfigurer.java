@@ -20,8 +20,7 @@ import org.modelmapper.ModelMapper;
  *
  * @see ModelMapper
  */
-public interface ModelMapperConfigurer
-{
+public interface ModelMapperConfigurer {
     /**
      * Configures the instance of {@link org.modelmapper.ModelMapper}.
      *

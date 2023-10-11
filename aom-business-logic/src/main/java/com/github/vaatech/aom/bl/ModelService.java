@@ -6,5 +6,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ModelService extends CRUDService<Integer, Model, ModelDTO> {
-  Page<ModelDTO> fetchMakerModels(String makerName, Pageable pageable);
+    Page<ModelDTO> fetchMakerModels(String makerName, Pageable pageable);
 }

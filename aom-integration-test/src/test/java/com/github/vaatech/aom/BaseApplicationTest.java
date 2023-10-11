@@ -24,50 +24,53 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 @Slf4j
 @ActiveProfiles("test")
 @SpringBootTest(
-    classes = {Application.class, BaseApplicationTest.ApplicationTestConfiguration.class},
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+        classes = {Application.class, BaseApplicationTest.ApplicationTestConfiguration.class},
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestExecutionListeners(
-    listeners = CleanDatabaseTestExecutionListener.class,
-    mergeMode = MERGE_WITH_DEFAULTS)
+        listeners = CleanDatabaseTestExecutionListener.class,
+        mergeMode = MERGE_WITH_DEFAULTS)
 public abstract class BaseApplicationTest {
 
-  @SpringBootApplication
-  public static class ApplicationTestConfiguration {
-    @Bean
-    @ConditionalOnProperty(prefix = "spring", name = "flyway.enabled")
-    public FlywayMigrationStrategy flywayMigrationStrategy() {
-      return flyway -> {
-        // ignore to avoid migration on startup.
-        log.warn("Flyway migration on startup is skipped in test.");
-      };
+    @SpringBootApplication
+    public static class ApplicationTestConfiguration {
+        @Bean
+        @ConditionalOnProperty(prefix = "spring", name = "flyway.enabled")
+        public FlywayMigrationStrategy flywayMigrationStrategy() {
+            return flyway -> {
+                // ignore to avoid migration on startup.
+                log.warn("Flyway migration on startup is skipped in test.");
+            };
+        }
+
+        @Bean
+        public CommonsRequestLoggingFilter logFilter(ObjectMapper objectMapper) {
+            CommonsRequestLoggingFilter filter =
+                    new PrettyPrintPayloadCommonsRequestLoggingFilter(objectMapper);
+            filter.setIncludeQueryString(true);
+            filter.setIncludePayload(true);
+            filter.setIncludeHeaders(true);
+            filter.setIncludeClientInfo(true);
+            filter.setMaxPayloadLength(20000);
+            return filter;
+        }
     }
 
-    @Bean
-    public CommonsRequestLoggingFilter logFilter(ObjectMapper objectMapper) {
-      CommonsRequestLoggingFilter filter =
-          new PrettyPrintPayloadCommonsRequestLoggingFilter(objectMapper);
-      filter.setIncludeQueryString(true);
-      filter.setIncludePayload(true);
-      filter.setIncludeHeaders(true);
-      filter.setIncludeClientInfo(true);
-      filter.setMaxPayloadLength(20000);
-      return filter;
+    @LocalServerPort
+    protected int port;
+
+    @Autowired
+    protected EntityManager entityManager;
+
+    @Autowired
+    DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    public void initTest() {
+        reset();
     }
-  }
 
-  @LocalServerPort protected int port;
-
-  @Autowired protected EntityManager entityManager;
-
-  @Autowired DatabaseCleaner databaseCleaner;
-
-  @BeforeEach
-  public void initTest() {
-    reset();
-  }
-
-  protected void reset() {
+    protected void reset() {
 //    databaseCleaner.clearManagedEntityTablesFromDatabase();
-  }
+    }
 }

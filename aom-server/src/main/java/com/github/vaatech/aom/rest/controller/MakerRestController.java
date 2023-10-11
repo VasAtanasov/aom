@@ -12,40 +12,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MakerRestController implements MakerRestApi {
 
-  private final MakerService makerService;
+    private final MakerService makerService;
 
-  public MakerRestController(MakerService makerService) {
-    this.makerService = makerService;
-  }
+    public MakerRestController(MakerService makerService) {
+        this.makerService = makerService;
+    }
 
-  @Override
-  public ResponseEntity<Page<MakerDTO>> fetchMakers(Pageable pageable) {
-    Page<MakerDTO> page = makerService.fetchMakers(pageable);
-    return ResponseEntity.ok(page);
-  }
+    @Override
+    public ResponseEntity<Page<MakerDTO>> fetchMakers(Pageable pageable) {
+        Page<MakerDTO> page = makerService.fetchMakers(pageable);
+        return ResponseEntity.ok(page);
+    }
 
-  @Override
-  public ResponseEntity<MakerDTO> findMakerById(Integer id) {
-    MakerDTO makerDTO = makerService.read(id);
-    return ResponseEntity.ok(makerDTO);
-  }
+    @Override
+    public ResponseEntity<MakerDTO> findMakerById(Integer id) {
+        MakerDTO makerDTO = makerService.read(id);
+        return ResponseEntity.ok(makerDTO);
+    }
 
-  @Override
-  public ResponseEntity<MakerDTO> createMaker(MakerDTO maker) {
-    MakerDTO makerDTO = makerService.create(maker);
-    return ResponseEntity.status(HttpStatus.CREATED).body(makerDTO);
-  }
+    @Override
+    public ResponseEntity<MakerDTO> createMaker(MakerDTO maker) {
+        MakerDTO makerDTO = makerService.create(maker);
+        return ResponseEntity.status(HttpStatus.CREATED).body(makerDTO);
+    }
 
-  @Override
-  public ResponseEntity<MakerDTO> updateMaker(Integer id, MakerDTO maker) {
-    maker.setId(id);
-    MakerDTO makerDTO = makerService.update(maker);
-    return ResponseEntity.ok(makerDTO);
-  }
+    @Override
+    public ResponseEntity<MakerDTO> updateMaker(Integer id, MakerDTO maker) {
+        maker.setId(id);
+        MakerDTO makerDTO = makerService.update(maker);
+        return ResponseEntity.ok(makerDTO);
+    }
 
-  @Override
-  public ResponseEntity<Void> deleteMaker(Integer id) {
-    makerService.delete(id);
-    return ResponseEntity.noContent().build();
-  }
+    @Override
+    public ResponseEntity<Void> deleteMaker(Integer id) {
+        makerService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

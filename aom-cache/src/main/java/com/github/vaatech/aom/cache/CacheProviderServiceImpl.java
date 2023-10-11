@@ -8,25 +8,25 @@ import java.util.function.Supplier;
 
 public class CacheProviderServiceImpl implements CacheProviderService {
 
-  private final List<CacheAdapter> adapters;
+    private final List<CacheAdapter> adapters;
 
-  public CacheProviderServiceImpl(List<CacheAdapter> adapters) {
-    this.adapters = adapters;
-  }
+    public CacheProviderServiceImpl(List<CacheAdapter> adapters) {
+        this.adapters = adapters;
+    }
 
-  private static Supplier<IllegalStateException> notConfigured(
-      final CacheProviderType cacheProviderType) {
-    return () -> new IllegalStateException("Storage is not configured: " + cacheProviderType);
-  }
+    private static Supplier<IllegalStateException> notConfigured(
+            final CacheProviderType cacheProviderType) {
+        return () -> new IllegalStateException("Storage is not configured: " + cacheProviderType);
+    }
 
-  private Optional<CacheAdapter> findStorage(final CacheProviderType cacheProviderType) {
-    return adapters.stream()
-        .filter(ca -> ca.getType() == cacheProviderType && ca.isConfigured())
-        .findAny();
-  }
+    private Optional<CacheAdapter> findStorage(final CacheProviderType cacheProviderType) {
+        return adapters.stream()
+                .filter(ca -> ca.getType() == cacheProviderType && ca.isConfigured())
+                .findAny();
+    }
 
-  @Override
-  public CacheAdapter getCacheAdapter(final CacheProviderType type) {
-    return findStorage(type).orElseThrow(notConfigured(type));
-  }
+    @Override
+    public CacheAdapter getCacheAdapter(final CacheProviderType type) {
+        return findStorage(type).orElseThrow(notConfigured(type));
+    }
 }

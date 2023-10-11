@@ -15,89 +15,89 @@ import java.util.function.Supplier;
 @Slf4j
 abstract class BaseEhcacheCacheAdapter implements CacheAdapter, Closeable {
 
-  private static final ConcurrentMap<String, CacheManager> ALL_CACHE_MANAGERS =
-      new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, CacheManager> ALL_CACHE_MANAGERS =
+            new ConcurrentHashMap<>();
 
-  @Override
-  public <T extends Serializable> T computeIfAbsent(
-      final String tenantId,
-      final String cacheName,
-      final Long expireMillis,
-      final Long size,
-      final String key,
-      final Class<T> resultType,
-      final Supplier<T> valueSupplier) {
+    @Override
+    public <T extends Serializable> T computeIfAbsent(
+            final String tenantId,
+            final String cacheName,
+            final Long expireMillis,
+            final Long size,
+            final String key,
+            final Class<T> resultType,
+            final Supplier<T> valueSupplier) {
 
-    final Cache<String, T> cache =
-        getCacheInternal(tenantId, cacheName, expireMillis, size, resultType);
+        final Cache<String, T> cache =
+                getCacheInternal(tenantId, cacheName, expireMillis, size, resultType);
 
-    log.debug(
-        String.format(
-            "[%s:%s]: Checking EhCache cache for invocation: %s", tenantId, cacheName, key));
+        log.debug(
+                String.format(
+                        "[%s:%s]: Checking EhCache cache for invocation: %s", tenantId, cacheName, key));
 
-    T value = valueSupplier.get();
-    cache.put(key, value);
+        T value = valueSupplier.get();
+        cache.put(key, value);
 
-    log.debug(
-        String.format(
-            "[%s:%s]: Value after invocation %s was cached in EhCache successfully",
-            tenantId, cacheName, key));
+        log.debug(
+                String.format(
+                        "[%s:%s]: Value after invocation %s was cached in EhCache successfully",
+                        tenantId, cacheName, key));
 
-    return value;
-  }
-
-  @Override
-  public void close() {
-    ALL_CACHE_MANAGERS.values().parallelStream().forEach(CacheManager::close);
-  }
-
-  @Override
-  public boolean isConfigured() {
-    return ALL_CACHE_MANAGERS.isEmpty()
-        || ALL_CACHE_MANAGERS.values().stream()
-            .allMatch(cacheManager -> Status.AVAILABLE.equals(cacheManager.getStatus()));
-  }
-
-  protected CacheManager getCacheManager(String tenantId) {
-    return ALL_CACHE_MANAGERS.get(tenantId);
-  }
-
-  protected void saveCacheManager(String tenantId, CacheManager cacheManager) {
-    ALL_CACHE_MANAGERS.put(tenantId, cacheManager);
-  }
-
-  protected abstract CacheManager cacheManagerProvider();
-
-  protected abstract <T extends Serializable> Cache<String, T> cacheProvider(
-      final String alias,
-      final Long expireMillis,
-      final Long size,
-      final Class<T> resultType,
-      CacheManager manager);
-
-  private <T extends Serializable> Cache<String, T> getCacheInternal(
-      final String tenantId,
-      final String cacheName,
-      final Long expireMillis,
-      final Long size,
-      final Class<T> resultType) {
-    final String alias = buildCacheAlias(tenantId, cacheName);
-    CacheManager manager = getCacheManager(tenantId);
-
-    if (manager == null) {
-      manager = cacheManagerProvider();
-      saveCacheManager(tenantId, manager);
+        return value;
     }
 
-    try {
-      Cache<String, T> cache = manager.getCache(alias, String.class, resultType);
-
-      if (cache == null) {
-        cache = cacheProvider(alias, expireMillis, size, resultType, manager);
-      }
-      return cache;
-    } catch (IllegalArgumentException iae) {
-      throw new RuntimeException(iae);
+    @Override
+    public void close() {
+        ALL_CACHE_MANAGERS.values().parallelStream().forEach(CacheManager::close);
     }
-  }
+
+    @Override
+    public boolean isConfigured() {
+        return ALL_CACHE_MANAGERS.isEmpty()
+                || ALL_CACHE_MANAGERS.values().stream()
+                .allMatch(cacheManager -> Status.AVAILABLE.equals(cacheManager.getStatus()));
+    }
+
+    protected CacheManager getCacheManager(String tenantId) {
+        return ALL_CACHE_MANAGERS.get(tenantId);
+    }
+
+    protected void saveCacheManager(String tenantId, CacheManager cacheManager) {
+        ALL_CACHE_MANAGERS.put(tenantId, cacheManager);
+    }
+
+    protected abstract CacheManager cacheManagerProvider();
+
+    protected abstract <T extends Serializable> Cache<String, T> cacheProvider(
+            final String alias,
+            final Long expireMillis,
+            final Long size,
+            final Class<T> resultType,
+            CacheManager manager);
+
+    private <T extends Serializable> Cache<String, T> getCacheInternal(
+            final String tenantId,
+            final String cacheName,
+            final Long expireMillis,
+            final Long size,
+            final Class<T> resultType) {
+        final String alias = buildCacheAlias(tenantId, cacheName);
+        CacheManager manager = getCacheManager(tenantId);
+
+        if (manager == null) {
+            manager = cacheManagerProvider();
+            saveCacheManager(tenantId, manager);
+        }
+
+        try {
+            Cache<String, T> cache = manager.getCache(alias, String.class, resultType);
+
+            if (cache == null) {
+                cache = cacheProvider(alias, expireMillis, size, resultType, manager);
+            }
+            return cache;
+        } catch (IllegalArgumentException iae) {
+            throw new RuntimeException(iae);
+        }
+    }
 }

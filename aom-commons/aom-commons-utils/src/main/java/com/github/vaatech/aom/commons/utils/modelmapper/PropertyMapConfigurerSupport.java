@@ -10,8 +10,7 @@ import org.modelmapper.PropertyMap;
  * @param <S> the source object type
  * @param <D> the destination object type
  */
-public abstract class PropertyMapConfigurerSupport<S, D> implements ModelMapperConfigurer
-{
+public abstract class PropertyMapConfigurerSupport<S, D> implements ModelMapperConfigurer {
     /**
      * Allows to specify the specific property mapping between two different objects.
      *
@@ -26,8 +25,7 @@ public abstract class PropertyMapConfigurerSupport<S, D> implements ModelMapperC
      * @param modelMapper {@link ModelMapper} instance to be configured
      */
     @Override
-    public void configure(ModelMapper modelMapper)
-    {
+    public void configure(ModelMapper modelMapper) {
         modelMapper.addMappings(mapping());
     }
 }

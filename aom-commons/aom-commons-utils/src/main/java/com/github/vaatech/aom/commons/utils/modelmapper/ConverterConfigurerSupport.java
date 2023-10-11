@@ -10,8 +10,7 @@ import org.modelmapper.ModelMapper;
  * @param <S> the source object type
  * @param <D> the destination object type
  */
-public abstract class ConverterConfigurerSupport<S, D> implements ModelMapperConfigurer
-{
+public abstract class ConverterConfigurerSupport<S, D> implements ModelMapperConfigurer {
 
     /**
      * Allows to specify a custom converter between two types.
@@ -27,8 +26,7 @@ public abstract class ConverterConfigurerSupport<S, D> implements ModelMapperCon
      * @param modelMapper {@link ModelMapper} instance to be configured
      */
     @Override
-    public void configure(ModelMapper modelMapper)
-    {
+    public void configure(ModelMapper modelMapper) {
         modelMapper.addConverter(converter());
     }
 }

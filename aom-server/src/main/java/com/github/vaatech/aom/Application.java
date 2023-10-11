@@ -12,21 +12,21 @@ import java.util.Arrays;
 @SpringBootApplication
 public class Application implements CommandLineRunner {
 
-  private final ConfigurableEnvironment env;
+    private final ConfigurableEnvironment env;
 
-  public Application(ConfigurableEnvironment env) {
-    this.env = env;
-  }
+    public Application(ConfigurableEnvironment env) {
+        this.env = env;
+    }
 
-  public static void main(String[] args) {
-    SpringApplication.run(Application.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-  @Override
-  public void run(String... args) throws Exception {
-    log.debug("{}", env.getProperty("spring.jpa.hibernate.ddl-auto"));
-    log.debug("{}", env.getProperty("spring.datasource.url"));
-    String[] activeProfiles = env.getActiveProfiles();
-    log.debug("Active profiles: {}", Arrays.toString(activeProfiles));
-  }
+    @Override
+    public void run(String... args) throws Exception {
+        log.debug("{}", env.getProperty("spring.jpa.hibernate.ddl-auto"));
+        log.debug("{}", env.getProperty("spring.datasource.url"));
+        String[] activeProfiles = env.getActiveProfiles();
+        log.debug("Active profiles: {}", Arrays.toString(activeProfiles));
+    }
 }

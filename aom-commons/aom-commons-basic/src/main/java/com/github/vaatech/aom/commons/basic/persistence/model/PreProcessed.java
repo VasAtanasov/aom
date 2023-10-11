@@ -6,7 +6,7 @@ package com.github.vaatech.aom.commons.basic.persistence.model;
  * DB and generate data in the code before entity is merged / persisted).
  */
 public interface PreProcessed extends HasVersion {
-  void preCreate();
+    void preCreate();
 
-  void preUpdate();
+    void preUpdate();
 }
